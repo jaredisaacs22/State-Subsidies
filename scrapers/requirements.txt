@@ -1,0 +1,23 @@
+# Web scraping
+playwright==1.42.0
+beautifulsoup4==4.12.3
+lxml==5.1.0
+requests==2.31.0
+httpx==0.27.0
+
+# Data handling
+pydantic==2.6.1
+python-dotenv==1.0.1
+
+# Database (optional — for writing scraped data directly)
+# psycopg2-binary==2.9.9
+# prisma==0.13.0
+
+# Async
+aiohttp==3.9.3
+asyncio-throttle==1.0.2
+
+# Utilities
+tenacity==8.2.3       # retry logic
+structlog==24.1.0     # structured logging
+click==8.1.7          # CLI runner

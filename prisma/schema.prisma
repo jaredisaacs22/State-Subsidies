@@ -1,0 +1,63 @@
+// Prisma schema for State Subsidies Discovery Platform
+// SQLite for local dev; switch provider to "postgresql" for production
+// Note: SQLite does not support enums — values are stored as Strings
+//       and validated at the application layer (see lib/types.ts).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Incentive {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Core identification
+  title String
+  slug  String @unique
+
+  // Jurisdiction
+  // Values: FEDERAL | STATE | CITY | AGENCY
+  jurisdictionLevel String
+  jurisdictionName  String // e.g. "California", "United States", "Los Angeles"
+
+  // Agency
+  managingAgency String
+  agencyAcronym  String? // e.g. "CARB", "DOE"
+
+  // Content
+  shortSummary    String
+  keyRequirements String // JSON array of requirement strings
+
+  // Classification
+  industryCategories String // JSON array of industry strings
+  // Values: GRANT | TAX_CREDIT | POINT_OF_SALE_REBATE | SUBSIDY | LOAN | VOUCHER
+  incentiveType      String
+
+  // Funding details (optional)
+  fundingAmount       Float?
+  deadline            DateTime?
+  applicationOpenDate DateTime?
+
+  // Source
+  sourceUrl   String
+  programCode String? // official government program code
+
+  // Status: ACTIVE | CLOSED | UPCOMING | SUSPENDED
+  status     String  @default("ACTIVE")
+  isVerified Boolean @default(false)
+
+  // Scraper metadata
+  scrapedAt     DateTime?
+  scraperSource String? // which scraper last updated this
+
+  @@index([jurisdictionLevel])
+  @@index([incentiveType])
+  @@index([status])
+  @@index([deadline])
+}
