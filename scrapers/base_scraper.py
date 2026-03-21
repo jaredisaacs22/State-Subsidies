@@ -102,7 +102,7 @@ class BaseScraper(ABC):
         stop=stop_after_attempt(ScraperConfig.MAX_RETRIES),
         wait=wait_exponential(multiplier=1, min=2, max=60),
         retry=retry_if_exception_type((httpx.HTTPError, httpx.TimeoutException)),
-        before_sleep=before_sleep_log(logger, structlog.stdlib.DEBUG),
+        before_sleep=before_sleep_log(logger, 10),  # 10 = logging.DEBUG
     )
     def fetch(self, url: str, params: Optional[dict] = None) -> str:
         """
