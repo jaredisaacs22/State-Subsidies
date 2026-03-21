@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverExternalPackages: ["@prisma/client"],
+  // Prisma client must be treated as an external package in server components
+  experimental: {
+    serverComponentsExternalPackages: ["@prisma/client", "prisma"],
+  },
 };
 
 export default nextConfig;

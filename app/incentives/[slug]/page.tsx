@@ -2,19 +2,20 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ExternalLink, ArrowLeft, Building2, Calendar, DollarSign, CheckCircle2, Globe } from "lucide-react";
 import { IncentiveTypeBadge, JurisdictionBadge, StatusBadge } from "@/components/Badge";
-import { formatCurrency, formatDeadline } from "@/lib/utils";
+import { formatCurrency, formatDeadline, parseIncentive } from "@/lib/utils";
+import { prisma } from "@/lib/db";
 import type { Incentive } from "@/lib/types";
 import type { Metadata } from "next";
 
+// Always server-render at request time — never try to pre-render at build
+// (Prisma/DB is not available during Vercel build)
+export const dynamic = "force-dynamic";
+
 async function getIncentive(slug: string): Promise<Incentive | null> {
   try {
-    // During build / SSG use absolute URL; in production use relative
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/incentives/${slug}`, {
-      next: { revalidate: 3600 },
-    });
-    if (!res.ok) return null;
-    return res.json();
+    const raw = await prisma.incentive.findUnique({ where: { slug } });
+    if (!raw) return null;
+    return parseIncentive(raw as unknown as Record<string, unknown>);
   } catch {
     return null;
   }
@@ -194,7 +195,6 @@ export default async function IncentiveDetailPage({
             </div>
           )}
 
-          {/* Data Provenance */}
           {incentive.scrapedAt && (
             <p className="text-xs text-slate-400 text-center">
               Data last updated{" "}
