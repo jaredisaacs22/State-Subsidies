@@ -9,9 +9,8 @@ httpx==0.27.0
 pydantic==2.6.1
 python-dotenv==1.0.1
 
-# Database (optional — for writing scraped data directly)
-# psycopg2-binary==2.9.9
-# prisma==0.13.0
+# Database — PostgreSQL driver for writing scraped data directly
+psycopg2-binary==2.9.9
 
 # Async
 aiohttp==3.9.3

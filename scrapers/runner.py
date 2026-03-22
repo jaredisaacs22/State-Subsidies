@@ -26,7 +26,9 @@ from typing import Any
 import click
 import structlog
 
+from .carb_scraper import CARBScraper
 from .caltrans_core_scraper import CalTransCOREScraper
+from .grants_gov_scraper import GrantsGovScraper
 from .wazip_scraper import WazipScraper
 
 logger = structlog.get_logger()
@@ -34,7 +36,9 @@ logger = structlog.get_logger()
 # Registry: name → scraper class
 SCRAPERS = {
     "caltrans_core": CalTransCOREScraper,
-    "wazip": WazipScraper,
+    "wazip":         WazipScraper,
+    "carb":          CARBScraper,
+    "grants_gov":    GrantsGovScraper,
 }
 
 
@@ -46,7 +50,7 @@ def _serialize(obj: Any) -> Any:
 
 
 @click.command()
-@click.option("--scraper", default="all", help="Scraper to run: all | wazip | caltrans_core")
+@click.option("--scraper", default="all", help="Scraper to run: all | wazip | caltrans_core | carb | grants_gov")
 @click.option("--mock/--live", default=True, help="Use mock data (default) or live HTTP")
 @click.option("--output", default=None, help="Write results to a JSON file path")
 def run(scraper: str, mock: bool, output: str | None):

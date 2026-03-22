@@ -5,18 +5,27 @@ import type { IncentiveFilters } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
+const VALID_JURISDICTION = ["FEDERAL", "STATE", "CITY", "AGENCY"] as const;
+const VALID_TYPE = ["GRANT", "TAX_CREDIT", "POINT_OF_SALE_REBATE", "SUBSIDY", "LOAN", "VOUCHER"] as const;
+const VALID_STATUS = ["ACTIVE", "CLOSED", "UPCOMING", "SUSPENDED"] as const;
+const VALID_SORT = ["createdAt", "fundingAmount", "deadline"] as const;
+
+function pickValid<T extends string>(value: string | null, allowed: readonly T[]): T | undefined {
+  return allowed.includes(value as T) ? (value as T) : undefined;
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl;
 
     const filters: IncentiveFilters = {
       search: searchParams.get("search") ?? undefined,
-      jurisdictionLevel: (searchParams.get("jurisdictionLevel") as IncentiveFilters["jurisdictionLevel"]) ?? undefined,
-      incentiveType: (searchParams.get("incentiveType") as IncentiveFilters["incentiveType"]) ?? undefined,
+      jurisdictionLevel: pickValid(searchParams.get("jurisdictionLevel"), VALID_JURISDICTION),
+      incentiveType: pickValid(searchParams.get("incentiveType"), VALID_TYPE),
       industryCategory: searchParams.get("industryCategory") ?? undefined,
-      status: (searchParams.get("status") as IncentiveFilters["status"]) ?? "ACTIVE",
-      sortBy: (searchParams.get("sortBy") as IncentiveFilters["sortBy"]) ?? "createdAt",
-      sortOrder: (searchParams.get("sortOrder") as "asc" | "desc") ?? "desc",
+      status: pickValid(searchParams.get("status"), VALID_STATUS) ?? "ACTIVE",
+      sortBy: pickValid(searchParams.get("sortBy"), VALID_SORT) ?? "createdAt",
+      sortOrder: pickValid(searchParams.get("sortOrder"), ["asc", "desc"] as const) ?? "desc",
       page: parseInt(searchParams.get("page") ?? "1"),
       pageSize: parseInt(searchParams.get("pageSize") ?? "12"),
     };

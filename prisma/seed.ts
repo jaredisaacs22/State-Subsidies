@@ -129,6 +129,134 @@ const incentives = [
     isVerified: true,
     scraperSource: "caltrans_scraper",
   },
+
+  // ── 5. IRA Home Energy Rebates (HEAR) ───────────────────────────────────
+  {
+    title: "IRA Home Energy Rebates — High-Efficiency Electric Home Rebate Act (HEEHRA)",
+    slug: "ira-heehra-home-energy-rebates",
+    jurisdictionLevel: "FEDERAL",
+    jurisdictionName: "United States",
+    managingAgency: "U.S. Department of Energy",
+    agencyAcronym: "DOE",
+    shortSummary:
+      "Provides point-of-sale rebates of up to $14,000 per household for energy-efficient electric appliances " +
+      "and home upgrades including heat pumps, electric stoves, EV chargers, and electrical panel upgrades. " +
+      "Income-qualified households can receive up to 100% of upgrade costs; moderate-income households up to 50%.",
+    keyRequirements: JSON.stringify([
+      "Must be a U.S. resident purchasing qualifying high-efficiency electric appliances or upgrades",
+      "Income must be at or below 150% of area median income (AMI) for full rebate eligibility",
+      "Households 80–150% AMI receive 50% rebate up to the program cap; below 80% AMI receive 100%",
+      "Heat pump water heater: up to $1,750 rebate; heat pump space heating/cooling: up to $8,000",
+      "Electric stove or cooktop: up to $840; electric panel upgrade: up to $4,000",
+      "Rebates administered by state energy offices — check your state's program status",
+      "Cannot combine with federal tax credits for the same measure in the same year",
+    ]),
+    industryCategories: JSON.stringify(["Energy Management", "Real Estate", "Construction", "Clean Technology"]),
+    incentiveType: "POINT_OF_SALE_REBATE",
+    fundingAmount: 14000,
+    deadline: null,
+    sourceUrl: "https://www.energy.gov/scep/home-energy-rebates-frequently-asked-questions",
+    programCode: "IRA-HEEHRA",
+    status: "ACTIVE",
+    isVerified: true,
+    scraperSource: "federal_doe_scraper",
+  },
+
+  // ── 6. NY Green Bank Clean Energy Financing ─────────────────────────────
+  {
+    title: "NY Green Bank Clean Energy Project Financing",
+    slug: "ny-green-bank-clean-energy-financing",
+    jurisdictionLevel: "STATE",
+    jurisdictionName: "New York",
+    managingAgency: "New York State Energy Research and Development Authority",
+    agencyAcronym: "NYSERDA",
+    shortSummary:
+      "NY Green Bank provides low-cost debt financing for commercial, industrial, and multifamily clean energy " +
+      "projects in New York State that have difficulty accessing conventional capital markets. " +
+      "Eligible projects include solar, energy storage, efficiency retrofits, and EV charging infrastructure.",
+    keyRequirements: JSON.stringify([
+      "Project must be located in New York State",
+      "Applicant must be a developer, owner, or operator of a clean energy project",
+      "Minimum transaction size: $1 million; no stated maximum",
+      "Project must demonstrate a financing gap — i.e., conventional lenders have declined or offered unworkable terms",
+      "Eligible sectors: commercial/industrial, multifamily residential, community distributed generation",
+      "Projects must meet NYSERDA's environmental justice and climate criteria",
+      "Repayment terms up to 20 years; interest rates negotiated based on project risk profile",
+    ]),
+    industryCategories: JSON.stringify(["Energy Management", "Real Estate", "Clean Technology", "Infrastructure"]),
+    incentiveType: "LOAN",
+    fundingAmount: 50000000,
+    deadline: null,
+    sourceUrl: "https://greenbank.ny.gov/",
+    programCode: "NYGB-FINANCE",
+    status: "ACTIVE",
+    isVerified: true,
+    scraperSource: "state_scraper",
+  },
+
+  // ── 7. Austin Energy Value of Solar Tariff ──────────────────────────────
+  {
+    title: "Austin Energy Value of Solar (VoS) Tariff",
+    slug: "austin-energy-value-of-solar-tariff",
+    jurisdictionLevel: "CITY",
+    jurisdictionName: "Austin, TX",
+    managingAgency: "Austin Energy",
+    agencyAcronym: "AE",
+    shortSummary:
+      "Austin Energy purchases excess solar generation from rooftop systems at a rate reflecting the full " +
+      "economic value of solar to the grid. The VoS rate is recalculated annually and credited directly " +
+      "to the customer's bill, making rooftop solar investment more predictable and financially attractive.",
+    keyRequirements: JSON.stringify([
+      "Customer must be within Austin Energy's service territory",
+      "Solar system must be grid-connected and owned by the customer (not leased)",
+      "System must be interconnected under Austin Energy's interconnection agreement",
+      "Residential systems up to 20 kW; commercial systems up to 500 kW",
+      "VoS credit rate set annually by Austin City Council — currently ~9.8 cents/kWh",
+      "Credits applied to monthly bill; excess credits roll over for 12 months",
+      "Separate from federal Investment Tax Credit (ITC) — can be combined",
+    ]),
+    industryCategories: JSON.stringify(["Energy Management", "Real Estate", "Clean Technology"]),
+    incentiveType: "TAX_CREDIT",
+    fundingAmount: null,
+    deadline: null,
+    sourceUrl: "https://austinenergy.com/ae/residential/solar/value-of-solar-tariff",
+    programCode: "AE-VOS",
+    status: "ACTIVE",
+    isVerified: true,
+    scraperSource: "city_scraper",
+  },
+
+  // ── 8. SBA Small Business Clean Energy Loan ─────────────────────────────
+  {
+    title: "SBA 7(a) Small Business Clean Energy & Sustainability Loan",
+    slug: "sba-7a-clean-energy-sustainability-loan",
+    jurisdictionLevel: "FEDERAL",
+    jurisdictionName: "United States",
+    managingAgency: "U.S. Small Business Administration",
+    agencyAcronym: "SBA",
+    shortSummary:
+      "The SBA 7(a) loan program provides government-guaranteed financing for small businesses pursuing " +
+      "clean energy projects, energy efficiency upgrades, and sustainability investments. " +
+      "IRA amendments expanded eligible uses to include solar, EV charging, energy storage, and efficiency retrofits.",
+    keyRequirements: JSON.stringify([
+      "Applicant must be a for-profit small business operating in the United States",
+      "Business must meet SBA size standards for its industry (typically <500 employees)",
+      "Eligible uses: solar panels, EV charging stations, energy storage, HVAC upgrades, insulation",
+      "Maximum loan amount: $5 million; government guaranty up to 85% for loans ≤$150K, 75% above",
+      "Must demonstrate ability to repay from business cash flow",
+      "Personal guarantee required from all owners with 20%+ equity stake",
+      "Cannot be delinquent on any existing federal debt",
+    ]),
+    industryCategories: JSON.stringify(["Energy Management", "Manufacturing", "Retail", "Clean Technology", "Fleet"]),
+    incentiveType: "LOAN",
+    fundingAmount: 5000000,
+    deadline: null,
+    sourceUrl: "https://www.sba.gov/funding-programs/loans/7a-loans",
+    programCode: "SBA-7A-CE",
+    status: "ACTIVE",
+    isVerified: true,
+    scraperSource: "federal_sba_scraper",
+  },
 ];
 
 async function main() {
