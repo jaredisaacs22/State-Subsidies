@@ -55,3 +55,4 @@ yarn-error.log*
 # Type checking
 *.tsbuildinfo
 next-env.d.ts
+.vercel
