@@ -1,0 +1,36 @@
+name: Initialize Database
+
+# Run this ONCE after setting up Vercel Postgres / Neon.
+# Pushes the Prisma schema to the database and seeds it with initial data.
+# Trigger manually from: GitHub → Actions → Initialize Database → Run workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Push schema to database
+        run: npx prisma db push --accept-data-loss
+        env:
+          # Use the unpooled (direct) URL for DDL — pgbouncer doesn't support schema changes
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
+
+      - name: Seed database
+        run: npx ts-node --compiler-options '{"module":"CommonJS"}' prisma/seed.ts
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
