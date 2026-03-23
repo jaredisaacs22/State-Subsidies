@@ -66,8 +66,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </ul>
               </div>
             </div>
-            <div className="border-t border-slate-100 pt-6 text-xs text-slate-400">
-              Not financial or legal advice. Verify eligibility directly with the managing agency.
+            <div className="border-t border-slate-100 pt-6 space-y-2 text-xs text-slate-400">
+              <p><strong className="text-slate-500">Disclaimer:</strong> StateSubsidies.com is an independent informational directory and is not affiliated with, endorsed by, or acting on behalf of any federal, state, or local government agency. All information is provided for general informational purposes only and does not constitute legal, financial, tax, or professional advice. Program details, eligibility requirements, funding amounts, and deadlines are subject to change without notice. Users should independently verify all information directly with the administering agency before making any business or financial decisions. Use of this site does not create any professional relationship between the user and StateSubsidies.com. StateSubsidies.com expressly disclaims all liability for any errors, omissions, or reliance on information contained herein.</p>
             </div>
           </div>
         </footer>

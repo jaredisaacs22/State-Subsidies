@@ -29,6 +29,7 @@ export async function GET(request: NextRequest) {
       page: parseInt(searchParams.get("page") ?? "1"),
       pageSize: parseInt(searchParams.get("pageSize") ?? "12"),
     };
+    const jurisdictionNameFilter = searchParams.get("jurisdictionName") ?? undefined;
 
     // Build Prisma where clause
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,6 +38,7 @@ export async function GET(request: NextRequest) {
     if (filters.status) where.status = filters.status;
     if (filters.jurisdictionLevel) where.jurisdictionLevel = filters.jurisdictionLevel;
     if (filters.incentiveType) where.incentiveType = filters.incentiveType;
+    if (jurisdictionNameFilter) where.jurisdictionName = { equals: jurisdictionNameFilter, mode: "insensitive" };
 
     // Full-text search across title, summary, agency
     if (filters.search) {
@@ -61,7 +63,7 @@ export async function GET(request: NextRequest) {
         : { createdAt: filters.sortOrder };
 
     const page = Math.max(1, filters.page ?? 1);
-    const pageSize = Math.min(50, Math.max(1, filters.pageSize ?? 12));
+    const pageSize = Math.min(200, Math.max(1, filters.pageSize ?? 12));
     const skip = (page - 1) * pageSize;
 
     const [total, rawItems] = await Promise.all([
