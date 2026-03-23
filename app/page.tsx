@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { SearchBar } from "@/components/SearchBar";
 import { FilterBar } from "@/components/FilterBar";
 import { ResultsGrid } from "@/components/ResultsGrid";
+import { BusinessIntakeChat } from "@/components/BusinessIntakeChat";
 import type { Incentive, IncentiveFilters, PaginatedResponse } from "@/lib/types";
 
 
@@ -102,6 +103,8 @@ export default function HomePage() {
             placeholder="Search programs, agencies, industries…"
             className="max-w-2xl mx-auto"
           />
+
+          <BusinessIntakeChat />
 
           {/* Animated stats */}
           <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm">
