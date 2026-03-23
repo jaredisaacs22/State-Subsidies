@@ -22,7 +22,7 @@ export function SearchBar({ value, onChange, placeholder, className }: SearchBar
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder ?? "Search incentives, agencies, programs…"}
-        className="input pl-10 pr-10 py-3 text-base shadow-sm"
+        className="input pl-10 pr-10 py-3 text-base shadow-sm text-slate-900 placeholder:text-slate-400"
       />
       {value && (
         <button
