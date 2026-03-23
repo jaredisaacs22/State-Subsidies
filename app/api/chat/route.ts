@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     const matchedIncentives: ReturnType<typeof parseIncentive>[] = [];
 
     const { text } = await generateText({
-      model: anthropic("claude-3-5-sonnet-20241022"),
+      model: anthropic("claude-sonnet-4-6"),
       system: SYSTEM,
       messages,
       stopWhen: stepCountIs(3),
