@@ -47,6 +47,7 @@ export interface IncentiveFilters {
   incentiveType?: IncentiveType;
   industryCategory?: string;
   status?: IncentiveStatus;
+  jurisdictionName?: string;
   sortBy?: "deadline" | "fundingAmount" | "createdAt";
   sortOrder?: "asc" | "desc";
   page?: number;

@@ -8,6 +8,17 @@ import {
   INDUSTRY_COLORS,
 } from "@/lib/types";
 import type { IncentiveFilters } from "@/lib/types";
+
+const US_STATES = [
+  "Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut",
+  "Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa",
+  "Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan",
+  "Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire",
+  "New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio",
+  "Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota",
+  "Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia",
+  "Wisconsin","Wyoming",
+];
 import { cn } from "@/lib/utils";
 
 interface FilterBarProps {
@@ -60,6 +71,14 @@ export function FilterBar({ filters, onChange, totalResults, className }: Filter
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
+        {/* State */}
+        <FilterSelect
+          label="State"
+          value={filters.jurisdictionName ?? ""}
+          onChange={(v) => onChange({ jurisdictionName: v || undefined })}
+          options={US_STATES.map((s) => ({ value: s, label: s }))}
+        />
+
         {/* Jurisdiction */}
         <FilterSelect
           label="Jurisdiction"
