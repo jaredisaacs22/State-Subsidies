@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Zap } from "lucide-react";
+import { LogoMark } from "@/components/Logo";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -18,11 +18,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <a href="/" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center">
-                <Zap size={16} className="text-white" fill="white" />
-              </div>
-              <span className="font-semibold text-slate-900 text-lg tracking-tight">StateSubsidies</span>
-              <span className="hidden sm:inline text-xs text-slate-400 font-normal ml-1">Business Incentives</span>
+              <LogoMark size={34} />
+              <span className="font-bold text-slate-900 text-lg tracking-tight">
+                State<span className="text-brand-600">Subsidies</span>
+              </span>
+              <span className="hidden sm:inline text-xs text-slate-400 font-normal">Business Incentives</span>
             </a>
 
             <nav className="flex items-center gap-1">
