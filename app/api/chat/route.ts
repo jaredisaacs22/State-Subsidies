@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
       tools: {
         search_incentives: tool({
           description: "Search the incentives database for matching programs.",
-          parameters: z.object({
+          inputSchema: z.object({
             jurisdictionName: z.string().optional().describe("US state name e.g. 'California', or 'United States' for federal"),
             industryCategory: z.string().optional().describe("Industry category"),
             incentiveType: z.enum(["GRANT","TAX_CREDIT","LOAN","VOUCHER","POINT_OF_SALE_REBATE","SUBSIDY"]).optional(),
