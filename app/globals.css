@@ -26,7 +26,7 @@
 
 @layer components {
   .card {
-    @apply bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5;
+    @apply bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5;
   }
 
   .card-category {

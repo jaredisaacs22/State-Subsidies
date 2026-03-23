@@ -84,17 +84,19 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="bg-gradient-to-br from-brand-700 via-brand-800 to-brand-950 text-white pt-16 pb-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-4 py-1.5 text-sm font-medium mb-6">
+      <section className="relative bg-gradient-to-br from-brand-700 via-brand-800 to-brand-950 text-white pt-14 pb-16 overflow-hidden">
+        {/* Subtle dot-grid pattern */}
+        <div className="absolute inset-0 opacity-[0.07]" style={{backgroundImage:"radial-gradient(circle,#fff 1px,transparent 1px)",backgroundSize:"28px 28px"}} />
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm font-medium mb-5">
             <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-            Live data from federal, state & agency programs
+            Live data · all 50 states · 144+ programs
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 text-balance">
-            Find the right government incentive for your business
+          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4 text-balance">
+            Find government incentives<br className="hidden sm:block" /> for your business
           </h1>
-          <p className="text-brand-200 text-lg mb-8 max-w-2xl mx-auto text-balance">
-            Search grants, tax credits, rebates, and loans across Federal, State, City, and Agency programs — all 50 states covered.
+          <p className="text-brand-200 text-lg mb-7 max-w-xl mx-auto text-balance">
+            Grants, tax credits, loans & rebates — Federal, State, City, and Agency programs in one place.
           </p>
 
           <SearchBar
@@ -106,36 +108,36 @@ export default function HomePage() {
 
           <BusinessIntakeChat />
 
-          {/* Animated stats */}
-          <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm">
-            <span className="glass-overlay px-4 py-2">
-              <strong className="text-white text-lg">{stats.total || "100+"}</strong>
-              <span className="text-brand-200 ml-1.5">Programs</span>
-            </span>
-            <span className="glass-overlay px-4 py-2">
-              <strong className="text-white text-lg">{stats.federal || "24+"}</strong>
-              <span className="text-brand-200 ml-1.5">Federal</span>
-            </span>
-            <span className="glass-overlay px-4 py-2">
-              <strong className="text-white text-lg">{stats.state || "40+"}</strong>
-              <span className="text-brand-200 ml-1.5">State</span>
-            </span>
-            <span className="glass-overlay px-4 py-2">
-              <strong className="text-white text-lg">$100B+</strong>
-              <span className="text-brand-200 ml-1.5">Est. Available</span>
-            </span>
+          {/* Stats */}
+          <div className="mt-7 flex flex-wrap justify-center gap-3 text-sm">
+            {[
+              { value: stats.total || "144+", label: "Programs" },
+              { value: stats.federal || "34+", label: "Federal" },
+              { value: stats.state || "100+", label: "State & Local" },
+              { value: "$100B+", label: "Est. Available" },
+            ].map(({ value, label }) => (
+              <span key={label} className="glass-overlay px-4 py-2 flex items-baseline gap-1.5">
+                <strong className="text-white text-lg font-bold">{value}</strong>
+                <span className="text-brand-300 text-xs">{label}</span>
+              </span>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── Filter & Results ─────────────────────────────────────────────── */}
+      {/* ── Sticky Filter Bar ────────────────────────────────────────────── */}
+      <div className="sticky top-16 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          <FilterBar
+            filters={filters}
+            onChange={handleFilterChange}
+            totalResults={results?.total ?? 0}
+          />
+        </div>
+      </div>
+
+      {/* ── Results ──────────────────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <FilterBar
-          filters={filters}
-          onChange={handleFilterChange}
-          totalResults={results?.total ?? 0}
-          className="mb-6"
-        />
 
         <ResultsGrid
           incentives={results?.data ?? []}
@@ -145,7 +147,7 @@ export default function HomePage() {
 
         {/* Pagination */}
         {results && results.totalPages > 1 && (
-          <div className="flex justify-center gap-2 mt-10">
+          <div className="flex justify-center items-center gap-3 mt-10">
             <button
               disabled={filters.page === 1}
               onClick={() => {
@@ -153,12 +155,12 @@ export default function HomePage() {
                 setFilters(newFilters);
                 fetchIncentives(newFilters);
               }}
-              className="btn-ghost disabled:opacity-40"
+              className="btn-ghost border border-slate-200 disabled:opacity-40 text-sm px-4"
             >
               ← Previous
             </button>
-            <span className="flex items-center text-sm text-slate-600 px-4">
-              Page {filters.page} of {results.totalPages}
+            <span className="text-sm text-slate-500 tabular-nums">
+              {filters.page} / {results.totalPages}
             </span>
             <button
               disabled={filters.page === results.totalPages}
@@ -167,7 +169,7 @@ export default function HomePage() {
                 setFilters(newFilters);
                 fetchIncentives(newFilters);
               }}
-              className="btn-ghost disabled:opacity-40"
+              className="btn-ghost border border-slate-200 disabled:opacity-40 text-sm px-4"
             >
               Next →
             </button>
