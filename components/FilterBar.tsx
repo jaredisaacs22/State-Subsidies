@@ -5,6 +5,7 @@ import {
   JURISDICTION_LABELS,
   INCENTIVE_TYPE_LABELS,
   INDUSTRY_CATEGORIES,
+  INDUSTRY_COLORS,
 } from "@/lib/types";
 import type { IncentiveFilters } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -28,6 +29,36 @@ export function FilterBar({ filters, onChange, totalResults, className }: Filter
 
   return (
     <div className={cn("space-y-3", className)}>
+      {/* Industry chip row */}
+      <div className="overflow-x-auto pb-1">
+        <div className="flex gap-2 w-max">
+          <button
+            onClick={() => onChange({ industryCategory: undefined })}
+            className={cn(
+              "badge whitespace-nowrap px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer",
+              !filters.industryCategory ? "bg-brand-600 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+            )}
+          >
+            All Industries
+          </button>
+          {INDUSTRY_CATEGORIES.map((cat) => {
+            const active = filters.industryCategory === cat;
+            return (
+              <button
+                key={cat}
+                onClick={() => onChange({ industryCategory: active ? undefined : cat })}
+                className={cn(
+                  "badge whitespace-nowrap px-3 py-1.5 text-xs font-medium transition-all cursor-pointer",
+                  active ? "ring-2 ring-brand-500 ring-offset-1 " + (INDUSTRY_COLORS[cat] ?? "bg-slate-200 text-slate-700") : (INDUSTRY_COLORS[cat] ?? "bg-slate-100 text-slate-600") + " hover:opacity-80"
+                )}
+              >
+                {cat}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <div className="flex flex-wrap items-center gap-2">
         {/* Jurisdiction */}
         <FilterSelect
@@ -35,14 +66,6 @@ export function FilterBar({ filters, onChange, totalResults, className }: Filter
           value={filters.jurisdictionLevel ?? ""}
           onChange={(v) => onChange({ jurisdictionLevel: v as IncentiveFilters["jurisdictionLevel"] || undefined })}
           options={Object.entries(JURISDICTION_LABELS).map(([k, v]) => ({ value: k, label: v }))}
-        />
-
-        {/* Industry Category */}
-        <FilterSelect
-          label="Industry"
-          value={filters.industryCategory ?? ""}
-          onChange={(v) => onChange({ industryCategory: v || undefined })}
-          options={INDUSTRY_CATEGORIES.map((cat) => ({ value: cat, label: cat }))}
         />
 
         {/* Incentive Type */}

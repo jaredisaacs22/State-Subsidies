@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
+import { Zap } from "lucide-react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SubsidyFinder — Business Incentives & Government Grants",
+  metadataBase: new URL("https://statesubsidies.com"),
+  title: "StateSubsidies — Business Incentives & Government Grants",
   description:
-    "Discover Federal, State, City, and Agency grants, tax credits, rebates, and incentives for your business. " +
-    "Filter by industry, jurisdiction, and incentive type.",
-  keywords: ["government grants", "business subsidies", "tax credits", "rebates", "CARB", "CalTrans", "WAZIP"],
+    "Discover 100+ Federal, State, City, and Agency grants, tax credits, rebates, and incentives for your business. " +
+    "Filter by industry, jurisdiction, and incentive type across all 50 states.",
+  keywords: ["government grants", "business subsidies", "tax credits", "rebates", "state incentives", "IRA", "clean energy"],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -17,14 +19,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <a href="/" className="flex items-center gap-2.5">
               <div className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">S</span>
+                <Zap size={16} className="text-white" fill="white" />
               </div>
-              <span className="font-semibold text-slate-900 text-lg tracking-tight">SubsidyFinder</span>
+              <span className="font-semibold text-slate-900 text-lg tracking-tight">StateSubsidies</span>
               <span className="hidden sm:inline text-xs text-slate-400 font-normal ml-1">Business Incentives</span>
             </a>
 
             <nav className="flex items-center gap-1">
               <a href="/" className="btn-ghost text-sm">Browse</a>
+              <a href="/map" className="btn-ghost text-sm hidden sm:flex">Map</a>
               <a
                 href="https://github.com/jaredisaacs22/State-Subsidies"
                 target="_blank"
@@ -40,17 +43,31 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main>{children}</main>
 
         <footer className="mt-24 border-t border-slate-200 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
               <div>
-                <p className="font-semibold text-slate-800">SubsidyFinder</p>
-                <p className="text-sm text-slate-500 mt-1">
-                  Helping businesses discover government incentives. Data sourced from official .gov and agency sites.
-                </p>
+                <p className="font-semibold text-slate-800 mb-2">StateSubsidies</p>
+                <p className="text-sm text-slate-500">Helping businesses discover government incentives across all 50 states. Data sourced from official .gov and agency sites.</p>
               </div>
-              <p className="text-xs text-slate-400">
-                Not financial or legal advice. Verify eligibility with the managing agency.
-              </p>
+              <div>
+                <p className="font-semibold text-slate-700 text-sm mb-3">Top Categories</p>
+                <ul className="space-y-1.5 text-sm text-slate-500">
+                  {["EV Charging","Clean Technology","Manufacturing","Agriculture","Real Estate","Healthcare","Energy Storage","Construction"].map((c) => (
+                    <li key={c}><a href={`/?industry=${encodeURIComponent(c)}`} className="hover:text-brand-600 transition-colors">{c}</a></li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <p className="font-semibold text-slate-700 text-sm mb-3">Resources</p>
+                <ul className="space-y-1.5 text-sm text-slate-500">
+                  <li><a href="/" className="hover:text-brand-600 transition-colors">Browse All Programs</a></li>
+                  <li><a href="/map" className="hover:text-brand-600 transition-colors">State Map</a></li>
+                  <li><a href="https://github.com/jaredisaacs22/State-Subsidies" target="_blank" rel="noopener noreferrer" className="hover:text-brand-600 transition-colors">GitHub</a></li>
+                </ul>
+              </div>
+            </div>
+            <div className="border-t border-slate-100 pt-6 text-xs text-slate-400">
+              Not financial or legal advice. Verify eligibility directly with the managing agency.
             </div>
           </div>
         </footer>

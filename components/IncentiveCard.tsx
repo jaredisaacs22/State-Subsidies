@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ExternalLink, Calendar, DollarSign, CheckCircle2, Building2 } from "lucide-react";
 import { IncentiveTypeBadge, JurisdictionBadge, StatusBadge } from "./Badge";
 import { formatCurrency, formatDeadline, cn } from "@/lib/utils";
+import { INCENTIVE_TYPE_BORDER, INDUSTRY_COLORS } from "@/lib/types";
 import type { Incentive } from "@/lib/types";
 
 interface IncentiveCardProps {
@@ -19,7 +20,8 @@ export function IncentiveCard({ incentive, className }: IncentiveCardProps) {
   return (
     <article
       className={cn(
-        "card flex flex-col p-5 animate-fade-in",
+        "card flex flex-col p-5 animate-fade-in border-l-4",
+        INCENTIVE_TYPE_BORDER[incentive.incentiveType],
         incentive.status === "CLOSED" && "opacity-60",
         className
       )}
@@ -94,7 +96,7 @@ export function IncentiveCard({ incentive, className }: IncentiveCardProps) {
         {incentive.industryCategories.map((cat) => (
           <span
             key={cat}
-            className="badge bg-slate-100 text-slate-600 text-xs font-normal"
+            className={cn("badge text-xs font-normal", INDUSTRY_COLORS[cat] ?? "bg-slate-100 text-slate-600")}
           >
             {cat}
           </span>
@@ -103,7 +105,7 @@ export function IncentiveCard({ incentive, className }: IncentiveCardProps) {
 
       {/* ── Footer: Amount & Deadline ───────────────────────────────────── */}
       <div className="flex items-center justify-between pt-3 border-t border-slate-100 mt-auto">
-        <div className="flex items-center gap-1 text-sm font-semibold text-slate-800">
+        <div className="flex items-center gap-1 text-sm font-bold text-emerald-700">
           <DollarSign size={14} className="text-emerald-600" />
           {formatCurrency(incentive.fundingAmount)}
         </div>

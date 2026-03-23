@@ -26,7 +26,15 @@
 
 @layer components {
   .card {
-    @apply bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow duration-200;
+    @apply bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5;
+  }
+
+  .card-category {
+    @apply bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-200 hover:-translate-y-1 cursor-pointer;
+  }
+
+  .glass-overlay {
+    @apply bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl;
   }
 
   .badge {
