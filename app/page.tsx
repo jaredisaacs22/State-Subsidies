@@ -90,7 +90,7 @@ export default function HomePage() {
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm font-medium mb-5">
             <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-            Live data · all 50 states · 144+ programs
+            Live data · all 50 states
           </div>
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4 text-balance">
             Find government incentives<br className="hidden sm:block" /> for your business
@@ -145,9 +145,32 @@ export default function HomePage() {
           error={error}
         />
 
-        {/* Pagination */}
-        {results && results.totalPages > 1 && (
-          <div className="flex justify-center items-center gap-3 mt-10">
+        {/* Per-page toggle + Pagination */}
+        {results && (
+          <div className="flex flex-col items-center gap-4 mt-10">
+            <div className="flex items-center gap-2 text-sm text-slate-500">
+              <span>Show per page:</span>
+              {[12, 24, 48].map((n) => (
+                <button
+                  key={n}
+                  onClick={() => {
+                    const newFilters = { ...filters, pageSize: n, page: 1 };
+                    setFilters(newFilters);
+                    fetchIncentives(newFilters);
+                  }}
+                  className={`px-3 py-1 rounded-md border text-sm transition-colors ${
+                    (filters.pageSize ?? 12) === n
+                      ? "bg-brand-600 text-white border-brand-600"
+                      : "border-slate-200 hover:border-brand-400 hover:text-brand-600"
+                  }`}
+                >
+                  {n}
+                </button>
+              ))}
+            </div>
+
+        {results.totalPages > 1 && (
+          <div className="flex justify-center items-center gap-3">
             <button
               disabled={filters.page === 1}
               onClick={() => {
@@ -173,6 +196,8 @@ export default function HomePage() {
             >
               Next →
             </button>
+          </div>
+        )}
           </div>
         )}
       </section>
