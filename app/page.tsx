@@ -120,12 +120,7 @@ export default function HomePage() {
 
           <BusinessIntakeChat />
 
-          {/* Stat line */}
-          <p className="mt-6 mb-10 text-white/40 text-sm tracking-wide">
-            <span className="text-white/70 font-semibold">{stats.total || "432"}</span> active programs
-            {" · "}Federal · State · City · Agency
-            {" · "}All 50 states
-          </p>
+          <div className="mb-10" />
         </div>
       </section>
 
