@@ -2494,7 +2494,7 @@ const incentives = [
   },
   {
     title: "South Carolina Job Tax Credit",
-    slug: "south-carolina-job-tax-credit",
+    slug: "south-carolina-job-tax-credit-2",
     jurisdictionLevel: "STATE", jurisdictionName: "South Carolina",
     managingAgency: "SC Department of Commerce", agencyAcronym: "SCDOC",
     shortSummary: "Annual income tax credits for SC businesses creating new full-time jobs, with credit amounts ranging from $1,500 to $25,000 per job based on county designation and industry type.",
@@ -2506,7 +2506,7 @@ const incentives = [
   },
   {
     title: "Tennessee FastTrack Job Training Assistance",
-    slug: "tennessee-fasttrack-job-training",
+    slug: "tennessee-fasttrack-job-training-2",
     jurisdictionLevel: "STATE", jurisdictionName: "Tennessee",
     managingAgency: "Tennessee Department of Economic and Community Development", agencyAcronym: "ECD",
     shortSummary: "Grants for employee recruitment and training at qualified Tennessee businesses creating new jobs, covering costs of pre-employment screening, hiring, and customized training for new hires.",
@@ -2621,7 +2621,7 @@ const incentives = [
   },
   {
     title: "USDA Value-Added Producer Grant",
-    slug: "usda-value-added-producer-grant",
+    slug: "usda-value-added-producer-grant-2",
     jurisdictionLevel: "FEDERAL", jurisdictionName: "United States",
     managingAgency: "USDA Rural Development", agencyAcronym: "USDA-RD",
     shortSummary: "Competitive grants for agricultural producers to develop value-added products and create marketing opportunities, helping farmers capture more of the food dollar by processing raw commodities into finished goods.",
@@ -2645,7 +2645,7 @@ const incentives = [
   },
   {
     title: "USDA ReConnect Program — Rural Broadband",
-    slug: "usda-reconnect-rural-broadband",
+    slug: "usda-reconnect-rural-broadband-2",
     jurisdictionLevel: "FEDERAL", jurisdictionName: "United States",
     managingAgency: "USDA Rural Development", agencyAcronym: "USDA-RD",
     shortSummary: "Loans, grants, and loan-grant combinations for broadband infrastructure in rural areas lacking sufficient access to at least 100 Mbps symmetrical speeds, targeting unserved and underserved communities.",
@@ -2683,7 +2683,7 @@ const incentives = [
   },
   {
     title: "SBA Small Business Innovation Research (SBIR) Program",
-    slug: "sba-sbir-program",
+    slug: "sba-sbir-program-2",
     jurisdictionLevel: "FEDERAL", jurisdictionName: "United States",
     managingAgency: "Small Business Administration", agencyAcronym: "SBA",
     shortSummary: "Competitive grants and contracts for small businesses to conduct R&D with commercialization potential, funded across 11 federal agencies with Phase I awards up to $275,000 and Phase II up to $1.83M.",
@@ -3891,7 +3891,7 @@ const incentives = [
   // ── DELAWARE ─────────────────────────────────────────────────────────────────
   {
     title: "Delaware Strategic Fund",
-    slug: "delaware-strategic-fund",
+    slug: "delaware-strategic-fund-2",
     jurisdictionLevel: "STATE", jurisdictionName: "Delaware",
     managingAgency: "Delaware Prosperity Partnership", agencyAcronym: "DPP",
     shortSummary: "Discretionary grants and loans for businesses creating significant employment in Delaware. Awards are performance-based and tied to job creation, capital investment, and payroll commitments. Targeted at manufacturing, corporate headquarters, and high-tech industries.",
@@ -4005,7 +4005,7 @@ const incentives = [
   // ── KENTUCKY ────────────────────────────────────────────────────────────────
   {
     title: "Kentucky Business Investment Program",
-    slug: "kentucky-business-investment-program",
+    slug: "kentucky-business-investment-program-2",
     jurisdictionLevel: "STATE", jurisdictionName: "Kentucky",
     managingAgency: "Kentucky Economic Development Finance Authority", agencyAcronym: "KEDFA",
     shortSummary: "Tax incentive program for Kentucky businesses creating at least 10 new jobs (5 in enhanced incentive counties). Companies receive income tax credits and wage assessments (up to 5% of wages) for up to 15 years, plus sales tax exemptions on qualifying construction.",
@@ -4105,7 +4105,7 @@ const incentives = [
   },
   {
     title: "Maryland Clean Energy Grant",
-    slug: "maryland-clean-energy-grant",
+    slug: "maryland-clean-energy-grant-2",
     jurisdictionLevel: "STATE", jurisdictionName: "Maryland",
     managingAgency: "Maryland Energy Administration", agencyAcronym: "MEA",
     shortSummary: "Grants for Maryland businesses installing solar, geothermal, or energy storage systems. Commercial solar grants up to $75,000 and energy storage grants up to $150,000 help offset capital costs and accelerate Maryland's transition to clean energy.",
@@ -4169,7 +4169,7 @@ const incentives = [
   },
   {
     title: "Michigan Business Development Program",
-    slug: "michigan-business-development-program",
+    slug: "michigan-business-development-program-2",
     jurisdictionLevel: "STATE", jurisdictionName: "Michigan",
     managingAgency: "Michigan Economic Development Corporation", agencyAcronym: "MEDC",
     shortSummary: "Performance-based grants and loans for businesses creating jobs or making significant capital investment in Michigan. Awards of $1,000–$20,000 per job tied to project milestones, targeting companies that might otherwise locate in another state.",
@@ -4195,7 +4195,7 @@ const incentives = [
   // ── MINNESOTA ───────────────────────────────────────────────────────────────
   {
     title: "Minnesota Job Creation Fund",
-    slug: "minnesota-job-creation-fund",
+    slug: "minnesota-job-creation-fund-2",
     jurisdictionLevel: "STATE", jurisdictionName: "Minnesota",
     managingAgency: "Minnesota Department of Employment and Economic Development", agencyAcronym: "DEED",
     shortSummary: "Performance-based grants for businesses creating at least 11 full-time jobs (5 in Greater Minnesota) paying at least $14.45/hour with benefits. Award up to $1 million based on job creation and capital investment commitments, disbursed after milestones are met.",
@@ -4385,7 +4385,7 @@ const incentives = [
   // ── OHIO ────────────────────────────────────────────────────────────────────
   {
     title: "Ohio Job Creation Tax Credit",
-    slug: "ohio-job-creation-tax-credit",
+    slug: "ohio-job-creation-tax-credit-2",
     jurisdictionLevel: "STATE", jurisdictionName: "Ohio",
     managingAgency: "Ohio Tax Credit Authority / Ohio Department of Development", agencyAcronym: "ODOD",
     shortSummary: "Refundable income tax credit for Ohio businesses creating at least 10 new jobs (25 for non-manufacturing) with an average hourly wage of at least 150% of the federal minimum wage. Credit is negotiated based on payroll, investment, and project impact.",
@@ -4423,7 +4423,7 @@ const incentives = [
   // ── OREGON ──────────────────────────────────────────────────────────────────
   {
     title: "Oregon Business Expansion Program (OBEP)",
-    slug: "oregon-business-expansion-program",
+    slug: "oregon-business-expansion-program-2",
     jurisdictionLevel: "STATE", jurisdictionName: "Oregon",
     managingAgency: "Business Oregon", agencyAcronym: "Business Oregon",
     shortSummary: "Cash rebates for Oregon companies expanding their workforce in rural or economically distressed communities. Rebates of $2,000–$3,500 per new job created, paid after employment milestones are verified, helping offset costs of growth in smaller Oregon communities.",
@@ -4599,7 +4599,7 @@ const incentives = [
   },
   {
     title: "Tennessee FastTrack Job Training Assistance Program",
-    slug: "tennessee-fasttrack-job-training",
+    slug: "tennessee-fasttrack-job-training-3",
     jurisdictionLevel: "STATE", jurisdictionName: "Tennessee",
     managingAgency: "Tennessee Department of Economic and Community Development", agencyAcronym: "TNECD",
     shortSummary: "Customized training grants for new or expanding Tennessee businesses. The state funds job-specific training through the Tennessee College of Applied Technology system, covering instructor salaries, materials, and equipment for training programs up to 2 years.",
@@ -4727,7 +4727,7 @@ const incentives = [
   // ── ILLINOIS (3 → 6) ────────────────────────────────────────────────────────
   {
     title: "Illinois Economic Development for a Growing Economy (EDGE) Credit",
-    slug: "illinois-edge-tax-credit",
+    slug: "illinois-edge-tax-credit-2",
     jurisdictionLevel: "STATE", jurisdictionName: "Illinois",
     managingAgency: "Illinois Department of Commerce and Economic Opportunity", agencyAcronym: "DCEO",
     shortSummary: "Annually negotiated income tax credits for Illinois businesses creating or retaining jobs. Credit equals 100% of state income taxes paid by qualifying new employees, reducing the net cost of expanding in Illinois. Available to businesses creating 25+ jobs or retaining 90%+ of workforce.",
@@ -4789,7 +4789,7 @@ const incentives = [
   },
   {
     title: "Louisiana Small Business Loan Program",
-    slug: "louisiana-small-business-loan-program",
+    slug: "louisiana-small-business-loan-program-2",
     jurisdictionLevel: "STATE", jurisdictionName: "Louisiana",
     managingAgency: "Louisiana Economic Development", agencyAcronym: "LED",
     shortSummary: "Low-interest small business loans of $5,000–$1.5 million through LED's Small Business Assistance Program. Supports Louisiana companies creating jobs with working capital, equipment, and business acquisition loans at rates below conventional lenders.",
@@ -5131,7 +5131,7 @@ const incentives = [
   },
   {
     title: "Iowa Renewable Energy Tax Credit",
-    slug: "iowa-renewable-energy-tax-credit",
+    slug: "iowa-renewable-energy-tax-credit-2",
     jurisdictionLevel: "STATE", jurisdictionName: "Iowa",
     managingAgency: "Iowa Department of Revenue", agencyAcronym: "IDOR",
     shortSummary: "State income tax credit for Iowa businesses and individuals installing renewable energy systems including wind, solar, biomass, and biogas. Credit equals 30% of eligible costs for small systems and a production-based credit for larger commercial wind and solar installations.",
@@ -5271,7 +5271,7 @@ const incentives = [
   },
   {
     title: "Nebraska Customized Job Training (CJT) Program",
-    slug: "nebraska-customized-job-training",
+    slug: "nebraska-customized-job-training-2",
     jurisdictionLevel: "STATE", jurisdictionName: "Nebraska",
     managingAgency: "Nebraska Department of Economic Development", agencyAcronym: "NeDED",
     shortSummary: "State-funded training grants for Nebraska companies creating new jobs or adding advanced skills to existing workers. Covers up to 50% of eligible training costs for new hires and existing workers in manufacturing, IT, healthcare, and other priority sectors.",
@@ -5321,7 +5321,7 @@ const incentives = [
   },
   {
     title: "New Hampshire Job Training Fund",
-    slug: "new-hampshire-job-training-fund",
+    slug: "new-hampshire-job-training-fund-2",
     jurisdictionLevel: "STATE", jurisdictionName: "New Hampshire",
     managingAgency: "New Hampshire Employment Security / Community College System", agencyAcronym: "NH DES",
     shortSummary: "Training grants for NH businesses to upgrade the skills of current employees. The NH Job Training Fund reimburses up to 50% of direct training costs for job-specific skills training, helping employers retain workers and remain competitive without bearing full training costs.",
@@ -5449,7 +5449,7 @@ const incentives = [
   // ── VERMONT (4 → 7) ─────────────────────────────────────────────────────────
   {
     title: "Vermont Employment Growth Incentive (VEGI)",
-    slug: "vermont-employment-growth-incentive",
+    slug: "vermont-employment-growth-incentive-2",
     jurisdictionLevel: "STATE", jurisdictionName: "Vermont",
     managingAgency: "Vermont Economic Progress Council", agencyAcronym: "VEPC",
     shortSummary: "Cash incentive payments for Vermont businesses creating new full-time jobs above a performance benchmark. VEGI is a post-performance incentive — businesses receive annual payments for 5 years after verifying job creation, wages, and capital investment milestones.",
@@ -5473,7 +5473,7 @@ const incentives = [
   },
   {
     title: "Vermont Clean Energy Development Fund",
-    slug: "vermont-clean-energy-development-fund",
+    slug: "vermont-clean-energy-development-fund-2",
     jurisdictionLevel: "STATE", jurisdictionName: "Vermont",
     managingAgency: "Vermont Department of Public Service", agencyAcronym: "VT DPS",
     shortSummary: "Grants for Vermont businesses and municipalities deploying innovative clean energy technologies. CEDF funds solar, wind, biomass, energy storage, and emerging technologies that support Vermont's goal of 90% renewable energy by 2050.",
