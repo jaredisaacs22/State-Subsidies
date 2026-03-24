@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
     const matchedIncentives: ReturnType<typeof parseIncentive>[] = [];
 
     const result = streamText({
-      model: anthropic("claude-sonnet-4.6"),
+      model: anthropic("claude-sonnet-4-6"),
       system: SYSTEM,
       messages,
       stopWhen: stepCountIs(4),
