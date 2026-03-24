@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { streamText, tool, stepCountIs } from "ai";
+import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { parseIncentive } from "@/lib/utils";
@@ -70,7 +71,7 @@ export async function POST(req: NextRequest) {
     const matchedIncentives: ReturnType<typeof parseIncentive>[] = [];
 
     const result = streamText({
-      model: "anthropic/claude-sonnet-4.6",
+      model: anthropic("claude-sonnet-4.6"),
       system: SYSTEM,
       messages,
       stopWhen: stepCountIs(4),
