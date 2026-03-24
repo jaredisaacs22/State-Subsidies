@@ -145,11 +145,12 @@ export default function HomePage() {
           error={error}
         />
 
-        {/* Per-page toggle + Pagination */}
+        {/* Pagination row */}
         {results && (
-          <div className="flex flex-col items-center gap-4 mt-10">
+          <div className="flex items-center justify-between mt-10">
+            {/* Per-page toggle — bottom left */}
             <div className="flex items-center gap-2 text-sm text-slate-500">
-              <span>Show per page:</span>
+              <span>Per page:</span>
               {[12, 24, 48].map((n) => (
                 <button
                   key={n}
@@ -169,35 +170,36 @@ export default function HomePage() {
               ))}
             </div>
 
-        {results.totalPages > 1 && (
-          <div className="flex justify-center items-center gap-3">
-            <button
-              disabled={filters.page === 1}
-              onClick={() => {
-                const newFilters = { ...filters, page: (filters.page ?? 1) - 1 };
-                setFilters(newFilters);
-                fetchIncentives(newFilters);
-              }}
-              className="btn-ghost border border-slate-200 disabled:opacity-40 text-sm px-4"
-            >
-              ← Previous
-            </button>
-            <span className="text-sm text-slate-500 tabular-nums">
-              {filters.page} / {results.totalPages}
-            </span>
-            <button
-              disabled={filters.page === results.totalPages}
-              onClick={() => {
-                const newFilters = { ...filters, page: (filters.page ?? 1) + 1 };
-                setFilters(newFilters);
-                fetchIncentives(newFilters);
-              }}
-              className="btn-ghost border border-slate-200 disabled:opacity-40 text-sm px-4"
-            >
-              Next →
-            </button>
-          </div>
-        )}
+            {/* Prev / Next — bottom right */}
+            {results.totalPages > 1 ? (
+              <div className="flex items-center gap-3">
+                <button
+                  disabled={filters.page === 1}
+                  onClick={() => {
+                    const newFilters = { ...filters, page: (filters.page ?? 1) - 1 };
+                    setFilters(newFilters);
+                    fetchIncentives(newFilters);
+                  }}
+                  className="btn-ghost border border-slate-200 disabled:opacity-40 text-sm px-4"
+                >
+                  ← Previous
+                </button>
+                <span className="text-sm text-slate-500 tabular-nums">
+                  {filters.page} / {results.totalPages}
+                </span>
+                <button
+                  disabled={filters.page === results.totalPages}
+                  onClick={() => {
+                    const newFilters = { ...filters, page: (filters.page ?? 1) + 1 };
+                    setFilters(newFilters);
+                    fetchIncentives(newFilters);
+                  }}
+                  className="btn-ghost border border-slate-200 disabled:opacity-40 text-sm px-4"
+                >
+                  Next →
+                </button>
+              </div>
+            ) : <div />}
           </div>
         )}
       </section>
