@@ -5,6 +5,7 @@ import { SearchBar } from "@/components/SearchBar";
 import { FilterBar } from "@/components/FilterBar";
 import { ResultsGrid } from "@/components/ResultsGrid";
 import { BusinessIntakeChat } from "@/components/BusinessIntakeChat";
+import { GoalBrowse } from "@/components/GoalBrowse";
 import type { Incentive, IncentiveFilters, PaginatedResponse } from "@/lib/types";
 
 
@@ -137,6 +138,11 @@ export default function HomePage() {
 
       {/* ── Results ──────────────────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        {/* Goal browse — shown when no filters active */}
+        {!filters.industryCategory && !filters.incentiveType && !filters.jurisdictionLevel && !filters.jurisdictionName && !filters.search && (
+          <GoalBrowse onSelect={handleFilterChange} />
+        )}
 
         <ResultsGrid
           incentives={results?.data ?? []}

@@ -240,13 +240,16 @@ export function BusinessIntakeChat() {
   return (
     <>
       {/* Inline trigger button */}
-      <button
-        onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-semibold px-6 py-3 rounded-xl transition-all shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.03] active:scale-100 mt-4"
-      >
-        <Sparkles size={16} />
-        Find My Incentives with AI
-      </button>
+      <div className="mt-5 flex flex-col items-center gap-1.5">
+        <button
+          onClick={() => setOpen(true)}
+          className="inline-flex items-center gap-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-semibold px-6 py-3 rounded-xl transition-all shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.03] active:scale-100"
+        >
+          <Sparkles size={16} />
+          Not sure where to start? Let AI find your programs
+        </button>
+        <p className="text-white/40 text-xs">Describe your business — get matched in seconds</p>
+      </div>
 
       {/* Modal */}
       {open && (
