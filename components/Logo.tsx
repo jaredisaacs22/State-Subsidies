@@ -13,57 +13,32 @@ export function LogoMark({ size = 32, className }: LogoProps) {
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      {/* Sky gradient background */}
       <defs>
-        <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#0053a2" />
-          <stop offset="100%" stopColor="#0087eb" />
+        <linearGradient id="ss-bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#0a3d6b" />
+          <stop offset="100%" stopColor="#021624" />
         </linearGradient>
-        <linearGradient id="peakLeft" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#e2f0ff" />
-          <stop offset="100%" stopColor="#a8d4f7" />
-        </linearGradient>
-        <linearGradient id="peakRight" x1="1" y1="0" x2="0" y2="1">
+        <linearGradient id="ss-peak" x1="0.5" y1="0" x2="0.5" y2="1">
           <stop offset="0%" stopColor="#ffffff" />
-          <stop offset="100%" stopColor="#c8e6ff" />
-        </linearGradient>
-        <linearGradient id="forest" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#22c55e" />
-          <stop offset="100%" stopColor="#15803d" />
+          <stop offset="50%" stopColor="#b9dcfe" />
+          <stop offset="100%" stopColor="#36a3fa" stopOpacity="0.6" />
         </linearGradient>
       </defs>
 
-      {/* Background rounded square */}
-      <rect width="32" height="32" rx="8" fill="url(#skyGrad)" />
+      {/* Background */}
+      <rect width="32" height="32" rx="8" fill="url(#ss-bg)" />
 
-      {/* Sun / glow */}
-      <circle cx="16" cy="10" r="3.5" fill="#fbbf24" opacity="0.9" />
-      <circle cx="16" cy="10" r="5.5" fill="#fde68a" opacity="0.25" />
+      {/* Back mountain — subtle depth */}
+      <path d="M1,27 L11,15 L20,27 Z" fill="#1d6fba" fillOpacity="0.35" />
 
-      {/* Back mountain (left, shorter) */}
-      <polygon points="3,26 12,13 19,26" fill="#1d6fba" opacity="0.6" />
+      {/* Main peak */}
+      <path d="M8,27 L16,7 L24,27 Z" fill="url(#ss-peak)" />
 
-      {/* Main peak (center, tallest) */}
-      <polygon points="9,26 16,9 23,26" fill="url(#peakLeft)" />
+      {/* Snow cap */}
+      <path d="M14.4,11.8 L16,7 L17.6,11.8 Z" fill="white" fillOpacity="0.95" />
 
-      {/* Snow cap on main peak */}
-      <polygon points="14,13 16,9 18,13" fill="white" opacity="0.9" />
-
-      {/* Right mountain */}
-      <polygon points="16,26 24,14 32,26" fill="url(#peakRight)" opacity="0.85" />
-
-      {/* Forest strip at base */}
-      <rect x="0" y="24" width="32" height="8" rx="0" fill="url(#forest)" opacity="0.0" />
-
-      {/* Tree silhouettes */}
-      <polygon points="2,26 4.5,20 7,26" fill="#166534" opacity="0.7" />
-      <polygon points="5,26 7,21.5 9,26" fill="#15803d" opacity="0.6" />
-      <polygon points="23,26 25.5,21 28,26" fill="#166534" opacity="0.6" />
-      <polygon points="26,26 28,22 30,26" fill="#15803d" opacity="0.5" />
-
-      {/* Ground line */}
-      <rect x="0" y="26" width="32" height="6" rx="0" fill="#14532d" opacity="0.5" />
-      <rect x="0" y="28" width="32" height="4" rx="0" fill="#052e16" opacity="0.3" />
+      {/* Horizon line */}
+      <line x1="2" y1="27" x2="30" y2="27" stroke="white" strokeOpacity="0.1" strokeWidth="0.75" />
     </svg>
   );
 }
