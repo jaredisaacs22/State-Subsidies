@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { ExternalLink, Calendar, MapPin, ArrowRight } from "lucide-react";
+import { ExternalLink, Calendar, MapPin, ArrowRight, Bookmark } from "lucide-react";
 import { IncentiveTypeBadge, JurisdictionBadge, StatusBadge } from "./Badge";
 import { formatCurrency, formatDeadline, cn } from "@/lib/utils";
 import { INCENTIVE_TYPE_BORDER, INDUSTRY_COLORS } from "@/lib/types";
+import { useBookmarks } from "@/lib/useBookmarks";
 import type { Incentive } from "@/lib/types";
 
 interface IncentiveCardProps {
@@ -13,6 +14,8 @@ interface IncentiveCardProps {
 }
 
 export function IncentiveCard({ incentive, className }: IncentiveCardProps) {
+  const { isBookmarked, toggle } = useBookmarks();
+  const bookmarked = isBookmarked(incentive.slug);
   const isClosingSoon =
     incentive.deadline !== null &&
     new Date(incentive.deadline).getTime() - Date.now() < 30 * 24 * 60 * 60 * 1000;
@@ -102,12 +105,26 @@ export function IncentiveCard({ incentive, className }: IncentiveCardProps) {
             </span>
           )}
         </div>
-        <Link
-          href={`/incentives/${incentive.slug}`}
-          className="flex items-center gap-1 text-xs text-brand-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity"
-        >
-          Details <ArrowRight size={12} />
-        </Link>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(incentive.slug); }}
+            className={cn(
+              "p-1.5 rounded-md transition-colors",
+              bookmarked
+                ? "text-brand-600 bg-brand-50"
+                : "text-slate-300 hover:text-brand-500 hover:bg-brand-50"
+            )}
+            title={bookmarked ? "Remove bookmark" : "Save program"}
+          >
+            <Bookmark size={13} className={bookmarked ? "fill-current" : ""} />
+          </button>
+          <Link
+            href={`/incentives/${incentive.slug}`}
+            className="flex items-center gap-1 text-xs text-brand-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity"
+          >
+            Details <ArrowRight size={12} />
+          </Link>
+        </div>
       </div>
     </article>
   );

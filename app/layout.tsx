@@ -28,14 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <nav className="flex items-center gap-1">
               <a href="/" className="btn-ghost text-sm">Browse</a>
               <a href="/map" className="btn-ghost text-sm hidden sm:flex">Map</a>
-              <a
-                href="https://github.com/jaredisaacs22/State-Subsidies"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-ghost text-sm hidden sm:flex"
-              >
-                GitHub
-              </a>
+              <a href="/saved" className="btn-ghost text-sm hidden sm:flex">Saved</a>
             </nav>
           </div>
         </header>
@@ -62,7 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <ul className="space-y-1.5 text-sm text-slate-500">
                   <li><a href="/" className="hover:text-brand-600 transition-colors">Browse All Programs</a></li>
                   <li><a href="/map" className="hover:text-brand-600 transition-colors">State Map</a></li>
-                  <li><a href="https://github.com/jaredisaacs22/State-Subsidies" target="_blank" rel="noopener noreferrer" className="hover:text-brand-600 transition-colors">GitHub</a></li>
+                  <li><a href="/saved" className="hover:text-brand-600 transition-colors">Saved Programs</a></li>
                 </ul>
               </div>
             </div>

@@ -2,13 +2,14 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ExternalLink, ArrowLeft, Building2, Calendar, DollarSign, CheckCircle2, Globe } from "lucide-react";
 import { IncentiveTypeBadge, JurisdictionBadge, StatusBadge } from "@/components/Badge";
+import { IncentiveCard } from "@/components/IncentiveCard";
+import { BookmarkButton } from "@/components/BookmarkButton";
 import { formatCurrency, formatDeadline, parseIncentive } from "@/lib/utils";
 import { prisma } from "@/lib/db";
 import type { Incentive } from "@/lib/types";
 import type { Metadata } from "next";
 
 // Always server-render at request time — never try to pre-render at build
-// (Prisma/DB is not available during Vercel build)
 export const dynamic = "force-dynamic";
 
 async function getIncentive(slug: string): Promise<Incentive | null> {
@@ -21,6 +22,28 @@ async function getIncentive(slug: string): Promise<Incentive | null> {
   }
 }
 
+async function getRelated(incentive: Incentive): Promise<Incentive[]> {
+  try {
+    // Find programs in same state OR same first industry category, excluding current
+    const firstIndustry = incentive.industryCategories[0];
+    const rows = await prisma.incentive.findMany({
+      where: {
+        slug: { not: incentive.slug },
+        status: "ACTIVE",
+        OR: [
+          { jurisdictionName: incentive.jurisdictionName },
+          ...(firstIndustry ? [{ industryCategories: { contains: firstIndustry } }] : []),
+        ],
+      },
+      take: 3,
+      orderBy: [{ isVerified: "desc" }, { fundingAmount: "desc" }],
+    });
+    return rows.map((r) => parseIncentive(r as unknown as Record<string, unknown>));
+  } catch {
+    return [];
+  }
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -29,7 +52,7 @@ export async function generateMetadata({
   const incentive = await getIncentive(params.slug);
   if (!incentive) return { title: "Incentive Not Found" };
   return {
-    title: `${incentive.title} | SubsidyFinder`,
+    title: `${incentive.title} | StateSubsidies`,
     description: incentive.shortSummary,
   };
 }
@@ -41,6 +64,8 @@ export default async function IncentiveDetailPage({
 }) {
   const incentive = await getIncentive(params.slug);
   if (!incentive) notFound();
+
+  const related = await getRelated(incentive);
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -131,6 +156,20 @@ export default async function IncentiveDetailPage({
               ))}
             </ul>
           </div>
+
+          {/* Related Programs */}
+          {related.length > 0 && (
+            <div>
+              <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-4">
+                Related Programs
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+                {related.map((r) => (
+                  <IncentiveCard key={r.slug} incentive={r} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Right Sidebar */}
@@ -145,11 +184,12 @@ export default async function IncentiveDetailPage({
               href={incentive.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary w-full justify-center gap-2"
+              className="btn-primary w-full justify-center gap-2 mb-2"
             >
               Official Source
               <ExternalLink size={14} />
             </a>
+            <BookmarkButton slug={incentive.slug} />
           </div>
 
           {/* Industries */}
