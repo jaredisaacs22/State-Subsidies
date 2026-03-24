@@ -18,16 +18,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={inter.className}>
       <body>
-        <header className="bg-white/95 backdrop-blur border-b border-slate-100 sticky top-0 z-50 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <header className="sticky top-0 z-50 border-b border-white/10" style={{background:"#031e3d"}}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <a href="/" className="flex items-center gap-2.5 group">
-              <LogoMark size={32} />
-              <span className="font-bold text-slate-900 text-[17px] tracking-tight">
-                State<span className="text-brand-600">Subsidies</span>
+            <a href="/" className="flex items-center gap-2.5">
+              <LogoMark size={30} />
+              <span className="font-bold text-white text-[17px] tracking-tight">
+                State<span className="text-brand-300">Subsidies</span>
               </span>
             </a>
 
-            <nav className="flex items-center gap-0.5">
+            <nav className="flex items-center gap-1">
               {[
                 { href: "/", label: "Browse" },
                 { href: "/map", label: "Map", sm: true },
@@ -36,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <a
                   key={href}
                   href={href}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-brand-700 hover:bg-brand-50 transition-colors${sm ? " hidden sm:inline-flex" : ""}`}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium text-white/60 hover:text-white hover:bg-white/10 transition-colors${sm ? " hidden sm:inline-flex" : ""}`}
                 >
                   {label}
                 </a>

@@ -88,13 +88,8 @@ export default function HomePage() {
         className="relative text-white pt-16 pb-0 overflow-hidden"
         style={{background:"radial-gradient(ellipse 70% 60% at 15% 0%,rgba(12,135,235,0.35) 0%,transparent 65%),radial-gradient(ellipse 50% 50% at 85% 100%,rgba(0,80,160,0.3) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 60% 20%,rgba(6,200,140,0.08) 0%,transparent 60%),#031e3d"}}
       >
-        {/* Grid overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{backgroundImage:"linear-gradient(rgba(255,255,255,1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,1) 1px,transparent 1px)",backgroundSize:"48px 48px"}}
-        />
-        {/* Bottom fade into filter bar */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white/5 to-transparent pointer-events-none" />
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           {/* Live badge */}
@@ -125,23 +120,12 @@ export default function HomePage() {
 
           <BusinessIntakeChat />
 
-          {/* Stats strip */}
-          <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 divide-x divide-white/10 bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-sm">
-            {[
-              { value: stats.total || "432+", label: "Programs" },
-              { value: stats.federal || "34+", label: "Federal" },
-              { value: stats.state || "398+", label: "State & Local" },
-              { value: "$100B+", label: "Est. Available" },
-            ].map(({ value, label }) => (
-              <div key={label} className="flex flex-col items-center justify-center px-4 py-5 gap-1">
-                <span className="text-2xl sm:text-3xl font-bold text-white tabular-nums">{value}</span>
-                <span className="text-white/45 text-[10px] font-semibold tracking-widest uppercase">{label}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Spacer so filter bar overlaps slightly */}
-          <div className="h-8" />
+          {/* Stat line */}
+          <p className="mt-6 mb-10 text-white/40 text-sm tracking-wide">
+            <span className="text-white/70 font-semibold">{stats.total || "432"}</span> active programs
+            {" · "}Federal · State · City · Agency
+            {" · "}All 50 states
+          </p>
         </div>
       </section>
 
