@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import { LogoMark } from "@/components/Logo";
 import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://statesubsidies.com"),
@@ -13,22 +16,31 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={inter.className}>
       <body>
-        <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <header className="bg-white/95 backdrop-blur border-b border-slate-100 sticky top-0 z-50 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <a href="/" className="flex items-center gap-2.5">
-              <LogoMark size={34} />
-              <span className="font-bold text-slate-900 text-lg tracking-tight">
+            <a href="/" className="flex items-center gap-2.5 group">
+              <LogoMark size={32} />
+              <span className="font-bold text-slate-900 text-[17px] tracking-tight">
                 State<span className="text-brand-600">Subsidies</span>
               </span>
-              <span className="hidden sm:inline text-xs text-slate-400 font-normal">Business Incentives</span>
             </a>
 
-            <nav className="flex items-center gap-1">
-              <a href="/" className="btn-ghost text-sm">Browse</a>
-              <a href="/map" className="btn-ghost text-sm hidden sm:flex">Map</a>
-              <a href="/saved" className="btn-ghost text-sm hidden sm:flex">Saved</a>
+            <nav className="flex items-center gap-0.5">
+              {[
+                { href: "/", label: "Browse" },
+                { href: "/map", label: "Map", sm: true },
+                { href: "/saved", label: "Saved", sm: true },
+              ].map(({ href, label, sm }) => (
+                <a
+                  key={href}
+                  href={href}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-brand-700 hover:bg-brand-50 transition-colors${sm ? " hidden sm:inline-flex" : ""}`}
+                >
+                  {label}
+                </a>
+              ))}
             </nav>
           </div>
         </header>

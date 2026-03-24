@@ -91,14 +91,16 @@ export function IncentiveCard({ incentive, className }: IncentiveCardProps) {
 
       {/* Footer */}
       <div className="mt-auto px-5 py-3 border-t border-slate-100 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-3">
-          <span className="text-sm font-bold text-emerald-700">
-            {formatCurrency(incentive.fundingAmount)}
-          </span>
+        <div className="flex items-center gap-2">
+          {incentive.fundingAmount && (
+            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-100">
+              {formatCurrency(incentive.fundingAmount)}
+            </span>
+          )}
           {incentive.deadline && (
             <span className={cn(
               "flex items-center gap-1 text-xs",
-              isClosingSoon ? "text-amber-600 font-medium" : "text-slate-400"
+              isClosingSoon ? "text-amber-600 font-semibold" : "text-slate-400"
             )}>
               <Calendar size={11} />
               {formatDeadline(incentive.deadline)}

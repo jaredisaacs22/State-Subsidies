@@ -109,24 +109,27 @@ export default function HomePage() {
           <BusinessIntakeChat />
 
           {/* Stats */}
-          <div className="mt-7 flex flex-wrap justify-center gap-3 text-sm">
+          <div className="mt-8 flex items-center justify-center gap-0 flex-wrap">
             {[
-              { value: stats.total || "144+", label: "Programs" },
+              { value: stats.total || "432+", label: "Programs" },
               { value: stats.federal || "34+", label: "Federal" },
-              { value: stats.state || "100+", label: "State & Local" },
+              { value: stats.state || "398+", label: "State & Local" },
               { value: "$100B+", label: "Est. Available" },
-            ].map(({ value, label }) => (
-              <span key={label} className="glass-overlay px-4 py-2 flex items-baseline gap-1.5">
-                <strong className="text-white text-lg font-bold">{value}</strong>
-                <span className="text-brand-300 text-xs">{label}</span>
-              </span>
+            ].map(({ value, label }, i) => (
+              <div key={label} className="flex items-center">
+                {i > 0 && <div className="w-px h-9 bg-white/20 mx-5 sm:mx-7" />}
+                <div className="text-center">
+                  <div className="text-xl sm:text-2xl font-bold text-white tabular-nums">{value}</div>
+                  <div className="text-brand-300 text-[11px] font-medium tracking-wide uppercase mt-0.5">{label}</div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* ── Sticky Filter Bar ────────────────────────────────────────────── */}
-      <div className="sticky top-16 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+      <div className="sticky top-16 z-40 bg-white/97 backdrop-blur border-b border-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <FilterBar
             filters={filters}
