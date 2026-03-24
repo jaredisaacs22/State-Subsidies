@@ -84,47 +84,64 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="relative bg-gradient-to-br from-brand-700 via-brand-800 to-brand-950 text-white pt-14 pb-16 overflow-hidden">
-        {/* Subtle dot-grid pattern */}
-        <div className="absolute inset-0 opacity-[0.07]" style={{backgroundImage:"radial-gradient(circle,#fff 1px,transparent 1px)",backgroundSize:"28px 28px"}} />
+      <section
+        className="relative text-white pt-16 pb-0 overflow-hidden"
+        style={{background:"radial-gradient(ellipse 70% 60% at 15% 0%,rgba(12,135,235,0.35) 0%,transparent 65%),radial-gradient(ellipse 50% 50% at 85% 100%,rgba(0,80,160,0.3) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 60% 20%,rgba(6,200,140,0.08) 0%,transparent 60%),#031e3d"}}
+      >
+        {/* Grid overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{backgroundImage:"linear-gradient(rgba(255,255,255,1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,1) 1px,transparent 1px)",backgroundSize:"48px 48px"}}
+        />
+        {/* Bottom fade into filter bar */}
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white/5 to-transparent pointer-events-none" />
+
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm font-medium mb-5">
+          {/* Live badge */}
+          <div className="inline-flex items-center gap-2 bg-white/8 border border-white/15 rounded-full px-4 py-1.5 text-sm font-medium mb-7 backdrop-blur-sm">
             <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
             Live data · all 50 states
           </div>
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4 text-balance">
-            Find government incentives<br className="hidden sm:block" /> for your business
+
+          {/* Headline */}
+          <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.08] mb-5 text-balance">
+            Find government incentives
+            <span className="block text-brand-300 mt-1">for your business</span>
           </h1>
-          <p className="text-brand-200 text-lg mb-7 max-w-xl mx-auto text-balance">
+
+          <p className="text-white/60 text-lg mb-9 max-w-lg mx-auto leading-relaxed">
             Grants, tax credits, loans & rebates — Federal, State, City, and Agency programs in one place.
           </p>
 
-          <SearchBar
-            value={filters.search ?? ""}
-            onChange={(search) => handleFilterChange({ search })}
-            placeholder="Search programs, agencies, industries…"
-            className="max-w-2xl mx-auto"
-          />
+          {/* Search — larger, elevated */}
+          <div className="max-w-2xl mx-auto mb-5">
+            <SearchBar
+              value={filters.search ?? ""}
+              onChange={(search) => handleFilterChange({ search })}
+              placeholder="Search programs, agencies, industries…"
+              className="shadow-[0_4px_32px_rgba(0,0,0,0.35)] rounded-xl"
+            />
+          </div>
 
           <BusinessIntakeChat />
 
-          {/* Stats */}
-          <div className="mt-8 flex items-center justify-center gap-0 flex-wrap">
+          {/* Stats strip */}
+          <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 divide-x divide-white/10 bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-sm">
             {[
               { value: stats.total || "432+", label: "Programs" },
               { value: stats.federal || "34+", label: "Federal" },
               { value: stats.state || "398+", label: "State & Local" },
               { value: "$100B+", label: "Est. Available" },
-            ].map(({ value, label }, i) => (
-              <div key={label} className="flex items-center">
-                {i > 0 && <div className="w-px h-9 bg-white/20 mx-5 sm:mx-7" />}
-                <div className="text-center">
-                  <div className="text-xl sm:text-2xl font-bold text-white tabular-nums">{value}</div>
-                  <div className="text-brand-300 text-[11px] font-medium tracking-wide uppercase mt-0.5">{label}</div>
-                </div>
+            ].map(({ value, label }) => (
+              <div key={label} className="flex flex-col items-center justify-center px-4 py-5 gap-1">
+                <span className="text-2xl sm:text-3xl font-bold text-white tabular-nums">{value}</span>
+                <span className="text-white/45 text-[10px] font-semibold tracking-widest uppercase">{label}</span>
               </div>
             ))}
           </div>
+
+          {/* Spacer so filter bar overlaps slightly */}
+          <div className="h-8" />
         </div>
       </section>
 
