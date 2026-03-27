@@ -12,10 +12,10 @@ interface Message {
 }
 
 const SUGGESTIONS = [
-  "I run a small farm in Iowa and want to upgrade equipment",
-  "We're a California manufacturer looking for EV fleet incentives",
-  "Show me federal grants for clean technology R&D",
-  "We want to install solar + battery storage in Texas",
+  "We're a 15-person HVAC company in Texas looking to electrify our service fleet",
+  "Small farm in Iowa, want to upgrade irrigation equipment and storage",
+  "50-person biotech startup in Massachusetts, seeking federal R&D grants",
+  "Commercial contractor in Ohio doing energy efficiency retrofits",
 ];
 
 // Render bold (**text**) and bullet lists from assistant messages
@@ -123,7 +123,7 @@ export function BusinessIntakeChat() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([{
     role: "assistant",
-    content: "Hi! I can help match your business with government incentives — grants, tax credits, loans, and more.\n\nWhat does your company do, and where are you located?",
+    content: "Hi! I'm your incentive advisor — I'll ask a few targeted questions about your business so I can find the programs most likely to approve you.\n\nTo start: what does your company do, and what state are you in?",
   }]);
   const [matched, setMatched] = useState<Incentive[]>([]);
   const [input, setInput] = useState("");
@@ -151,7 +151,7 @@ export function BusinessIntakeChat() {
     abortRef.current?.abort();
     setMessages([{
       role: "assistant",
-      content: "Hi! I can help match your business with government incentives — grants, tax credits, loans, and more.\n\nWhat does your company do, and where are you located?",
+      content: "Hi! I'm your incentive advisor — I'll ask a few targeted questions about your business so I can find the programs most likely to approve you.\n\nTo start: what does your company do, and what state are you in?",
     }]);
     setMatched([]);
     setInput("");
