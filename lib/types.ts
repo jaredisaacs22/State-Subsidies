@@ -95,6 +95,34 @@ export const INDUSTRY_CATEGORIES = [
 
 export type IndustryCategory = (typeof INDUSTRY_CATEGORIES)[number];
 
+// Grouped for the Industry dropdown — same values, organized for readability
+export const INDUSTRY_CATEGORY_GROUPS: { label: string; options: string[] }[] = [
+  {
+    label: "Energy & Clean Tech",
+    options: ["Clean Technology", "Building Electrification", "EV Charging", "Energy Storage", "Energy Management", "Oil & Gas Transition"],
+  },
+  {
+    label: "Transportation",
+    options: ["Fleet", "Automotive", "Aviation", "Maritime", "Public Transit", "Logistics"],
+  },
+  {
+    label: "Land & Resources",
+    options: ["Agriculture", "Forestry", "Mining & Extraction", "Water & Utilities", "Waste Management"],
+  },
+  {
+    label: "Built Environment",
+    options: ["Construction", "Real Estate", "Infrastructure"],
+  },
+  {
+    label: "Business & Industry",
+    options: ["Manufacturing", "Technology", "Research & Development", "Healthcare", "Education", "Food & Beverage", "Financial Services"],
+  },
+  {
+    label: "Other",
+    options: ["Government & Nonprofit", "Retail", "Hospitality", "Telecommunications", "Film & Media"],
+  },
+];
+
 // ─── Badge color maps ────────────────────────────────────────────────────────
 
 export const INCENTIVE_TYPE_COLORS: Record<IncentiveType, string> = {

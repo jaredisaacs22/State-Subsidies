@@ -130,6 +130,102 @@ def upsert_incentive(incentive: ScrapedIncentive) -> str:
         conn.close()
 
 
+def _passes_quality_gate(incentive: ScrapedIncentive) -> bool:
+    """
+    Minimum quality bar for a newly discovered program.
+    Rejects empty/stub records that add no value to the database.
+    """
+    if not incentive.title or len(incentive.title.strip()) < 5:
+        return False
+    if not incentive.short_summary or len(incentive.short_summary.strip()) < 20:
+        return False
+    if not incentive.source_url or not incentive.source_url.startswith("http"):
+        return False
+    if not incentive.key_requirements or len(incentive.key_requirements) < 1:
+        return False
+    return True
+
+
+def insert_new_only(incentives: list[ScrapedIncentive]) -> dict:
+    """
+    Insert programs that don't already exist in the DB AND pass the quality gate.
+    Existing slugs are silently skipped (no updates).
+    Returns stats: inserted, skipped, rejected, errors.
+    """
+    inserted = 0
+    skipped = 0
+    rejected = 0
+    errors = 0
+
+    slugs = [i.slug or _slugify(i.title) for i in incentives]
+
+    # Pre-fetch existing slugs in one query
+    existing_slugs: set[str] = set()
+    try:
+        conn = _get_conn()
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute('SELECT slug FROM "Incentive" WHERE slug = ANY(%s)', (slugs,))
+                existing_slugs = {row["slug"] for row in cur.fetchall()}
+        conn.close()
+    except Exception as e:
+        logger.warning("Could not pre-fetch existing slugs", error=str(e))
+
+    for incentive in incentives:
+        slug = incentive.slug or _slugify(incentive.title)
+
+        if slug in existing_slugs:
+            skipped += 1
+            continue
+
+        if not _passes_quality_gate(incentive):
+            logger.debug("Quality gate rejected", title=incentive.title)
+            rejected += 1
+            continue
+
+        try:
+            upsert_incentive(incentive)
+            inserted += 1
+        except Exception as e:
+            logger.error("Failed to insert", title=incentive.title, error=str(e))
+            errors += 1
+
+    return {"inserted": inserted, "skipped": skipped, "rejected": rejected, "errors": errors}
+
+
+def refresh_expired_statuses() -> dict:
+    """
+    Mark ACTIVE programs whose deadline has passed as CLOSED.
+    Run once per day — no scraping required.
+    """
+    closed = 0
+    errors = 0
+    now = datetime.utcnow()
+
+    try:
+        conn = _get_conn()
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    UPDATE "Incentive"
+                    SET status = 'CLOSED', "updatedAt" = %s
+                    WHERE status = 'ACTIVE'
+                      AND deadline IS NOT NULL
+                      AND deadline < %s
+                    """,
+                    (now, now),
+                )
+                closed = cur.rowcount
+        conn.close()
+        logger.info("Expired status refresh", closed=closed)
+    except Exception as e:
+        logger.error("refresh_expired_statuses failed", error=str(e))
+        errors += 1
+
+    return {"closed": closed, "errors": errors}
+
+
 def bulk_upsert(incentives: list[ScrapedIncentive]) -> dict:
     """Upsert a list of incentives. Returns stats dict with inserted/updated/errors counts."""
     inserted = 0
