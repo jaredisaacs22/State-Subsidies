@@ -87,26 +87,26 @@ export default function HomePage() {
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section
         className="relative text-white pt-16 pb-0 overflow-hidden"
-        style={{background:"radial-gradient(ellipse 70% 60% at 15% 0%,rgba(12,135,235,0.35) 0%,transparent 65%),radial-gradient(ellipse 50% 50% at 85% 100%,rgba(0,80,160,0.3) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 60% 20%,rgba(6,200,140,0.08) 0%,transparent 60%),#031e3d"}}
+        style={{background:"radial-gradient(ellipse 70% 60% at 10% 0%,rgba(13,32,82,0.9) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 90% 100%,rgba(26,92,56,0.3) 0%,transparent 65%),radial-gradient(ellipse 80% 80% at 50% 50%,rgba(22,56,132,0.6) 0%,transparent 80%),#0a1a40"}}
       >
-        {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
+        {/* Subtle forest horizon at bottom */}
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-forest-900/20 to-transparent pointer-events-none" />
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          {/* Live badge */}
+          {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-white/8 border border-white/15 rounded-full px-4 py-1.5 text-sm font-medium mb-7 backdrop-blur-sm">
             <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-            Live data · all 50 states
+            Free resource · all 50 states · updated daily
           </div>
 
           {/* Headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.08] mb-5 text-balance">
-            Find government incentives
-            <span className="block text-brand-300 mt-1">for your business</span>
+            The government has money
+            <span className="block text-forest-300 mt-1">for your industry.</span>
           </h1>
 
-          <p className="text-white/60 text-lg mb-9 max-w-lg mx-auto leading-relaxed">
-            Grants, tax credits, loans & rebates — Federal, State, City, and Agency programs in one place.
+          <p className="text-white/55 text-lg mb-9 max-w-xl mx-auto leading-relaxed">
+            Grants, tax credits, loans, and rebates from federal, state, and local programs — most businesses never hear about them.
           </p>
 
           {/* Search — larger, elevated */}

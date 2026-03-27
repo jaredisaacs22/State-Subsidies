@@ -39,11 +39,11 @@
   }
 
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-forest-700 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
   }
 
   .btn-primary {
-    @apply btn bg-brand-600 text-white hover:bg-brand-700 px-4 py-2 text-sm;
+    @apply btn bg-forest-700 text-white hover:bg-forest-800 px-4 py-2 text-sm;
   }
 
   .btn-ghost {
@@ -51,7 +51,7 @@
   }
 
   .input {
-    @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500;
+    @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-700 focus:border-forest-700;
   }
 
   .select {
