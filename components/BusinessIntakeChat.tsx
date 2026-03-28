@@ -337,14 +337,14 @@ export function BusinessIntakeChat() {
                 {/* Quick Search */}
                 <button
                   onClick={() => startMode("quick")}
-                  className="group text-left p-4 rounded-xl border border-white/12 bg-white/5 hover:bg-white/10 hover:border-white/22 transition-all"
+                  className="group text-left p-4 rounded-xl border border-blue-100 bg-white hover:bg-blue-50 hover:border-blue-300 shadow-sm hover:shadow-md transition-all"
                 >
                   <div className="flex items-center gap-2 mb-1.5">
-                    <Zap size={14} className="text-amber-400" aria-hidden />
-                    <span className="text-white font-semibold text-sm">Quick Search</span>
-                    <span className="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/20 rounded-full px-1.5 py-0.5 font-medium">~1 min</span>
+                    <Zap size={14} className="text-amber-500" aria-hidden />
+                    <span className="text-brand-800 font-semibold text-sm">Quick Search</span>
+                    <span className="text-[10px] bg-amber-100 text-amber-700 border border-amber-200 rounded-full px-1.5 py-0.5 font-medium">~1 min</span>
                   </div>
-                  <p className="text-white/40 text-[11px] leading-relaxed">
+                  <p className="text-slate-500 text-[11px] leading-relaxed">
                     Describe your situation in one sentence — AI searches immediately and asks follow-ups as it goes.
                   </p>
                 </button>
@@ -352,14 +352,14 @@ export function BusinessIntakeChat() {
                 {/* Tailored Search */}
                 <button
                   onClick={() => startMode("tailored")}
-                  className="group text-left p-4 rounded-xl border border-white/12 bg-white/5 hover:bg-white/10 hover:border-white/22 transition-all"
+                  className="group text-left p-4 rounded-xl border border-blue-100 bg-white hover:bg-blue-50 hover:border-blue-300 shadow-sm hover:shadow-md transition-all"
                 >
                   <div className="flex items-center gap-2 mb-1.5">
-                    <Target size={14} className="text-emerald-400" aria-hidden />
-                    <span className="text-white font-semibold text-sm">Tailored Search</span>
-                    <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/20 rounded-full px-1.5 py-0.5 font-medium">Most accurate</span>
+                    <Target size={14} className="text-forest-600" aria-hidden />
+                    <span className="text-brand-800 font-semibold text-sm">Tailored Search</span>
+                    <span className="text-[10px] bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-full px-1.5 py-0.5 font-medium">Most accurate</span>
                   </div>
-                  <p className="text-white/40 text-[11px] leading-relaxed">
+                  <p className="text-slate-500 text-[11px] leading-relaxed">
                     Answer 4–6 short questions so the AI can find every program you qualify for — nothing missed.
                   </p>
                 </button>
