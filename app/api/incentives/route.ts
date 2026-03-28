@@ -28,6 +28,9 @@ export async function GET(request: NextRequest) {
       sortOrder: pickValid(searchParams.get("sortOrder"), ["asc", "desc"] as const) ?? "desc",
       page: parseInt(searchParams.get("page") ?? "1"),
       pageSize: parseInt(searchParams.get("pageSize") ?? "12"),
+      minFunding: searchParams.get("minFunding") ? parseInt(searchParams.get("minFunding")!) : undefined,
+      maxFunding: searchParams.get("maxFunding") ? parseInt(searchParams.get("maxFunding")!) : undefined,
+      verified: searchParams.get("verified") === "true" ? true : undefined,
     };
     const jurisdictionNameFilter = searchParams.get("jurisdictionName") ?? undefined;
 
@@ -53,6 +56,13 @@ export async function GET(request: NextRequest) {
     // Industry category is stored as JSON array string — use contains
     if (filters.industryCategory) {
       where.industryCategories = { contains: filters.industryCategory };
+    }
+
+    if (filters.verified) where.isVerified = true;
+    if (filters.minFunding !== undefined || filters.maxFunding !== undefined) {
+      where.fundingAmount = {};
+      if (filters.minFunding !== undefined) where.fundingAmount.gte = filters.minFunding;
+      if (filters.maxFunding !== undefined) where.fundingAmount.lte = filters.maxFunding;
     }
 
     const orderBy =

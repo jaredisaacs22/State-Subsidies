@@ -8,6 +8,15 @@ import {
   JURISDICTION_LABELS,
 } from "@/lib/types";
 import type { IncentiveFilters, IncentiveType, JurisdictionLevel } from "@/lib/types";
+
+const FUNDING_OPTIONS: { label: string; min?: number; max?: number }[] = [
+  { label: "Any amount" },
+  { label: "$1K+",   min: 1_000 },
+  { label: "$10K+",  min: 10_000 },
+  { label: "$100K+", min: 100_000 },
+  { label: "$500K+", min: 500_000 },
+  { label: "$1M+",   min: 1_000_000 },
+];
 import { cn } from "@/lib/utils";
 
 const US_STATES = [
@@ -100,6 +109,8 @@ export function FilterSidebar({
     filters.jurisdictionName,
     filters.incentiveType,
     filters.industryCategory,
+    filters.minFunding,
+    filters.verified,
   ].filter(Boolean).length;
 
   const clearAll = () =>
@@ -108,6 +119,9 @@ export function FilterSidebar({
       jurisdictionName: undefined,
       incentiveType: undefined,
       industryCategory: undefined,
+      minFunding: undefined,
+      maxFunding: undefined,
+      verified: undefined,
     });
 
   const filteredStates = stateQuery.trim()
@@ -252,6 +266,53 @@ export function FilterSidebar({
             )
           )}
         </div>
+      </Section>
+
+      {/* ── Funding Amount ───────────────────────────────── */}
+      <Section title="Min. Funding" defaultOpen={false}>
+        <div className="flex flex-wrap gap-1.5">
+          {FUNDING_OPTIONS.map((opt) => {
+            const active = opt.min === undefined
+              ? !filters.minFunding
+              : filters.minFunding === opt.min;
+            return (
+              <button
+                key={opt.label}
+                onClick={() =>
+                  onChange({ minFunding: opt.min, maxFunding: undefined })
+                }
+                className={cn(
+                  "text-xs px-2.5 py-1 rounded-full border transition-colors font-medium",
+                  active
+                    ? "bg-forest-700 text-white border-forest-700"
+                    : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100 hover:border-slate-300"
+                )}
+              >
+                {opt.label}
+              </button>
+            );
+          })}
+        </div>
+      </Section>
+
+      {/* ── Verified only ────────────────────────────────── */}
+      <Section title="Quality" defaultOpen={false}>
+        <button
+          onClick={() => onChange({ verified: filters.verified ? undefined : true })}
+          className={cn(
+            "flex items-center gap-2 w-full text-left text-sm px-2.5 py-1.5 rounded-lg transition-colors",
+            filters.verified
+              ? "bg-forest-700 text-white font-medium"
+              : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+          )}
+        >
+          <span className={cn("w-3 h-3 rounded-full border-2 flex-shrink-0 flex items-center justify-center",
+            filters.verified ? "border-white bg-white" : "border-slate-400"
+          )}>
+            {filters.verified && <span className="w-1.5 h-1.5 rounded-full bg-forest-700" />}
+          </span>
+          Verified programs only
+        </button>
       </Section>
     </aside>
   );

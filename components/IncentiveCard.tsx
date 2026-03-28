@@ -1,12 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { ExternalLink, Calendar, MapPin, ArrowRight, Bookmark } from "lucide-react";
+import { ExternalLink, Calendar, MapPin, ArrowRight, Bookmark, CheckCircle2 } from "lucide-react";
 import { IncentiveTypeBadge, JurisdictionBadge, StatusBadge } from "./Badge";
 import { formatCurrency, formatDeadline, cn } from "@/lib/utils";
 import { INCENTIVE_TYPE_BORDER, INDUSTRY_COLORS } from "@/lib/types";
 import { useBookmarks } from "@/lib/useBookmarks";
 import type { Incentive } from "@/lib/types";
+
+const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+
+function isNewProgram(createdAt: string): boolean {
+  return Date.now() - new Date(createdAt).getTime() < SEVEN_DAYS_MS;
+}
 
 function getComplexity(incentive: Incentive): { label: string; color: string; title: string } {
   const { incentiveType, jurisdictionLevel } = incentive;
@@ -28,6 +34,7 @@ export function IncentiveCard({ incentive, className }: IncentiveCardProps) {
   const { isBookmarked, toggle } = useBookmarks();
   const bookmarked = isBookmarked(incentive.slug);
   const complexity = getComplexity(incentive);
+  const isNew = isNewProgram(incentive.createdAt);
   const isClosingSoon =
     incentive.deadline !== null &&
     new Date(incentive.deadline).getTime() - Date.now() < 30 * 24 * 60 * 60 * 1000;
@@ -49,13 +56,24 @@ export function IncentiveCard({ incentive, className }: IncentiveCardProps) {
             <IncentiveTypeBadge type={incentive.incentiveType} />
             <JurisdictionBadge level={incentive.jurisdictionLevel} />
             {incentive.status !== "ACTIVE" && <StatusBadge status={incentive.status} />}
+            {isNew && (
+              <span className="badge bg-forest-700 text-white text-[10px] px-2 py-0.5 animate-fade-in">
+                New
+              </span>
+            )}
+            {incentive.isVerified && (
+              <span className="badge bg-emerald-50 text-emerald-700 gap-0.5 text-[10px]" title="Verified program">
+                <CheckCircle2 size={10} />
+                Verified
+              </span>
+            )}
           </div>
           <a
             href={incentive.sourceUrl}
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="flex-shrink-0 p-1.5 rounded-md text-slate-300 hover:text-brand-600 hover:bg-brand-50 transition-colors"
+            className="flex-shrink-0 p-1.5 rounded-md text-slate-300 hover:text-forest-700 hover:bg-forest-50 transition-colors"
             title="View official source"
           >
             <ExternalLink size={14} />

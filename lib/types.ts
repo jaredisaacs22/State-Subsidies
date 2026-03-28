@@ -48,6 +48,9 @@ export interface IncentiveFilters {
   industryCategory?: string;
   status?: IncentiveStatus;
   jurisdictionName?: string;
+  minFunding?: number;
+  maxFunding?: number;
+  verified?: boolean;
   sortBy?: "deadline" | "fundingAmount" | "createdAt";
   sortOrder?: "asc" | "desc";
   page?: number;
@@ -143,41 +146,45 @@ export const INCENTIVE_TYPE_BORDER: Record<IncentiveType, string> = {
   VOUCHER: "border-l-pink-500",
 };
 
-const NEUTRAL_TAG = "bg-slate-100 text-slate-600";
-
 export const INDUSTRY_COLORS: Record<string, string> = {
-  "Agriculture": NEUTRAL_TAG,
-  "Automotive": NEUTRAL_TAG,
-  "Aviation": NEUTRAL_TAG,
-  "Building Electrification": NEUTRAL_TAG,
-  "Clean Technology": NEUTRAL_TAG,
-  "Construction": NEUTRAL_TAG,
-  "Education": NEUTRAL_TAG,
-  "Energy Management": NEUTRAL_TAG,
-  "Energy Storage": NEUTRAL_TAG,
-  "EV Charging": NEUTRAL_TAG,
-  "Film & Media": NEUTRAL_TAG,
-  "Financial Services": NEUTRAL_TAG,
-  "Fleet": NEUTRAL_TAG,
-  "Food & Beverage": NEUTRAL_TAG,
-  "Forestry": NEUTRAL_TAG,
-  "Government & Nonprofit": NEUTRAL_TAG,
-  "Healthcare": NEUTRAL_TAG,
-  "Hospitality": NEUTRAL_TAG,
-  "Infrastructure": NEUTRAL_TAG,
-  "Logistics": NEUTRAL_TAG,
-  "Manufacturing": NEUTRAL_TAG,
-  "Maritime": NEUTRAL_TAG,
-  "Mining & Extraction": NEUTRAL_TAG,
-  "Oil & Gas Transition": NEUTRAL_TAG,
-  "Public Transit": NEUTRAL_TAG,
-  "Real Estate": NEUTRAL_TAG,
-  "Research & Development": NEUTRAL_TAG,
-  "Retail": NEUTRAL_TAG,
-  "Technology": NEUTRAL_TAG,
-  "Telecommunications": NEUTRAL_TAG,
-  "Waste Management": NEUTRAL_TAG,
-  "Water & Utilities": NEUTRAL_TAG,
+  // Energy & Clean Tech — greens/teals
+  "Agriculture":             "bg-lime-50 text-lime-700",
+  "Clean Technology":        "bg-emerald-50 text-emerald-700",
+  "Building Electrification":"bg-orange-50 text-orange-700",
+  "EV Charging":             "bg-violet-50 text-violet-700",
+  "Energy Storage":          "bg-teal-50 text-teal-700",
+  "Energy Management":       "bg-cyan-50 text-cyan-700",
+  "Oil & Gas Transition":    "bg-amber-50 text-amber-700",
+  // Transportation — blues/sky
+  "Fleet":                   "bg-sky-50 text-sky-700",
+  "Automotive":              "bg-blue-50 text-blue-700",
+  "Aviation":                "bg-indigo-50 text-indigo-700",
+  "Maritime":                "bg-cyan-50 text-cyan-700",
+  "Public Transit":          "bg-blue-50 text-blue-700",
+  "Logistics":               "bg-slate-100 text-slate-600",
+  // Land & Resources
+  "Forestry":                "bg-green-50 text-green-700",
+  "Mining & Extraction":     "bg-stone-100 text-stone-600",
+  "Water & Utilities":       "bg-cyan-50 text-cyan-700",
+  "Waste Management":        "bg-lime-50 text-lime-700",
+  // Built Environment — ambers/stones
+  "Construction":            "bg-amber-50 text-amber-700",
+  "Real Estate":             "bg-stone-100 text-stone-600",
+  "Infrastructure":          "bg-slate-100 text-slate-600",
+  // Business & Industry
+  "Manufacturing":           "bg-gray-100 text-gray-600",
+  "Technology":              "bg-blue-50 text-blue-700",
+  "Research & Development":  "bg-purple-50 text-purple-700",
+  "Healthcare":              "bg-rose-50 text-rose-700",
+  "Education":               "bg-indigo-50 text-indigo-700",
+  "Food & Beverage":         "bg-orange-50 text-orange-700",
+  "Financial Services":      "bg-green-50 text-green-700",
+  // Other
+  "Government & Nonprofit":  "bg-slate-100 text-slate-600",
+  "Retail":                  "bg-pink-50 text-pink-700",
+  "Hospitality":             "bg-pink-50 text-pink-700",
+  "Telecommunications":      "bg-blue-50 text-blue-700",
+  "Film & Media":            "bg-fuchsia-50 text-fuchsia-700",
 };
 
 export const JURISDICTION_COLORS: Record<JurisdictionLevel, string> = {

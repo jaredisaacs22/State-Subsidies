@@ -94,6 +94,9 @@ export default function HomePage() {
       if (f.status) params.set("status", f.status);
       if (f.sortBy) params.set("sortBy", f.sortBy);
       if (f.sortOrder) params.set("sortOrder", f.sortOrder);
+      if (f.minFunding !== undefined) params.set("minFunding", String(f.minFunding));
+      if (f.maxFunding !== undefined) params.set("maxFunding", String(f.maxFunding));
+      if (f.verified) params.set("verified", "true");
       params.set("page", String(f.page ?? 1));
       params.set("pageSize", String(f.pageSize ?? 24));
 
@@ -129,6 +132,9 @@ export default function HomePage() {
       jurisdictionName: undefined,
       incentiveType: undefined,
       industryCategory: undefined,
+      minFunding: undefined,
+      maxFunding: undefined,
+      verified: undefined,
     });
   }, [handleFilterChange]);
 
@@ -167,6 +173,8 @@ export default function HomePage() {
     filters.jurisdictionName,
     filters.incentiveType,
     filters.industryCategory,
+    filters.minFunding,
+    filters.verified,
   ].filter(Boolean).length;
 
   const hasActiveFilters = activeFilterCount > 0 || !!filters.search;
@@ -206,6 +214,17 @@ export default function HomePage() {
 
           {/* Inline AI intake */}
           <BusinessIntakeChat />
+
+          {/* Agency trust strip */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+            <span className="text-white/30 text-[11px] uppercase tracking-widest font-medium">Sourced from</span>
+            {["USDA", "IRS", "DOE", "EPA", "SBA", "HUD", "CARB", "NYSERDA", "EDA"].map((agency) => (
+              <span key={agency} className="text-white/45 text-[11px] font-semibold tracking-wide hover:text-white/65 transition-colors cursor-default">
+                {agency}
+              </span>
+            ))}
+            <span className="text-white/25 text-[11px]">+ more</span>
+          </div>
 
           {/* Stats strip */}
           <div className="mt-10 -mx-4 sm:-mx-6 lg:-mx-8 bg-black/20 border-t border-white/8 px-4 sm:px-6 lg:px-8 py-4">
