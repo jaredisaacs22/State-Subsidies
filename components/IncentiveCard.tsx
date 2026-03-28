@@ -24,8 +24,9 @@ export function IncentiveCard({ incentive, className }: IncentiveCardProps) {
     <article
       className={cn(
         "card group flex flex-col animate-fade-in border-l-4",
+        "hover:shadow-[0_4px_20px_rgba(26,92,56,0.12)]",
         INCENTIVE_TYPE_BORDER[incentive.incentiveType],
-        incentive.status === "CLOSED" && "opacity-60",
+        incentive.status === "CLOSED" && "opacity-50",
         className
       )}
     >
@@ -51,7 +52,7 @@ export function IncentiveCard({ incentive, className }: IncentiveCardProps) {
 
         {/* Title */}
         <Link href={`/incentives/${incentive.slug}`} className="block mb-1.5">
-          <h2 className="font-semibold text-slate-900 text-[15px] leading-snug group-hover:text-brand-700 transition-colors line-clamp-2">
+          <h2 className="font-semibold text-slate-900 text-[16px] leading-snug group-hover:text-forest-700 transition-colors line-clamp-2">
             {incentive.title}
           </h2>
         </Link>
@@ -113,8 +114,8 @@ export function IncentiveCard({ incentive, className }: IncentiveCardProps) {
             className={cn(
               "p-1.5 rounded-md transition-colors",
               bookmarked
-                ? "text-brand-600 bg-brand-50"
-                : "text-slate-300 hover:text-brand-500 hover:bg-brand-50"
+                ? "text-forest-700 bg-forest-50"
+                : "text-slate-300 hover:text-forest-700 hover:bg-forest-50"
             )}
             title={bookmarked ? "Remove bookmark" : "Save program"}
           >
@@ -122,7 +123,7 @@ export function IncentiveCard({ incentive, className }: IncentiveCardProps) {
           </button>
           <Link
             href={`/incentives/${incentive.slug}`}
-            className="flex items-center gap-1 text-xs text-brand-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity"
+            className="flex items-center gap-1 text-xs text-forest-700 font-medium opacity-0 group-hover:opacity-100 transition-opacity"
           >
             Details <ArrowRight size={12} />
           </Link>
