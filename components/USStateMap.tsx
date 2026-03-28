@@ -3,7 +3,7 @@
 import { ComposableMap, Geographies, Geography, Annotation } from "react-simple-maps";
 import { cn } from "@/lib/utils";
 
-const GEO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
+const GEO_URL = "/us-states.json";
 
 // FIPS code → state full name (50 states only, no DC)
 const FIPS: Record<string, string> = {

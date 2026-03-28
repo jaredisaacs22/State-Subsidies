@@ -39,14 +39,13 @@ export default function MapPage() {
   const [summary, setSummary] = useState<StateSummary | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Fetch all incentives once to build state counts
+  // Fetch all incentives once to build state counts (STATE level only)
   useEffect(() => {
-    fetch("/api/incentives?pageSize=500&status=ACTIVE")
+    fetch("/api/incentives?pageSize=500&status=ACTIVE&jurisdictionLevel=STATE")
       .then((r) => r.json())
       .then((data: PaginatedResponse<Incentive>) => {
         const c: Record<string, number> = {};
         for (const inc of data.data) {
-          if (inc.jurisdictionLevel === "FEDERAL") continue; // counted separately
           const name = inc.jurisdictionName;
           c[name] = (c[name] ?? 0) + 1;
         }
@@ -100,6 +99,7 @@ export default function MapPage() {
 
   const totalPrograms = Object.values(counts).reduce((a, b) => a + b, 0) + federalCount;
   const statesWithPrograms = Object.keys(counts).filter((s) => counts[s] > 0).length;
+  const totalStates = 50;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -108,7 +108,7 @@ export default function MapPage() {
         <h1 className="text-2xl font-bold text-slate-900 mb-1">Incentives by State</h1>
         <p className="text-slate-500 text-sm">
           {totalPrograms > 0 ? (
-            <><span className="font-semibold text-slate-700">{totalPrograms.toLocaleString()}</span> active programs across <span className="font-semibold text-slate-700">{statesWithPrograms}</span> states. Click a state to explore.</>
+            <><span className="font-semibold text-slate-700">{totalPrograms.toLocaleString()}</span> active programs across all <span className="font-semibold text-slate-700">{totalStates}</span> states. Click a state to explore.</>
           ) : "Click any state to explore its programs."}
         </p>
       </div>
