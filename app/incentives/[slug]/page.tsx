@@ -5,6 +5,7 @@ import { IncentiveTypeBadge, JurisdictionBadge, StatusBadge } from "@/components
 import { IncentiveCard } from "@/components/IncentiveCard";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { formatCurrency, formatDeadline, parseIncentive } from "@/lib/utils";
+import { INDUSTRY_COLORS } from "@/lib/types";
 import { prisma } from "@/lib/db";
 import type { Incentive } from "@/lib/types";
 import type { Metadata } from "next";
@@ -72,7 +73,7 @@ export default async function IncentiveDetailPage({
       {/* Back */}
       <Link
         href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-brand-600 mb-6 transition-colors"
+        className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-forest-700 mb-6 transition-colors"
       >
         <ArrowLeft size={16} />
         Back to all incentives
@@ -85,7 +86,7 @@ export default async function IncentiveDetailPage({
           <JurisdictionBadge level={incentive.jurisdictionLevel} name={incentive.jurisdictionName} />
           <StatusBadge status={incentive.status} />
           {incentive.isVerified && (
-            <span className="badge bg-slate-100 text-slate-600 gap-1">
+            <span className="badge bg-emerald-50 text-emerald-700 gap-1">
               <CheckCircle2 size={11} />
               Verified
             </span>
@@ -122,7 +123,7 @@ export default async function IncentiveDetailPage({
             value={formatDeadline(incentive.deadline)}
           />
           <Stat
-            icon={<Globe size={16} className="text-brand-600" />}
+            icon={<Globe size={16} className="text-forest-700" />}
             label="Jurisdiction"
             value={incentive.jurisdictionName}
           />
@@ -148,7 +149,7 @@ export default async function IncentiveDetailPage({
             <ul className="space-y-3">
               {incentive.keyRequirements.map((req, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <span className="mt-1 w-5 h-5 rounded-full bg-brand-100 text-brand-700 text-xs flex items-center justify-center flex-shrink-0 font-semibold">
+                  <span className="mt-1 w-5 h-5 rounded-full bg-forest-50 text-forest-700 text-xs flex items-center justify-center flex-shrink-0 font-semibold">
                     {i + 1}
                   </span>
                   <span className="text-slate-700 text-sm leading-relaxed">{req}</span>
@@ -175,10 +176,10 @@ export default async function IncentiveDetailPage({
         {/* Right Sidebar */}
         <div className="space-y-4">
           {/* Apply CTA */}
-          <div className="card p-5 bg-brand-50 border-brand-100">
-            <p className="text-sm font-semibold text-brand-900 mb-3">Apply or Learn More</p>
-            <p className="text-xs text-brand-700 mb-4 leading-relaxed">
-              Visit the official government page to review full eligibility requirements and apply.
+          <div className="card p-5 bg-forest-50 border-forest-100">
+            <p className="text-sm font-semibold text-forest-900 mb-1">Apply or Learn More</p>
+            <p className="text-xs text-forest-700/70 mb-4 leading-relaxed">
+              Visit the official page to review full eligibility requirements and apply.
             </p>
             <a
               href={incentive.sourceUrl}
@@ -199,7 +200,7 @@ export default async function IncentiveDetailPage({
             </p>
             <div className="flex flex-wrap gap-1.5">
               {incentive.industryCategories.map((cat) => (
-                <span key={cat} className="badge bg-slate-100 text-slate-700">
+                <span key={cat} className={`badge ${INDUSTRY_COLORS[cat] ?? "bg-slate-100 text-slate-700"}`}>
                   {cat}
                 </span>
               ))}
@@ -247,6 +248,21 @@ export default async function IncentiveDetailPage({
           )}
         </div>
       </div>
+      {/* Mobile sticky apply bar */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 px-4 py-3 flex items-center gap-3 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]">
+        <a
+          href={incentive.sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-primary flex-1 justify-center gap-2 py-2.5"
+        >
+          Official Source
+          <ExternalLink size={14} />
+        </a>
+        <BookmarkButton slug={incentive.slug} />
+      </div>
+      {/* Spacer so content isn't hidden behind sticky bar on mobile */}
+      <div className="h-20 lg:hidden" />
     </div>
   );
 }

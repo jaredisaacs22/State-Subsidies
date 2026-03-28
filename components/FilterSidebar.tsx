@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronDown, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ChevronDown, X, Bookmark, Bell, Check } from "lucide-react";
+import { useBookmarks } from "@/lib/useBookmarks";
 import {
   INCENTIVE_TYPE_LABELS,
   INDUSTRY_CATEGORY_GROUPS,
@@ -93,6 +94,77 @@ function ListItem({
     >
       {label}
     </button>
+  );
+}
+
+function BookmarksWidget() {
+  const { bookmarks } = useBookmarks();
+  if (bookmarks.length === 0) return null;
+  return (
+    <div className="mt-4 pt-4 border-t border-slate-100">
+      <a
+        href="/bookmarks"
+        className="flex items-center gap-2 text-sm text-forest-700 hover:text-forest-800 font-medium transition-colors"
+      >
+        <Bookmark size={13} className="fill-current" />
+        {bookmarks.length} saved program{bookmarks.length !== 1 ? "s" : ""}
+      </a>
+    </div>
+  );
+}
+
+function EmailAlertWidget() {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (localStorage.getItem("ss_alert_email")) setSubmitted(true);
+    } catch {}
+  }, []);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = email.trim();
+    if (!trimmed || !trimmed.includes("@")) return;
+    try { localStorage.setItem("ss_alert_email", trimmed); } catch {}
+    setSubmitted(true);
+  };
+
+  return (
+    <div className="mt-4 pt-4 border-t border-slate-100">
+      <div className="flex items-center gap-1.5 mb-2">
+        <Bell size={11} className="text-slate-400" />
+        <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-400">
+          New Program Alerts
+        </span>
+      </div>
+      {submitted ? (
+        <div className="flex items-center gap-1.5 text-xs text-emerald-700 bg-emerald-50 rounded-lg px-2.5 py-2">
+          <Check size={12} />
+          You&apos;ll be notified of new programs
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-1.5">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="your@email.com"
+            className="w-full text-xs rounded-md border border-slate-200 bg-white px-2.5 py-1.5 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-forest-700 focus:border-forest-700"
+          />
+          <button
+            type="submit"
+            className="w-full text-xs bg-forest-700 text-white rounded-md py-1.5 font-medium hover:bg-forest-800 transition-colors"
+          >
+            Notify me
+          </button>
+          <p className="text-[10px] text-slate-400 leading-snug">
+            Get notified when new programs are added in your area.
+          </p>
+        </form>
+      )}
+    </div>
   );
 }
 
@@ -314,6 +386,9 @@ export function FilterSidebar({
           Verified programs only
         </button>
       </Section>
+
+      <BookmarksWidget />
+      <EmailAlertWidget />
     </aside>
   );
 }
