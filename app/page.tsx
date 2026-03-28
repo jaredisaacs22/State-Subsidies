@@ -109,24 +109,6 @@ export default function HomePage() {
     setError(null);
     try {
       const params = new URLSearchParams();
-      // Sync URL (for shareability) — only non-default values
-      if (typeof window !== "undefined") {
-        const urlParams = new URLSearchParams();
-        if (f.search) urlParams.set("search", f.search);
-        if (f.jurisdictionLevel) urlParams.set("jurisdictionLevel", f.jurisdictionLevel);
-        if (f.jurisdictionName) urlParams.set("jurisdictionName", f.jurisdictionName);
-        if (f.incentiveType) urlParams.set("incentiveType", f.incentiveType);
-        if (f.industryCategory) urlParams.set("industryCategory", f.industryCategory);
-        if (f.sortBy && f.sortBy !== "createdAt") urlParams.set("sortBy", f.sortBy);
-        if (f.sortOrder && f.sortOrder !== "desc") urlParams.set("sortOrder", f.sortOrder);
-        if (f.minFunding) urlParams.set("minFunding", String(f.minFunding));
-        if (f.verified) urlParams.set("verified", "true");
-        if (f.closingSoon) urlParams.set("closingSoon", "true");
-        if (f.page && f.page > 1) urlParams.set("page", String(f.page));
-        const qs = urlParams.toString();
-        // Preserve Next.js internal history state — never pass null as first arg
-        window.history.replaceState(window.history.state ?? {}, "", qs ? `?${qs}` : window.location.pathname);
-      }
       if (f.search) params.set("search", f.search);
       if (f.jurisdictionLevel) params.set("jurisdictionLevel", f.jurisdictionLevel);
       if (f.jurisdictionName) params.set("jurisdictionName", f.jurisdictionName);
