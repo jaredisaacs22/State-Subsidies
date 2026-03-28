@@ -1,6 +1,26 @@
 "use client";
 
+import { ComposableMap, Geographies, Geography, Annotation } from "react-simple-maps";
 import { cn } from "@/lib/utils";
+
+const GEO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
+
+// FIPS code → state full name (50 states only, no DC)
+const FIPS: Record<string, string> = {
+  "01": "Alabama", "02": "Alaska", "04": "Arizona", "05": "Arkansas",
+  "06": "California", "08": "Colorado", "09": "Connecticut", "10": "Delaware",
+  "12": "Florida", "13": "Georgia", "15": "Hawaii", "16": "Idaho",
+  "17": "Illinois", "18": "Indiana", "19": "Iowa", "20": "Kansas",
+  "21": "Kentucky", "22": "Louisiana", "23": "Maine", "24": "Maryland",
+  "25": "Massachusetts", "26": "Michigan", "27": "Minnesota", "28": "Mississippi",
+  "29": "Missouri", "30": "Montana", "31": "Nebraska", "32": "Nevada",
+  "33": "New Hampshire", "34": "New Jersey", "35": "New Mexico", "36": "New York",
+  "37": "North Carolina", "38": "North Dakota", "39": "Ohio", "40": "Oklahoma",
+  "41": "Oregon", "42": "Pennsylvania", "44": "Rhode Island", "45": "South Carolina",
+  "46": "South Dakota", "47": "Tennessee", "48": "Texas", "49": "Utah",
+  "50": "Vermont", "51": "Virginia", "53": "Washington", "54": "West Virginia",
+  "55": "Wisconsin", "56": "Wyoming",
+};
 
 interface USStateMapProps {
   counts: Record<string, number>;
@@ -9,102 +29,29 @@ interface USStateMapProps {
   federalCount?: number;
 }
 
-// Tile-grid cartogram — geographically accurate positions
-// [abbrev, fullName, col, row]
-const GRID: [string, string, number, number][] = [
-  // Row 0 — ME alone top-right
-  ["ME", "Maine",                10, 0],
+function getFill(count: number, isSelected: boolean): string {
+  if (isSelected) return "#1a5c38";   // forest-700
+  if (count === 0) return "#f1f5f9";  // slate-100
+  if (count <= 2)  return "#dcfce7";  // green-100
+  if (count <= 5)  return "#86efac";  // green-300
+  if (count <= 10) return "#4ade80";  // green-400
+  return "#16a34a";                   // green-600
+}
 
-  // Row 1 — Pacific NW → Great Plains → New England
-  ["WA", "Washington",           0, 1],
-  ["MT", "Montana",              1, 1],
-  ["ND", "North Dakota",         2, 1],
-  ["MN", "Minnesota",            3, 1],
-  ["VT", "Vermont",              9, 1],
-  ["NH", "New Hampshire",       10, 1],
-
-  // Row 2 — Pacific → Great Lakes → Northeast
-  ["OR", "Oregon",               0, 2],
-  ["ID", "Idaho",                1, 2],
-  ["WY", "Wyoming",              2, 2],
-  ["SD", "South Dakota",         3, 2],
-  ["WI", "Wisconsin",            4, 2],
-  ["MI", "Michigan",             5, 2],
-  ["NY", "New York",             7, 2],
-  ["MA", "Massachusetts",        8, 2],
-  ["RI", "Rhode Island",         9, 2],
-  ["CT", "Connecticut",         10, 2],
-
-  // Row 3 — California → Midwest → Mid-Atlantic
-  ["CA", "California",           0, 3],
-  ["NV", "Nevada",               1, 3],
-  ["CO", "Colorado",             2, 3],
-  ["NE", "Nebraska",             3, 3],
-  ["IA", "Iowa",                 4, 3],
-  ["IL", "Illinois",             5, 3],
-  ["IN", "Indiana",              6, 3],
-  ["OH", "Ohio",                 7, 3],
-  ["PA", "Pennsylvania",         8, 3],
-  ["NJ", "New Jersey",           9, 3],
-
-  // Row 4 — Southwest → South-Central → Mid-Atlantic
-  ["AZ", "Arizona",              1, 4],
-  ["NM", "New Mexico",           2, 4],
-  ["KS", "Kansas",               3, 4],
-  ["MO", "Missouri",             4, 4],
-  ["KY", "Kentucky",             5, 4],
-  ["WV", "West Virginia",        6, 4],
-  ["VA", "Virginia",             7, 4],
-  ["MD", "Maryland",             8, 4],
-  ["DE", "Delaware",             9, 4],
-  ["DC", "Washington D.C.",     10, 4],
-
-  // Row 5 — South-Central → Southeast
-  ["OK", "Oklahoma",             2, 5],
-  ["AR", "Arkansas",             3, 5],
-  ["TN", "Tennessee",            4, 5],
-  ["NC", "North Carolina",       5, 5],
-  ["SC", "South Carolina",       6, 5],
-
-  // Row 6 — AK inset, Texas → Deep South → FL
-  ["AK", "Alaska",               0, 6],
-  ["TX", "Texas",                2, 6],
-  ["LA", "Louisiana",            3, 6],
-  ["MS", "Mississippi",          4, 6],
-  ["AL", "Alabama",              5, 6],
-  ["GA", "Georgia",              6, 6],
-  ["FL", "Florida",              7, 6],
-
-  // Row 7 — HI inset
-  ["HI", "Hawaii",               0, 7],
-];
-
-function getColor(count: number, isSelected: boolean): string {
-  if (isSelected) return "bg-forest-700 text-white border-forest-800 scale-105 z-10 relative shadow-md";
-  if (count === 0) return "bg-slate-100 text-slate-400 border-slate-200 hover:bg-slate-200";
-  if (count <= 2)  return "bg-forest-50 text-forest-700 border-forest-200 hover:bg-forest-100";
-  if (count <= 5)  return "bg-forest-200 text-forest-800 border-forest-300 hover:bg-forest-300";
-  if (count <= 10) return "bg-forest-400 text-white border-forest-500 hover:bg-forest-500";
-  return "bg-forest-700 text-white border-forest-800 hover:bg-forest-800";
+function getStroke(isSelected: boolean): string {
+  return isSelected ? "#0f3d25" : "#cbd5e1";
 }
 
 export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USStateMapProps) {
-  const maxCol = Math.max(...GRID.map(([,, c]) => c));
-  const maxRow = Math.max(...GRID.map(([,,, r]) => r));
-
-  const byPos: Record<string, [string, string, number, number]> = {};
-  for (const s of GRID) byPos[`${s[2]},${s[3]}`] = s;
-
   const isFederal = selected === "United States";
 
   return (
-    <div className="overflow-x-auto">
+    <div>
       {/* Federal button */}
       <button
-        title={`Federal programs: ${federalCount}`}
         onClick={() => onSelect(isFederal ? "" : "United States")}
         className={cn(
-          "mb-3 px-4 py-1.5 rounded-lg border text-xs font-semibold transition-all duration-150 flex items-center gap-2",
+          "mb-3 px-4 py-1.5 rounded-lg border text-xs font-semibold transition-all flex items-center gap-2",
           isFederal
             ? "bg-brand-700 text-white border-brand-800 shadow-md"
             : "bg-brand-50 text-brand-700 border-brand-200 hover:bg-brand-100"
@@ -114,40 +61,60 @@ export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USS
         {federalCount > 0 && (
           <span className={cn(
             "text-[10px] px-1.5 py-0.5 rounded-full font-bold",
-            isFederal ? "bg-white/20" : "bg-brand-100 text-brand-800"
+            isFederal ? "bg-white/20 text-white" : "bg-brand-100 text-brand-800"
           )}>
             {federalCount}
           </span>
         )}
       </button>
 
-      {/* State grid */}
-      <div className="inline-block">
-        {Array.from({ length: maxRow + 1 }, (_, row) => (
-          <div key={row} className="flex gap-1 mb-1">
-            {Array.from({ length: maxCol + 1 }, (_, col) => {
-              const state = byPos[`${col},${row}`];
-              if (!state) return <div key={col} className="w-10 h-10 flex-shrink-0" />;
-              const [abbrev, name] = state;
-              const count = counts[name] ?? 0;
-              const isSelected = selected === name;
-              return (
-                <button
-                  key={col}
-                  title={`${name}: ${count} program${count !== 1 ? "s" : ""}`}
-                  onClick={() => onSelect(name)}
-                  className={cn(
-                    "w-10 h-10 flex-shrink-0 rounded text-[11px] font-semibold border transition-all duration-150",
-                    getColor(count, isSelected)
-                  )}
-                >
-                  {abbrev}
-                </button>
-              );
-            })}
-          </div>
-        ))}
-      </div>
+      {/* SVG map */}
+      <ComposableMap
+        projection="geoAlbersUsa"
+        style={{ width: "100%", height: "auto" }}
+        projectionConfig={{ scale: 1000 }}
+      >
+        <Geographies geography={GEO_URL}>
+          {({ geographies }) =>
+            geographies
+              .filter((geo) => FIPS[geo.id])
+              .map((geo) => {
+                const name = FIPS[geo.id];
+                const count = counts[name] ?? 0;
+                const isSelected = selected === name;
+                return (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    onClick={() => onSelect(name)}
+                    style={{
+                      default: {
+                        fill: getFill(count, isSelected),
+                        stroke: getStroke(isSelected),
+                        strokeWidth: isSelected ? 1.5 : 0.5,
+                        outline: "none",
+                        cursor: "pointer",
+                      },
+                      hover: {
+                        fill: isSelected ? "#1a5c38" : count > 0 ? "#4ade80" : "#e2e8f0",
+                        stroke: "#64748b",
+                        strokeWidth: 1,
+                        outline: "none",
+                        cursor: "pointer",
+                      },
+                      pressed: {
+                        fill: "#1a5c38",
+                        outline: "none",
+                      },
+                    }}
+                  >
+                    <title>{`${name}: ${count} program${count !== 1 ? "s" : ""}`}</title>
+                  </Geography>
+                );
+              })
+          }
+        </Geographies>
+      </ComposableMap>
     </div>
   );
 }
