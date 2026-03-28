@@ -23,12 +23,6 @@ const SUGGESTIONS = [
   { label: "Manufacturing", text: "Ohio manufacturing facility — expansion credits and equipment grants" },
 ];
 
-const FOLLOW_UPS_MATCHED = [
-  "How do I apply for these?",
-  "What documents will I need?",
-  "Show more similar programs",
-];
-
 const FOLLOW_UPS_ASKING = [
   "We're a small business",
   "We're a nonprofit",
@@ -170,12 +164,17 @@ export function BusinessIntakeChat() {
   const [streaming, setStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasPreviousSession, setHasPreviousSession] = useState(false);
+  const [aiConfigured, setAiConfigured] = useState<boolean | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const abortRef = useRef<AbortController | null>(null);
 
-  // Restore session from localStorage on mount
+  // Check AI configuration and restore session from localStorage on mount
   useEffect(() => {
+    fetch("/api/chat")
+      .then((r) => r.json())
+      .then((d) => setAiConfigured(!!d.configured))
+      .catch(() => setAiConfigured(false));
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
@@ -262,6 +261,25 @@ export function BusinessIntakeChat() {
   const showFollowUps = !streaming && hasUserMessage && messages[messages.length - 1]?.role === "assistant";
 
   if (!open) {
+    // Show setup-required banner when AI is not configured
+    if (aiConfigured === false) {
+      return (
+        <div className="mt-6 w-full max-w-2xl mx-auto">
+          <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm px-5 py-4 flex items-start gap-3">
+            <div className="w-8 h-8 rounded-xl bg-white/8 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Sparkles size={14} className="text-white/30" />
+            </div>
+            <div>
+              <p className="text-white/55 font-semibold text-sm">AI advisor not configured</p>
+              <p className="text-white/30 text-[11px] mt-0.5 leading-relaxed">
+                Add your <code className="font-mono bg-white/8 px-1 rounded">ANTHROPIC_API_KEY</code> to <code className="font-mono bg-white/8 px-1 rounded">.env</code> and restart to enable AI program matching.
+              </p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="mt-6 w-full max-w-2xl mx-auto">
         <div className="rounded-2xl border border-white/12 bg-white/6 backdrop-blur-sm overflow-hidden">

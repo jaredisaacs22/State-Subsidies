@@ -180,23 +180,30 @@ export default function HomePage() {
     });
   }, [handleFilterChange]);
 
-  // Single mount effect: reads URL params (for shareable links) then fetches once
+  // Single mount effect: reads URL params + stored audience, then fetches once
   useEffect(() => {
     const urlFilters = readFiltersFromURL();
-    const initial = Object.keys(urlFilters).length > 0
-      ? { ...DEFAULT_FILTERS, ...urlFilters }
-      : DEFAULT_FILTERS;
-    if (Object.keys(urlFilters).length > 0) setFilters(initial);
+    const hasUrlFilters = Object.keys(urlFilters).length > 0;
+
+    // Restore stored audience selection (visual state always)
+    const stored = localStorage.getItem("ss_audience_v1");
+    const storedAudience = stored && AUDIENCES.some((a) => a.id === stored)
+      ? (stored as AudienceId)
+      : null;
+    if (storedAudience) setSelectedAudience(storedAudience);
+
+    // Build initial filters: URL params take precedence; fall back to audience preset
+    let initial: IncentiveFilters = DEFAULT_FILTERS;
+    if (hasUrlFilters) {
+      initial = { ...DEFAULT_FILTERS, ...urlFilters };
+    } else if (storedAudience) {
+      const preset = AUDIENCES.find((a) => a.id === storedAudience)?.filterPreset ?? {};
+      initial = { ...DEFAULT_FILTERS, ...preset };
+    }
+
+    if (initial !== DEFAULT_FILTERS) setFilters(initial);
     fetchIncentives(initial);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Restore audience from localStorage on mount
-  useEffect(() => {
-    const stored = localStorage.getItem("ss_audience_v1");
-    if (stored && AUDIENCES.some((a) => a.id === stored)) {
-      setSelectedAudience(stored as AudienceId);
-    }
   }, []);
 
   const handleAudienceSelect = useCallback(

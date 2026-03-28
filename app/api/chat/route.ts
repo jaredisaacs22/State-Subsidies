@@ -7,6 +7,13 @@ import { parseIncentive } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
+export function GET() {
+  const configured =
+    !!process.env.ANTHROPIC_API_KEY &&
+    process.env.ANTHROPIC_API_KEY !== "your_api_key_here";
+  return Response.json({ configured });
+}
+
 const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 const SYSTEM = `You are a world-class government incentive advisor for StateSubsidies.com — think of yourself as a senior grants consultant who has helped hundreds of businesses secure funding. Your job: deeply understand the user's situation, find the most relevant programs, and tell them honestly how strong their chances are.
