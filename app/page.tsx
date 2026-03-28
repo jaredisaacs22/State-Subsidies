@@ -33,6 +33,7 @@ function readFiltersFromURL(): Partial<IncentiveFilters> {
   if (p.get("sortOrder")) out.sortOrder = p.get("sortOrder") as "asc" | "desc";
   if (p.get("minFunding")) out.minFunding = parseInt(p.get("minFunding")!);
   if (p.get("verified") === "true") out.verified = true;
+  if (p.get("closingSoon") === "true") out.closingSoon = true;
   if (p.get("page")) out.page = parseInt(p.get("page")!);
   return out;
 }
@@ -103,17 +104,6 @@ export default function HomePage() {
     fetch("/api/stats").then(r => r.json()).then(setStats).catch(() => {});
   }, []);
 
-  // On mount: read URL params into filters
-  useEffect(() => {
-    const urlFilters = readFiltersFromURL();
-    if (Object.keys(urlFilters).length > 0) {
-      const merged = { ...DEFAULT_FILTERS, ...urlFilters };
-      setFilters(merged);
-      fetchIncentives(merged);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const fetchIncentives = useCallback(async (f: IncentiveFilters) => {
     setLoading(true);
     setError(null);
@@ -131,6 +121,7 @@ export default function HomePage() {
         if (f.sortOrder && f.sortOrder !== "desc") urlParams.set("sortOrder", f.sortOrder);
         if (f.minFunding) urlParams.set("minFunding", String(f.minFunding));
         if (f.verified) urlParams.set("verified", "true");
+        if (f.closingSoon) urlParams.set("closingSoon", "true");
         if (f.page && f.page > 1) urlParams.set("page", String(f.page));
         const qs = urlParams.toString();
         window.history.replaceState(null, "", qs ? `?${qs}` : window.location.pathname);
@@ -189,9 +180,16 @@ export default function HomePage() {
     });
   }, [handleFilterChange]);
 
+  // Single mount effect: reads URL params (for shareable links) then fetches once
   useEffect(() => {
-    fetchIncentives(DEFAULT_FILTERS);
-  }, [fetchIncentives]);
+    const urlFilters = readFiltersFromURL();
+    const initial = Object.keys(urlFilters).length > 0
+      ? { ...DEFAULT_FILTERS, ...urlFilters }
+      : DEFAULT_FILTERS;
+    if (Object.keys(urlFilters).length > 0) setFilters(initial);
+    fetchIncentives(initial);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Restore audience from localStorage on mount
   useEffect(() => {
@@ -203,12 +201,25 @@ export default function HomePage() {
 
   const handleAudienceSelect = useCallback(
     (filterPreset: Partial<IncentiveFilters>, audienceId: AudienceId) => {
+      // Toggle off if clicking the same audience again
+      if (selectedAudience === audienceId) {
+        localStorage.removeItem("ss_audience_v1");
+        setSelectedAudience(null);
+        handleFilterChange({ industryCategory: undefined, jurisdictionLevel: undefined, incentiveType: undefined });
+        return;
+      }
       localStorage.setItem("ss_audience_v1", audienceId);
       setSelectedAudience(audienceId);
       handleFilterChange(filterPreset);
     },
-    [handleFilterChange]
+    [handleFilterChange, selectedAudience]
   );
+
+  const handleAudienceClear = useCallback(() => {
+    localStorage.removeItem("ss_audience_v1");
+    setSelectedAudience(null);
+    handleFilterChange({ industryCategory: undefined, jurisdictionLevel: undefined, incentiveType: undefined });
+  }, [handleFilterChange]);
 
   const sortValue = `${filters.sortBy ?? "createdAt"}_${filters.sortOrder ?? "desc"}`;
   const handleSortChange = (v: string) => {
@@ -247,11 +258,12 @@ export default function HomePage() {
 
           {/* H1 */}
           <h1 className="text-4xl sm:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight leading-[1.08] mb-4 text-balance">
-            Search government programs
+            Find government money<br className="hidden sm:block" /> for your business
           </h1>
 
           <p className="text-white/55 text-lg mb-9 max-w-xl mx-auto leading-relaxed">
-            Grants, credits, loans &amp; rebates — all 50 states.
+            Grants, tax credits, loans &amp; rebates — federal and all 50 states.<br className="hidden sm:block" />
+            Tell us about your situation and we'll find what you qualify for.
           </p>
 
           {/* Search bar */}
@@ -333,14 +345,13 @@ export default function HomePage() {
           <SortSelect value={sortValue} onChange={handleSortChange} />
         </div>
 
-        {/* Audience selector — shown only when no active filters/search */}
-        {!hasActiveFilters && !filters.search && (
-          <AudienceSelector
-            onSelect={handleAudienceSelect}
-            selectedId={selectedAudience}
-            className="mb-6"
-          />
-        )}
+        {/* Audience selector — always visible, allows quick persona-based filtering */}
+        <AudienceSelector
+          onSelect={handleAudienceSelect}
+          selectedId={selectedAudience}
+          onClear={handleAudienceClear}
+          className="mb-6"
+        />
 
         {/* Desktop flex row */}
         <div className="flex gap-8">
@@ -368,22 +379,6 @@ export default function HomePage() {
                     </span>
                   )}
                 </p>
-                {selectedAudience && (
-                  <span className="text-xs text-forest-700 bg-forest-50 border border-forest-200 rounded-full px-2.5 py-1 flex items-center gap-1.5">
-                    {AUDIENCES.find((a) => a.id === selectedAudience)?.emoji}
-                    {AUDIENCES.find((a) => a.id === selectedAudience)?.label}
-                    <button
-                      onClick={() => {
-                        setSelectedAudience(null);
-                        localStorage.removeItem("ss_audience_v1");
-                        handleFilterChange({ industryCategory: undefined });
-                      }}
-                      className="hover:text-forest-900"
-                    >
-                      ×
-                    </button>
-                  </span>
-                )}
               </div>
               <div className="flex items-center gap-3">
                 {(hasActiveFilters || !!filters.search) && (

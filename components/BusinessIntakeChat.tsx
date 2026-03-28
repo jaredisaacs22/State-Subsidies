@@ -217,8 +217,10 @@ export function BusinessIntakeChat() {
     abortRef.current = controller;
     try {
       const res = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: next }), signal: controller.signal });
-      if (!res.ok) throw new Error(`Request failed (${res.status})`);
-      const reader = res.body?.getReader();
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err?.error ?? `Request failed (${res.status})`);
+      }      const reader = res.body?.getReader();
       if (!reader) throw new Error("No response body");
       const decoder = new TextDecoder();
       let buffer = "";

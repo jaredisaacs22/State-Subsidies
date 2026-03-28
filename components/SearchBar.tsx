@@ -22,7 +22,7 @@ export function SearchBar({ value, onChange, placeholder, className }: SearchBar
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder ?? "Search incentives, agencies, programs…"}
-        className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 pl-11 pr-10 text-[15px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-shadow"
+        className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 pl-11 pr-10 text-[15px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-700/30 focus:border-slate-700 transition-shadow"
       />
       {value && (
         <button

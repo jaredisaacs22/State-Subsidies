@@ -3,17 +3,15 @@
 import { cn } from "@/lib/utils";
 import type { IncentiveFilters } from "@/lib/types";
 
-const STORAGE_KEY = "ss_audience_v1";
-
 export type AudienceId =
   | "small_business"
-  | "nonprofit"
-  | "educator"
-  | "farmer"
-  | "researcher"
   | "startup"
   | "enterprise"
-  | "government";
+  | "nonprofit"
+  | "government"
+  | "educator"
+  | "farmer"
+  | "researcher";
 
 interface Audience {
   id: AudienceId;
@@ -27,23 +25,23 @@ export const AUDIENCES: Audience[] = [
   {
     id: "small_business",
     label: "Small Business",
-    description: "Contractors, retail, services, restaurants",
+    description: "Under 500 employees, any sector",
     emoji: "🏢",
-    filterPreset: {},
+    filterPreset: { incentiveType: undefined, jurisdictionLevel: undefined },
   },
   {
     id: "startup",
     label: "Startup",
-    description: "Early-stage companies & founders",
+    description: "Early-stage, R&D, tech ventures",
     emoji: "🚀",
     filterPreset: { industryCategory: "Technology" },
   },
   {
     id: "enterprise",
     label: "Enterprise",
-    description: "Large manufacturers, fleet operators",
+    description: "Large-scale operations, multi-site",
     emoji: "🏭",
-    filterPreset: { industryCategory: "Manufacturing" },
+    filterPreset: { jurisdictionLevel: "FEDERAL" },
   },
   {
     id: "nonprofit",
@@ -57,12 +55,12 @@ export const AUDIENCES: Audience[] = [
     label: "Government",
     description: "Municipalities, agencies, public entities",
     emoji: "🏛️",
-    filterPreset: { jurisdictionLevel: "CITY" },
+    filterPreset: { jurisdictionLevel: "AGENCY" },
   },
   {
     id: "educator",
     label: "Educator / School",
-    description: "K-12 teachers, schools, districts",
+    description: "K–12, districts, community colleges",
     emoji: "🎓",
     filterPreset: { industryCategory: "Education" },
   },
@@ -85,16 +83,27 @@ export const AUDIENCES: Audience[] = [
 interface AudienceSelectorProps {
   onSelect: (filters: Partial<IncentiveFilters>, audienceId: AudienceId) => void;
   selectedId?: AudienceId | null;
+  onClear?: () => void;
   className?: string;
 }
 
-export function AudienceSelector({ onSelect, selectedId, className }: AudienceSelectorProps) {
+export function AudienceSelector({ onSelect, selectedId, onClear, className }: AudienceSelectorProps) {
   return (
     <div className={cn("", className)}>
-      <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-400 mb-3">
-        I&apos;m looking for programs for a…
-      </p>
-      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-400">
+          Who are you looking for programs for?
+        </p>
+        {selectedId && onClear && (
+          <button
+            onClick={onClear}
+            className="text-[11px] text-forest-700 hover:text-forest-800 font-medium underline underline-offset-2"
+          >
+            Clear
+          </button>
+        )}
+      </div>
+      <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
         {AUDIENCES.map((a) => {
           const active = selectedId === a.id;
           return (
@@ -104,7 +113,7 @@ export function AudienceSelector({ onSelect, selectedId, className }: AudienceSe
               className={cn(
                 "text-left p-3 rounded-xl border transition-all group",
                 active
-                  ? "border-forest-600 bg-forest-50 shadow-sm"
+                  ? "border-forest-600 bg-forest-50 shadow-sm ring-1 ring-forest-600/20"
                   : "border-slate-200 bg-white hover:border-forest-500 hover:bg-forest-50 hover:shadow-sm"
               )}
             >
@@ -115,7 +124,7 @@ export function AudienceSelector({ onSelect, selectedId, className }: AudienceSe
               )}>
                 {a.label}
               </div>
-              <div className="text-[10px] text-slate-400 leading-snug mt-0.5 hidden sm:block">
+              <div className="text-[10px] text-slate-400 leading-snug mt-0.5 hidden lg:block">
                 {a.description}
               </div>
             </button>

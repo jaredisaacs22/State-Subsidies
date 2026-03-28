@@ -8,10 +8,13 @@ import { INCENTIVE_TYPE_BORDER, INDUSTRY_COLORS } from "@/lib/types";
 import { useBookmarks } from "@/lib/useBookmarks";
 import type { Incentive } from "@/lib/types";
 
-const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+// Only show "New" for programs added after launch (not seeded baseline data)
+const LAUNCH_DATE = new Date("2026-04-01T00:00:00Z");
+const NEW_THRESHOLD_MS = 14 * 24 * 60 * 60 * 1000; // 14 days
 
 function isNewProgram(createdAt: string): boolean {
-  return Date.now() - new Date(createdAt).getTime() < SEVEN_DAYS_MS;
+  const created = new Date(createdAt);
+  return created >= LAUNCH_DATE && Date.now() - created.getTime() < NEW_THRESHOLD_MS;
 }
 
 function Highlight({ text, query }: { text: string; query?: string }) {

@@ -67,6 +67,12 @@ Use **bold** for program names and key numbers. Keep each program summary to 2-3
 
 
 export async function POST(req: NextRequest) {
+  if (!process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY === "your_api_key_here") {
+    return new Response(
+      JSON.stringify({ error: "AI features require an ANTHROPIC_API_KEY — add it to your .env file." }),
+      { status: 503, headers: { "Content-Type": "application/json" } }
+    );
+  }
   try {
     const { messages } = await req.json();
     const matchedIncentives: ReturnType<typeof parseIncentive>[] = [];

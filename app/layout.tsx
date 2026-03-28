@@ -61,7 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <ul className="space-y-1.5 text-sm text-slate-500">
                   {["EV Charging","Clean Technology","Manufacturing","Agriculture","Real Estate","Healthcare","Energy Storage","Construction"].map((c) => (
                     <li key={c}>
-                      <a href={`/?industry=${encodeURIComponent(c)}`} className="hover:text-forest-700 transition-colors">{c}</a>
+                      <a href={`/?industryCategory=${encodeURIComponent(c)}`} className="hover:text-forest-700 transition-colors">{c}</a>
                     </li>
                   ))}
                 </ul>
