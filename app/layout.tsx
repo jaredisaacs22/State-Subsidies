@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </a>
 
             <nav className="flex items-center gap-1">
-              <a href="/" className="btn-ghost text-sm">Browse</a>
+              <a href="/#browse" className="btn-ghost text-sm">Browse</a>
               <a href="/map" className="btn-ghost text-sm hidden sm:flex">Map</a>
               <a href="/saved" className="btn-ghost text-sm hidden sm:flex">Saved</a>
             </nav>
@@ -61,7 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <ul className="space-y-1.5 text-sm text-slate-500">
                   {["EV Charging","Clean Technology","Manufacturing","Agriculture","Real Estate","Healthcare","Energy Storage","Construction"].map((c) => (
                     <li key={c}>
-                      <a href={`/?industryCategory=${encodeURIComponent(c)}`} className="hover:text-forest-700 transition-colors">{c}</a>
+                      <a href={`/?industryCategory=${encodeURIComponent(c)}#browse`} className="hover:text-forest-700 transition-colors">{c}</a>
                     </li>
                   ))}
                 </ul>
@@ -69,7 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div>
                 <p className="font-semibold text-slate-700 text-sm mb-3">Resources</p>
                 <ul className="space-y-1.5 text-sm text-slate-500">
-                  <li><a href="/" className="hover:text-forest-700 transition-colors">Browse All Programs</a></li>
+                  <li><a href="/#browse" className="hover:text-forest-700 transition-colors">Browse All Programs</a></li>
                   <li><a href="/map" className="hover:text-forest-700 transition-colors">State Map</a></li>
                   <li><a href="https://www.grants.gov" target="_blank" rel="noopener noreferrer" className="hover:text-forest-700 transition-colors">Grants.gov ↗</a></li>
                   <li><a href="https://www.sba.gov" target="_blank" rel="noopener noreferrer" className="hover:text-forest-700 transition-colors">U.S. Small Business Administration ↗</a></li>

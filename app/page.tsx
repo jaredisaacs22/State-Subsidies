@@ -322,7 +322,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Browse ───────────────────────────────────────────────────────── */}
-      <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <section id="browse" className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         {/* Mobile filter button row */}
         <div className="lg:hidden flex items-center gap-3 mb-5">
