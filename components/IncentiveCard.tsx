@@ -89,13 +89,14 @@ function EligibilityChecker({ incentive, onClose }: { incentive: Incentive; onCl
       </div>
 
       <p className="text-[11px] text-slate-500 mb-3">
-        Answer honestly — this helps estimate your chances before you spend time applying.
+        Answer each question to estimate your fit. Can you meet this requirement?
       </p>
 
       <div className="space-y-3">
         {questions.map((req, i) => (
           <div key={i} className="bg-white rounded-lg border border-slate-200 px-3 py-2.5">
-            <p className="text-[12px] text-slate-700 leading-snug mb-2">{req}</p>
+            <p className="text-[12px] text-slate-700 leading-snug mb-1.5">{req}</p>
+            <p className="text-[10px] text-slate-400 mb-2">Do you meet this requirement?</p>
             <div className="flex gap-2" role="group" aria-label={`Requirement ${i + 1} of ${questions.length}`}>
               {(["yes", "no", "unsure"] as const).map((val) => (
                 <button
@@ -173,6 +174,9 @@ function EligibilityChecker({ incentive, onClose }: { incentive: Incentive; onCl
             className="mt-2 inline-flex items-center gap-1 text-[11px] font-semibold text-forest-700 hover:text-forest-800 transition-colors">
             View full requirements <ArrowRight size={10} aria-hidden />
           </a>
+          <p className="mt-2 text-[9px] text-slate-400 leading-snug italic">
+            This is an informal self-assessment only — not a guarantee of eligibility. Final determinations are made by the administering agency. Always verify requirements directly with the program before applying.
+          </p>
         </div>
       )}
     </div>
