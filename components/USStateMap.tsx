@@ -1,6 +1,6 @@
 "use client";
 
-import { ComposableMap, Geographies, Geography, Annotation } from "react-simple-maps";
+import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { cn } from "@/lib/utils";
 
 const GEO_URL = "/us-states.json";
@@ -75,7 +75,7 @@ export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USS
         projectionConfig={{ scale: 1000 }}
       >
         <Geographies geography={GEO_URL}>
-          {({ geographies }) =>
+          {({ geographies }: { geographies: any[] }) =>
             geographies
               .filter((geo) => FIPS[geo.id])
               .map((geo) => {
