@@ -42,24 +42,23 @@ export async function GET(request: NextRequest) {
     if (filters.status) where.status = filters.status;
     if (filters.jurisdictionLevel) where.jurisdictionLevel = filters.jurisdictionLevel;
     if (filters.incentiveType) where.incentiveType = filters.incentiveType;
-    if (jurisdictionNameFilter) where.jurisdictionName = { contains: jurisdictionNameFilter };
+    if (jurisdictionNameFilter) where.jurisdictionName = { contains: jurisdictionNameFilter, mode: "insensitive" };
 
     // Full-text search across title, summary, agency
-    // Note: SQLite LIKE is case-insensitive for ASCII by default — no mode needed
     if (filters.search) {
       where.OR = [
-        { title: { contains: filters.search } },
-        { shortSummary: { contains: filters.search } },
-        { managingAgency: { contains: filters.search } },
-        { agencyAcronym: { contains: filters.search } },
-        { jurisdictionName: { contains: filters.search } },
-        { industryCategories: { contains: filters.search } },
+        { title: { contains: filters.search, mode: "insensitive" } },
+        { shortSummary: { contains: filters.search, mode: "insensitive" } },
+        { managingAgency: { contains: filters.search, mode: "insensitive" } },
+        { agencyAcronym: { contains: filters.search, mode: "insensitive" } },
+        { jurisdictionName: { contains: filters.search, mode: "insensitive" } },
+        { industryCategories: { contains: filters.search, mode: "insensitive" } },
       ];
     }
 
     // Industry category is stored as JSON array string — use contains
     if (filters.industryCategory) {
-      where.industryCategories = { contains: filters.industryCategory };
+      where.industryCategories = { contains: filters.industryCategory, mode: "insensitive" };
     }
 
     if (filters.verified) where.isVerified = true;

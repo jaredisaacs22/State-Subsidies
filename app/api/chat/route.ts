@@ -149,21 +149,20 @@ export async function POST(req: NextRequest) {
             const where: Record<string, unknown> = { status: "ACTIVE" };
 
             if (input.jurisdictionName) {
-              // SQLite LIKE is case-insensitive for ASCII — no mode:"insensitive" needed
-              where.jurisdictionName = { contains: input.jurisdictionName };
+              where.jurisdictionName = { contains: input.jurisdictionName, mode: "insensitive" };
             }
             if (input.jurisdictionLevel) where.jurisdictionLevel = input.jurisdictionLevel;
             if (input.incentiveType) where.incentiveType = input.incentiveType;
 
             const orClauses: Array<Record<string, unknown>> = [];
             if (input.industryCategory) {
-              orClauses.push({ industryCategories: { contains: input.industryCategory } });
+              orClauses.push({ industryCategories: { contains: input.industryCategory, mode: "insensitive" } });
             }
             if (input.keyword) {
               orClauses.push(
-                { title: { contains: input.keyword } },
-                { shortSummary: { contains: input.keyword } },
-                { managingAgency: { contains: input.keyword } }
+                { title: { contains: input.keyword, mode: "insensitive" } },
+                { shortSummary: { contains: input.keyword, mode: "insensitive" } },
+                { managingAgency: { contains: input.keyword, mode: "insensitive" } }
               );
             }
             if (orClauses.length) where.OR = orClauses;

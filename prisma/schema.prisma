@@ -1,14 +1,12 @@
 // Prisma schema for State Subsidies Discovery Platform
-// SQLite for local dev; switch provider to "postgresql" for production
-// Note: SQLite does not support enums — values are stored as Strings
-//       and validated at the application layer (see lib/types.ts).
+// PostgreSQL for production (Vercel Postgres / Supabase / etc.)
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
