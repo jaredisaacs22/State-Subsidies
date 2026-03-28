@@ -20,6 +20,23 @@ const DEFAULT_FILTERS: IncentiveFilters = {
   pageSize: 24,
 };
 
+function readFiltersFromURL(): Partial<IncentiveFilters> {
+  if (typeof window === "undefined") return {};
+  const p = new URLSearchParams(window.location.search);
+  const out: Partial<IncentiveFilters> = {};
+  if (p.get("search")) out.search = p.get("search")!;
+  if (p.get("jurisdictionLevel")) out.jurisdictionLevel = p.get("jurisdictionLevel") as IncentiveFilters["jurisdictionLevel"];
+  if (p.get("jurisdictionName")) out.jurisdictionName = p.get("jurisdictionName")!;
+  if (p.get("incentiveType")) out.incentiveType = p.get("incentiveType") as IncentiveFilters["incentiveType"];
+  if (p.get("industryCategory")) out.industryCategory = p.get("industryCategory")!;
+  if (p.get("sortBy")) out.sortBy = p.get("sortBy") as IncentiveFilters["sortBy"];
+  if (p.get("sortOrder")) out.sortOrder = p.get("sortOrder") as "asc" | "desc";
+  if (p.get("minFunding")) out.minFunding = parseInt(p.get("minFunding")!);
+  if (p.get("verified") === "true") out.verified = true;
+  if (p.get("page")) out.page = parseInt(p.get("page")!);
+  return out;
+}
+
 // ── Inline sort select ────────────────────────────────────────────────────────
 function SortSelect({
   value,
@@ -81,11 +98,38 @@ export default function HomePage() {
   const [selectedAudience, setSelectedAudience] = useState<AudienceId | null>(null);
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // On mount: read URL params into filters
+  useEffect(() => {
+    const urlFilters = readFiltersFromURL();
+    if (Object.keys(urlFilters).length > 0) {
+      const merged = { ...DEFAULT_FILTERS, ...urlFilters };
+      setFilters(merged);
+      fetchIncentives(merged);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const fetchIncentives = useCallback(async (f: IncentiveFilters) => {
     setLoading(true);
     setError(null);
     try {
       const params = new URLSearchParams();
+      // Sync URL (for shareability) — only non-default values
+      if (typeof window !== "undefined") {
+        const urlParams = new URLSearchParams();
+        if (f.search) urlParams.set("search", f.search);
+        if (f.jurisdictionLevel) urlParams.set("jurisdictionLevel", f.jurisdictionLevel);
+        if (f.jurisdictionName) urlParams.set("jurisdictionName", f.jurisdictionName);
+        if (f.incentiveType) urlParams.set("incentiveType", f.incentiveType);
+        if (f.industryCategory) urlParams.set("industryCategory", f.industryCategory);
+        if (f.sortBy && f.sortBy !== "createdAt") urlParams.set("sortBy", f.sortBy);
+        if (f.sortOrder && f.sortOrder !== "desc") urlParams.set("sortOrder", f.sortOrder);
+        if (f.minFunding) urlParams.set("minFunding", String(f.minFunding));
+        if (f.verified) urlParams.set("verified", "true");
+        if (f.page && f.page > 1) urlParams.set("page", String(f.page));
+        const qs = urlParams.toString();
+        window.history.replaceState(null, "", qs ? `?${qs}` : window.location.pathname);
+      }
       if (f.search) params.set("search", f.search);
       if (f.jurisdictionLevel) params.set("jurisdictionLevel", f.jurisdictionLevel);
       if (f.jurisdictionName) params.set("jurisdictionName", f.jurisdictionName);

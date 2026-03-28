@@ -40,9 +40,25 @@ export default function MapPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="mb-8">
+      <div className="mb-6">
         <h1 className="text-2xl font-bold text-slate-900 mb-1">Incentives by State</h1>
-        <p className="text-slate-500 text-sm">Click a state to see its programs. Darker = more programs.</p>
+        <p className="text-slate-500 text-sm mb-4">Click a state to see its incentive programs. Darker shading = more programs.</p>
+        {/* Legend */}
+        <div className="flex items-center gap-3 flex-wrap">
+          <span className="text-xs text-slate-400 font-medium">Programs:</span>
+          {[
+            { label: "None", cls: "bg-slate-100 border-slate-200" },
+            { label: "1–2", cls: "bg-forest-50 border-forest-200" },
+            { label: "3–5", cls: "bg-forest-200 border-forest-300" },
+            { label: "6–10", cls: "bg-forest-400 border-forest-500" },
+            { label: "11+", cls: "bg-forest-700 border-forest-800" },
+          ].map(({ label, cls }) => (
+            <div key={label} className="flex items-center gap-1.5">
+              <span className={`w-4 h-4 rounded-sm border ${cls} inline-block`} />
+              <span className="text-xs text-slate-500">{label}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">

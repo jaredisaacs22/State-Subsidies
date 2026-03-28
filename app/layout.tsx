@@ -32,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <nav className="flex items-center gap-1">
               <a href="/" className="btn-ghost text-sm">Browse</a>
               <a href="/map" className="btn-ghost text-sm hidden sm:flex">Map</a>
+              <a href="/saved" className="btn-ghost text-sm hidden sm:flex">Saved</a>
             </nav>
           </div>
         </header>

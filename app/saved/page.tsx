@@ -13,7 +13,7 @@ export default function SavedPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/incentives?limit=500")
+    fetch("/api/incentives?pageSize=200&status=ACTIVE")
       .then((r) => r.json())
       .then((d) => {
         setAll(d.data ?? []);
@@ -28,17 +28,17 @@ export default function SavedPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <Link
         href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-brand-600 mb-6 transition-colors"
+        className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-forest-700 mb-6 transition-colors"
       >
         <ArrowLeft size={16} />
         Back to browse
       </Link>
 
       <div className="flex items-center gap-3 mb-8">
-        <Bookmark size={22} className="text-brand-600" />
+        <Bookmark size={22} className="text-forest-700" />
         <h1 className="text-2xl font-bold text-slate-900">Saved Programs</h1>
         {bookmarks.length > 0 && (
-          <span className="badge bg-brand-100 text-brand-700 font-semibold">
+          <span className="badge bg-forest-50 text-forest-700 font-semibold">
             {bookmarks.length}
           </span>
         )}

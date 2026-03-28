@@ -30,11 +30,12 @@ const GRID: [string, string, number, number][] = [
 ];
 
 function getColor(count: number, selected: boolean): string {
-  if (selected) return "bg-brand-600 text-white border-brand-700";
+  if (selected) return "bg-forest-700 text-white border-forest-800 scale-105 z-10 relative shadow-md";
   if (count === 0) return "bg-slate-100 text-slate-400 border-slate-200 hover:bg-slate-200";
-  if (count <= 2)  return "bg-brand-100 text-brand-700 border-brand-200 hover:bg-brand-200";
-  if (count <= 5)  return "bg-brand-300 text-brand-900 border-brand-400 hover:bg-brand-400";
-  return "bg-brand-500 text-white border-brand-600 hover:bg-brand-600";
+  if (count <= 2)  return "bg-forest-50 text-forest-700 border-forest-200 hover:bg-forest-100";
+  if (count <= 5)  return "bg-forest-200 text-forest-900 border-forest-300 hover:bg-forest-300";
+  if (count <= 10) return "bg-forest-400 text-white border-forest-500 hover:bg-forest-500";
+  return "bg-forest-700 text-white border-forest-800 hover:bg-forest-800";
 }
 
 export function USStateMap({ counts, selected, onSelect }: USStateMapProps) {

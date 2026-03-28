@@ -103,7 +103,7 @@ function BookmarksWidget() {
   return (
     <div className="mt-4 pt-4 border-t border-slate-100">
       <a
-        href="/bookmarks"
+        href="/saved"
         className="flex items-center gap-2 text-sm text-forest-700 hover:text-forest-800 font-medium transition-colors"
       >
         <Bookmark size={13} className="fill-current" />
