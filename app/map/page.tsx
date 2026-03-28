@@ -34,17 +34,19 @@ const TYPE_COLORS: Record<string, string> = {
 
 export default function MapPage() {
   const [counts, setCounts] = useState<Record<string, number>>({});
+  const [federalCount, setFederalCount] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [summary, setSummary] = useState<StateSummary | null>(null);
   const [loading, setLoading] = useState(false);
 
   // Fetch all incentives once to build state counts
   useEffect(() => {
-    fetch("/api/incentives?pageSize=200&status=ACTIVE")
+    fetch("/api/incentives?pageSize=500&status=ACTIVE")
       .then((r) => r.json())
       .then((data: PaginatedResponse<Incentive>) => {
         const c: Record<string, number> = {};
         for (const inc of data.data) {
+          if (inc.jurisdictionLevel === "FEDERAL") continue; // counted separately
           const name = inc.jurisdictionName;
           c[name] = (c[name] ?? 0) + 1;
         }
@@ -53,11 +55,23 @@ export default function MapPage() {
       .catch(() => {});
   }, []);
 
-  // Fetch detailed data when state selected
+  // Fetch federal count once
+  useEffect(() => {
+    fetch("/api/incentives?pageSize=1&status=ACTIVE&jurisdictionLevel=FEDERAL")
+      .then((r) => r.json())
+      .then((data: PaginatedResponse<Incentive>) => setFederalCount(data.total))
+      .catch(() => {});
+  }, []);
+
+  // Fetch detailed data when state/federal selected
   useEffect(() => {
     if (!selected) { setSummary(null); return; }
     setLoading(true);
-    fetch(`/api/incentives?pageSize=50&status=ACTIVE&jurisdictionName=${encodeURIComponent(selected)}`)
+    const isFederal = selected === "United States";
+    const url = isFederal
+      ? `/api/incentives?pageSize=50&status=ACTIVE&jurisdictionLevel=FEDERAL`
+      : `/api/incentives?pageSize=50&status=ACTIVE&jurisdictionName=${encodeURIComponent(selected)}`;
+    fetch(url)
       .then((r) => r.json())
       .then((data: PaginatedResponse<Incentive>) => {
         const all = data.data;
@@ -84,7 +98,7 @@ export default function MapPage() {
       .finally(() => setLoading(false));
   }, [selected]);
 
-  const totalPrograms = Object.values(counts).reduce((a, b) => a + b, 0);
+  const totalPrograms = Object.values(counts).reduce((a, b) => a + b, 0) + federalCount;
   const statesWithPrograms = Object.keys(counts).filter((s) => counts[s] > 0).length;
 
   return (
@@ -119,7 +133,12 @@ export default function MapPage() {
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         {/* Map */}
         <div className="lg:col-span-3 bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-          <USStateMap counts={counts} selected={selected} onSelect={(s) => setSelected(s === selected ? null : s)} />
+          <USStateMap
+            counts={counts}
+            selected={selected}
+            federalCount={federalCount}
+            onSelect={(s) => setSelected(s === selected ? null : s || null)}
+          />
         </div>
 
         {/* Right panel */}
@@ -149,7 +168,9 @@ export default function MapPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <Link
-                      href={`/?jurisdictionName=${encodeURIComponent(selected)}`}
+                      href={selected === "United States"
+                        ? `/?jurisdictionLevel=FEDERAL`
+                        : `/?jurisdictionName=${encodeURIComponent(selected)}`}
                       className="text-xs bg-forest-700 text-white rounded-lg px-3 py-1.5 font-medium hover:bg-forest-800 transition-colors flex items-center gap-1"
                     >
                       <Filter size={11} />

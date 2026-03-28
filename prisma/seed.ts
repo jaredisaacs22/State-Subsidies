@@ -155,7 +155,7 @@ const incentives = [
     incentiveType: "POINT_OF_SALE_REBATE",
     fundingAmount: 14000,
     deadline: null,
-    sourceUrl: "https://www.energy.gov/scep/home-energy-rebates-frequently-asked-questions",
+    sourceUrl: "https://www.energy.gov/scep/home-energy-rebate-program",
     programCode: "IRA-HEEHRA",
     status: "ACTIVE",
     isVerified: true,
@@ -219,7 +219,7 @@ const incentives = [
     incentiveType: "TAX_CREDIT",
     fundingAmount: null,
     deadline: null,
-    sourceUrl: "https://austinenergy.com/ae/residential/solar/value-of-solar-tariff",
+    sourceUrl: "https://austinenergy.com/ae/green-power/solar-programs",
     programCode: "AE-VOS",
     status: "ACTIVE",
     isVerified: true,
@@ -262,7 +262,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Energy Storage", "Clean Technology", "Manufacturing"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.energy.gov/eere/solar/articles/ira-investment-tax-credit-standalone-storage",
+    sourceUrl: "https://www.energy.gov/eere/solar",
     programCode: "IRA-48-BESS", status: "ACTIVE", isVerified: true, scraperSource: "federal_doe_scraper",
   },
 
@@ -300,7 +300,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Real Estate", "Construction", "Energy Management", "Government & Nonprofit"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.irs.gov/credits-deductions/commercial-buildings-energy-efficiency-tax-deduction",
+    sourceUrl: "https://www.irs.gov/credits-deductions/energy-efficient-commercial-buildings-deduction",
     programCode: "IRA-179D", status: "ACTIVE", isVerified: true, scraperSource: "federal_irs_scraper",
   },
 
@@ -439,7 +439,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Clean Technology", "Energy Storage", "Manufacturing", "Infrastructure"]),
     incentiveType: "LOAN", fundingAmount: 1000000000, deadline: null,
-    sourceUrl: "https://www.energy.gov/lpo/title-17-clean-energy-financing-program",
+    sourceUrl: "https://www.energy.gov/lpo/",
     programCode: "LPO-T17", status: "ACTIVE", isVerified: true, scraperSource: "federal_doe_scraper",
   },
 
@@ -753,7 +753,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["EV Charging", "Real Estate", "Fleet", "Government & Nonprofit"]),
     incentiveType: "GRANT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://www.energy.ca.gov/programs-and-topics/programs/electric-vehicle-charging-infrastructure",
+    sourceUrl: "https://www.energy.ca.gov/programs-and-topics/programs",
     programCode: "CEC-EVSE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -791,7 +791,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Real Estate", "Infrastructure", "Public Transit", "Government & Nonprofit"]),
     incentiveType: "GRANT", fundingAmount: 10000000, deadline: null,
-    sourceUrl: "https://sgc.ca.gov/programs/sb535/",
+    sourceUrl: "https://sgc.ca.gov/programs/",
     programCode: "CA-P40", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -829,7 +829,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Food & Beverage", "Waste Management", "Agriculture", "Government & Nonprofit"]),
     incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://calrecycle.ca.gov/reducewaste/food/",
+    sourceUrl: "https://calrecycle.ca.gov/",
     programCode: "CALR-FWR", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -848,7 +848,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Building Electrification", "Real Estate", "Energy Management", "Construction"]),
     incentiveType: "SUBSIDY", fundingAmount: 50000, deadline: null,
-    sourceUrl: "https://www.energy.ca.gov/programs-and-topics/programs/building-electrification",
+    sourceUrl: "https://www.energy.ca.gov/programs-and-topics/programs",
     programCode: "CEC-ELEC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -964,7 +964,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Real Estate", "Building Electrification", "Energy Management", "Construction"]),
     incentiveType: "GRANT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://www.nyc.gov/site/sustainability/legislation/local-law-97.page",
+    sourceUrl: "https://www.nyc.gov/site/sustainability/legislation/legislation.page",
     programCode: "NYC-LL97", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1217,7 +1217,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Logistics", "Healthcare"]),
     incentiveType: "GRANT", fundingAmount: 2000000, deadline: null,
-    sourceUrl: "https://www.tn.gov/ecd/incentives/fasttrack-programs.html",
+    sourceUrl: "https://www.tn.gov/transparenttn/state-financial-overview/open-ecd/openecd/fasttrack-project-database.html",
     programCode: "TN-FT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1274,7 +1274,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Agriculture", "Forestry", "Construction", "Government & Nonprofit"]),
     incentiveType: "GRANT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://oedit.colorado.gov/rural-development",
+    sourceUrl: "https://oedit.colorado.gov/",
     programCode: "CO-REDI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1293,7 +1293,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["EV Charging", "Fleet", "Real Estate", "Clean Technology"]),
     incentiveType: "GRANT", fundingAmount: 50000, deadline: null,
-    sourceUrl: "https://energyoffice.colorado.gov/transportation/grants-incentives/electric-vehicle-workplace-charging-grant",
+    sourceUrl: "https://energyoffice.colorado.gov/zero-emission-vehicles/ev-charging-station-grants-programs",
     programCode: "CO-EVC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1333,7 +1333,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Real Estate", "Energy Management", "Construction", "Building Electrification"]),
     incentiveType: "GRANT", fundingAmount: 5000000, deadline: new Date("2027-01-01"),
-    sourceUrl: "https://www.commerce.wa.gov/growing-the-economy/energy/buildings/clean-buildings/",
+    sourceUrl: "https://www.commerce.wa.gov/growing-the-economy/energy/",
     programCode: "WA-CBPS", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1428,7 +1428,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Clean Technology", "Energy Management", "Agriculture"]),
     incentiveType: "TAX_CREDIT", fundingAmount: 1000, deadline: null,
-    sourceUrl: "https://dnrc.mt.gov/divisions/forestry/assistance-programs",
+    sourceUrl: "https://dnrc.mt.gov/",
     programCode: "MT-REST", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1506,7 +1506,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Energy Management", "Manufacturing", "Healthcare", "Hospitality", "Real Estate"]),
     incentiveType: "POINT_OF_SALE_REBATE", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://www.masssave.com/saving/business-rebates-and-incentives",
+    sourceUrl: "https://www.masssave.com/pages/commercial",
     programCode: "MA-MSAVE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1525,7 +1525,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Energy Storage", "Clean Technology", "Real Estate"]),
     incentiveType: "SUBSIDY", fundingAmount: 200000, deadline: null,
-    sourceUrl: "https://www.njcleanenergy.com/renewable-energy/programs/energy-storage",
+    sourceUrl: "https://www.njcleanenergy.com/renewable-energy/programs",
     programCode: "NJ-CESI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1544,7 +1544,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Clean Technology", "Energy Management", "Real Estate", "Agriculture"]),
     incentiveType: "GRANT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://energy.maryland.gov/Pages/Business/md-clean-energy-incentives.aspx",
+    sourceUrl: "https://energy.maryland.gov/business",
     programCode: "MD-CEG", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1717,7 +1717,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Real Estate", "Energy Management", "Building Electrification"]),
     incentiveType: "GRANT", fundingAmount: 150000, deadline: null,
-    sourceUrl: "https://www.denvergov.org/Government/Agencies-Departments-Offices/Agencies-Departments-Offices-Directory/Climate-Action-Sustainability-Resiliency/Energize-Denver",
+    sourceUrl: "https://www.denvergov.org/Government/Agencies-Departments-Offices/Agencies-Departments-Offices-Directory/Climate-Action-Sustainability-Resiliency",
     programCode: "DEN-ENER", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
 
@@ -1755,7 +1755,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Real Estate", "Building Electrification", "Energy Management"]),
     incentiveType: "GRANT", fundingAmount: 250000, deadline: null,
-    sourceUrl: "https://www.boston.gov/departments/environment/building-emissions-reduction-and-disclosure-ordinance",
+    sourceUrl: "https://www.boston.gov/departments/environment",
     programCode: "BOS-BERDO", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
 
@@ -1982,7 +1982,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Hospitality", "Research & Development"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.sccommerce.com/doing-business-sc/incentives",
+    sourceUrl: "https://www.sccommerce.com/why-sc/incentives-taxes",
     programCode: "SC-JTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -2116,7 +2116,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must be creating or retaining jobs in Indiana as part of a growth project","Training must be specific to the company's new or expanded operations","Eligible costs: instructor wages, curriculum development, training materials","Grants typically range $500K–$3M based on project scale and job creation","Must commit to maintain employment levels for minimum 2 years post-training"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Healthcare", "Workforce Development"]),
     incentiveType: "GRANT", fundingAmount: 3000000, deadline: null,
-    sourceUrl: "https://www.iedc.in.gov/programs/training",
+    sourceUrl: "https://iedc.in.gov/indiana-advantages/investments",
     programCode: "IN-SEF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   // ── Iowa ─────────────────────────────────────────────────────────────────
@@ -2129,7 +2129,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must create or retain minimum 10 jobs (5 in enterprise zones)","Jobs must pay at least 130% of county median wage with benefits","Investment credit up to 10% of qualifying investment","Sales/use tax refunds on qualifying purchases during project","Must remain in Iowa and maintain employment for 5 years"]),
     industryCategories: JSON.stringify(["Manufacturing", "Agriculture & Rural", "Technology", "Food & Beverage"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.iowaeda.com/iowa-economic-development-authority/programs-resources/highqualityjobs/",
+    sourceUrl: "https://www.iowaeconomicdevelopment.com/Business/HQJP",
     programCode: "IA-HQJ", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   // ── Kansas ───────────────────────────────────────────────────────────────
@@ -2168,7 +2168,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be creating new jobs or at risk of losing existing jobs in Missouri","Training must be specific to the employer's needs, not general education","Funding sourced from employee withholding taxes","Training can be delivered in-house, via community colleges, or private providers","Average grant: $1,500–$3,000 per trained employee"]),
     industryCategories: JSON.stringify(["Manufacturing", "Healthcare", "Technology", "Workforce Development"]),
     incentiveType: "GRANT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://ded.mo.gov/programs/business/missouriworks",
+    sourceUrl: "https://ded.mo.gov/programs/business/missouri-works",
     programCode: "MO-WORKS", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   // ── Nebraska ─────────────────────────────────────────────────────────────
@@ -2181,7 +2181,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Tier 1: $5M investment + 10 jobs; Tier 2: $50M + 100 jobs","Jobs must provide health insurance and pay at or above average county wage","Credits: up to 15% of qualified investment and 6% of new employee compensation","Sales tax exemptions on construction, equipment, and data center purchases","Must demonstrate Nebraska is being considered competitively with other states"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Agriculture & Rural", "Data Centers"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://opportunity.nebraska.gov/programs/business/imagine/",
+    sourceUrl: "https://opportunity.nebraska.gov/programs/business/",
     programCode: "NE-IMAGINE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   // ── New Hampshire ─────────────────────────────────────────────────────────
@@ -2220,7 +2220,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must create 10+ net new jobs (2 in rural areas) within 3 years","Jobs must pay at least $15.88/hour with employer-sponsored health insurance","Cash benefit: 5% of new payroll for up to 10 years","Eligible industries: manufacturing, aerospace, biomedical, back-office, software","Must have less than 90% of Oklahoma gross receipts from Oklahoma customers"]),
     industryCategories: JSON.stringify(["Manufacturing", "Aerospace", "Technology", "Healthcare"]),
     incentiveType: "SUBSIDY", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.okcommerce.gov/doing-business/business-relocation-expansion/quality-jobs-program/",
+    sourceUrl: "https://www.okcommerce.gov/doing-business/business-relocation-expansion/incentives/quality-jobs-incentive-program/",
     programCode: "OK-QJP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   // ── South Dakota ─────────────────────────────────────────────────────────
@@ -2285,7 +2285,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Qualified research must meet IRS Section 41 definition","Credit: 24% of first $2.5M in qualified R&D expenses; 15% above $2.5M","Unused credits can be carried forward up to 15 years","Enhanced credit available for research conducted at Arizona universities","Must file AZ Form 308 with annual tax return"]),
     industryCategories: JSON.stringify(["Technology", "Biotech & Life Sciences", "Manufacturing", "Defense"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://azdor.gov/business/tax-credits/research-development-credit",
+    sourceUrl: "https://azdor.gov/business/tax-credits",
     programCode: "AZ-RD-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2297,7 +2297,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must create minimum 10 net new Florida full-time jobs (fewer in rural areas)","Wages must be at least 115% of the average county wage","Base refund: $3,000 per net new job; up to $8,000 with wage/location bonuses","Eligible industries: manufacturing, R&D, corporate HQ, financial services, IT","Must apply before project begins; local government must provide 20% match"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Financial Services", "Biotech & Life Sciences"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://floridajobs.org/business-growth-and-partnerships/incentives/tax-refund-programs/qualified-target-industry-tax-refund",
+    sourceUrl: "https://floridajobs.org/business-growth-and-partnerships/for-employers/find-tax-credit-and-incentive-programs",
     programCode: "FL-QTI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2309,7 +2309,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must create 2+ net new jobs (varies by county tier) within 12 months","Eligible industries: manufacturing, distribution, R&D, processing, telecom, tourism","Credit: $1,250–$4,000 per net new job based on 4-tier county classification","Credits may offset 50–100% of Georgia income tax liability","Unused credits can be carried forward up to 10 years"]),
     industryCategories: JSON.stringify(["Manufacturing", "Logistics", "Technology", "Film & Media"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.georgia.org/competitive-advantages/incentives/job-tax-credit",
+    sourceUrl: "https://www.georgia.org/competitive-advantages/incentives",
     programCode: "GA-JTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2321,7 +2321,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must create 20+ qualifying jobs paying at least 95% of average county wage","Jobs must include employer-provided health insurance","Reimbursement: up to 30% of income, payroll, and sales taxes for up to 15 years","Minimum capital investment requirements based on project type","Must demonstrate Idaho is competing with out-of-state alternatives"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Agriculture & Rural", "Food & Beverage"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://commerce.idaho.gov/business/incentives/tax-reimbursement-incentive/",
+    sourceUrl: "https://commerce.idaho.gov/incentives-and-financing/incentives/idaho-tax-reimbursement-incentive/",
     programCode: "ID-TRI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2333,7 +2333,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must create 25 new full-time jobs in IL (10 in underserved areas) or retain 90+ jobs at risk","Jobs must pay at least 120% of regional average wage with benefits","Credit: up to 100% of income taxes withheld from new/retained employees","Agreement period: 5–10 years","Must demonstrate project is at risk of locating out of state without incentive"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Financial Services", "Logistics"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://dceo.illinois.gov/cms/One.aspx?portalId=4&pageId=1081",
+    sourceUrl: "https://dceo.illinois.gov/expandrelocate/incentives",
     programCode: "IL-EDGE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2345,7 +2345,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Equipment must be new, first placed in service in Maine on or after April 1, 1995","Business must be in manufacturing, aquaculture, mining, tourism, or broadcasting","Reimbursement: 100% of property taxes paid on qualifying equipment","Application filed annually with Maine Revenue Services","Equipment must remain in Maine and continue to be used in qualifying business"]),
     industryCategories: JSON.stringify(["Manufacturing", "Agriculture & Rural", "Maritime", "Tourism"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.maine.gov/decd/business-development/tax-benefits/betr",
+    sourceUrl: "https://www.maine.gov/decd/business-development/financial-incentives-resources/incentives",
     programCode: "ME-BETR", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2357,7 +2357,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must be a regional partnership including at least one employer and one training provider","Training must be in a high-demand sector: healthcare, IT, construction, manufacturing, or hospitality","Participants must be unemployed or underemployed Maryland residents","Training leads to industry-recognized credentials and job placement","Grant awards: $100K–$500K per partnership per year"]),
     industryCategories: JSON.stringify(["Healthcare", "Technology", "Manufacturing", "Workforce Development"]),
     incentiveType: "GRANT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://www.labor.maryland.gov/employment/earn/",
+    sourceUrl: "https://www.labor.maryland.gov/employment/",
     programCode: "MD-EARN", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2369,7 +2369,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must create at least 25 qualified new jobs (5 in rural areas) within 5 years","Jobs must pay at least 125% of regional average wage with benefits","Award: performance-based grant or loan up to $10M depending on project","Eligible: manufacturing, R&D, headquarters, back-office, agri-business","Must demonstrate the project would not occur in Michigan without the incentive"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Automotive", "Clean Technology"]),
     incentiveType: "GRANT", fundingAmount: 10000000, deadline: null,
-    sourceUrl: "https://www.michiganbusiness.org/grow/bdp/",
+    sourceUrl: "https://www.michiganbusiness.org/grow/",
     programCode: "MI-BDP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2393,7 +2393,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be for-profit and headquartered or locating in Montana","Must create or retain at least 1 full-time job per $35,000 of loan","Loan amounts: $10,000–$500,000 at below-market interest rates","Eligible: manufacturing, processing, tourism, retail in underserved areas","Conventional financing must be insufficient alone (gap financing)"]),
     industryCategories: JSON.stringify(["Manufacturing", "Tourism", "Agriculture & Rural", "Small Business"]),
     incentiveType: "LOAN", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://commerce.mt.gov/Business/BIG",
+    sourceUrl: "https://commerce.mt.gov/Business/Business-Assistance/The-Big-Sky-Economic-Development-Trust-Fund",
     programCode: "MT-BIG", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2405,7 +2405,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum capital investment of $25M within 2 years of approval","Must create at least 10 new Nevada jobs paying 100%+ of state average wage","Abatement: 75% reduction in sales/use tax on data center equipment","Equipment must be used primarily in Nevada data center operations","Must apply to GOED before purchasing equipment or beginning construction"]),
     industryCategories: JSON.stringify(["Technology", "Data Centers", "Cloud Computing"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://goed.nv.gov/incentives/data-centers/",
+    sourceUrl: "https://goed.nv.gov/incentives/",
     programCode: "NV-DC-ABATE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2441,7 +2441,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Project must be creating or retaining jobs in competition with other states","Grants awarded to local government; funds flow through to qualifying businesses","Average wages must exceed county average wage","Eligible: infrastructure, equipment, training costs","Must provide local match; state reviews project competitiveness and public benefit"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Biotech & Life Sciences", "Aerospace"]),
     incentiveType: "GRANT", fundingAmount: 3000000, deadline: null,
-    sourceUrl: "https://www.nccommerce.com/business-industries-energy/incentive-programs/one-north-carolina-fund",
+    sourceUrl: "https://nccommerce.com/grants-incentives",
     programCode: "NC-ONE-NC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2489,7 +2489,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must create at least 10 new full-time jobs paying above RI median wage","Jobs must include employer-sponsored health benefits","Credit: $2,500–$7,500 per new job per year for up to 10 years","Enhanced credit for jobs paying 200%+ of median wage","Target industries: technology, financial services, manufacturing, healthcare"]),
     industryCategories: JSON.stringify(["Technology", "Financial Services", "Manufacturing", "Healthcare"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://commerceri.com/incentives/qualified-jobs-incentive-act/",
+    sourceUrl: "https://commerceri.com/financing/tax-credits/qualified-jobs-incentive-tax-credit/",
     programCode: "RI-QJI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2501,7 +2501,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must create at least 2 new full-time jobs paying above county average wage","Jobs must offer health insurance with employer contributing at least 50%","Credit: $1,500–$25,000 per job depending on county tier (1=highest benefit)","Credits used against SC income tax; excess carried forward 15 years","Certain industries receive additional credit multipliers"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Logistics", "Automotive"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://sccommerce.com/business-development/incentives/job-tax-credit",
+    sourceUrl: "https://www.sccommerce.com/why-sc/incentives/corporate-income-tax-incentives",
     programCode: "SC-JTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2513,7 +2513,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must create minimum 25 new full-time jobs (10 in rural/distressed counties)","Jobs must pay at least the county average wage with benefits","Training grant: up to $4,000 per new employee for eligible training costs","Eligible costs: pre-employment screening, on-the-job training, classroom training","Must apply to ECD before making hiring announcements"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Automotive", "Logistics"]),
     incentiveType: "GRANT", fundingAmount: 4000, deadline: null,
-    sourceUrl: "https://www.tn.gov/ecd/incentives/training.html",
+    sourceUrl: "https://www.tn.gov/transparenttn/state-financial-overview/open-ecd/openecd/fasttrack-project-database.html",
     programCode: "TN-FASTTRACK", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2549,7 +2549,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must operate in a designated Wisconsin Enterprise Zone","Must create net new full-time jobs paying at least 150% of minimum wage","Credits: 1–7% of payroll, 10% of capital investments, 100% of training costs","Enhanced credits for hiring individuals with barriers to employment","Tax credit agreements require 5-year retention commitment"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Agriculture & Rural", "Logistics"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://wedc.org/programs-and-resources/enterprise-zone-tax-credits/",
+    sourceUrl: "https://wedc.org/programs/enterprise-zone-tax-credit/",
     programCode: "WI-EZ-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   // ── Clean energy & additional programs ────────────────────────────────────
@@ -2562,7 +2562,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Projects must primarily serve income-qualified households (≤80% AMI)","Must be located in Colorado","Eligible: rooftop solar, community solar subscriptions, solar + storage","Income-qualified households must receive direct bill savings","Priority for rural electric co-op territories and tribal lands"]),
     industryCategories: JSON.stringify(["Clean Technology", "Construction", "Real Estate"]),
     incentiveType: "GRANT", fundingAmount: 2000000, deadline: null,
-    sourceUrl: "https://energyoffice.colorado.gov/solar-for-all",
+    sourceUrl: "https://energyoffice.colorado.gov/funding-financing-businesses",
     programCode: "CO-SFA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2586,7 +2586,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Property must be commercial, industrial, agricultural, or multifamily (5+ units) in MA","Municipality must have adopted PACE enabling ordinance","Eligible: solar PV, storage, LED, HVAC, insulation, EV charging, geothermal","Financing: 100% of project costs; terms up to 25 years","Repaid as property tax assessment; transfers with property upon sale"]),
     industryCategories: JSON.stringify(["Clean Technology", "Real Estate", "Construction", "Energy Storage"]),
     incentiveType: "LOAN", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://www.masscec.com/program/commercial-pace",
+    sourceUrl: "https://goclean.masscec.com/incentives-rebates/",
     programCode: "MA-CPACE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2776,7 +2776,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Facility must manufacture advanced energy property (solar, wind, EV components, batteries, etc.)","Credit: 30% of qualified investment in certified facilities","Bonus credits available for facilities in energy communities (coal closure areas)","Must apply to DOE for certification; IRS then issues the credit","Applications reviewed in competitive rounds; DOE evaluates commercial viability and impact"]),
     industryCategories: JSON.stringify(["Clean Technology", "Manufacturing", "Energy Storage", "Automotive"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.energy.gov/lpo/48c",
+    sourceUrl: "https://www.energy.gov/lpo/inflation-reduction-act",
     programCode: "DOE-48C", status: "ACTIVE", isVerified: true, scraperSource: "federal_doe_scraper",
   },
   {
@@ -2788,7 +2788,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Applicant must be a state, tribe, local government, or nonprofit","Site must qualify as a brownfield (real property complicated by hazardous substances or pollutants)","Cleanup grant: up to $500,000 per site (up to $650,000 for petroleum sites)","Must use a quality-assured cleanup plan meeting applicable cleanup standards","Priority for sites with redevelopment plans creating jobs or affordable housing"]),
     industryCategories: JSON.stringify(["Real Estate", "Construction", "Government & Nonprofit", "Manufacturing"]),
     incentiveType: "GRANT", fundingAmount: 650000, deadline: null,
-    sourceUrl: "https://www.epa.gov/brownfields/brownfields-cleanup-grants",
+    sourceUrl: "https://www.epa.gov/brownfields",
     programCode: "EPA-BFCLEAN", status: "ACTIVE", isVerified: true, scraperSource: "federal_epa_scraper",
   },
   {
@@ -2838,7 +2838,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum in-state spend: $500,000 per production","Base credit: 20% of qualified Georgia expenditures","Additional 10% if production includes embedded Georgia promotional logo","Transferable and sellable credits — can be sold to Georgia taxpayers","No cap on credits; no sunset date currently"]),
     industryCategories: JSON.stringify(["Film & Media", "Entertainment", "Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.georgia.org/competitive-advantages/incentives/film-tax-credit",
+    sourceUrl: "https://www.georgia.org/competitive-advantages/incentives/film-tv-and-digital-entertainment-tax-credit",
     programCode: "GA-FILM-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2850,7 +2850,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum qualified production costs: $1M for upstate; lower thresholds in NYC","Base credit: 25% of qualified costs in NYC; 35% upstate (outside NYC metro)","Post-production credit: 35% of qualified post-production costs","Refundable: excess credits are paid in cash","Application required before production begins; annual program cap applies"]),
     industryCategories: JSON.stringify(["Film & Media", "Entertainment", "Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://esd.ny.gov/film-tax-credit",
+    sourceUrl: "https://esd.ny.gov/doing-business-ny",
     programCode: "NY-FILM-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2886,7 +2886,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum Illinois spend: $100,000 for productions; $50,000 for commercials","Credit: 30% of Illinois production spending","Additional 15% on salaries of Illinois residents from economically disadvantaged areas","Transferable: sold to Illinois taxpayers via brokers","Must register with Illinois Film Office before production begins"]),
     industryCategories: JSON.stringify(["Film & Media", "Entertainment", "Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.illinois.gov/business/industries/film/tax-credit",
+    sourceUrl: "https://dceo.illinois.gov/expandrelocate/incentives",
     programCode: "IL-FILM-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2988,7 +2988,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Developer must provide affordable units at restricted rents for 55+ years","At least 20% of units at 50% AMI or 40% at 60% AMI (federal minimum)","California bonus credit available for deeper affordability (30% AMI units)","Points-based competitive application through CTCAC twice annually","Combined state+federal credit can fund 70–80% of project costs"]),
     industryCategories: JSON.stringify(["Real Estate", "Construction", "Government & Nonprofit"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.treasurer.ca.gov/ctcac/program.asp",
+    sourceUrl: "https://www.treasurer.ca.gov/ctcac/",
     programCode: "CA-LIHTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3074,7 +3074,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be located in Minneapolis","Priority for businesses owned by BIPOC entrepreneurs, women, and immigrants","Technical assistance: free business planning, marketing, and financial consulting","Micro-grants: up to $5,000 for qualifying small businesses","Loan fund: $25,000–$250,000 at below-market rates for eligible businesses"]),
     industryCategories: JSON.stringify(["Small Business", "Retail", "Food & Beverage", "Government & Nonprofit"]),
     incentiveType: "GRANT", fundingAmount: 5000, deadline: null,
-    sourceUrl: "https://minneapolismn.gov/businesses/resources/business-assistance/",
+    sourceUrl: "https://minneapolismn.gov/businesses/resources/",
     programCode: "MPLS-BTAP", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
   {
@@ -3184,7 +3184,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be a Louisiana small business (fewer than 100 employees)","Must be unable to obtain conventional financing at reasonable terms","Loan amounts: $5,000–$250,000 at below-market interest rates","Must create at least 1 new full-time job per $50,000 borrowed","Priority for businesses in rural parishes and economically distressed areas"]),
     industryCategories: JSON.stringify(["Small Business", "Manufacturing", "Food & Beverage", "Tourism"]),
     incentiveType: "LOAN", fundingAmount: 250000, deadline: null,
-    sourceUrl: "https://www.opportunitylouisiana.com/business-resources/financial-incentives",
+    sourceUrl: "https://www.opportunitylouisiana.gov/business-resources/financial-incentives",
     programCode: "LA-SBL", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -3328,7 +3328,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be retaining existing Indiana operations that are at risk of relocation","Jobs must pay at least 150% of county average wage with benefits","Credit: up to 100% of withholding taxes on retained employee wages","Must demonstrate credible out-of-state competitive threat","Agreement term: 5–10 years; annual reporting required"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Financial Services", "Logistics"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://iedc.in.gov/programs/tax-credits/edge",
+    sourceUrl: "https://iedc.in.gov/indiana-advantages/investments/economic-development-for-a-growing-economy-tax-credit/overview",
     programCode: "IN-EDGE-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3340,7 +3340,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Company must be relocating its principal headquarters to Indiana from another state","Must bring at least 75 employees to Indiana as part of the relocation","Jobs must pay at least 150% of the county average wage","Credit: up to 50% of relocation costs (moving, lease termination, employee assistance)","Maximum credit: $5M; applied for through IEDC before relocation"]),
     industryCategories: JSON.stringify(["Technology", "Financial Services", "Manufacturing", "Professional Services"]),
     incentiveType: "TAX_CREDIT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://iedc.in.gov/programs/tax-credits/hq-relocation",
+    sourceUrl: "https://iedc.in.gov/indiana-advantages/investments",
     programCode: "IN-HQ-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3352,7 +3352,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Company must be commercializing technology with Indiana university research origins","Must be headquartered or willing to headquarter in Indiana","Grant amounts: $250,000–$5M based on commercialization stage and economic potential","Matching investment from private sources required (varies by stage)","Technology must have clear commercialization pathway and IP owned by applicant"]),
     industryCategories: JSON.stringify(["Technology", "Biotech & Life Sciences", "Clean Technology", "Defense"]),
     incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://iedc.in.gov/programs/grants/21st-century",
+    sourceUrl: "https://iedc.in.gov/indiana-advantages/investments",
     programCode: "IN-21C-RTF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -3366,7 +3366,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Research must meet the federal Section 41 qualified research definition","Credit: 6.5% of Iowa-based qualified research expenses","Refundable: excess credits paid in cash if they exceed tax liability","University partnership credit: additional 10% for research conducted with Iowa universities","Must file Iowa Form IA 128 with annual tax return"]),
     industryCategories: JSON.stringify(["Technology", "Biotech & Life Sciences", "Manufacturing", "Agriculture & Rural"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://tax.iowa.gov/research-activities-tax-credit",
+    sourceUrl: "https://tax.iowa.gov/",
     programCode: "IA-RATC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3378,7 +3378,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be creating new jobs in a city that has adopted the TJWTC program","Must create minimum 10 new full-time jobs","Jobs must pay above county average wage with benefits","City retains portion of employee withholding as matching local incentive","State credit layered on top of city incentive for eligible businesses"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Logistics", "Financial Services"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.iowaeda.com/iowa-economic-development-authority/programs-resources/targetjobs/",
+    sourceUrl: "https://www.iowaeconomicdevelopment.com/Business/NJTP",
     programCode: "IA-TJWTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3480,7 +3480,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum capital investment: $15M","Must create at least 100 new Missouri jobs within 3 years","Jobs must pay at least $15/hour with employer-sponsored health insurance","Benefits: combination of tax credits, infrastructure grants, and training funds","Must demonstrate Missouri is competing with other states for the project"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Logistics", "Financial Services"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://ded.mo.gov/programs/business/build",
+    sourceUrl: "https://ded.mo.gov/programs/business/business-use-incentives-large-scale-development-build",
     programCode: "MO-BUILD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3518,7 +3518,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be creating new jobs in Nebraska","Training must be specific to the employer's equipment and processes","Delivered through Nebraska community colleges at no cost to employer","Eligible for manufacturing, technology, healthcare, and distribution companies","Training must be completed within 2 years of start date"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Healthcare", "Workforce Development"]),
     incentiveType: "GRANT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://opportunity.nebraska.gov/programs/workforce/customized-job-training/",
+    sourceUrl: "https://opportunity.nebraska.gov/",
     programCode: "NE-CJT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3530,7 +3530,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must have 5 or fewer employees at time of application","Must increase compensation paid to Nebraska employees","Must increase capital investment in Nebraska","Credit: 20% of the increase in compensation plus 20% of the increase in investment","Refundable: excess credits paid in cash; maximum credit $10,000 per year"]),
     industryCategories: JSON.stringify(["Small Business", "Agriculture & Rural", "Retail", "Food & Beverage"]),
     incentiveType: "TAX_CREDIT", fundingAmount: 10000, deadline: null,
-    sourceUrl: "https://revenue.nebraska.gov/businesses/nebraska-advantage-microenterprise-tax-credit-act",
+    sourceUrl: "https://revenue.nebraska.gov/businesses/",
     programCode: "NE-MICRO-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3542,7 +3542,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Project must be located in a Nebraska county with under 100,000 residents","Eligible: agricultural processing, renewable energy, technology, tourism","Minimum investment: $1M","Credit: 15% of qualifying investment (20% for distressed counties)","Refundable: excess credits paid in cash; 15-year carryforward available"]),
     industryCategories: JSON.stringify(["Agriculture & Rural", "Clean Technology", "Manufacturing", "Food & Beverage"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://opportunity.nebraska.gov/programs/business/rural-projects/",
+    sourceUrl: "https://opportunity.nebraska.gov/programs/business/",
     programCode: "NE-RURAL-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -3594,7 +3594,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be creating new jobs in North Dakota","Training delivered by North Dakota community colleges","Eligible: manufacturing, processing, technology, professional services","Training costs financed by community college bonds; repaid from employee withholding","No upfront cost to business; repayment period typically 10 years"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Healthcare", "Workforce Development"]),
     incentiveType: "GRANT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.cte.nd.gov/workforce-education/new-jobs-training",
+    sourceUrl: "https://www.cte.nd.gov/",
     programCode: "ND-NJT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3618,7 +3618,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be located in a designated Renaissance Zone (downtown revitalization area)","Must be rehabilitating an existing building or constructing a new commercial facility","Income tax exemption: 100% for 5 years on business income from Renaissance Zone operations","Property tax exemption: 100% for 5 years on improvements","Must obtain certificate from local Renaissance Zone Authority"]),
     industryCategories: JSON.stringify(["Real Estate", "Small Business", "Retail", "Construction"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.commerce.nd.gov/economic-development-finance/renaissance-zone",
+    sourceUrl: "https://www.commerce.nd.gov/economic-development",
     programCode: "ND-RENZONE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -3656,7 +3656,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must have 90 or fewer Oklahoma employees at time of application","Must create at least 2 new net full-time jobs within 3 years","Jobs must pay at least 110% of county average wage with health benefits","Cash benefit: up to 5% of new payroll quarterly for up to 7 years","Eligible industries: broad eligibility including services, technology, healthcare"]),
     industryCategories: JSON.stringify(["Small Business", "Technology", "Healthcare", "Professional Services"]),
     incentiveType: "SUBSIDY", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.okcommerce.gov/doing-business/business-relocation-expansion/small-employer-quality-jobs/",
+    sourceUrl: "https://www.okcommerce.gov/doing-business/business-relocation-expansion/incentives/small-employer-quality-jobs-program/",
     programCode: "OK-SEQJ", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -3732,7 +3732,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Building must be in a designated Vermont Downtown or Village Center district","Eligible: building code compliance, façade improvements, accessibility upgrades, rehabilitation","Credit: 10–50% of qualified expenditures depending on project type","Total annual program cap of $2.2M statewide","Applications competitive; priority for projects in smallest or most distressed downtowns"]),
     industryCategories: JSON.stringify(["Real Estate", "Construction", "Tourism", "Small Business"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://accd.vermont.gov/community-development/funding-incentives/downtown-tax-credit",
+    sourceUrl: "https://accd.vermont.gov/economic-development/funding-incentives",
     programCode: "VT-DTOWN-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -3784,7 +3784,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be for-profit and located in Wyoming","Training must upgrade skills of currently employed Wyoming workers","50% employer match required; state covers remaining costs","Maximum state contribution: $50,000 per employer per year","Training must lead to higher wages or enhanced job security for participants"]),
     industryCategories: JSON.stringify(["Manufacturing", "Energy", "Healthcare", "Workforce Development"]),
     incentiveType: "GRANT", fundingAmount: 50000, deadline: null,
-    sourceUrl: "https://wyomingworkforce.org/businesses/workforce-training-fund/",
+    sourceUrl: "https://wyomingworkforce.org/businesses/",
     programCode: "WY-WTF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3796,7 +3796,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be in a non-energy sector (manufacturing, technology, tourism, agriculture)","Must be located in or willing to locate in Wyoming","Loan amounts: $50,000–$2M at below-market rates","Must create or retain Wyoming jobs; 1 job per $50,000 borrowed preferred","Technical assistance available for business planning, export, and market development"]),
     industryCategories: JSON.stringify(["Manufacturing", "Tourism", "Agriculture & Rural", "Technology"]),
     incentiveType: "LOAN", fundingAmount: 2000000, deadline: null,
-    sourceUrl: "https://www.wyomingbusiness.org/content/financing",
+    sourceUrl: "https://www.wyomingbusiness.org/",
     programCode: "WY-SEV-BIZ", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3834,7 +3834,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["R&D activities must be conducted within Arizona","Qualifying expenses must meet IRS Section 41 definitions","Small businesses with under $1M in AZ gross receipts may qualify for accelerated credit","Credit is nonrefundable but may be carried forward 15 years","Claim on AZ Form 308"]),
     industryCategories: JSON.stringify(["Research & Development", "Technology", "Manufacturing", "Clean Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://azdor.gov/business/credits/research-and-development-credit",
+    sourceUrl: "https://azdor.gov/business/tax-credits/research-and-development-credit",
     programCode: "AZ-RD-CREDIT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3860,7 +3860,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Fewer than 100 full-time employees","Business located in Connecticut","Must create or retain at least 1 job per $25,000 borrowed","Loan up to $100,000 at 2% interest","Matching grant up to $10,000 (requires owner equity match)"]),
     industryCategories: JSON.stringify(["Small Business", "Manufacturing", "Retail", "Technology"]),
     incentiveType: "LOAN", fundingAmount: 100000, deadline: null,
-    sourceUrl: "https://portal.ct.gov/DECD/Content/Business-Development/04_Financing_a_Business/Small-Business-Express",
+    sourceUrl: "https://portal.ct.gov/DECD/Business/Business-Tax-Incentives",
     programCode: "CT-SBE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3884,7 +3884,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum $100,000 in qualified Connecticut production expenses","Credit: 30% of qualified production costs","Additional 10% credit for wages paid to CT resident below-the-line workers","Credit is fully transferable and refundable","Must register production with DECD before principal photography"]),
     industryCategories: JSON.stringify(["Film & Media", "Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://portal.ct.gov/DECD/Content/Business-Development/04_Financing_a_Business/Film-Industry-Tax-Credit",
+    sourceUrl: "https://portal.ct.gov/DECD/Business/Business-Tax-Incentives/Film-Tax-Credit",
     programCode: "CT-FILM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -3922,7 +3922,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be a manufacturer or processor","Minimum 5 new qualified full-time jobs","Jobs must pay at least 150% of federal minimum wage","Credit: $400 per qualifying employee per year","Maximum 10-year credit period per employee"]),
     industryCategories: JSON.stringify(["Manufacturing", "Food & Beverage"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://revenue.delaware.gov/business-tax/blue-collar-jobs-act/",
+    sourceUrl: "https://revenue.delaware.gov/business-tax-forms/",
     programCode: "DE-BCJ", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -3974,7 +3974,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum 10 new full-time jobs","Wages must exceed county average by at least 10%","Minimum $500,000 capital investment in plant and equipment","Must operate in qualified industry","Benefits package includes 3.15% investment tax credit, property tax exemption, and sales/use tax rebate"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Food & Beverage", "Clean Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://commerce.idaho.gov/business/incentives/business-advantage/",
+    sourceUrl: "https://commerce.idaho.gov/incentives-and-financing/incentives/",
     programCode: "ID-BIZ-ADV", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3986,7 +3986,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Idaho-registered employer with UI account","Training must be job-specific and lead to sustainable employment","New hire or incumbent worker training eligible","Grant: up to 75% of direct training costs","Apply through Idaho Department of Labor before training begins"]),
     industryCategories: JSON.stringify(["Manufacturing", "Healthcare", "Technology", "Agriculture"]),
     incentiveType: "GRANT", fundingAmount: 100000, deadline: null,
-    sourceUrl: "https://www.labor.idaho.gov/dnn/Businesses/Workforce-Training",
+    sourceUrl: "https://labor.idaho.gov/businesses/workforce-training/",
     programCode: "ID-WDTF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3998,7 +3998,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Project must be in a rural Idaho community","Must primarily benefit low-to-moderate income persons","Job creation required: typically 1 FTE per $35,000 in CDBG funds","Administered through local unit of government (county or city)","Max grant: $600,000 for economic development projects"]),
     industryCategories: JSON.stringify(["Manufacturing", "Small Business", "Agriculture"]),
     incentiveType: "GRANT", fundingAmount: 600000, deadline: null,
-    sourceUrl: "https://commerce.idaho.gov/community/community-development-block-grant/",
+    sourceUrl: "https://commerce.idaho.gov/incentives-and-financing/",
     programCode: "ID-RCBG", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4012,7 +4012,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum 10 new jobs (5 in enhanced incentive counties)","Minimum hourly wages: $10.88–$13.94 depending on county","Capital investment required","Tax incentives span up to 15 years","Apply to KEDFA before project commencement"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Healthcare", "Distribution"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://ced.ky.gov/incentives/pages/kbi.aspx",
+    sourceUrl: "https://ced.ky.gov/locating_expanding/kybizince",
     programCode: "KY-KBI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4024,7 +4024,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Employer must be creating new jobs or upskilling existing workforce","Training must be skills-based and job-specific","Grant matches up to 50% of eligible training costs","Delivered through Kentucky Community and Technical College System or approved vendor","Apply before training begins"]),
     industryCategories: JSON.stringify(["Manufacturing", "Healthcare", "Technology"]),
     incentiveType: "GRANT", fundingAmount: 250000, deadline: null,
-    sourceUrl: "https://ced.ky.gov/KentuckyBusinesses/Training/Pages/default.aspx",
+    sourceUrl: "https://ced.ky.gov/Locating_Expanding/Financial_Incentives",
     programCode: "KY-BSSC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4036,7 +4036,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Investment must be in KY-approved small innovative business","Minimum investment: $10,000; maximum: $500,000","Credit: 40% of investment (50% in Appalachian KY)","Business must have under $5M in assets and under 25 employees","Credit allocated on first-come basis; annual statewide cap applies"]),
     industryCategories: JSON.stringify(["Technology", "Research & Development", "Small Business", "Clean Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://ced.ky.gov/KentuckyBusinesses/Finance/Pages/AngelInvestors.aspx",
+    sourceUrl: "https://ced.ky.gov/Locating_Expanding/Financial_Incentives",
     programCode: "KY-ANGEL", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4050,7 +4050,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum 5 net new full-time jobs within 2 years","Jobs must pay at least 100% of county average weekly wage","Eligible industries: manufacturing, software, aquaculture, fishing, tourism and more","Benefit: 30%–80% refund of state income taxes withheld from new hires","10-year benefit period"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Agriculture", "Tourism"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.maine.gov/decd/business-development/incentives/etif",
+    sourceUrl: "https://www.maine.gov/decd/business-development/financial-incentives-resources/employment-tax-increment-financing",
     programCode: "ME-ETIF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4088,7 +4088,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Investment must be in a Qualified Maryland Biotechnology Company","QMBC: fewer than 50 employees, HQ in Maryland, derives ≥50% revenue from biotech","Credit: 33% of investment (50% in Revitalization Areas)","Minimum investment: $25,000; maximum: $500,000","Annual statewide cap; credits awarded on first-come basis"]),
     industryCategories: JSON.stringify(["Research & Development", "Healthcare", "Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://commerce.maryland.gov/fund/biotechnology-investment-tax-credit",
+    sourceUrl: "https://commerce.maryland.gov/fund",
     programCode: "MD-BIO-TAX", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4112,7 +4112,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business or non-profit located in Maryland","Eligible: solar PV, geothermal heat pump, battery storage","Solar grant: up to $75,000 for commercial systems","Storage grant: up to $150,000","Must be new installation; existing systems not eligible"]),
     industryCategories: JSON.stringify(["Clean Technology", "Energy Storage", "Building Electrification"]),
     incentiveType: "GRANT", fundingAmount: 150000, deadline: null,
-    sourceUrl: "https://energy.maryland.gov/business/Pages/incentives/cleangrant.aspx",
+    sourceUrl: "https://energy.maryland.gov/business",
     programCode: "MD-CEG", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4126,7 +4126,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Company must be certified by MLSC as a life sciences company","Job creation and investment commitments required","Incentives available: 10% investment tax credit, R&D add-back, FDA user fee deduction","MLSC certification reviewed annually","Capital grants also available for certified companies with capital projects"]),
     industryCategories: JSON.stringify(["Research & Development", "Healthcare", "Manufacturing"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.masslifesciences.com/programs/tax-incentive-program/",
+    sourceUrl: "https://www.masslifesciences.com/",
     programCode: "MA-MLSC-TAX", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4164,7 +4164,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum 250 new jobs at 125% of regional avg wage OR 500 jobs at 100% avg wage","Company captures up to 100% of state income taxes withheld from new hires","10-year program window","Capital investment commitment required","Project approval by Michigan Strategic Fund board required"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Automotive"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.michiganbusiness.org/4a/good-jobs/",
+    sourceUrl: "https://www.michiganbusiness.org/grow/good-jobs-for-michigan/",
     programCode: "MI-GJFM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4176,7 +4176,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Project must represent a competitive business location decision","Minimum job creation or capital investment commitment","Grant or loan: $1,000–$20,000 per created/retained job","Disbursement tied to employment and investment milestones","Available to businesses of all sizes and industries"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Automotive", "Healthcare"]),
     incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://www.michiganbusiness.org/4a/bdp/",
+    sourceUrl: "https://www.michiganbusiness.org/grow/",
     programCode: "MI-BDP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4240,7 +4240,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be in a 'traded sector' (exports goods/services out of Montana or state)","Minimum 1 new permanent full-time job","Average wage must meet county average","Grant: $1,500–$14,000 per new job created","Disbursed after employment milestones are verified"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Agriculture"]),
     incentiveType: "GRANT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://commerce.mt.gov/Business/BSTF",
+    sourceUrl: "https://commerce.mt.gov/Business/Business-Assistance/The-Big-Sky-Economic-Development-Trust-Fund",
     programCode: "MT-BSTF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4252,7 +4252,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Property must be a certified historic structure (National or Montana register)","Rehabilitation must meet Secretary of Interior standards","Credit: 25% of qualified rehabilitation expenditures","Minimum QRE: $5,000","Stacked with federal 20% HTC for 45% total credit; credit is transferable"]),
     industryCategories: JSON.stringify(["Real Estate", "Construction", "Tourism"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://mhs.mt.gov/Shpo/Tax",
+    sourceUrl: "https://mhs.mt.gov/Shpo/",
     programCode: "MT-HEART", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4264,7 +4264,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["System must be installed and operational in Montana","Eligible: wind, solar, biomass, small hydro, geothermal","Credit: 35% of installed system cost","Annual cap: $500,000 per taxpayer","Excess credit may be carried forward up to 7 years"]),
     industryCategories: JSON.stringify(["Clean Technology", "Energy Storage", "Agriculture"]),
     incentiveType: "TAX_CREDIT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://mtrevenue.gov/taxes/tax-credits/alternative-energy-investment-tax-credit/",
+    sourceUrl: "https://mtrevenue.gov/taxes/",
     programCode: "MT-AE-TAX", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4278,7 +4278,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum 50 new jobs in urban areas (10 in rural counties)","Average wage at or above 100% of statewide average","Capital investment requirement (varies by county and industry)","Credits: modified business tax, sales/use tax, payroll tax","Apply through GOED before beginning project"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Logistics", "Clean Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://goed.nv.gov/incentives/transferable-tax-credits/",
+    sourceUrl: "https://goed.nv.gov/incentives/",
     programCode: "NV-TTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4302,7 +4302,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Nevada-based business, local government, or non-profit","Eligible: solar, energy storage, EV charging infrastructure","Grants: $50,000–$500,000","25% match required for private entities","Projects must be in Nevada and benefit Nevada residents"]),
     industryCategories: JSON.stringify(["Clean Technology", "Energy Storage", "EV Charging"]),
     incentiveType: "GRANT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://energy.nv.gov/Incentives/Programs/",
+    sourceUrl: "https://goed.nv.gov/incentives/",
     programCode: "NV-CEF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4340,7 +4340,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["New Jersey-based business","Annual revenues under $10 million (standard program)","Loan: $50,000–$2 million at below-market interest rates","Must demonstrate creditworthiness and business viability","Priority for businesses in underserved communities"]),
     industryCategories: JSON.stringify(["Small Business", "Manufacturing", "Healthcare", "Retail"]),
     incentiveType: "LOAN", fundingAmount: 2000000, deadline: null,
-    sourceUrl: "https://www.njeda.com/loans-and-guarantees/",
+    sourceUrl: "https://www.njeda.gov/",
     programCode: "NJ-ERF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4354,7 +4354,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum 10 new full-time jobs (5 in Tier 1 counties)","Jobs must pay at least 110% of county average wage (100% in Tier 1)","Capital investment commitment required","Grant equals 25%–75% of withholding taxes from new employees","Up to 12-year grant term"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Healthcare", "Research & Development"]),
     incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://www.nccommerce.com/business-residents/incentive-programs/jdig",
+    sourceUrl: "https://nccommerce.com/grants-incentives",
     programCode: "NC-JDIG", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4366,7 +4366,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Project must be in a Tier 1 NC county (most economically distressed)","Administered through local government on behalf of business","Minimum 10 new full-time jobs","Grant covers infrastructure, site prep, or building costs","Business must remain at site for minimum 10 years"]),
     industryCategories: JSON.stringify(["Manufacturing", "Distribution", "Food & Beverage"]),
     incentiveType: "GRANT", fundingAmount: 2000000, deadline: null,
-    sourceUrl: "https://www.nccommerce.com/business-residents/incentive-programs/industrial-development-fund",
+    sourceUrl: "https://nccommerce.com/grants-incentives",
     programCode: "NC-IDF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4442,7 +4442,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Oregon-based R&D activities meeting IRS Section 41 definitions","Credit: 5% of QREs up to base + 10% above base","Nonrefundable; 5-year carryforward","Small businesses may elect Alternative Simplified Credit (ASC) method","Claim on Oregon Form OR-41"]),
     industryCategories: JSON.stringify(["Research & Development", "Technology", "Manufacturing", "Clean Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.oregon.gov/dor/programs/businesses/Pages/credits.aspx",
+    sourceUrl: "https://www.oregon.gov/dor/programs/businesses/pages/default.aspx",
     programCode: "OR-RD-CREDIT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4506,7 +4506,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Commercial real estate development or rehabilitation project in RI","Must demonstrate project would not be financially feasible without credit","Credit: up to 20% of eligible costs (30% in OZs or former industrial sites)","Minimum project cost: $5 million","Credit is transferable — can be sold to investors"]),
     industryCategories: JSON.stringify(["Real Estate", "Construction"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://commerceri.com/incentives/rebuild-ri-tax-credit/",
+    sourceUrl: "https://commerceri.com/incentives/tax-credits-and-financing/rebuild-rhode-island-tax-credit-infosys/",
     programCode: "RI-REBUILD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4518,7 +4518,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must live and work full-time in Rhode Island","STEM, design, or medical degree required","Repayment of student loans must be verified","Credit: $6,000–$9,000/year depending on degree level","Apply annually through RI Commerce; limited credits available each cycle"]),
     industryCategories: JSON.stringify(["Technology", "Healthcare", "Research & Development", "Manufacturing"]),
     incentiveType: "TAX_CREDIT", fundingAmount: 9000, deadline: null,
-    sourceUrl: "https://commerceri.com/incentives/wavemaker-fellowship/",
+    sourceUrl: "https://wavemaker.commerceri.com/",
     programCode: "RI-WAVEMAKER", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4530,7 +4530,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["25 or fewer employees","Business must have operated at least 1 year in Rhode Island","Microloan: $5,000–$50,000 at below-market rates","Must demonstrate creditworthiness and repayment ability","Priority for businesses owned by women, minorities, and veterans"]),
     industryCategories: JSON.stringify(["Small Business", "Retail", "Food & Beverage", "Manufacturing"]),
     incentiveType: "LOAN", fundingAmount: 50000, deadline: null,
-    sourceUrl: "https://commerceri.com/financing/small-business/",
+    sourceUrl: "https://commerceri.com/financing/tax-credits/qualified-jobs-incentive-tax-credit/",
     programCode: "RI-SBAP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4544,7 +4544,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum 2 new full-time jobs in a qualifying industry","Qualifying industries: manufacturing, processing, warehousing, R&D, agribusiness, HQ","Wages must meet or exceed county average","Credit: $1,500–$8,000 per new job per year (5 years)","Credit increases in higher unemployment counties"]),
     industryCategories: JSON.stringify(["Manufacturing", "Distribution", "Agriculture", "Research & Development"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://dor.sc.gov/business/sc-business-incentives/jobs-tax-credit",
+    sourceUrl: "https://dor.sc.gov/business",
     programCode: "SC-JTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4556,7 +4556,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Typically for projects with 100+ new jobs or $10M+ capital investment","Package negotiated on a project-by-project basis","Incentives may include: FILOT agreements, infrastructure grants, SC Job Development Credit","Must announce project through SC Commerce","Project must represent a genuine competitive location decision"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Distribution", "Automotive"]),
     incentiveType: "SUBSIDY", fundingAmount: 10000000, deadline: null,
-    sourceUrl: "https://www.sccommerce.com/businesses/incentives",
+    sourceUrl: "https://www.sccommerce.com/why-sc/incentives-taxes",
     programCode: "SC-COORD-PKG", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4582,7 +4582,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Local government must apply on behalf of the business","Minimum private investment: typically $10M+","Minimum job creation commitment","Grant covers public infrastructure: roads, water, sewer, rail","Projects evaluated on return on investment to state"]),
     industryCategories: JSON.stringify(["Manufacturing", "Distribution", "Technology"]),
     incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://www.tn.gov/ecd/businesses/incentives/fasttrack-infrastructure.html",
+    sourceUrl: "https://www.tn.gov/transparenttn/state-financial-overview/open-ecd/openecd/fasttrack-project-database.html",
     programCode: "TN-FASTTRACK-INFRA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4594,7 +4594,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum 25 new full-time jobs (10 in enhancement counties)","Average wage must equal 110% of state or county average","Capital investment required","Credit: $4,500–$5,500 per job","Credit usable over 15 years against franchise/excise tax"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Distribution"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.tn.gov/ecd/businesses/incentives/job-tax-credit.html",
+    sourceUrl: "https://www.tn.gov/revenue/taxes/franchise---excise-tax/exemptions/job-tax-credit.html",
     programCode: "TN-JTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4606,7 +4606,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["New or expanding Tennessee business creating new jobs","Training delivered through TCAT system or approved vendor","No direct cost to employer — state funds training","Minimum job commitment tied to training grant","Training must be customized to company's specific skill needs"]),
     industryCategories: JSON.stringify(["Manufacturing", "Automotive", "Technology", "Healthcare"]),
     incentiveType: "GRANT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://www.tn.gov/ecd/businesses/incentives/fasttrack-job-training.html",
+    sourceUrl: "https://www.tn.gov/transparenttn/state-financial-overview/open-ecd/openecd/fasttrack-project-database.html",
     programCode: "TN-FASTTRACK-JT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4644,7 +4644,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Investment must be in a qualified Utah Opportunity Zone fund or business","Credit: 5% of qualifying investment","Held for at least 10 years to maximize federal OZ benefits","Stacks with federal OZ capital gains deferral/exclusion","Claim on Utah TC-40 form"]),
     industryCategories: JSON.stringify(["Real Estate", "Technology", "Small Business"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://tax.utah.gov/forms/current/tc-40oz.pdf",
+    sourceUrl: "https://business.utah.gov/incentives/",
     programCode: "UT-OZ-TAX", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4658,7 +4658,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum 10 new or retained jobs","Jobs must pay at or above county average wage","Capital investment commitment required","Tax credit: up to $10,000 per qualifying job","Performance verification required before credit is issued"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Healthcare"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://wedc.org/programs/tax-credits/",
+    sourceUrl: "https://wedc.org/programs/business-development-tax-credits/",
     programCode: "WI-WEDC-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4670,7 +4670,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Wisconsin-based business with proven ability to repay","Must demonstrate financing gap (bank loan alone insufficient)","Loan: $500,000–$3 million at below-market rates","WEDC co-lends alongside a participating bank","Priority for manufacturing, tourism, and tech companies creating jobs"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Tourism", "Small Business"]),
     incentiveType: "LOAN", fundingAmount: 3000000, deadline: null,
-    sourceUrl: "https://wedc.org/programs/business-development-loan/",
+    sourceUrl: "https://wedc.org/programs/business-development-tax-credits/",
     programCode: "WI-BDL", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4682,7 +4682,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Investment in a WEDC-certified Qualified New Business Venture","QNBV: WI-based, under 100 employees, primarily tech/innovation activities","Credit: 25% of qualifying investment","Minimum investment: $10,000","Annual statewide cap: $30 million in credits allocated; apply early"]),
     industryCategories: JSON.stringify(["Technology", "Research & Development", "Clean Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://wedc.org/programs/tax-credits/qualified-new-business-venture/",
+    sourceUrl: "https://wedc.org/programs/business-development-tax-credits/qualified-new-business-venture/",
     programCode: "WI-QNBV", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4696,7 +4696,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum 10 net new full-time jobs","Wages must be at least 115% of area average annual wage","Must operate in a QTI-eligible industry: financial services, IT, life sciences, aviation, cleantech, etc.","Refund: $3,000–$6,000/job/year for up to 7 years","Local government must provide 20% match; apply before project begins"]),
     industryCategories: JSON.stringify(["Technology", "Healthcare", "Manufacturing", "Financial Services"]),
     incentiveType: "GRANT", fundingAmount: 2000000, deadline: null,
-    sourceUrl: "https://floridajobs.org/business-growth-and-partnerships/incentives-programs/qualified-target-industry-tax-refund",
+    sourceUrl: "https://floridajobs.org/business-growth-and-partnerships/for-employers/find-tax-credit-and-incentive-programs",
     programCode: "FL-QTI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4708,7 +4708,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum $25 million capital investment in qualifying facility","Eligible sectors: semiconductor technology, defense, aviation/aerospace, data centers","Annual credit: 5% of eligible capital costs","Credit usable for up to 20 years","Must create minimum 100 new full-time jobs"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Aviation"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://floridarevenue.com/taxes/taxesfees/Pages/corp_citc.aspx",
+    sourceUrl: "https://floridarevenue.com/taxes/taxesfees/Pages/default.aspx",
     programCode: "FL-CITC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4720,7 +4720,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Florida-based for-profit small business","Under 100 employees","Affected by a declared state of emergency or disaster","Loan: $1,000–$50,000 at 0% interest for 12 months","Must demonstrate economic injury from the disaster event"]),
     industryCategories: JSON.stringify(["Small Business", "Retail", "Food & Beverage", "Tourism"]),
     incentiveType: "LOAN", fundingAmount: 50000, deadline: null,
-    sourceUrl: "https://floridajobs.org/business-growth-and-partnerships/small-business-assistance/emergency-bridge-loan-program",
+    sourceUrl: "https://floridajobs.org/business-growth-and-partnerships/for-employers/find-tax-credit-and-incentive-programs",
     programCode: "FL-SEBL", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4734,7 +4734,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum 25 new full-time jobs OR retention of at least 90% of existing Illinois workforce","Wages must equal or exceed the greater of $33,675 or 120% of poverty level","Capital investment commitment required for larger projects","Annual credit certificate based on actual jobs and wages each year","Apply to DCEO before project commencement; credit term up to 10 years"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Financial Services", "Healthcare"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://dceo.illinois.gov/expandrelocate/incentives/taxassistance/edgecredit.html",
+    sourceUrl: "https://dceo.illinois.gov/expandrelocate/incentives",
     programCode: "IL-EDGE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4758,7 +4758,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Illinois-based small business (under 500 employees)","Loan: $25,000–$500,000","State participates in up to 25% of total loan at 0–3% interest","Must create or retain at least 1 full-time job per $35,000 in state participation","Business must demonstrate creditworthiness through participating bank"]),
     industryCategories: JSON.stringify(["Small Business", "Manufacturing", "Retail", "Technology"]),
     incentiveType: "LOAN", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://dceo.illinois.gov/smallbizassistance/loans/advantageillinois.html",
+    sourceUrl: "https://dceo.illinois.gov/smallbizassistance",
     programCode: "IL-ADV-P2", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4796,7 +4796,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Louisiana-based small business (under 250 employees)","Loan: $5,000–$1.5 million at below-market interest rates","Must demonstrate job creation or retention","Personal guarantee from principal owners required","Cannot be used to refinance existing debt"]),
     industryCategories: JSON.stringify(["Small Business", "Manufacturing", "Agriculture", "Retail"]),
     incentiveType: "LOAN", fundingAmount: 1500000, deadline: null,
-    sourceUrl: "https://www.opportunitylouisiana.gov/business-assistance/small-business",
+    sourceUrl: "https://www.opportunitylouisiana.gov/",
     programCode: "LA-SBL", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4822,7 +4822,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be a manufacturer in New Mexico","Applies to compensating tax on equipment, machinery, and computers","Credit equals 5.125% of the value of qualifying property","Equipment must be used directly in manufacturing","Annual filing with New Mexico TRD required"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Food & Beverage"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.tax.newmexico.gov/businesses/manufacturer-investment-credit/",
+    sourceUrl: "https://www.tax.newmexico.gov/businesses/",
     programCode: "NM-MITC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4848,7 +4848,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum 50 new full-time jobs at a single facility in a 12-month period","Jobs must pay at least $15.50/hour (updated annually)","Qualifying activities: manufacturing, mining, R&D, telecommunications, corporate HQ, data centers","Credit: $1,000 per qualifying job; carry forward 10 years","Claim on Virginia Form 306"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Distribution", "Financial Services"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.tax.virginia.gov/major-business-facility-job-tax-credit",
+    sourceUrl: "https://www.tax.virginia.gov/tax-credits",
     programCode: "VA-MBFJ", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4860,7 +4860,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must be a multi-jurisdictional regional project or partnership","Projects must create higher-wage jobs or address regional talent gaps","Grants: $100,000–$3 million for Tier 2 and Tier 3 projects","Requires regional match from localities and/or private sector","Submit through GO Virginia regional council"]),
     industryCategories: JSON.stringify(["Technology", "Healthcare", "Manufacturing", "Research & Development"]),
     incentiveType: "GRANT", fundingAmount: 3000000, deadline: null,
-    sourceUrl: "https://www.dhcd.virginia.gov/govirginia",
+    sourceUrl: "https://www.dhcd.virginia.gov/",
     programCode: "VA-GOVA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4872,7 +4872,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["R&D must be conducted in Virginia and qualify under IRC Section 41","Small companies (<$5M in VA R&D): 15% refundable credit","Larger companies (≥$5M in VA R&D): 10% nonrefundable credit, 10-year carryforward","Annual statewide cap: $7.76 million — allocated pro-rata if oversubscribed","Apply by June 1 following the tax year"]),
     industryCategories: JSON.stringify(["Research & Development", "Technology", "Healthcare", "Clean Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.tax.virginia.gov/research-development-expenses-tax-credit",
+    sourceUrl: "https://www.tax.virginia.gov/tax-credits",
     programCode: "VA-RD-CREDIT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4886,7 +4886,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must be a Washington manufacturer, processor, or R&D company","Qualifying R&D: systematic investigation for new knowledge or product development","Credit: 2.5% of qualifying R&D expenditures","Credited against B&O tax liability","Unused credit carried forward up to 5 years"]),
     industryCategories: JSON.stringify(["Manufacturing", "Research & Development", "Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://dor.wa.gov/find-taxes-rates/tax-incentives/incentives-manufacturers",
+    sourceUrl: "https://dor.wa.gov/taxes-rates/tax-incentives",
     programCode: "WA-MFG-RD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4898,7 +4898,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Project must be in a rural Washington county (population under 60,000)","Local government must sponsor application","Minimum job creation commitment","Grants for public infrastructure tied to private investment","Max grant: $1 million; loans up to $2 million at 1–3% interest"]),
     industryCategories: JSON.stringify(["Manufacturing", "Agriculture", "Small Business"]),
     incentiveType: "GRANT", fundingAmount: 1000000, deadline: null,
-    sourceUrl: "https://www.commerce.wa.gov/growing-the-economy/economic-development/rural-economic-development/",
+    sourceUrl: "https://www.commerce.wa.gov/growing-the-economy/",
     programCode: "WA-REDF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4910,7 +4910,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Washington-based business, utility, or local government","Eligible: solar, energy storage, EV charging, building electrification, microgrids","Grants: $100,000–$5 million (project-scale dependent)","Priority for projects benefiting disadvantaged communities","25% match required for private applicants"]),
     industryCategories: JSON.stringify(["Clean Technology", "Energy Storage", "EV Charging", "Building Electrification"]),
     incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://www.commerce.wa.gov/growing-the-economy/energy/washington-clean-energy-fund/",
+    sourceUrl: "https://www.commerce.wa.gov/growing-the-economy/energy/",
     programCode: "WA-CEF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -5000,7 +5000,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum 20 new full-time jobs within 24 months","Wages: at least 110% of county average annual wage","Must represent a new or expanding facility (not relocation of existing CO jobs)","Credit: 50% of employer FICA taxes on qualifying new employees","7-year benefit period; apply before project begins"]),
     industryCategories: JSON.stringify(["Technology", "Manufacturing", "Healthcare", "Financial Services"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://oedit.colorado.gov/job-growth-incentive-tax-credit",
+    sourceUrl: "https://oedit.colorado.gov/",
     programCode: "CO-JGITC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5012,7 +5012,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Colorado-based company in an advanced industry sector","Pre-commercialization grant: up to $150,000","Proof-of-concept grant: up to $250,000 (with $1:$1 match from non-state sources)","Technology must have commercial and export potential","Competitive application reviewed quarterly"]),
     industryCategories: JSON.stringify(["Technology", "Clean Technology", "Manufacturing", "Research & Development"]),
     incentiveType: "GRANT", fundingAmount: 250000, deadline: null,
-    sourceUrl: "https://oedit.colorado.gov/advanced-industries-accelerator-grants",
+    sourceUrl: "https://oedit.colorado.gov/",
     programCode: "CO-AIA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5038,7 +5038,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum 10 net new full-time jobs (5 in Tier 1 counties)","Qualifying industries: manufacturing, processing, warehousing, R&D, tourism, HQ","Credit: $1,250–$4,000/job/year for 5 years (tier-based)","Can offset 100% of income tax liability; 10-year carryforward","Jobs must be sustained for the full credit period"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Distribution", "Tourism"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.georgia.org/georgia-business/incentives/job-tax-credit/",
+    sourceUrl: "https://www.georgia.org/competitive-advantages/incentives",
     programCode: "GA-JTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5076,7 +5076,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Facility must be a vacant or underutilized industrial building in Indiana","Minimum $1 million in qualified rehabilitation expenditures","Credit: 25% of QREs","Nonrefundable; 15-year carryforward","Apply through IEDC before rehabilitation begins"]),
     industryCategories: JSON.stringify(["Manufacturing", "Real Estate", "Construction"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.iedc.in.gov/programs/tax-credits/industrial-recovery-tax-credit",
+    sourceUrl: "https://iedc.in.gov/indiana-advantages/investments",
     programCode: "IN-DINO", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5088,7 +5088,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Investment in an IEDC-certified Indiana early-stage company","Company must be an Indiana-based small business with high growth potential","Credit: 20% of qualifying investment","Maximum credit per investor: $1 million","Annual statewide cap applies; apply through IEDC"]),
     industryCategories: JSON.stringify(["Technology", "Research & Development", "Manufacturing", "Clean Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.iedc.in.gov/programs/tax-credits/venture-capital-investment-tax-credit",
+    sourceUrl: "https://iedc.in.gov/indiana-advantages/investments",
     programCode: "IN-VCITC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5100,7 +5100,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Multi-county regional partnership required","Regions must develop a comprehensive Quality of Life and Economic Development plan","Grant: up to $50 million per region (match required from local and private sources)","Funded projects: housing, broadband, trails, downtown development, talent programs","Competitive application; second round (READI 2.0) underway"]),
     industryCategories: JSON.stringify(["Technology", "Small Business", "Real Estate"]),
     incentiveType: "GRANT", fundingAmount: 50000000, deadline: null,
-    sourceUrl: "https://www.iedc.in.gov/programs/grants/readi",
+    sourceUrl: "https://iedc.in.gov/indiana-advantages/investments",
     programCode: "IN-READI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -5138,7 +5138,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["System must be installed in Iowa","Eligible: solar, wind, biomass, biogas, geothermal","Small systems (residential/commercial <500 kW): 30% credit on eligible costs","Larger commercial systems: production-based credit","Unused credit may be carried forward 10 years"]),
     industryCategories: JSON.stringify(["Clean Technology", "Energy Storage", "Agriculture"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://tax.iowa.gov/individual/credits/renewable-energy-tax-credit",
+    sourceUrl: "https://tax.iowa.gov/renewable-energy-tax-credit",
     programCode: "IA-RE-TAX", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -5228,7 +5228,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum 2 new or retained full-time jobs at county average wage or above","Benefit: retain 2.5%–6% of payroll withholding from qualifying employees","Additional tax credits for investment and training","Eligible: manufacturing, R&D, tech, services with significant job growth","10-year maximum benefit; apply before project begins"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Distribution", "Healthcare"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://ded.mo.gov/incentives/missouri-works",
+    sourceUrl: "https://ded.mo.gov/programs/business/missouri-works",
     programCode: "MO-WORKS", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5252,7 +5252,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Site must be a contaminated or brownfield property in Missouri","Credit: 100% of eligible remediation costs","Minimum remediation cost: $10,000","Credit is transferable — can be sold or assigned","Must receive a 'No Further Action' letter from MDNR after cleanup"]),
     industryCategories: JSON.stringify(["Real Estate", "Manufacturing", "Construction"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://ded.mo.gov/incentives/brownfield-remediation",
+    sourceUrl: "https://ded.mo.gov/programs/business/brownfield-remediation-program",
     programCode: "MO-BFIELD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -5266,7 +5266,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum investment: $1M–$50M depending on tier","Minimum new jobs: 10–30 depending on tier","Wages must meet Nebraska average wage standards","Credits: investment credit (3%–15%) + $2,000–$4,000 per new job","Apply before project begins; 8-year performance period"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Healthcare", "Distribution"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://opportunity.nebraska.gov/programs/business/imagine/",
+    sourceUrl: "https://opportunity.nebraska.gov/programs/business/",
     programCode: "NE-IMAGINE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5290,7 +5290,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Qualifying microenterprise: 5 or fewer employees, Nebraska-based","Business owner credit: up to $10,000 for eligible expenses","Investor credit: 40% of qualifying contribution to certified development org","Annual statewide cap: $2 million in credits","Apply through Nebraska Department of Revenue"]),
     industryCategories: JSON.stringify(["Small Business", "Retail", "Food & Beverage", "Agriculture"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://revenue.nebraska.gov/businesses/microenterprise-tax-credit",
+    sourceUrl: "https://revenue.nebraska.gov/businesses/",
     programCode: "NE-MICRO-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -5342,7 +5342,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["North Dakota small business (under 50 employees)","Minimum 1:1 match from private sources","Grant: $5,000–$50,000","Eligible uses: equipment, facility expansion, working capital","Job creation or retention required"]),
     industryCategories: JSON.stringify(["Small Business", "Manufacturing", "Agriculture", "Retail"]),
     incentiveType: "GRANT", fundingAmount: 50000, deadline: null,
-    sourceUrl: "https://www.commerce.nd.gov/economic-development/business-finance-and-development/mainstream-business-development",
+    sourceUrl: "https://www.commerce.nd.gov/economic-development",
     programCode: "ND-MBD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5354,7 +5354,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Investment in an ND-certified seed capital company","Company: ND-based, fewer than 50 employees, innovative technology or product","Credit: 45% of qualifying investment","Minimum investment: $10,000","Annual statewide cap: $3.5 million — apply early"]),
     industryCategories: JSON.stringify(["Technology", "Agriculture", "Research & Development"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.commerce.nd.gov/economic-development/business-finance-and-development/seed-capital-investment-tax-credit",
+    sourceUrl: "https://www.commerce.nd.gov/economic-development",
     programCode: "ND-SCITC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5366,7 +5366,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["North Dakota-based business, municipality, or non-profit","Eligible: wind, solar, biomass, geothermal, energy efficiency","Grants up to $75,000; loans up to $500,000 at 3–5%","Priority for projects demonstrating energy cost savings","Applications accepted year-round through ND Commerce"]),
     industryCategories: JSON.stringify(["Clean Technology", "Agriculture", "Energy Storage"]),
     incentiveType: "GRANT", fundingAmount: 75000, deadline: null,
-    sourceUrl: "https://www.commerce.nd.gov/energy/energy-programs",
+    sourceUrl: "https://www.commerce.nd.gov/energy",
     programCode: "ND-REP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -5380,7 +5380,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum 10 net new full-time jobs","Wages: at least 110% of Oklahoma's average annual wage","Must be a qualifying industry: manufacturing, services, technology, distribution","Rebate: up to 5% of new payroll annually","5-year maximum benefit; apply before project begins"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Distribution"]),
     incentiveType: "GRANT", fundingAmount: 1000000, deadline: null,
-    sourceUrl: "https://www.okcommerce.gov/business-development/business-incentives/",
+    sourceUrl: "https://www.okcommerce.gov/doing-business/business-relocation-expansion/incentives/quality-jobs-incentive-program/",
     programCode: "OK-QEP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5392,7 +5392,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Oklahoma-based small business","Loan up to $500,000 through a participating Oklahoma lender","State contributes 3% of loan to reserve fund","Business contributes 3%; bank contributes 3% to reserve","Reserve covers losses, enabling riskier loans to creditworthy businesses"]),
     industryCategories: JSON.stringify(["Small Business", "Manufacturing", "Retail", "Technology"]),
     incentiveType: "LOAN", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://www.okcommerce.gov/business-development/small-business-assistance/",
+    sourceUrl: "https://www.okcommerce.gov/doing-business/business-relocation-expansion/incentives/",
     programCode: "OK-SBCAP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5418,7 +5418,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["New or expanding SD business creating new jobs","Training must be for new hires (not existing employees)","Grant: up to 50% of eligible training costs","Delivered through SD technical institutes or approved vendors","Apply through GOED before training begins"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Distribution", "Healthcare"]),
     incentiveType: "GRANT", fundingAmount: 250000, deadline: null,
-    sourceUrl: "https://sdreadytowork.com/incentives-and-programs/",
+    sourceUrl: "https://sdready.org/incentives/",
     programCode: "SD-PWF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5430,7 +5430,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business located in South Dakota","Loan: $20,000–$1 million at 3% interest (up to 20 years)","Eligible uses: land, buildings, equipment, infrastructure","Must create or retain jobs","Priority for businesses in rural SD communities"]),
     industryCategories: JSON.stringify(["Manufacturing", "Agriculture", "Small Business", "Tourism"]),
     incentiveType: "LOAN", fundingAmount: 1000000, deadline: null,
-    sourceUrl: "https://sdreadytowork.com/incentives-and-programs/",
+    sourceUrl: "https://sdready.org/incentives/",
     programCode: "SD-REDI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5456,7 +5456,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must demonstrate job growth above baseline projections","Minimum 5 new qualifying jobs (some exceptions for startups)","Wages must meet Vermont minimum thresholds","Post-performance payment over 5 years","Apply to Vermont Economic Progress Council before hiring begins"]),
     industryCategories: JSON.stringify(["Manufacturing", "Technology", "Healthcare", "Agriculture"]),
     incentiveType: "GRANT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://accd.vermont.gov/economic-development/business-assistance/vegi",
+    sourceUrl: "https://accd.vermont.gov/economic-development/funding-incentives",
     programCode: "VT-VEGI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5532,7 +5532,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Local Wyoming government (city, county, or special district) must apply","Project must be tied to a specific business relocation or expansion","Grant funds public infrastructure: water, sewer, roads, buildings","Private company must commit to job creation","Competitive application through Wyoming Business Council"]),
     industryCategories: JSON.stringify(["Manufacturing", "Distribution", "Small Business"]),
     incentiveType: "GRANT", fundingAmount: 1000000, deadline: null,
-    sourceUrl: "https://www.wyomingbusiness.org/communities/brc-grant",
+    sourceUrl: "https://www.wyomingbusiness.org/content/business-ready-community-grant-loan-program",
     programCode: "WY-BRC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5584,7 +5584,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Vehicle must meet Colorado's ZEV definition","Business must file Colorado income taxes","Credit taken against Colorado income tax — refundable","Dealer must participate in Colorado's tax credit program","Stacks with federal IRA EV credit"]),
     industryCategories: JSON.stringify(["Fleet","Automotive","Clean Technology"]),
     incentiveType: "POINT_OF_SALE_REBATE", fundingAmount: 5000, deadline: null,
-    sourceUrl: "https://cdphe.colorado.gov/ev", programCode: "CO-EV-BIZ", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://energyoffice.colorado.gov/transportation/grants-incentives/electric-vehicle-tax-credits", programCode: "CO-EV-BIZ", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "New Jersey EV Purchase Incentive (NJEIT)", slug: "nj-ev-purchase-incentive",
     jurisdictionLevel: "STATE", jurisdictionName: "New Jersey", managingAgency: "NJ Board of Public Utilities", agencyAcronym: "NJBPU",
@@ -5600,7 +5600,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Vehicle must be Class 3–8 battery electric or fuel cell","Registered and operated in Massachusetts","Purchased new from an enrolled dealer","Rebate assigned to buyer at time of purchase","Business or municipality eligible"]),
     industryCategories: JSON.stringify(["Fleet","Logistics","Construction"]),
     incentiveType: "POINT_OF_SALE_REBATE", fundingAmount: 95000, deadline: null,
-    sourceUrl: "https://mor-ev.org/trucks", programCode: "MA-MOREV-TRUCK", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://mor-ev.org/", programCode: "MA-MOREV-TRUCK", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Oregon Zero-Emission Vehicle Rebate (OReGO Commercial)", slug: "or-zev-commercial-rebate",
     jurisdictionLevel: "STATE", jurisdictionName: "Oregon", managingAgency: "Oregon Department of Energy", agencyAcronym: "ODOE",
@@ -5608,7 +5608,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["New EV or PHEV purchased in Oregon","Vehicle registered in Oregon within 60 days","Business must attest Oregon use","Rebate deducted at dealer — no reimbursement lag","Stacks with federal IRA credit"]),
     industryCategories: JSON.stringify(["Fleet","Automotive","Clean Technology"]),
     incentiveType: "POINT_OF_SALE_REBATE", fundingAmount: 7500, deadline: null,
-    sourceUrl: "https://www.oregon.gov/deq/aq/programs/Pages/ZEV-Rebates.aspx", programCode: "OR-CVRP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.oregon.gov/deq/aq/programs/pages/default.aspx", programCode: "OR-CVRP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Illinois Electric Vehicle Rebate Program", slug: "il-ev-rebate-program",
     jurisdictionLevel: "STATE", jurisdictionName: "Illinois", managingAgency: "Illinois EPA", agencyAcronym: "IEPA",
@@ -5632,7 +5632,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Vehicle must be a qualifying plug-in electric vehicle","Exemption applied automatically at MVA registration","No separate application required","Applies to both passenger and commercial EVs","Stacks with federal EV credits"]),
     industryCategories: JSON.stringify(["Fleet","Automotive"]),
     incentiveType: "POINT_OF_SALE_REBATE", fundingAmount: 3000, deadline: null,
-    sourceUrl: "https://mde.maryland.gov/programs/air/mobilesources/pages/zev.aspx", programCode: "MD-EV-EXCISE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://mde.maryland.gov/programs/air/mobilesources/pages/default.aspx", programCode: "MD-EV-EXCISE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Washington State EV Sales Tax Exemption", slug: "wa-ev-sales-tax-exemption",
     jurisdictionLevel: "STATE", jurisdictionName: "Washington", managingAgency: "Washington State Department of Revenue", agencyAcronym: "WA DOR",
@@ -5640,7 +5640,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Vehicle must qualify as an alternative fuel vehicle (BEV, FCEV, or PHEV)","Exemption applies to sales price up to $45,000","Tax exemption applied automatically at dealer","No application required — dealer processes at point of sale","Business and individual buyers both qualify"]),
     industryCategories: JSON.stringify(["Fleet","Automotive","Logistics"]),
     incentiveType: "POINT_OF_SALE_REBATE", fundingAmount: 4500, deadline: null,
-    sourceUrl: "https://dol.wa.gov/vehicles-and-boats/vehicle-registration/electric-vehicles", programCode: "WA-EV-EXEMPT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.commerce.wa.gov/growing-the-economy/energy/", programCode: "WA-EV-EXEMPT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Texas Volkswagen Environmental Mitigation Program — Off-Road", slug: "tx-vw-mitigation-offroad",
     jurisdictionLevel: "STATE", jurisdictionName: "Texas", managingAgency: "Texas Commission on Environmental Quality", agencyAcronym: "TCEQ",
@@ -5680,7 +5680,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Replacing a diesel vehicle ≥2010 MY or older","New replacement must be BEV or PHEV","Vehicle registered and operated in Minnesota","Scrappage of old vehicle required","Businesses with up to 500 employees preferred"]),
     industryCategories: JSON.stringify(["Fleet","Logistics","Construction"]),
     incentiveType: "POINT_OF_SALE_REBATE", fundingAmount: 50000, deadline: null,
-    sourceUrl: "https://www.pca.state.mn.us/air-water-land-climate/volkswagen-settlement-air-quality-projects", programCode: "MN-BEAM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.pca.state.mn.us/", programCode: "MN-BEAM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Michigan EGLE VW Settlement — Commercial Vehicle Replacement", slug: "mi-egle-vw-commercial",
     jurisdictionLevel: "STATE", jurisdictionName: "Michigan", managingAgency: "Michigan Department of Environment, Great Lakes & Energy", agencyAcronym: "EGLE",
@@ -5722,7 +5722,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Class 4–8 battery electric or fuel cell vehicle","Purchased from an NJ-enrolled commercial vehicle dealer","Vehicle must be based in New Jersey","Businesses with NJ commercial operations eligible","Voucher applied at point of purchase"]),
     industryCategories: JSON.stringify(["Fleet","Logistics","Construction"]),
     incentiveType: "VOUCHER", fundingAmount: 300000, deadline: null,
-    sourceUrl: "https://www.njcleanenergy.com/commercial-industrial/programs/zero-emission-incentive-program-zip", programCode: "NJ-ZIP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.njcleanenergy.com/commercial-industrial/programs", programCode: "NJ-ZIP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Texas TERP — Diesel Equipment Replacement Voucher", slug: "tx-terp-diesel-voucher",
     jurisdictionLevel: "STATE", jurisdictionName: "Texas", managingAgency: "Texas Commission on Environmental Quality", agencyAcronym: "TCEQ",
@@ -5738,7 +5738,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Diesel truck Class 4–6 being replaced","Operating ≥50% of time in Colorado nonattainment counties","Scrappage of retired vehicle required","Electric vehicles receive highest funding tier","Businesses and municipalities eligible"]),
     industryCategories: JSON.stringify(["Fleet","Logistics","Construction"]),
     incentiveType: "VOUCHER", fundingAmount: 150000, deadline: null,
-    sourceUrl: "https://cdphe.colorado.gov/vw-settlement", programCode: "CO-CLEAN-FLEET", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://energyoffice.colorado.gov/funding-financing-businesses", programCode: "CO-CLEAN-FLEET", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Washington State Clean Fuels Incentive — Bus & Truck Voucher", slug: "wa-clean-fuels-bus-voucher",
     jurisdictionLevel: "STATE", jurisdictionName: "Washington", managingAgency: "Washington State Department of Ecology", agencyAcronym: "WA Ecology",
@@ -5746,7 +5746,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Class 6–8 diesel vehicle being replaced","Operated primarily in Washington state","Vehicle must be scrapped and replaced within the program period","ZEV alternatives receive maximum funding","Transit agencies, businesses, school districts eligible"]),
     industryCategories: JSON.stringify(["Fleet","Public Transit","Logistics"]),
     incentiveType: "VOUCHER", fundingAmount: 450000, deadline: null,
-    sourceUrl: "https://ecology.wa.gov/Air-Climate/Air-quality/Mobile-sources/Volkswagen-settlement", programCode: "WA-CLEAN-FUELS", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://ecology.wa.gov/air-climate", programCode: "WA-CLEAN-FUELS", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Illinois Clean Diesel Voucher Program", slug: "il-clean-diesel-voucher",
     jurisdictionLevel: "STATE", jurisdictionName: "Illinois", managingAgency: "Illinois EPA", agencyAcronym: "IEPA",
@@ -5764,7 +5764,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business pays California income or franchise taxes","Qualifying R&D must be conducted in California","Small business: gross receipts ≤$1M in prior year for enhanced 24% rate","Must document wages, supplies, contract research expenses","Credit can be carried forward indefinitely if unused"]),
     industryCategories: JSON.stringify(["Technology","Research & Development","Manufacturing","Clean Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.ftb.ca.gov/file/business/credits/research-and-development-credit.html", programCode: "CA-RD-CREDIT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.ftb.ca.gov/file/business/credits/index.html", programCode: "CA-RD-CREDIT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Texas Franchise Tax Exemption — Manufacturers", slug: "tx-franchise-tax-mfg",
     jurisdictionLevel: "STATE", jurisdictionName: "Texas", managingAgency: "Texas Comptroller of Public Accounts", agencyAcronym: "TX Comptroller",
@@ -5780,7 +5780,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Commercial building must achieve LEED Gold, Platinum, or equivalent","Located in New York State","Tax credit applied against NY corporate franchise or income tax","Buildings must meet specific energy reduction thresholds","Credits claimed over a multi-year period"]),
     industryCategories: JSON.stringify(["Real Estate","Building Electrification","Construction","Energy Management"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.tax.ny.gov/bus/credits/green_building_credit.htm", programCode: "NY-GREEN-BLD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.tax.ny.gov/bus/credits/", programCode: "NY-GREEN-BLD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Florida Corporate Income Tax Credit — Rural Job Creation", slug: "fl-rural-job-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Florida", managingAgency: "Florida Department of Economic Opportunity", agencyAcronym: "FL DEO",
@@ -5788,7 +5788,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Jobs must be created in a designated rural county","Minimum wage of 110% of state average must be paid","Business must be certified by FL DEO before creating jobs","Credit amount: $1,000/job (standard) or $1,500/job (target industry)","Unused credits can be carried forward for up to 20 years"]),
     industryCategories: JSON.stringify(["Manufacturing","Agriculture","Retail","Hospitality"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://floridajobs.org/business-growth-and-partnerships/incentives/incentives-overview/rural-job-tax-credit-program", programCode: "FL-RURAL-JTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://floridajobs.org/business-growth-and-partnerships/for-businesses-and-entrepreneurs/business-resource/rural-and-urban-job-tax-credit-programs", programCode: "FL-RURAL-JTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Virginia Coalfield Employment Enhancement Tax Credit", slug: "va-coalfield-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Virginia", managingAgency: "Virginia Department of Taxation", agencyAcronym: "VA DOT",
@@ -5796,7 +5796,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must be engaged in coal extraction or processing in Virginia","Employment in a designated coalfield county","Credit of $1,000 per coal-industry employee","Must file Virginia corporation income or individual income tax","Credit can be used to offset tax liability"]),
     industryCategories: JSON.stringify(["Mining & Extraction","Energy Management","Oil & Gas Transition"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.tax.virginia.gov/coalfield-employment-enhancement-tax-credit", programCode: "VA-COAL-EMP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.tax.virginia.gov/tax-credits", programCode: "VA-COAL-EMP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Arizona Qualified Facility Tax Credit — Manufacturing", slug: "az-qualified-facility-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Arizona", managingAgency: "Arizona Department of Revenue", agencyAcronym: "AZ DOR",
@@ -5804,7 +5804,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum $2 million capital investment in qualifying facility","Business must be in manufacturing, R&D, or data center sector","Must create new jobs paying ≥150% of state average wage","Credit: 10% of qualifying capital investment","Refundable credit — paid out even if no AZ tax liability"]),
     industryCategories: JSON.stringify(["Manufacturing","Technology","Research & Development","Clean Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: 30000000, deadline: null,
-    sourceUrl: "https://azdor.gov/tax-credits/qualified-facility", programCode: "AZ-QFC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://azdor.gov/business/tax-credits", programCode: "AZ-QFC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "North Carolina Mill Renovation Tax Credit", slug: "nc-mill-renovation-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "North Carolina", managingAgency: "North Carolina Department of Revenue", agencyAcronym: "NC DOR",
@@ -5852,7 +5852,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must be a Tennessee manufacturer","Machinery must be used directly in production","Credit rate: 1% standard; up to 10% for new manufacturers","Applied against Tennessee franchise and excise tax","Excess credit carried forward up to 15 years"]),
     industryCategories: JSON.stringify(["Manufacturing","Food & Beverage","Energy Storage"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.tn.gov/revenue/tax-guidance/industrial-machinery-credit.html", programCode: "TN-INDMACH", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.tn.gov/revenue/for-businesses/tax-incentives.html", programCode: "TN-INDMACH", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "South Carolina Corporate Headquarters Tax Credit", slug: "sc-corp-hq-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "South Carolina", managingAgency: "South Carolina Department of Revenue", agencyAcronym: "SC DOR",
@@ -5860,7 +5860,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must establish a bona fide corporate headquarters in SC","Minimum $50,000 in qualifying expenditures","At least 75% of total employment in SC","Credit: 20% of investment capped at SC tax liability","Carry forward unused credits for 5 years"]),
     industryCategories: JSON.stringify(["Technology","Financial Services","Manufacturing","Logistics"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://dor.sc.gov/business/corporate-income-tax", programCode: "SC-CORPHEADQ", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://dor.sc.gov/business", programCode: "SC-CORPHEADQ", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Wisconsin Enterprise Zone Tax Credits", slug: "wi-enterprise-zone-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Wisconsin", managingAgency: "Wisconsin Economic Development Corporation", agencyAcronym: "WEDC",
@@ -5868,7 +5868,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business located in or relocating to a Wisconsin Enterprise Zone","Minimum 5 new full-time jobs (20 for large businesses)","Jobs must pay minimum wage thresholds","Capital investment: ≥$5M for manufacturing, ≥$10M for technology","Credits certified annually by WEDC"]),
     industryCategories: JSON.stringify(["Manufacturing","Technology","Logistics","Real Estate"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://wedc.org/programs/enterprise-zone/", programCode: "WI-EZ-CREDIT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://wedc.org/programs/enterprise-zone-tax-credit/", programCode: "WI-EZ-CREDIT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Louisiana Digital Media Tax Credit", slug: "la-digital-media-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Louisiana", managingAgency: "Louisiana Department of Economic Development", agencyAcronym: "LED",
@@ -5876,7 +5876,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum $300,000 in qualifying in-state expenditures","Digital media must be produced in Louisiana","Enhanced 35% credit for payroll on Louisiana residents","Refundable — paid out even with no tax liability","Must be certified by LED before production begins"]),
     industryCategories: JSON.stringify(["Technology","Film & Media"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.opportunitylouisiana.gov/business-incentives/digital-media-software", programCode: "LA-DIGITAL-MEDIA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.opportunitylouisiana.gov/", programCode: "LA-DIGITAL-MEDIA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Utah Economic Development Tax Increment Financing (EDTIF)", slug: "ut-edtif-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Utah", managingAgency: "Governor's Office of Economic Opportunity", agencyAcronym: "Utah OEO",
@@ -5900,7 +5900,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Company must be in life sciences (biotech, pharma, medical device, diagnostics)","Minimum $500,000 in qualifying Massachusetts investment","Competitive application — annual RFP process","Refundable credit — companies receive payment even without tax liability","Jobs must be created or retained in Massachusetts"]),
     industryCategories: JSON.stringify(["Healthcare","Research & Development","Technology","Manufacturing"]),
     incentiveType: "TAX_CREDIT", fundingAmount: 1000000, deadline: null,
-    sourceUrl: "https://www.masslifesciences.com/programs/itc/", programCode: "MA-LIFESCI-ITC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.masslifesciences.com/", programCode: "MA-LIFESCI-ITC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Minnesota Angel Tax Credit — Early Stage Investors", slug: "mn-angel-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Minnesota", managingAgency: "Minnesota Department of Employment and Economic Development", agencyAcronym: "MN DEED",
@@ -5916,7 +5916,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Property must be a vacant or underutilized industrial facility","Located in Indiana with at least 75,000 sq ft","Minimum investment of $5 million in improvements","Jobs created must pay average county wage or higher","Credit issued after project completion and IEDC verification"]),
     industryCategories: JSON.stringify(["Manufacturing","Real Estate","Construction"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://iedc.in.gov/incentives/tax-credits/industrial-recovery", programCode: "IN-DINO", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://iedc.in.gov/indiana-advantages/investments", programCode: "IN-DINO", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── ADDITIONAL STATE SUBSIDIES ────────────────────────────────────────────
 
@@ -5950,7 +5950,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Commercial, industrial, agricultural, or multifamily (5+ units) property","Property located in a C-PACE participating county","Project must save energy or produce clean energy","Lender consent required if mortgage exists","No cap on project size"]),
     industryCategories: JSON.stringify(["Real Estate","Energy Management","Building Electrification","Clean Technology"]),
     incentiveType: "SUBSIDY", fundingAmount: 50000000, deadline: null,
-    sourceUrl: "https://choosecolorado.com/doing-business/incentives-financing/c-pace/", programCode: "CO-CPACE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://energyoffice.colorado.gov/funding-financing-businesses", programCode: "CO-CPACE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Federal 179D Commercial Buildings Energy Efficiency Deduction", slug: "federal-179d-commercial",
     jurisdictionLevel: "FEDERAL", jurisdictionName: "United States", managingAgency: "Internal Revenue Service", agencyAcronym: "IRS",
@@ -5966,7 +5966,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["New construction or substantial reconstruction","Unit must meet Energy Star or Zero Energy Ready Home standards","Multifamily: $2,500/unit (Energy Star) or $5,000/unit (Zero Energy Ready)","Prevailing wage compliance required for higher credit","Claimed by contractor or manufacturer who constructed the unit"]),
     industryCategories: JSON.stringify(["Real Estate","Construction","Building Electrification"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.irs.gov/credits-deductions/new-energy-efficient-home-credit", programCode: "FED-45L", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.irs.gov/credits-deductions/businesses/new-energy-efficient-home-credit", programCode: "FED-45L", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Federal 48E Clean Electricity Investment Tax Credit", slug: "federal-48e-clean-electricity",
     jurisdictionLevel: "FEDERAL", jurisdictionName: "United States", managingAgency: "Internal Revenue Service / Department of Energy", agencyAcronym: "IRS / DOE",
@@ -6007,7 +6007,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Applicant must be a local government or Tribal government acting as sponsor","Business must create or retain primary sector jobs (goods/services sold outside MT)","Minimum wage requirement: 100% of average county wage","Matching funds required from local sponsor","Application submitted prior to business investment decision"]),
     industryCategories: JSON.stringify(["Manufacturing","Technology","Agriculture","Healthcare"]),
     incentiveType: "GRANT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://commerce.mt.gov/Business/Big-Sky-Economic-Development", programCode: "MT-BSED", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://commerce.mt.gov/Business/Business-Assistance/The-Big-Sky-Economic-Development-Trust-Fund", programCode: "MT-BSED", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Montana Growth Through Agriculture Grant", slug: "montana-growth-through-agriculture",
     jurisdictionLevel: "STATE", jurisdictionName: "Montana", managingAgency: "Montana Department of Agriculture", agencyAcronym: "MDA",
@@ -6023,7 +6023,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must be a for-profit business located in Montana","Minimum of 1 new full-time job created per $35,000 borrowed","Loan originated through a participating Montana financial institution","Business must have been operating for at least 1 year","Collateral and creditworthiness evaluated by local lender"]),
     industryCategories: JSON.stringify(["Manufacturing","Technology","Retail","Agriculture"]),
     incentiveType: "LOAN", fundingAmount: 2000000, deadline: null,
-    sourceUrl: "https://investmentmt.com/BusinessLoans", programCode: "MT-MBOI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://commerce.mt.gov/Business/Programs-and-Services/Montana-Facility-Finance-Authority/Economic-Development-Programs", programCode: "MT-MBOI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Montana Research and Development Tax Credit", slug: "montana-rd-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Montana", managingAgency: "Montana Department of Revenue", agencyAcronym: "MT DOR",
@@ -6031,7 +6031,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Qualified R&D expenses must be incurred in Montana","Credit is 5% of QREs; 7.5% if research is conducted with a MT university","Follows federal IRC Section 41 definitions for qualified research","Credit can offset corporate income or net income tax","Unused credits can be carried forward up to 7 years"]),
     industryCategories: JSON.stringify(["Research & Development","Technology","Manufacturing","Clean Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://mtrevenue.gov/taxes/credits/business-credits/", programCode: "MT-RD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://mtrevenue.gov/taxes/", programCode: "MT-RD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── HAWAII ───────────────────────────────────────────────────────────────────
   { title: "Hawaii High Technology Business Investment Tax Credit", slug: "hawaii-high-tech-investment-tax-credit",
@@ -6073,7 +6073,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum capital investment: $100,000 (varies by county tier)","Minimum new full-time jobs: 10 (5 in certain counties)","Minimum hourly wage: 75% of county average","Business must be in a targeted sector: manufacturing, services, HQ","15-year assessment period; annual reporting required"]),
     industryCategories: JSON.stringify(["Manufacturing","Technology","Financial Services","Healthcare"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://ced.ky.gov/Incentives/Pages/KBI.aspx", programCode: "KY-KBI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://ced.ky.gov/locating_expanding/kybizince", programCode: "KY-KBI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Kentucky Reinvestment Act (KRA) Tax Credit", slug: "kentucky-reinvestment-act",
     jurisdictionLevel: "STATE", jurisdictionName: "Kentucky", managingAgency: "Kentucky Cabinet for Economic Development", agencyAcronym: "KCED",
@@ -6081,7 +6081,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Company must have been operating in KY for at least 3 consecutive years","Minimum capital investment: $2.5 million","Minimum jobs retained: 90% of existing full-time workforce","Must be a manufacturing or industrial sector company","Application must be approved before project begins"]),
     industryCategories: JSON.stringify(["Manufacturing","Construction","Infrastructure"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://ced.ky.gov/Incentives/Pages/KRA.aspx", programCode: "KY-KRA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://ced.ky.gov/Locating_Expanding/Financial_Incentives", programCode: "KY-KRA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Kentucky Small Business Tax Credit (KSBTC)", slug: "kentucky-small-business-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Kentucky", managingAgency: "Kentucky Cabinet for Economic Development", agencyAcronym: "KCED",
@@ -6089,7 +6089,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must have 50 or fewer full-time employees at time of application","Must create at least 1 new full-time job that pays at least the federal minimum wage","Purchase qualifying equipment, technology, or machinery","Application submitted within 18 months of hiring/purchase","Retail businesses and professional services excluded"]),
     industryCategories: JSON.stringify(["Manufacturing","Technology","Healthcare","Food & Beverage"]),
     incentiveType: "TAX_CREDIT", fundingAmount: 25000, deadline: null,
-    sourceUrl: "https://ced.ky.gov/Incentives/Pages/KSBTC.aspx", programCode: "KY-KSBTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://ced.ky.gov/ksbtc/", programCode: "KY-KSBTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Kentucky Appalachian Regional Reforestation Initiative (ARRI) Grant", slug: "kentucky-arri-reforestation-grant",
     jurisdictionLevel: "STATE", jurisdictionName: "Kentucky", managingAgency: "Kentucky Division of Forestry / OSM ARRI", agencyAcronym: "KDF-ARRI",
@@ -6106,7 +6106,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must be a new or expanding business in Idaho","Capital investment in qualifying equipment or real property","Credit: 3.15% of investment, up to 62.5% of annual tax liability","Unused credits carry forward for 14 years","Must meet minimum hourly wage threshold"]),
     industryCategories: JSON.stringify(["Manufacturing","Technology","Agriculture","Clean Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://commerce.idaho.gov/business-incentives/", programCode: "ID-BITC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://commerce.idaho.gov/incentives-and-financing/incentives/", programCode: "ID-BITC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Idaho Opportunity Fund", slug: "idaho-opportunity-fund",
     jurisdictionLevel: "STATE", jurisdictionName: "Idaho", managingAgency: "Idaho Department of Commerce", agencyAcronym: "IDC",
@@ -6114,7 +6114,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Project must create or retain primary sector jobs in Idaho","Community or economic development organization must sponsor application","Business must commit to minimum job creation targets","Infrastructure improvements must be tied to specific business expansion","Governor's approval required for large awards"]),
     industryCategories: JSON.stringify(["Manufacturing","Technology","Infrastructure","Agriculture"]),
     incentiveType: "GRANT", fundingAmount: 1000000, deadline: null,
-    sourceUrl: "https://commerce.idaho.gov/communities/opportunity-fund/", programCode: "ID-OPP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://commerce.idaho.gov/incentives-and-financing/incentives/", programCode: "ID-OPP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Idaho Workforce Development Training Fund", slug: "idaho-workforce-development-training",
     jurisdictionLevel: "STATE", jurisdictionName: "Idaho", managingAgency: "Idaho Department of Labor", agencyAcronym: "IDOL",
@@ -6122,7 +6122,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be located in Idaho and in good standing","Training must result in new hires or retention of at-risk employees","Reimbursement up to 75% of eligible training costs","Maximum award typically $100,000 per project","Application submitted before training begins"]),
     industryCategories: JSON.stringify(["Manufacturing","Technology","Healthcare","Logistics"]),
     incentiveType: "GRANT", fundingAmount: 100000, deadline: null,
-    sourceUrl: "https://labor.idaho.gov/wdd/workforce-training-fund/", programCode: "ID-WDF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://labor.idaho.gov/dnn/Businesses/Workforce-Training", programCode: "ID-WDF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Idaho Broadband — Digital Infrastructure Grant", slug: "idaho-broadband-digital-infrastructure",
     jurisdictionLevel: "STATE", jurisdictionName: "Idaho", managingAgency: "Idaho Office of Science & Technology / Broadband Office", agencyAcronym: "IOST",
@@ -6147,7 +6147,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Donor must be an Alabama individual or business taxpayer","Recipient must be a certified Growing Alabama agricultural center","Credit equals 100% of donation, up to $20,000 per taxpayer per year","Total program cap: $6 million annually statewide","Certification from ADAI required before donation"]),
     industryCategories: JSON.stringify(["Agriculture","Food & Beverage","Government & Nonprofit"]),
     incentiveType: "TAX_CREDIT", fundingAmount: 20000, deadline: null,
-    sourceUrl: "https://agi.alabama.gov/growing-alabama/", programCode: "AL-GROWING", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.madeinalabama.com/why-alabama/incentives/", programCode: "AL-GROWING", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Alabama AIDT Workforce Training Program", slug: "alabama-aidt-workforce-training",
     jurisdictionLevel: "STATE", jurisdictionName: "Alabama", managingAgency: "Alabama Industrial Development Training", agencyAcronym: "AIDT",
@@ -6172,7 +6172,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Company must create or retain significant full-time Delaware jobs","Capital investment or operations commitment required","Award structured as grant, loan, or tax credit based on project","Pre-announcement application required before business commits","Annual reporting for multi-year projects"]),
     industryCategories: JSON.stringify(["Manufacturing","Technology","Financial Services","Healthcare","Logistics"]),
     incentiveType: "GRANT", fundingAmount: 2000000, deadline: null,
-    sourceUrl: "https://business.delaware.gov/strategic-fund/", programCode: "DE-STRAT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://business.delaware.gov/incentives/", programCode: "DE-STRAT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Delaware Qualified Defense Contractor Tax Credit", slug: "delaware-qualified-defense-contractor-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Delaware", managingAgency: "Delaware Division of Revenue", agencyAcronym: "DE DOR",
@@ -6205,7 +6205,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum project cost: $5 million","Rehabilitation or new construction of commercial, mixed-use, or industrial property","Developer must demonstrate financing gap requiring tax credit","RI Commerce Board approval required before construction","Jobs and economic impact thresholds must be met"]),
     industryCategories: JSON.stringify(["Real Estate","Construction","Manufacturing","Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://commerceri.com/incentives/rebuild-ri-tax-credit/", programCode: "RI-REBUILD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://commerceri.com/incentives/tax-credits-and-financing/rebuild-rhode-island-tax-credit-infosys/", programCode: "RI-REBUILD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Rhode Island Qualified Jobs Incentive Act", slug: "rhode-island-qualified-jobs-incentive",
     jurisdictionLevel: "STATE", jurisdictionName: "Rhode Island", managingAgency: "Rhode Island Commerce Corporation", agencyAcronym: "RI Commerce",
@@ -6213,7 +6213,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Must create at least 10 new full-time jobs in Rhode Island","Minimum salary: $50,000 per new hire (indexed annually)","10-year credit term; credits issued annually per job retained","Company must be in a qualified sector (excluding retail, food service)","Pre-approval from RI Commerce before hiring begins"]),
     industryCategories: JSON.stringify(["Technology","Financial Services","Healthcare","Manufacturing"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://commerceri.com/incentives/qualified-jobs-incentive-act/", programCode: "RI-QJI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://commerceri.com/financing/tax-credits/qualified-jobs-incentive-tax-credit/", programCode: "RI-QJI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Rhode Island Small Business Assistance Program (SSBCI)", slug: "rhode-island-ssbci-loan",
     jurisdictionLevel: "STATE", jurisdictionName: "Rhode Island", managingAgency: "RI Division of Banking / RI Commerce", agencyAcronym: "RI Commerce",
@@ -6221,7 +6221,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be a for-profit entity in Rhode Island with 500 or fewer employees","Must demonstrate need for capital for growth or recovery","Loan guarantee program: bank retains loan, state guarantees 20–33%","Direct loan program available for highest-need businesses","Priority: minority-owned, women-owned, and rural businesses"]),
     industryCategories: JSON.stringify(["Manufacturing","Technology","Food & Beverage","Healthcare","Retail"]),
     incentiveType: "LOAN", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://commerceri.com/programs/ssbci/", programCode: "RI-SSBCI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://commerceri.com/", programCode: "RI-SSBCI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Rhode Island Innovation Initiative (RI Innovates) Grant", slug: "rhode-island-innovation-initiative",
     jurisdictionLevel: "STATE", jurisdictionName: "Rhode Island", managingAgency: "Rhode Island Science & Technology Advisory Council", agencyAcronym: "STAC",
@@ -6229,7 +6229,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be incorporated and operating in Rhode Island","Priority: SBIR/STTR Phase I or II award recipients","Matching funds from the federal SBIR/STTR award required","Annual competitive application process","Focus sectors: biomedical, defense, advanced manufacturing, ocean tech"]),
     industryCategories: JSON.stringify(["Research & Development","Technology","Healthcare","Manufacturing"]),
     incentiveType: "GRANT", fundingAmount: 100000, deadline: new Date("2025-10-15"),
-    sourceUrl: "https://commerceri.com/programs/innovation/", programCode: "RI-INNOV", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://commerceri.com/incentives/talent-development/", programCode: "RI-INNOV", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── MAINE ────────────────────────────────────────────────────────────────────
   { title: "Maine Employment Tax Increment Financing (ETIF)", slug: "maine-etif-program",
@@ -6238,7 +6238,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must create at least 5 net new full-time jobs paying above county average","Approved sectors: manufacturing, R&D, financial services, certain services","Reimbursement rate: 30–80% depending on county tier","10-year benefit period from date of first eligible employee","Application before hiring; certified annually by DECD"]),
     industryCategories: JSON.stringify(["Manufacturing","Technology","Financial Services","Healthcare"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.maine.gov/decd/business/incentives/etif/", programCode: "ME-ETIF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.maine.gov/decd/business-development/financial-incentives-resources/employment-tax-increment-financing", programCode: "ME-ETIF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Maine New Markets Capital Investment Tax Credit", slug: "maine-new-markets-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Maine", managingAgency: "Maine Revenue Services", agencyAcronym: "MRS",
@@ -6246,7 +6246,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Investment must be through a qualified Maine CDE","CDE must deploy capital in low-income communities (census tract LIC)","Credit: 39% of investment taken over 7 years","Investor must hold investment for full 7-year compliance period","CDE allocation from Maine Revenue Services required"]),
     industryCategories: JSON.stringify(["Real Estate","Manufacturing","Healthcare","Government & Nonprofit"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.maine.gov/revenue/taxes/income-estate-tax/tax-credits/", programCode: "ME-NMTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www1.maine.gov/revenue/taxes/tax-relief-credits-programs/income-tax-credits", programCode: "ME-NMTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Maine Seed Capital Tax Credit", slug: "maine-seed-capital-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Maine", managingAgency: "Finance Authority of Maine", agencyAcronym: "FAME",
@@ -6262,7 +6262,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be a Maine-based manufacturer","1:1 matching funds required from company","Projects: equipment upgrades, automation, lean/six sigma, digital systems","Maximum award: $50,000 per project","MTI review board evaluates economic impact and feasibility"]),
     industryCategories: JSON.stringify(["Manufacturing","Technology","Energy Management"]),
     incentiveType: "GRANT", fundingAmount: 50000, deadline: null,
-    sourceUrl: "https://www.mainetechnology.org/our-programs/", programCode: "ME-M2M", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.mainetechnology.org/", programCode: "ME-M2M", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── OHIO ─────────────────────────────────────────────────────────────────────
   { title: "Ohio JobsOhio Economic Development Grant", slug: "ohio-jobsohio-development-grant",
@@ -6321,7 +6321,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be certified by WEDC before creating jobs","Minimum of 10 new full-time jobs in a 3-year window","Average hourly wage must meet county wage thresholds","Credit: $4,000–$8,000 per job (higher in distressed areas)","Annual reporting of job count and wages required"]),
     industryCategories: JSON.stringify(["Manufacturing","Technology","Healthcare","Financial Services"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://wedc.org/programs-and-resources/business-development-tax-credits/", programCode: "WI-JTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://wedc.org/programs/business-development-tax-credits/", programCode: "WI-JTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Wisconsin Dairy Innovation Hub Grant", slug: "wisconsin-dairy-innovation-hub",
     jurisdictionLevel: "STATE", jurisdictionName: "Wisconsin", managingAgency: "Wisconsin Dairy Innovation Hub / UW-Madison", agencyAcronym: "WI-DIH",
@@ -6346,7 +6346,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Local government must sponsor application on behalf of the business","Business must create minimum number of jobs at qualifying wages","Infrastructure must be directly required by and for the new project","Grant awarded to local government; not directly to business","TNECD approval required before construction begins"]),
     industryCategories: JSON.stringify(["Manufacturing","Logistics","Infrastructure","Technology"]),
     incentiveType: "GRANT", fundingAmount: 2000000, deadline: null,
-    sourceUrl: "https://www.tn.gov/ecd/incentives.html", programCode: "TN-FASTTRACK", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.tn.gov/revenue/for-businesses/tax-incentives.html", programCode: "TN-FASTTRACK", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Tennessee Rural Opportunity Fund Loan", slug: "tennessee-rural-opportunity-fund",
     jurisdictionLevel: "STATE", jurisdictionName: "Tennessee", managingAgency: "Tennessee Treasury / TNECD", agencyAcronym: "TNECD",
@@ -6354,7 +6354,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Project must be located in a qualifying rural Tennessee county","Minimum 10 full-time jobs created or retained","Loan size: $250,000–$2 million","Interest rate: 2–3% below conventional commercial rates","Business must match at least 25% of project cost from private sources"]),
     industryCategories: JSON.stringify(["Manufacturing","Agriculture","Healthcare","Logistics"]),
     incentiveType: "LOAN", fundingAmount: 2000000, deadline: null,
-    sourceUrl: "https://www.tn.gov/ecd/incentives.html", programCode: "TN-ROF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.tn.gov/revenue/for-businesses/tax-incentives.html", programCode: "TN-ROF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Tennessee Angel Tax Credit", slug: "tennessee-angel-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Tennessee", managingAgency: "Tennessee Department of Revenue", agencyAcronym: "TNDOR",
@@ -6362,7 +6362,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Investor must be a Tennessee resident or operating entity","Investment in a TNDOR-certified small business","Qualifying sectors: technology, bioscience, clean energy, advanced manufacturing","Credit: 33% of investment, max $50,000 per year per investor","Business must have fewer than 100 employees and HQ in Tennessee"]),
     industryCategories: JSON.stringify(["Technology","Healthcare","Clean Technology","Manufacturing"]),
     incentiveType: "TAX_CREDIT", fundingAmount: 50000, deadline: null,
-    sourceUrl: "https://www.tn.gov/revenue/taxes/franchise-and-excise-tax/credits.html", programCode: "TN-ANGEL", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.tn.gov/revenue/for-businesses/tax-incentives.html", programCode: "TN-ANGEL", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── OREGON ────────────────────────────────────────────────────────────────────
   { title: "Oregon Business Energy Tax Credit (BETC)", slug: "oregon-business-energy-tax-credit",
@@ -6387,7 +6387,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Facility must be located in a designated Rural Renewable Energy Development Zone","Qualifying projects: utility-scale solar, wind, biomass, geothermal","Property tax exemption for up to 5 years","Zone sponsor (county/municipality) must approve the application","Minimum investment and employment thresholds set by zone sponsor"]),
     industryCategories: JSON.stringify(["Clean Technology","Energy Management","Agriculture","Infrastructure"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.oregon.gov/biz/programs/Pages/Tax-Incentives.aspx", programCode: "OR-RRED", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.oregon.gov/biz/programs/pages/default.aspx", programCode: "OR-RRED", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── SOUTH CAROLINA ────────────────────────────────────────────────────────────
   { title: "South Carolina Fee-in-Lieu of Tax (FILOT) Program", slug: "south-carolina-filot-program",
@@ -6396,7 +6396,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum investment: $2.5 million in manufacturing or $1 million in other sectors","Jobs created: 25+ for manufacturing; varies for other sectors","FILOT term: 20–30 years","County council approval and negotiated agreement required","Clawback provisions for failure to meet investment/job benchmarks"]),
     industryCategories: JSON.stringify(["Manufacturing","Logistics","Technology","Real Estate"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.sccommerce.com/doing-business-sc/business-incentives/filot", programCode: "SC-FILOT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.sccommerce.com/why-sc/incentives-taxesfilot", programCode: "SC-FILOT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "South Carolina Innovation Centers Tax Credit", slug: "south-carolina-innovation-centers-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "South Carolina", managingAgency: "SC Department of Commerce", agencyAcronym: "SC Commerce",
@@ -6404,7 +6404,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must locate in a SC-certified innovation center or research park","Credit: 20% of eligible facility investment costs","Qualifying innovation centers: Greenville ONE, SC Research Authority, others","Annual certification and reporting to SC Commerce required","Credit limited to $100,000 per business per year"]),
     industryCategories: JSON.stringify(["Technology","Research & Development","Healthcare","Manufacturing"]),
     incentiveType: "TAX_CREDIT", fundingAmount: 100000, deadline: null,
-    sourceUrl: "https://www.sccommerce.com/doing-business-sc/business-incentives/", programCode: "SC-INNOV", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.sccommerce.com/why-sc/incentives-taxes", programCode: "SC-INNOV", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "South Carolina Apprenticeship Carolina Grant", slug: "south-carolina-apprenticeship-carolina",
     jurisdictionLevel: "STATE", jurisdictionName: "South Carolina", managingAgency: "SC Technical College System", agencyAcronym: "SCTCS",
@@ -6421,7 +6421,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Company must create a substantial number of net new jobs in NC","Minimum average wages at or above county average","Capital investment requirement negotiated based on project","Local government match required","Pre-announcement commitment — company must not have publicly announced decision"]),
     industryCategories: JSON.stringify(["Manufacturing","Technology","Financial Services","Healthcare","Logistics"]),
     incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://www.nccommerce.com/business/incentives/one-north-carolina-fund", programCode: "NC-ONE-NC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://nccommerce.com/grants-incentives", programCode: "NC-ONE-NC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "North Carolina Film and Entertainment Grant", slug: "north-carolina-film-entertainment-grant",
     jurisdictionLevel: "STATE", jurisdictionName: "North Carolina", managingAgency: "NC Department of Commerce", agencyAcronym: "NC Commerce",
@@ -6437,7 +6437,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Company must be expanding or relocating to North Carolina","New jobs must be in qualifying sectors (not retail, food service, government)","Grant amount tied to tier designation of county (1–3)","JDIG award: up to 75% of income tax withholdings from new employees","Maximum 12-year grant period; annual jobs and wage reporting"]),
     industryCategories: JSON.stringify(["Manufacturing","Technology","Healthcare","Financial Services"]),
     incentiveType: "GRANT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.nccommerce.com/business/incentives/jdig", programCode: "NC-JDIG", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://nccommerce.com/grants-incentives", programCode: "NC-JDIG", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── MARYLAND ──────────────────────────────────────────────────────────────────
   { title: "Maryland Biotechnology Investment Tax Credit (BITC)", slug: "maryland-biotechnology-investment-credit",
@@ -6446,7 +6446,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Investor must be a Maryland resident or Maryland-based entity","Investment must be in a qualified biotech company with HQ in MD","Biotech company must have fewer than 50 employees","Credit: 33% of investment; fully refundable","Annual program cap: $12 million statewide; competitive allocation"]),
     industryCategories: JSON.stringify(["Healthcare","Research & Development","Technology"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: new Date("2025-09-15"),
-    sourceUrl: "https://commerce.maryland.gov/fund/biotechnology-investment-tax-credit", programCode: "MD-BITC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://commerce.maryland.gov/fund", programCode: "MD-BITC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Maryland Film Production Tax Credit", slug: "maryland-film-production-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Maryland", managingAgency: "Maryland Department of Commerce", agencyAcronym: "MD Commerce",
@@ -6454,7 +6454,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum MD spend: $500,000 per project","Credit: 25% (27% in opportunity zones or rural areas) of in-state costs","Transferable — can be sold to Maryland income tax payers","Pre-production application to MD Commerce required","Minimum 50% of filming must occur in Maryland"]),
     industryCategories: JSON.stringify(["Film & Media","Technology","Real Estate"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://commerce.maryland.gov/fund/maryland-film-production-activity-tax-credit", programCode: "MD-FILM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://commerce.maryland.gov/fund", programCode: "MD-FILM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Maryland E-Nnovation Initiative Grant", slug: "maryland-e-nnovation-grant",
     jurisdictionLevel: "STATE", jurisdictionName: "Maryland", managingAgency: "Maryland Department of Commerce", agencyAcronym: "MD Commerce",
@@ -6462,7 +6462,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Applicant must be a Maryland accredited research institution","Industry partner must provide matching private endowment contribution","Research chair must focus on applied STEM research with commercial potential","Grant matches dollar-for-dollar the private endowment contribution","Research outcomes must benefit Maryland's economy"]),
     industryCategories: JSON.stringify(["Research & Development","Technology","Healthcare","Clean Technology"]),
     incentiveType: "GRANT", fundingAmount: 1500000, deadline: new Date("2025-11-30"),
-    sourceUrl: "https://commerce.maryland.gov/fund/e-nnovation-initiative", programCode: "MD-ENNOV", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://commerce.maryland.gov/fund", programCode: "MD-ENNOV", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── NEVADA ────────────────────────────────────────────────────────────────────
   { title: "Nevada Film Tax Credit", slug: "nevada-film-tax-credit",
@@ -6471,7 +6471,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum Nevada spend: $500,000 per project","Base credit: 15% of qualified production costs","Bonus credits: up to 32% additional for rural locations, Nevada crews","Transferable — credits can be sold or applied against any Nevada tax","GOED pre-approval required; final audit for certificate"]),
     industryCategories: JSON.stringify(["Film & Media","Hospitality","Real Estate"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://goed.nv.gov/incentives/film-tax-credit/", programCode: "NV-FILM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://goed.nv.gov/incentives/", programCode: "NV-FILM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Nevada New/Expanded Business Tax Abatements", slug: "nevada-new-expanded-business-abatement",
     jurisdictionLevel: "STATE", jurisdictionName: "Nevada", managingAgency: "Nevada Governor's Office of Economic Development", agencyAcronym: "GOED",
@@ -6512,7 +6512,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["R&D must be conducted in Arizona","Credit: 24% on first $2.5M of AZ QREs; 15% above $2.5M","Follows federal IRC Section 41 definition of qualified research","Credits may be carried forward 15 years","Available to corporations and pass-through entities"]),
     industryCategories: JSON.stringify(["Research & Development","Technology","Healthcare","Manufacturing"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://azdor.gov/business/credits", programCode: "AZ-RD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://azdor.gov/business/tax-credits", programCode: "AZ-RD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── NEW MEXICO ────────────────────────────────────────────────────────────────
   { title: "New Mexico Local Economic Development Act (LEDA) Grant", slug: "new-mexico-leda-grant",
@@ -6521,7 +6521,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Project must create primary jobs (goods/services sold outside NM or regionally)","Minimum wages must meet county median","Grant flows to municipality or county, which enters agreement with business","Infrastructure, building improvements, and land acquisition eligible","Clawback provisions if job commitments not met within 5 years"]),
     industryCategories: JSON.stringify(["Manufacturing","Technology","Film & Media","Healthcare","Logistics"]),
     incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://edd.nm.gov/local-economic-development-act/", programCode: "NM-LEDA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://edd.newmexico.gov/business-development/leda/", programCode: "NM-LEDA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "New Mexico Film Production Tax Credit", slug: "new-mexico-film-production-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "New Mexico", managingAgency: "New Mexico Film Office", agencyAcronym: "NMFO",
@@ -6537,7 +6537,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Applicant must be a manufacturer operating in New Mexico","Equipment must be used directly in manufacturing operations (NAICS 31–33)","Credit applied against GRT or compensating tax on equipment purchase","No pre-approval required; claimed on annual return","Leased equipment may qualify if taxpayer bears economic risk of loss"]),
     industryCategories: JSON.stringify(["Manufacturing","Clean Technology","Energy Management"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.tax.newmexico.gov/businesses/credits-and-deductions/", programCode: "NM-MIC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.tax.newmexico.gov/businesses/", programCode: "NM-MIC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── UTAH ──────────────────────────────────────────────────────────────────────
   { title: "Utah Industrial Assistance Fund (IAF)", slug: "utah-industrial-assistance-fund",
@@ -6554,7 +6554,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be located and operating in Utah","Program must demonstrate clear STEM workforce development outcomes","Matching contribution from business or community partners encouraged","Priority: manufacturing, technology, healthcare, engineering sectors","Annual competitive application; reports on student/trainee outcomes"]),
     industryCategories: JSON.stringify(["Technology","Manufacturing","Healthcare","Education"]),
     incentiveType: "GRANT", fundingAmount: 150000, deadline: new Date("2025-10-01"),
-    sourceUrl: "https://stem.utah.gov/business/", programCode: "UT-STEM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://business.utah.gov/incentives/", programCode: "UT-STEM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Utah Motion Picture Incentive Program", slug: "utah-motion-picture-incentive",
     jurisdictionLevel: "STATE", jurisdictionName: "Utah", managingAgency: "Utah Governor's Office of Economic Opportunity", agencyAcronym: "GOEO",
@@ -6562,7 +6562,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Minimum Utah spend: $500,000","Credit: 20–25% of qualifying Utah expenditures","5% rural bonus for productions spending 50%+ outside Salt Lake/Utah counties","Transferable and refundable","GOEO pre-approval required before production begins"]),
     industryCategories: JSON.stringify(["Film & Media","Hospitality","Real Estate"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://business.utah.gov/film/incentive/", programCode: "UT-FILM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://business.utah.gov/incentives/", programCode: "UT-FILM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── NEW CITY-LEVEL PROGRAMS ───────────────────────────────────────────────────
   { title: "Chicago Small Business Improvement Fund (SBIF)", slug: "chicago-small-business-improvement-fund",
@@ -6595,7 +6595,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be located in Denver city limits","50 or fewer employees; independently owned and operated","Priority: businesses in designated low-income or underserved neighborhoods","Grant size varies by program: $5,000–$50,000","Business plan and financials required for review"]),
     industryCategories: JSON.stringify(["Retail","Food & Beverage","Healthcare","Technology","Construction"]),
     incentiveType: "GRANT", fundingAmount: 50000, deadline: null,
-    sourceUrl: "https://www.denvergov.org/business/business-development/grant-programs", programCode: "DEN-DEDO", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.denvergov.org/business", programCode: "DEN-DEDO", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Philadelphia Storefront Improvement Program (SIP)", slug: "philadelphia-storefront-improvement-program",
     jurisdictionLevel: "CITY", jurisdictionName: "Philadelphia, PA", managingAgency: "Philadelphia Commerce Department", agencyAcronym: "PHI-COMMERCE",
@@ -6619,7 +6619,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Property must be a commercial or multifamily property in Minneapolis","Project must include qualifying clean energy or efficiency improvements","Assessment repaid through property taxes — passes to new owner on sale","No FICO score requirement; collateral is the property","100% financing available — no upfront cost to property owner"]),
     industryCategories: JSON.stringify(["Real Estate","Building Electrification","Energy Management","Construction"]),
     incentiveType: "LOAN", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://www2.minneapolismn.gov/business-services/funding-programs/", programCode: "MPLS-CPACE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://minneapolismn.gov/businesses/resources/", programCode: "MPLS-CPACE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Baltimore Business Loan Fund (BBLF)", slug: "baltimore-business-loan-fund",
     jurisdictionLevel: "CITY", jurisdictionName: "Baltimore, MD", managingAgency: "Baltimore Development Corporation", agencyAcronym: "BDC",
