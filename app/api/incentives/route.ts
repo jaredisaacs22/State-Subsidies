@@ -42,15 +42,18 @@ export async function GET(request: NextRequest) {
     if (filters.status) where.status = filters.status;
     if (filters.jurisdictionLevel) where.jurisdictionLevel = filters.jurisdictionLevel;
     if (filters.incentiveType) where.incentiveType = filters.incentiveType;
-    if (jurisdictionNameFilter) where.jurisdictionName = { equals: jurisdictionNameFilter, mode: "insensitive" };
+    if (jurisdictionNameFilter) where.jurisdictionName = { contains: jurisdictionNameFilter };
 
     // Full-text search across title, summary, agency
+    // Note: SQLite LIKE is case-insensitive for ASCII by default — no mode needed
     if (filters.search) {
       where.OR = [
-        { title: { contains: filters.search, mode: "insensitive" } },
-        { shortSummary: { contains: filters.search, mode: "insensitive" } },
-        { managingAgency: { contains: filters.search, mode: "insensitive" } },
-        { jurisdictionName: { contains: filters.search, mode: "insensitive" } },
+        { title: { contains: filters.search } },
+        { shortSummary: { contains: filters.search } },
+        { managingAgency: { contains: filters.search } },
+        { agencyAcronym: { contains: filters.search } },
+        { jurisdictionName: { contains: filters.search } },
+        { industryCategories: { contains: filters.search } },
       ];
     }
 
