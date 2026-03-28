@@ -2,10 +2,17 @@ import { NextRequest } from "next/server";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { streamText, tool, stepCountIs } from "ai";
 import { z } from "zod";
+import { ProxyAgent, setGlobalDispatcher } from "undici";
 import { prisma } from "@/lib/db";
 import { parseIncentive } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
+
+// Node.js native fetch (undici) does not honour HTTPS_PROXY automatically.
+// Set the global dispatcher once so every outbound fetch in this process
+// (including the Anthropic SDK's internal calls) routes through the proxy.
+const proxyUrl = process.env.HTTPS_PROXY || process.env.https_proxy;
+if (proxyUrl) setGlobalDispatcher(new ProxyAgent(proxyUrl));
 
 export function GET() {
   const configured =
@@ -14,7 +21,12 @@ export function GET() {
   return Response.json({ configured });
 }
 
-const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const anthropic = createAnthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
+  // ANTHROPIC_BASE_URL env var is set without /v1 in this environment;
+  // explicitly override to the correct versioned endpoint.
+  baseURL: "https://api.anthropic.com/v1",
+});
 
 const SYSTEM = `You are a world-class government incentive advisor for StateSubsidies.com — think of yourself as a senior grants consultant who has helped hundreds of businesses secure funding. Your job: deeply understand the user's situation, find the most relevant programs, and tell them honestly how strong their chances are.
 
