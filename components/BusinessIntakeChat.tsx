@@ -12,6 +12,8 @@ interface Message {
   content: string;
 }
 
+const STORAGE_KEY = "ss_chat_v1";
+
 const SUGGESTIONS = [
   { label: "Small business fleet", text: "15-person HVAC company in Texas — want to electrify our service fleet" },
   { label: "Family farm", text: "200-acre family farm in Iowa — USDA and state agriculture programs" },
@@ -19,6 +21,24 @@ const SUGGESTIONS = [
   { label: "Startup R&D", text: "Biotech startup in Boston — SBIR, STTR, and federal R&D programs" },
   { label: "University", text: "University research team in Colorado — renewable energy fellowships" },
   { label: "Manufacturing", text: "Ohio manufacturing facility — expansion credits and equipment grants" },
+];
+
+const FOLLOW_UPS_MATCHED = [
+  "How do I apply for these?",
+  "What documents will I need?",
+  "Show more similar programs",
+];
+
+const FOLLOW_UPS_ASKING = [
+  "We're a small business",
+  "We're a nonprofit",
+  "Tell me more options",
+];
+
+const FOLLOW_UPS_DEFAULT = [
+  "What programs have no deadline?",
+  "Show me federal grants only",
+  "Which is easiest to apply for?",
 ];
 
 function MessageContent({ text, streaming }: { text: string; streaming?: boolean }) {
@@ -45,6 +65,20 @@ function MessageContent({ text, streaming }: { text: string; streaming?: boolean
   );
 }
 
+function getMatchTag(inc: Incentive): string {
+  const typeLabel: Record<string, string> = {
+    GRANT: "Grant",
+    TAX_CREDIT: "Tax credit",
+    LOAN: "Low-interest loan",
+    POINT_OF_SALE_REBATE: "Instant rebate",
+    VOUCHER: "Equipment voucher",
+    SUBSIDY: "Subsidy",
+  };
+  const scope = inc.jurisdictionLevel === "FEDERAL" ? "Federal" : inc.jurisdictionName;
+  const industry = inc.industryCategories[0] ?? "";
+  return [typeLabel[inc.incentiveType] ?? inc.incentiveType, scope, industry].filter(Boolean).join(" · ");
+}
+
 function MatchedCard({ inc }: { inc: Incentive }) {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -59,6 +93,7 @@ function MatchedCard({ inc }: { inc: Incentive }) {
         </div>
         <a href={`/incentives/${inc.slug}`} target="_blank" className="font-semibold text-slate-900 hover:text-forest-700 transition-colors line-clamp-2 block mb-1 text-[13px] leading-snug">{inc.title}</a>
         <p className="text-slate-400 text-[11px]">{inc.managingAgency} · {inc.jurisdictionName}</p>
+        <p className="text-[10px] text-forest-400/80 font-medium mt-1">{getMatchTag(inc)}</p>
         {expanded && (
           <div className="mt-3 space-y-2 border-t border-slate-100 pt-3 text-xs">
             <p className="text-slate-600 leading-relaxed">{inc.shortSummary}</p>
@@ -90,17 +125,41 @@ export function BusinessIntakeChat() {
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hasPreviousSession, setHasPreviousSession] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const abortRef = useRef<AbortController | null>(null);
+
+  // Restore session from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const { messages: m, matched: mtch } = JSON.parse(saved);
+        if (Array.isArray(m) && m.length > 1) {
+          setMessages(m);
+          if (Array.isArray(mtch) && mtch.length) setMatched(mtch);
+          setHasPreviousSession(true);
+        }
+      }
+    } catch {}
+  }, []);
+
+  // Save session to localStorage on change
+  useEffect(() => {
+    if (messages.length <= 1) return;
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ messages, matched })); } catch {}
+  }, [messages, matched]);
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, matched]);
   useEffect(() => { if (open) setTimeout(() => inputRef.current?.focus(), 100); }, [open]);
 
   const reset = useCallback(() => {
     abortRef.current?.abort();
+    localStorage.removeItem(STORAGE_KEY);
     setMessages([{ role: "assistant", content: "Tell me about your organization — what you do, where you're based, and what you're hoping to fund. I'll find the best-fit programs." }]);
     setMatched([]); setInput(""); setError(null); setStreaming(false);
+    setHasPreviousSession(false);
   }, []);
 
   const send = useCallback(async (text: string) => {
@@ -146,6 +205,11 @@ export function BusinessIntakeChat() {
 
   const hasUserMessage = messages.some((m) => m.role === "user");
 
+  const lastAssistantMsg = [...messages].reverse().find(m => m.role === "assistant");
+  const responseEndsWithQ = lastAssistantMsg?.content.trim().endsWith("?");
+  const followUps = matched.length > 0 ? FOLLOW_UPS_MATCHED : responseEndsWithQ ? FOLLOW_UPS_ASKING : FOLLOW_UPS_DEFAULT;
+  const showFollowUps = !streaming && hasUserMessage && messages[messages.length - 1]?.role === "assistant";
+
   if (!open) {
     return (
       <div className="mt-4 w-full max-w-2xl mx-auto">
@@ -155,17 +219,34 @@ export function BusinessIntakeChat() {
               <Sparkles size={13} className="text-white" />
             </div>
             <div>
-              <p className="text-white font-semibold text-sm">AI Program Finder</p>
-              <p className="text-white/40 text-[11px]">Describe your situation — get matched instantly</p>
+              {hasPreviousSession ? (
+                <>
+                  <p className="text-white font-semibold text-sm">Welcome back</p>
+                  <p className="text-white/40 text-[11px]">
+                    {matched.length > 0 ? `${matched.length} programs found` : "Continue your search"}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-white font-semibold text-sm">AI Program Finder</p>
+                  <p className="text-white/40 text-[11px]">Describe your situation — get matched instantly</p>
+                </>
+              )}
             </div>
           </div>
-          <div className="px-5 pb-3 flex flex-wrap gap-1.5">
+          <div className="px-5 pb-3 flex flex-wrap gap-1.5 items-center">
             {SUGGESTIONS.map((s) => (
               <button key={s.label} onClick={() => send(s.text)}
                 className="text-[11px] px-3 py-1 rounded-full border border-white/12 bg-white/6 text-white/55 hover:bg-white/13 hover:text-white hover:border-white/22 transition-all">
                 {s.label}
               </button>
             ))}
+            {hasPreviousSession && (
+              <button onClick={reset}
+                className="text-[11px] px-3 py-1 text-white/35 hover:text-white/60 transition-colors underline underline-offset-2">
+                Clear history
+              </button>
+            )}
           </div>
           <div className="flex items-center gap-2 px-4 pb-4">
             <button onClick={() => setOpen(true)} className="flex-1 text-left rounded-xl bg-white/8 border border-white/10 px-4 py-2.5 text-sm text-white/30 hover:bg-white/12 hover:text-white/50 transition-colors">
@@ -209,6 +290,17 @@ export function BusinessIntakeChat() {
               </div>
             </div>
           ))}
+
+          {showFollowUps && (
+            <div className="pl-8 flex flex-wrap gap-1.5 pt-1">
+              {followUps.map((chip) => (
+                <button key={chip} onClick={() => send(chip)}
+                  className="text-[11px] px-3 py-1 rounded-full border border-white/12 bg-white/6 text-white/55 hover:bg-white/13 hover:text-white/80 transition-all">
+                  {chip}
+                </button>
+              ))}
+            </div>
+          )}
 
           {!hasUserMessage && (
             <div className="pl-8 space-y-1.5 pt-1">
