@@ -65,6 +65,50 @@ function MessageContent({ text, streaming }: { text: string; streaming?: boolean
   );
 }
 
+// ── Expertise scoring ─────────────────────────────────────────────────────────
+const EXPERT_TERMS = [
+  "ira", "sbir", "sttr", "reap", "eqip", "section 48", "section 45", "section 25c",
+  "tax equity", "credit monetization", "transferability", "direct pay", "bonus depreciation",
+  "179d", "nevi", "dera", "sgip", "hvip", "wazip", "macrs", "prevailing wage",
+  "energy community", "domestic content", "low-income community", "standalone storage",
+];
+const INTERMEDIATE_TERMS = [
+  "tax credit", "grant", "loan", "deduction", "rebate", "subsidy", "voucher",
+  "roi", "capex", "opex", "eligible", "jurisdiction", "federal", "state program",
+  "nonprofit", "501c3", "llc", "s-corp", "c-corp", "compliance", "matching funds",
+];
+
+function scoreExpertise(userMessages: string[]): "expert" | "intermediate" | "beginner" {
+  const combined = userMessages.join(" ").toLowerCase();
+  const expertScore = EXPERT_TERMS.filter((t) => combined.includes(t)).length;
+  const intermediateScore = INTERMEDIATE_TERMS.filter((t) => combined.includes(t)).length;
+  if (expertScore >= 2) return "expert";
+  if (expertScore >= 1 || intermediateScore >= 3) return "intermediate";
+  return "beginner";
+}
+
+const FOLLOW_UPS_MATCHED_EXPERT = [
+  "What's the prevailing wage requirement?",
+  "Are these transferable or direct pay eligible?",
+  "Show programs with domestic content adder",
+];
+const FOLLOW_UPS_MATCHED_INTERMEDIATE = [
+  "How do I apply for the top match?",
+  "What documents will I need?",
+  "Show me federal grants only",
+];
+const FOLLOW_UPS_MATCHED_BEGINNER = [
+  "What's the easiest one to apply for?",
+  "How much money could I get?",
+  "Help me understand the process",
+];
+
+function getMatchedFollowUps(expertise: "expert" | "intermediate" | "beginner"): string[] {
+  if (expertise === "expert") return FOLLOW_UPS_MATCHED_EXPERT;
+  if (expertise === "intermediate") return FOLLOW_UPS_MATCHED_INTERMEDIATE;
+  return FOLLOW_UPS_MATCHED_BEGINNER;
+}
+
 function getMatchTag(inc: Incentive): string {
   const typeLabel: Record<string, string> = {
     GRANT: "Grant",
@@ -205,9 +249,14 @@ export function BusinessIntakeChat() {
 
   const hasUserMessage = messages.some((m) => m.role === "user");
 
+  const userMessages = messages.filter(m => m.role === "user").map(m => m.content);
+  const expertise = scoreExpertise(userMessages);
+
   const lastAssistantMsg = [...messages].reverse().find(m => m.role === "assistant");
   const responseEndsWithQ = lastAssistantMsg?.content.trim().endsWith("?");
-  const followUps = matched.length > 0 ? FOLLOW_UPS_MATCHED : responseEndsWithQ ? FOLLOW_UPS_ASKING : FOLLOW_UPS_DEFAULT;
+  const followUps = matched.length > 0
+    ? getMatchedFollowUps(expertise)
+    : responseEndsWithQ ? FOLLOW_UPS_ASKING : FOLLOW_UPS_DEFAULT;
   const showFollowUps = !streaming && hasUserMessage && messages[messages.length - 1]?.role === "assistant";
 
   if (!open) {
@@ -270,6 +319,11 @@ export function BusinessIntakeChat() {
               <LogoMark size={16} />
             </div>
             <span className="text-white font-semibold text-sm">AI Program Finder</span>
+            {expertise !== "beginner" && (
+              <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-white/10 text-white/50">
+                {expertise === "expert" ? "Expert mode" : "Intermediate"}
+              </span>
+            )}
           </div>
           <div className="flex items-center gap-1">
             {hasUserMessage && <button onClick={reset} title="Start over" className="p-1.5 rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-colors"><RotateCcw size={13} /></button>}

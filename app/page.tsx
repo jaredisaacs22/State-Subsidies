@@ -328,6 +328,7 @@ export default function HomePage() {
         {!hasActiveFilters && !filters.search && (
           <AudienceSelector
             onSelect={handleAudienceSelect}
+            selectedId={selectedAudience}
             className="mb-6"
           />
         )}

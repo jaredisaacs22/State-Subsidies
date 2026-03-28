@@ -5,17 +5,25 @@ import type { IncentiveFilters } from "@/lib/types";
 
 const STORAGE_KEY = "ss_audience_v1";
 
-export type AudienceId = "small_business" | "nonprofit" | "educator" | "farmer" | "researcher";
+export type AudienceId =
+  | "small_business"
+  | "nonprofit"
+  | "educator"
+  | "farmer"
+  | "researcher"
+  | "startup"
+  | "enterprise"
+  | "government";
 
 interface Audience {
   id: AudienceId;
   label: string;
   description: string;
-  emoji: string; // simple visual, no complex SVG needed
+  emoji: string;
   filterPreset: Partial<IncentiveFilters>;
 }
 
-const AUDIENCES: Audience[] = [
+export const AUDIENCES: Audience[] = [
   {
     id: "small_business",
     label: "Small Business",
@@ -24,11 +32,32 @@ const AUDIENCES: Audience[] = [
     filterPreset: {},
   },
   {
+    id: "startup",
+    label: "Startup",
+    description: "Early-stage companies & founders",
+    emoji: "🚀",
+    filterPreset: { industryCategory: "Technology" },
+  },
+  {
+    id: "enterprise",
+    label: "Enterprise",
+    description: "Large manufacturers, fleet operators",
+    emoji: "🏭",
+    filterPreset: { industryCategory: "Manufacturing" },
+  },
+  {
     id: "nonprofit",
     label: "Nonprofit",
     description: "501(c)(3) organizations and charities",
     emoji: "🤝",
     filterPreset: { industryCategory: "Government & Nonprofit" },
+  },
+  {
+    id: "government",
+    label: "Government",
+    description: "Municipalities, agencies, public entities",
+    emoji: "🏛️",
+    filterPreset: { jurisdictionLevel: "CITY" },
   },
   {
     id: "educator",
@@ -55,33 +84,44 @@ const AUDIENCES: Audience[] = [
 
 interface AudienceSelectorProps {
   onSelect: (filters: Partial<IncentiveFilters>, audienceId: AudienceId) => void;
+  selectedId?: AudienceId | null;
   className?: string;
 }
 
-export function AudienceSelector({ onSelect, className }: AudienceSelectorProps) {
-  // No local selected state — parent controls filters
-  // Just renders the audience tiles
+export function AudienceSelector({ onSelect, selectedId, className }: AudienceSelectorProps) {
   return (
     <div className={cn("", className)}>
-      <p className="text-sm font-medium text-slate-500 mb-3">Who are you?</p>
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-        {AUDIENCES.map((a) => (
-          <button
-            key={a.id}
-            onClick={() => onSelect(a.filterPreset, a.id)}
-            className="text-left p-3 rounded-xl border border-slate-200 bg-white hover:border-forest-600 hover:bg-forest-50 hover:shadow-sm transition-all group"
-          >
-            <div className="text-xl mb-1.5">{a.emoji}</div>
-            <div className="font-semibold text-sm text-slate-800 group-hover:text-forest-800 leading-tight">
-              {a.label}
-            </div>
-            <div className="text-[11px] text-slate-400 leading-snug mt-0.5">{a.description}</div>
-          </button>
-        ))}
+      <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-400 mb-3">
+        I&apos;m looking for programs for a…
+      </p>
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
+        {AUDIENCES.map((a) => {
+          const active = selectedId === a.id;
+          return (
+            <button
+              key={a.id}
+              onClick={() => onSelect(a.filterPreset, a.id)}
+              className={cn(
+                "text-left p-3 rounded-xl border transition-all group",
+                active
+                  ? "border-forest-600 bg-forest-50 shadow-sm"
+                  : "border-slate-200 bg-white hover:border-forest-500 hover:bg-forest-50 hover:shadow-sm"
+              )}
+            >
+              <div className="text-xl mb-1.5">{a.emoji}</div>
+              <div className={cn(
+                "font-semibold text-[12px] leading-tight",
+                active ? "text-forest-800" : "text-slate-800 group-hover:text-forest-800"
+              )}>
+                {a.label}
+              </div>
+              <div className="text-[10px] text-slate-400 leading-snug mt-0.5 hidden sm:block">
+                {a.description}
+              </div>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
 }
-
-// Export AUDIENCES for use in parent
-export { AUDIENCES };
