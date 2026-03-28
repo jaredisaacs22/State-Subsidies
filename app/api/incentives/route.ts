@@ -31,6 +31,7 @@ export async function GET(request: NextRequest) {
       minFunding: searchParams.get("minFunding") ? parseInt(searchParams.get("minFunding")!) : undefined,
       maxFunding: searchParams.get("maxFunding") ? parseInt(searchParams.get("maxFunding")!) : undefined,
       verified: searchParams.get("verified") === "true" ? true : undefined,
+      closingSoon: searchParams.get("closingSoon") === "true" ? true : undefined,
     };
     const jurisdictionNameFilter = searchParams.get("jurisdictionName") ?? undefined;
 
@@ -59,6 +60,11 @@ export async function GET(request: NextRequest) {
     }
 
     if (filters.verified) where.isVerified = true;
+    if (filters.closingSoon) {
+      const now = new Date();
+      const thirtyDays = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+      where.deadline = { gte: now.toISOString(), lte: thirtyDays.toISOString() };
+    }
     if (filters.minFunding !== undefined || filters.maxFunding !== undefined) {
       where.fundingAmount = {};
       if (filters.minFunding !== undefined) where.fundingAmount.gte = filters.minFunding;

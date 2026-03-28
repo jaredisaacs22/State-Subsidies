@@ -4,6 +4,7 @@ import { ExternalLink, ArrowLeft, Building2, Calendar, DollarSign, CheckCircle2,
 import { IncentiveTypeBadge, JurisdictionBadge, StatusBadge } from "@/components/Badge";
 import { IncentiveCard } from "@/components/IncentiveCard";
 import { BookmarkButton } from "@/components/BookmarkButton";
+import { ShareButtons } from "@/components/ShareButtons";
 import { formatCurrency, formatDeadline, parseIncentive } from "@/lib/utils";
 import { INDUSTRY_COLORS } from "@/lib/types";
 import { prisma } from "@/lib/db";
@@ -191,6 +192,11 @@ export default async function IncentiveDetailPage({
               <ExternalLink size={14} />
             </a>
             <BookmarkButton slug={incentive.slug} />
+          </div>
+
+          {/* Share */}
+          <div className="card p-4">
+            <ShareButtons title={incentive.title} />
           </div>
 
           {/* Industries */}

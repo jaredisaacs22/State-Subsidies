@@ -146,6 +146,7 @@ export default function HomePage() {
       if (f.minFunding !== undefined) params.set("minFunding", String(f.minFunding));
       if (f.maxFunding !== undefined) params.set("maxFunding", String(f.maxFunding));
       if (f.verified) params.set("verified", "true");
+      if (f.closingSoon) params.set("closingSoon", "true");
       params.set("page", String(f.page ?? 1));
       params.set("pageSize", String(f.pageSize ?? 24));
 
@@ -184,6 +185,7 @@ export default function HomePage() {
       minFunding: undefined,
       maxFunding: undefined,
       verified: undefined,
+      closingSoon: undefined,
     });
   }, [handleFilterChange]);
 
@@ -224,6 +226,7 @@ export default function HomePage() {
     filters.industryCategory,
     filters.minFunding,
     filters.verified,
+    filters.closingSoon,
   ].filter(Boolean).length;
 
   const hasActiveFilters = activeFilterCount > 0 || !!filters.search;
