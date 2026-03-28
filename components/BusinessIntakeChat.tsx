@@ -174,7 +174,13 @@ export function BusinessIntakeChat() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ messages, matched, mode })); } catch {}
   }, [messages, matched, mode]);
 
-  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, matched]);
+  // Scroll the chat's own overflow container — NOT the page
+  useEffect(() => {
+    const el = bottomRef.current;
+    if (!el) return;
+    const container = el.closest(".overflow-y-auto");
+    if (container) container.scrollTop = container.scrollHeight;
+  }, [messages, matched]);
   useEffect(() => { if (open) setTimeout(() => inputRef.current?.focus(), 100); }, [open]);
 
   const reset = useCallback(() => {

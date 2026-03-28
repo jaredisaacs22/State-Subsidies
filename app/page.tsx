@@ -124,7 +124,8 @@ export default function HomePage() {
         if (f.closingSoon) urlParams.set("closingSoon", "true");
         if (f.page && f.page > 1) urlParams.set("page", String(f.page));
         const qs = urlParams.toString();
-        window.history.replaceState(null, "", qs ? `?${qs}` : window.location.pathname);
+        // Preserve Next.js internal history state — never pass null as first arg
+        window.history.replaceState(window.history.state ?? {}, "", qs ? `?${qs}` : window.location.pathname);
       }
       if (f.search) params.set("search", f.search);
       if (f.jurisdictionLevel) params.set("jurisdictionLevel", f.jurisdictionLevel);
@@ -323,24 +324,14 @@ export default function HomePage() {
 
       {/* ── How It Works ─────────────────────────────────────────────────── */}
       <section aria-label="How StateSubsidies works" className="bg-white border-b border-slate-100">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <p className="text-center text-[11px] font-semibold uppercase tracking-widest text-slate-400 mb-6">How it works</p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {[
-              { step: "1", icon: "🔍", title: "Search or tell the AI your situation", body: "Use the search bar to browse by keyword, or tap 'Get Matched' and answer 4 quick questions. No expertise required." },
-              { step: "2", icon: "✅", title: "Check if you qualify", body: "Each program card has a 'Do I qualify?' button. Answer a few yes/no questions and get an instant confidence score before you apply." },
-              { step: "3", icon: "💰", title: "Apply directly to the agency", body: "Every program links to the official government or agency page. No middleman, no fees — just free access to funding you've earned." },
-            ].map(({ step, icon, title, body }) => (
-              <div key={step} className="flex gap-3">
-                <div className="w-8 h-8 rounded-full bg-forest-700 text-white text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5" aria-hidden>
-                  {step}
-                </div>
-                <div>
-                  <p className="text-[13px] font-semibold text-slate-800 mb-1">{icon} {title}</p>
-                  <p className="text-[12px] text-slate-500 leading-relaxed">{body}</p>
-                </div>
-              </div>
-            ))}
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12px] text-slate-500">
+            <span className="font-semibold text-slate-400 uppercase tracking-widest text-[10px]">How it works</span>
+            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>1</span>🔍 Search or ask the AI</span>
+            <span className="text-slate-300 hidden sm:inline">→</span>
+            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>2</span>✅ Check if you qualify</span>
+            <span className="text-slate-300 hidden sm:inline">→</span>
+            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>3</span>💰 Apply directly — free</span>
           </div>
         </div>
       </section>
