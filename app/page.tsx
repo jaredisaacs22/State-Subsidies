@@ -369,16 +369,29 @@ export default function HomePage() {
             <div className="hidden lg:flex items-center justify-between mb-5">
               <div className="flex items-center gap-3 flex-wrap">
                 <p className="text-sm text-slate-500 tabular-nums">
-                  <span className="font-semibold text-slate-800">
-                    {results?.total?.toLocaleString() ?? "—"}
-                  </span>{" "}
-                  programs found
-                  {activeFilterCount > 0 && (
-                    <span className="ml-1 text-slate-400">
-                      · {activeFilterCount} filter{activeFilterCount !== 1 ? "s" : ""} active
-                    </span>
+                  {results ? (
+                    <>
+                      Showing{" "}
+                      <span className="font-semibold text-slate-800">
+                        {(((filters.page ?? 1) - 1) * (filters.pageSize ?? 24) + 1).toLocaleString()}
+                        –
+                        {Math.min((filters.page ?? 1) * (filters.pageSize ?? 24), results.total).toLocaleString()}
+                      </span>{" "}
+                      of{" "}
+                      <span className="font-semibold text-slate-800">{results.total.toLocaleString()}</span>
+                      {activeFilterCount > 0 && (
+                        <span className="text-slate-400"> · {activeFilterCount} filter{activeFilterCount !== 1 ? "s" : ""}</span>
+                      )}
+                    </>
+                  ) : (
+                    <span className="font-semibold text-slate-800">—</span>
                   )}
                 </p>
+                {activeFilterCount > 0 && (
+                  <button onClick={clearAllFilters} className="text-xs text-slate-400 hover:text-forest-700 transition-colors underline underline-offset-2">
+                    Clear all
+                  </button>
+                )}
               </div>
               <div className="flex items-center gap-3">
                 {(hasActiveFilters || !!filters.search) && (
