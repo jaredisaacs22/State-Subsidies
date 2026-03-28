@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { ChevronDown, X, Bookmark, Bell, Check } from "lucide-react";
 import { useBookmarks } from "@/lib/useBookmarks";
 import {
@@ -102,13 +103,13 @@ function BookmarksWidget() {
   if (bookmarks.length === 0) return null;
   return (
     <div className="mt-4 pt-4 border-t border-slate-100">
-      <a
+      <Link
         href="/saved"
         className="flex items-center gap-2 text-sm text-forest-700 hover:text-forest-800 font-medium transition-colors"
       >
         <Bookmark size={13} className="fill-current" />
         {bookmarks.length} saved program{bookmarks.length !== 1 ? "s" : ""}
-      </a>
+      </Link>
     </div>
   );
 }
@@ -126,7 +127,7 @@ function EmailAlertWidget() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = email.trim();
-    if (!trimmed || !trimmed.includes("@")) return;
+    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) return;
     try { localStorage.setItem("ss_alert_email", trimmed); } catch {}
     setSubmitted(true);
   };

@@ -73,6 +73,14 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
+  /* Respect user motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-in { animation: none; }
+    .skeleton-shimmer::after { animation: none; }
+    .typing-cursor { animation: none; }
+    html { scroll-behavior: auto; }
+  }
+
   /* ── Hero section ─────────────────────────────────────────────────── */
   .hero-section {
     background:

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Send, X, RotateCcw, ChevronDown, ChevronUp, ExternalLink, Sparkles } from "lucide-react";
+import { Send, X, RotateCcw, ChevronDown, ChevronUp, ExternalLink, Sparkles, Zap, Target } from "lucide-react";
 import { cn, formatCurrency, formatDeadline } from "@/lib/utils";
 import { INCENTIVE_TYPE_COLORS, JURISDICTION_COLORS } from "@/lib/types";
 import { LogoMark } from "@/components/Logo";
@@ -12,29 +12,55 @@ interface Message {
   content: string;
 }
 
+type ChatMode = "quick" | "tailored" | null;
+
 const STORAGE_KEY = "ss_chat_v1";
 
-const SUGGESTIONS = [
-  { label: "Small business fleet", text: "15-person HVAC company in Texas — want to electrify our service fleet" },
-  { label: "Family farm", text: "200-acre family farm in Iowa — USDA and state agriculture programs" },
-  { label: "Nonprofit", text: "501(c)(3) environmental nonprofit in Georgia — clean energy grants" },
-  { label: "Startup R&D", text: "Biotech startup in Boston — SBIR, STTR, and federal R&D programs" },
-  { label: "University", text: "University research team in Colorado — renewable energy fellowships" },
-  { label: "Manufacturing", text: "Ohio manufacturing facility — expansion credits and equipment grants" },
+// ── Expertise scoring ──────────────────────────────────────────────────────────
+const EXPERT_TERMS = [
+  "ira", "sbir", "sttr", "reap", "eqip", "section 48", "section 45", "section 25c",
+  "tax equity", "credit monetization", "transferability", "direct pay", "bonus depreciation",
+  "179d", "nevi", "dera", "sgip", "hvip", "wazip", "macrs", "prevailing wage",
+  "energy community", "domestic content", "low-income community", "standalone storage",
+];
+const INTERMEDIATE_TERMS = [
+  "tax credit", "grant", "loan", "deduction", "rebate", "subsidy", "voucher",
+  "roi", "capex", "opex", "eligible", "jurisdiction", "federal", "state program",
+  "nonprofit", "501c3", "llc", "s-corp", "c-corp", "compliance", "matching funds",
 ];
 
-const FOLLOW_UPS_ASKING = [
-  "We're a small business",
-  "We're a nonprofit",
-  "Tell me more options",
-];
+function scoreExpertise(msgs: string[]): "expert" | "intermediate" | "beginner" {
+  const combined = msgs.join(" ").toLowerCase();
+  const expertScore = EXPERT_TERMS.filter((t) => combined.includes(t)).length;
+  const interScore = INTERMEDIATE_TERMS.filter((t) => combined.includes(t)).length;
+  if (expertScore >= 2) return "expert";
+  if (expertScore >= 1 || interScore >= 3) return "intermediate";
+  return "beginner";
+}
 
-const FOLLOW_UPS_DEFAULT = [
-  "What programs have no deadline?",
+const FOLLOW_UPS_EXPERT = [
+  "What's the prevailing wage requirement?",
+  "Are these transferable or direct pay eligible?",
+  "Show programs with domestic content adder",
+];
+const FOLLOW_UPS_INTERMEDIATE = [
+  "How do I apply for the top match?",
+  "What documents will I need?",
   "Show me federal grants only",
+];
+const FOLLOW_UPS_BEGINNER = [
   "Which is easiest to apply for?",
+  "How much money could I get?",
+  "Walk me through the next step",
 ];
 
+function getFollowUps(expertise: "expert" | "intermediate" | "beginner") {
+  if (expertise === "expert") return FOLLOW_UPS_EXPERT;
+  if (expertise === "intermediate") return FOLLOW_UPS_INTERMEDIATE;
+  return FOLLOW_UPS_BEGINNER;
+}
+
+// ── Message renderer ───────────────────────────────────────────────────────────
 function MessageContent({ text, streaming }: { text: string; streaming?: boolean }) {
   if (!text && streaming) return <span className="typing-cursor text-white/40 text-sm" />;
   if (!text) return null;
@@ -59,62 +85,13 @@ function MessageContent({ text, streaming }: { text: string; streaming?: boolean
   );
 }
 
-// ── Expertise scoring ─────────────────────────────────────────────────────────
-const EXPERT_TERMS = [
-  "ira", "sbir", "sttr", "reap", "eqip", "section 48", "section 45", "section 25c",
-  "tax equity", "credit monetization", "transferability", "direct pay", "bonus depreciation",
-  "179d", "nevi", "dera", "sgip", "hvip", "wazip", "macrs", "prevailing wage",
-  "energy community", "domestic content", "low-income community", "standalone storage",
-];
-const INTERMEDIATE_TERMS = [
-  "tax credit", "grant", "loan", "deduction", "rebate", "subsidy", "voucher",
-  "roi", "capex", "opex", "eligible", "jurisdiction", "federal", "state program",
-  "nonprofit", "501c3", "llc", "s-corp", "c-corp", "compliance", "matching funds",
-];
-
-function scoreExpertise(userMessages: string[]): "expert" | "intermediate" | "beginner" {
-  const combined = userMessages.join(" ").toLowerCase();
-  const expertScore = EXPERT_TERMS.filter((t) => combined.includes(t)).length;
-  const intermediateScore = INTERMEDIATE_TERMS.filter((t) => combined.includes(t)).length;
-  if (expertScore >= 2) return "expert";
-  if (expertScore >= 1 || intermediateScore >= 3) return "intermediate";
-  return "beginner";
-}
-
-const FOLLOW_UPS_MATCHED_EXPERT = [
-  "What's the prevailing wage requirement?",
-  "Are these transferable or direct pay eligible?",
-  "Show programs with domestic content adder",
-];
-const FOLLOW_UPS_MATCHED_INTERMEDIATE = [
-  "How do I apply for the top match?",
-  "What documents will I need?",
-  "Show me federal grants only",
-];
-const FOLLOW_UPS_MATCHED_BEGINNER = [
-  "What's the easiest one to apply for?",
-  "How much money could I get?",
-  "Help me understand the process",
-];
-
-function getMatchedFollowUps(expertise: "expert" | "intermediate" | "beginner"): string[] {
-  if (expertise === "expert") return FOLLOW_UPS_MATCHED_EXPERT;
-  if (expertise === "intermediate") return FOLLOW_UPS_MATCHED_INTERMEDIATE;
-  return FOLLOW_UPS_MATCHED_BEGINNER;
-}
-
 function getMatchTag(inc: Incentive): string {
   const typeLabel: Record<string, string> = {
-    GRANT: "Grant",
-    TAX_CREDIT: "Tax credit",
-    LOAN: "Low-interest loan",
-    POINT_OF_SALE_REBATE: "Instant rebate",
-    VOUCHER: "Equipment voucher",
-    SUBSIDY: "Subsidy",
+    GRANT: "Grant", TAX_CREDIT: "Tax credit", LOAN: "Low-interest loan",
+    POINT_OF_SALE_REBATE: "Instant rebate", VOUCHER: "Equipment voucher", SUBSIDY: "Subsidy",
   };
   const scope = inc.jurisdictionLevel === "FEDERAL" ? "Federal" : inc.jurisdictionName;
-  const industry = inc.industryCategories[0] ?? "";
-  return [typeLabel[inc.incentiveType] ?? inc.incentiveType, scope, industry].filter(Boolean).join(" · ");
+  return [typeLabel[inc.incentiveType] ?? inc.incentiveType, scope, inc.industryCategories[0] ?? ""].filter(Boolean).join(" · ");
 }
 
 function MatchedCard({ inc }: { inc: Incentive }) {
@@ -129,7 +106,7 @@ function MatchedCard({ inc }: { inc: Incentive }) {
           </div>
           {inc.fundingAmount && <span className="text-emerald-700 font-bold text-sm whitespace-nowrap flex-shrink-0">{formatCurrency(inc.fundingAmount)}</span>}
         </div>
-        <a href={`/incentives/${inc.slug}`} target="_blank" className="font-semibold text-slate-900 hover:text-forest-700 transition-colors line-clamp-2 block mb-1 text-[13px] leading-snug">{inc.title}</a>
+        <a href={`/incentives/${inc.slug}`} className="font-semibold text-slate-900 hover:text-forest-700 transition-colors line-clamp-2 block mb-1 text-[13px] leading-snug">{inc.title}</a>
         <p className="text-slate-400 text-[11px]">{inc.managingAgency} · {inc.jurisdictionName}</p>
         <p className="text-[10px] text-forest-400/80 font-medium mt-1">{getMatchTag(inc)}</p>
         {expanded && (
@@ -144,7 +121,11 @@ function MatchedCard({ inc }: { inc: Incentive }) {
             </div>
           </div>
         )}
-        <button onClick={() => setExpanded((e) => !e)} className="mt-2 flex items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors text-[11px]">
+        <button
+          onClick={() => setExpanded((e) => !e)}
+          aria-expanded={expanded}
+          className="mt-2 flex items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors text-[11px]"
+        >
           {expanded ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
           {expanded ? "Show less" : "Details & apply"}
         </button>
@@ -153,12 +134,11 @@ function MatchedCard({ inc }: { inc: Incentive }) {
   );
 }
 
+// ── Main component ─────────────────────────────────────────────────────────────
 export function BusinessIntakeChat() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([{
-    role: "assistant",
-    content: "Tell me about your organization — what you do, where you're based, and what you're hoping to fund. I'll find the best-fit programs.",
-  }]);
+  const [mode, setMode] = useState<ChatMode>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [matched, setMatched] = useState<Incentive[]>([]);
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
@@ -169,7 +149,7 @@ export function BusinessIntakeChat() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const abortRef = useRef<AbortController | null>(null);
 
-  // Check AI configuration and restore session from localStorage on mount
+  // Check AI config + restore session on mount
   useEffect(() => {
     fetch("/api/chat")
       .then((r) => r.json())
@@ -178,36 +158,51 @@ export function BusinessIntakeChat() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
-        const { messages: m, matched: mtch } = JSON.parse(saved);
-        if (Array.isArray(m) && m.length > 1) {
+        const { messages: m, matched: mtch, mode: md } = JSON.parse(saved);
+        if (Array.isArray(m) && m.length > 0) {
           setMessages(m);
           if (Array.isArray(mtch) && mtch.length) setMatched(mtch);
+          if (md) setMode(md);
           setHasPreviousSession(true);
         }
       }
     } catch {}
   }, []);
 
-  // Save session to localStorage on change
   useEffect(() => {
-    if (messages.length <= 1) return;
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ messages, matched })); } catch {}
-  }, [messages, matched]);
+    if (messages.length === 0) return;
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ messages, matched, mode })); } catch {}
+  }, [messages, matched, mode]);
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, matched]);
   useEffect(() => { if (open) setTimeout(() => inputRef.current?.focus(), 100); }, [open]);
 
   const reset = useCallback(() => {
     abortRef.current?.abort();
-    localStorage.removeItem(STORAGE_KEY);
-    setMessages([{ role: "assistant", content: "Tell me about your organization — what you do, where you're based, and what you're hoping to fund. I'll find the best-fit programs." }]);
-    setMatched([]); setInput(""); setError(null); setStreaming(false);
-    setHasPreviousSession(false);
+    try { localStorage.removeItem(STORAGE_KEY); } catch {}
+    setMessages([]); setMatched([]); setInput(""); setError(null);
+    setStreaming(false); setMode(null); setHasPreviousSession(false);
+  }, []);
+
+  const startMode = useCallback((selectedMode: ChatMode, initialText?: string) => {
+    setMode(selectedMode);
+    setOpen(true);
+    // Inject the appropriate first assistant message for the chosen mode
+    const greeting = selectedMode === "quick"
+      ? "What are you looking for? Give me a quick description — your business type, location, and goal — and I'll search right away."
+      : "I'll find you every program you qualify for. Let's start with the basics:\n\n**Where is your business or organization located?** (State or city)";
+    setMessages([{ role: "assistant", content: greeting }]);
+    if (initialText) {
+      // Will be picked up by a follow-on send()
+      setTimeout(() => {
+        const textarea = document.querySelector<HTMLTextAreaElement>("#chat-input");
+        if (textarea) { textarea.value = initialText; textarea.focus(); }
+      }, 150);
+    }
   }, []);
 
   const send = useCallback(async (text: string) => {
     if (!text.trim() || streaming) return;
-    if (!open) setOpen(true);
     const userMsg: Message = { role: "user", content: text.trim() };
     const next = [...messages, userMsg];
     setMessages(next); setInput(""); setError(null); setStreaming(true);
@@ -215,11 +210,17 @@ export function BusinessIntakeChat() {
     const controller = new AbortController();
     abortRef.current = controller;
     try {
-      const res = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: next }), signal: controller.signal });
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: next, mode }),
+        signal: controller.signal,
+      });
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err?.error ?? `Request failed (${res.status})`);
-      }      const reader = res.body?.getReader();
+      }
+      const reader = res.body?.getReader();
       if (!reader) throw new Error("No response body");
       const decoder = new TextDecoder();
       let buffer = "";
@@ -236,7 +237,11 @@ export function BusinessIntakeChat() {
           try {
             const parsed = JSON.parse(payload);
             if (parsed.error) throw new Error(parsed.error);
-            if (parsed.text) setMessages((prev) => { const copy = [...prev]; copy[copy.length - 1] = { ...copy[copy.length - 1], content: copy[copy.length - 1].content + parsed.text }; return copy; });
+            if (parsed.text) setMessages((prev) => {
+              const copy = [...prev];
+              copy[copy.length - 1] = { ...copy[copy.length - 1], content: copy[copy.length - 1].content + parsed.text };
+              return copy;
+            });
             if (parsed.done && parsed.matched?.length) setMatched(parsed.matched);
           } catch (e) { if ((e as Error).name !== "SyntaxError") throw e; }
         }
@@ -244,113 +249,162 @@ export function BusinessIntakeChat() {
     } catch (err) {
       if ((err as Error).name === "AbortError") return;
       setError(err instanceof Error ? err.message : "Something went wrong");
-      setMessages((prev) => prev[prev.length - 1].content === "" ? prev.slice(0, -1) : prev);
+      setMessages((prev) => prev[prev.length - 1]?.content === "" ? prev.slice(0, -1) : prev);
     } finally { setStreaming(false); abortRef.current = null; }
-  }, [messages, streaming, open]);
+  }, [messages, streaming, mode]);
 
-  const hasUserMessage = messages.some((m) => m.role === "user");
-
-  const userMessages = messages.filter(m => m.role === "user").map(m => m.content);
+  const userMessages = messages.filter((m) => m.role === "user").map((m) => m.content);
   const expertise = scoreExpertise(userMessages);
+  const hasUserMessage = userMessages.length > 0;
+  const lastMsg = messages[messages.length - 1];
+  const showFollowUps = !streaming && hasUserMessage && lastMsg?.role === "assistant";
+  const followUps = matched.length > 0 ? getFollowUps(expertise) : [
+    "Tell me more about the top match",
+    "What documents do I need?",
+    "Show similar programs",
+  ];
 
-  const lastAssistantMsg = [...messages].reverse().find(m => m.role === "assistant");
-  const responseEndsWithQ = lastAssistantMsg?.content.trim().endsWith("?");
-  const followUps = matched.length > 0
-    ? getMatchedFollowUps(expertise)
-    : responseEndsWithQ ? FOLLOW_UPS_ASKING : FOLLOW_UPS_DEFAULT;
-  const showFollowUps = !streaming && hasUserMessage && messages[messages.length - 1]?.role === "assistant";
-
-  if (!open) {
-    // Show setup-required banner when AI is not configured
-    if (aiConfigured === false) {
-      return (
-        <div className="mt-6 w-full max-w-2xl mx-auto">
-          <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm px-5 py-4 flex items-start gap-3">
-            <div className="w-8 h-8 rounded-xl bg-white/8 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Sparkles size={14} className="text-white/30" />
-            </div>
-            <div>
-              <p className="text-white/55 font-semibold text-sm">AI advisor not configured</p>
-              <p className="text-white/30 text-[11px] mt-0.5 leading-relaxed">
-                Add your <code className="font-mono bg-white/8 px-1 rounded">ANTHROPIC_API_KEY</code> to <code className="font-mono bg-white/8 px-1 rounded">.env</code> and restart to enable AI program matching.
-              </p>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
+  // ── Not configured ────────────────────────────────────────────────────────
+  if (aiConfigured === false) {
     return (
       <div className="mt-6 w-full max-w-2xl mx-auto">
-        <div className="rounded-2xl border border-white/12 bg-white/6 backdrop-blur-sm overflow-hidden">
-          {/* Header */}
-          <div className="flex items-center gap-3 px-5 pt-5 pb-2">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-forest-600/80 to-forest-900/80 flex items-center justify-center flex-shrink-0 shadow-inner">
-              <Sparkles size={14} className="text-white" />
-            </div>
-            <div className="flex-1 min-w-0">
-              {hasPreviousSession ? (
-                <div className="flex items-center gap-2">
-                  <p className="text-white font-semibold text-sm">Welcome back</p>
-                  {matched.length > 0 && (
-                    <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/20 rounded-full px-2 py-0.5 font-medium">
-                      {matched.length} programs found
-                    </span>
-                  )}
-                </div>
-              ) : (
-                <p className="text-white font-semibold text-sm">Ask AI to find your programs</p>
-              )}
-              <p className="text-white/40 text-[11px] mt-0.5">
-                {hasPreviousSession ? "Continue your search or start fresh" : "Describe your situation — get matched in seconds"}
-              </p>
-            </div>
-            {hasPreviousSession && (
-              <button onClick={reset} className="text-[10px] text-white/30 hover:text-white/55 transition-colors underline underline-offset-2 flex-shrink-0">
-                Start over
-              </button>
-            )}
+        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm px-5 py-4 flex items-start gap-3">
+          <div className="w-8 h-8 rounded-xl bg-white/8 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <Sparkles size={14} className="text-white/30" aria-hidden />
           </div>
-
-          {/* Quick-start prompts */}
-          <div className="px-5 py-3">
-            <p className="text-white/30 text-[10px] uppercase tracking-widest font-medium mb-2">Quick start</p>
-            <div className="grid grid-cols-2 gap-1.5">
-              {SUGGESTIONS.map((s) => (
-                <button key={s.label} onClick={() => send(s.text)}
-                  className="text-left text-[11px] px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-white/55 hover:bg-white/10 hover:text-white/80 hover:border-white/20 transition-all leading-snug">
-                  <span className="font-medium text-white/70">{s.label}</span>
-                  <span className="block text-white/35 text-[10px] mt-0.5 leading-tight line-clamp-1">{s.text}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Expandable input */}
-          <div className="flex items-center gap-2 px-4 pb-4">
-            <button onClick={() => setOpen(true)}
-              className="flex-1 text-left rounded-xl bg-white/5 border border-white/10 px-4 py-2.5 text-sm text-white/25 hover:bg-white/8 hover:text-white/45 hover:border-white/18 transition-all">
-              Or type your own situation…
-            </button>
-            <button onClick={() => setOpen(true)}
-              className="w-9 h-9 rounded-xl bg-forest-700/80 flex items-center justify-center text-white hover:bg-forest-600/90 transition-colors flex-shrink-0 shadow-sm">
-              <Send size={14} />
-            </button>
+          <div>
+            <p className="text-white/55 font-semibold text-sm">AI advisor not configured</p>
+            <p className="text-white/30 text-[11px] mt-0.5 leading-relaxed">
+              Add your <code className="font-mono bg-white/8 px-1 rounded">ANTHROPIC_API_KEY</code> to <code className="font-mono bg-white/8 px-1 rounded">.env</code> and restart to enable AI program matching.
+            </p>
           </div>
         </div>
       </div>
     );
   }
 
+  // ── Collapsed / mode-selection state ─────────────────────────────────────
+  if (!open) {
+    return (
+      <div className="mt-6 w-full max-w-2xl mx-auto">
+        <div className="rounded-2xl border border-white/12 bg-white/6 backdrop-blur-sm overflow-hidden">
+          <div className="px-5 pt-5 pb-3">
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-forest-600/80 to-forest-900/80 flex items-center justify-center flex-shrink-0">
+                  <Sparkles size={13} className="text-white" aria-hidden />
+                </div>
+                <span className="text-white font-semibold text-sm">AI Program Finder</span>
+              </div>
+              {hasPreviousSession && (
+                <button onClick={reset} className="text-[10px] text-white/35 hover:text-white/60 transition-colors underline underline-offset-2">
+                  Clear history
+                </button>
+              )}
+            </div>
+            <p className="text-white/40 text-[12px] mt-1 ml-9">
+              {hasPreviousSession
+                ? `Previous session: ${matched.length > 0 ? `${matched.length} programs found` : "in progress"}`
+                : "Tell us your situation — we find every dollar you qualify for."}
+            </p>
+          </div>
+
+          {hasPreviousSession ? (
+            <div className="px-5 pb-5 flex gap-2">
+              <button
+                onClick={() => setOpen(true)}
+                className="flex-1 py-2.5 rounded-xl bg-forest-700/80 hover:bg-forest-600/90 text-white text-sm font-semibold transition-colors"
+              >
+                Continue my search
+              </button>
+              <button
+                onClick={reset}
+                aria-label="Start a new search"
+                className="px-4 py-2.5 rounded-xl border border-white/15 text-white/50 hover:text-white/80 hover:border-white/25 text-sm transition-colors"
+              >
+                Start over
+              </button>
+            </div>
+          ) : (
+            <>
+              <div className="px-5 pb-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {/* Quick Search */}
+                <button
+                  onClick={() => startMode("quick")}
+                  className="group text-left p-4 rounded-xl border border-white/12 bg-white/5 hover:bg-white/10 hover:border-white/22 transition-all"
+                >
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <Zap size={14} className="text-amber-400" aria-hidden />
+                    <span className="text-white font-semibold text-sm">Quick Search</span>
+                    <span className="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/20 rounded-full px-1.5 py-0.5 font-medium">~1 min</span>
+                  </div>
+                  <p className="text-white/40 text-[11px] leading-relaxed">
+                    Describe your situation in one sentence — AI searches immediately and asks follow-ups as it goes.
+                  </p>
+                </button>
+
+                {/* Tailored Search */}
+                <button
+                  onClick={() => startMode("tailored")}
+                  className="group text-left p-4 rounded-xl border border-white/12 bg-white/5 hover:bg-white/10 hover:border-white/22 transition-all"
+                >
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <Target size={14} className="text-emerald-400" aria-hidden />
+                    <span className="text-white font-semibold text-sm">Tailored Search</span>
+                    <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/20 rounded-full px-1.5 py-0.5 font-medium">Most accurate</span>
+                  </div>
+                  <p className="text-white/40 text-[11px] leading-relaxed">
+                    Answer 4–6 short questions so the AI can find every program you qualify for — nothing missed.
+                  </p>
+                </button>
+              </div>
+              <div className="px-5 pb-4 flex items-center gap-2">
+                <input
+                  type="text"
+                  placeholder="Or just describe your situation and press Enter…"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && e.currentTarget.value.trim()) {
+                      startMode("quick");
+                      setTimeout(() => send(e.currentTarget.value.trim()), 100);
+                    }
+                  }}
+                  className="flex-1 rounded-xl bg-white/5 border border-white/10 px-4 py-2 text-sm text-white placeholder:text-white/22 focus:outline-none focus:ring-1 focus:ring-forest-500 focus:border-forest-500"
+                  aria-label="Quick-start: describe your situation"
+                />
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // ── Open chat ──────────────────────────────────────────────────────────────
   return (
     <div className="mt-4 w-full max-w-2xl mx-auto">
-      <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden flex flex-col" style={{ maxHeight: "min(68vh, 540px)" }}>
+      <div
+        className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden flex flex-col"
+        style={{ maxHeight: "min(68vh, 560px)" }}
+        role="region"
+        aria-label="AI Program Finder chat"
+      >
+        {/* Header */}
         <div className="flex items-center justify-between px-5 py-3 border-b border-white/10 flex-shrink-0">
           <div className="flex items-center gap-2.5">
             <div className="w-6 h-6 rounded-lg bg-forest-700/70 flex items-center justify-center overflow-hidden">
               <LogoMark size={16} />
             </div>
             <span className="text-white font-semibold text-sm">AI Program Finder</span>
+            {mode && (
+              <span className={cn(
+                "text-[10px] font-medium px-1.5 py-0.5 rounded-full border",
+                mode === "quick"
+                  ? "bg-amber-500/15 text-amber-300 border-amber-500/20"
+                  : "bg-emerald-500/15 text-emerald-300 border-emerald-500/20"
+              )}>
+                {mode === "quick" ? "⚡ Quick" : "🎯 Tailored"}
+              </span>
+            )}
             {expertise !== "beginner" && (
               <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-white/10 text-white/50">
                 {expertise === "expert" ? "Expert mode" : "Intermediate"}
@@ -358,78 +412,121 @@ export function BusinessIntakeChat() {
             )}
           </div>
           <div className="flex items-center gap-1">
-            {hasUserMessage && <button onClick={reset} title="Start over" className="p-1.5 rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-colors"><RotateCcw size={13} /></button>}
-            <button onClick={() => setOpen(false)} className="p-1.5 rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-colors"><X size={15} /></button>
+            {hasUserMessage && (
+              <button
+                onClick={reset}
+                aria-label="Start over"
+                title="Start over"
+                className="p-1.5 rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-colors"
+              >
+                <RotateCcw size={13} aria-hidden />
+              </button>
+            )}
+            <button
+              onClick={() => setOpen(false)}
+              aria-label="Close chat"
+              className="p-1.5 rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-colors"
+            >
+              <X size={15} aria-hidden />
+            </button>
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4 min-h-0">
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4 min-h-0" aria-live="polite" aria-atomic="false">
           {messages.map((m, i) => (
             <div key={i} className={cn("flex gap-2.5", m.role === "user" ? "justify-end" : "justify-start")}>
               {m.role === "assistant" && (
-                <div className="w-6 h-6 rounded-lg bg-forest-700/60 flex items-center justify-center flex-shrink-0 mt-0.5 overflow-hidden">
+                <div className="w-6 h-6 rounded-lg bg-forest-700/60 flex items-center justify-center flex-shrink-0 mt-0.5 overflow-hidden" aria-hidden>
                   <LogoMark size={16} />
                 </div>
               )}
-              <div className={cn("max-w-[84%] rounded-2xl px-4 py-2.5", m.role === "user" ? "bg-forest-700 text-white rounded-br-sm" : "bg-white/10 text-white rounded-bl-sm border border-white/8")}>
-                {m.role === "assistant" ? <MessageContent text={m.content} streaming={streaming && i === messages.length - 1} /> : <p className="text-sm leading-relaxed">{m.content}</p>}
+              <div className={cn(
+                "max-w-[84%] rounded-2xl px-4 py-2.5",
+                m.role === "user"
+                  ? "bg-forest-700 text-white rounded-br-sm"
+                  : "bg-white/10 text-white rounded-bl-sm border border-white/8"
+              )}>
+                {m.role === "assistant"
+                  ? <MessageContent text={m.content} streaming={streaming && i === messages.length - 1} />
+                  : <p className="text-sm leading-relaxed">{m.content}</p>
+                }
               </div>
             </div>
           ))}
 
+          {/* Follow-up chips after AI response */}
           {showFollowUps && (
             <div className="pl-8 flex flex-wrap gap-1.5 pt-1">
               {followUps.map((chip) => (
-                <button key={chip} onClick={() => send(chip)}
-                  className="text-[11px] px-3 py-1 rounded-full border border-white/12 bg-white/6 text-white/55 hover:bg-white/13 hover:text-white/80 transition-all">
+                <button
+                  key={chip}
+                  onClick={() => send(chip)}
+                  className="text-[11px] px-3 py-1 rounded-full border border-white/12 bg-white/6 text-white/55 hover:bg-white/13 hover:text-white/80 transition-all"
+                >
                   {chip}
                 </button>
               ))}
             </div>
           )}
 
-          {!hasUserMessage && (
-            <div className="pl-8 flex flex-wrap gap-1.5 pt-1">
-              {SUGGESTIONS.map((s) => (
-                <button key={s.label} onClick={() => send(s.text)}
-                  className="text-[11px] px-3 py-1.5 rounded-lg border border-white/10 bg-white/6 text-white/55 hover:bg-white/12 hover:text-white/80 hover:border-white/18 transition-all text-left leading-snug">
-                  {s.label}
-                </button>
-              ))}
-            </div>
-          )}
-
+          {/* Matched programs */}
           {matched.length > 0 && (
             <div className="pl-8 space-y-2 pt-1">
-              <p className="text-[11px] font-semibold text-white/40 uppercase tracking-wider">{matched.length} matched program{matched.length !== 1 ? "s" : ""}</p>
+              <p className="text-[11px] font-semibold text-white/40 uppercase tracking-wider">
+                {matched.length} matched program{matched.length !== 1 ? "s" : ""}
+              </p>
               {matched.map((inc) => <MatchedCard key={inc.id} inc={inc} />)}
             </div>
           )}
 
+          {/* Error */}
           {error && (
-            <div className="text-xs text-red-300 bg-red-900/30 border border-red-500/30 rounded-xl px-4 py-3 leading-relaxed">
-              <strong className="font-semibold">⚠ {error.includes("ANTHROPIC_API_KEY") ? "AI not configured" : "Something went wrong"}</strong>
-              <br />{error.includes("ANTHROPIC_API_KEY") ? "An API key is required to use the AI advisor. Add ANTHROPIC_API_KEY to your .env file and restart." : error}
+            <div role="alert" className="text-xs text-red-300 bg-red-900/30 border border-red-500/30 rounded-xl px-4 py-3 leading-relaxed">
+              <strong className="font-semibold">
+                {error.includes("ANTHROPIC_API_KEY") ? "⚠ AI not configured" : "⚠ Something went wrong"}
+              </strong>
+              <br />
+              {error.includes("ANTHROPIC_API_KEY")
+                ? "Add ANTHROPIC_API_KEY to your .env file and restart."
+                : error}
             </div>
           )}
           <div ref={bottomRef} />
         </div>
 
+        {/* Input */}
         <div className="px-4 py-3 border-t border-white/10 bg-black/10 flex-shrink-0">
           <div className="flex gap-2 items-end">
             <textarea
-              ref={inputRef} value={input} onChange={(e) => setInput(e.target.value)}
+              id="chat-input"
+              ref={inputRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input); } }}
-              placeholder="Describe your situation or ask a follow-up…"
-              rows={1} disabled={streaming}
+              placeholder={mode === "tailored" ? "Answer the question above…" : "Type your message…"}
+              rows={1}
+              disabled={streaming}
+              aria-label="Chat message input"
               className="flex-1 resize-none rounded-xl bg-white/10 border border-white/12 px-4 py-2.5 text-sm text-white placeholder:text-white/25 focus:outline-none focus:ring-1 focus:ring-forest-500 focus:border-forest-500 disabled:opacity-50"
             />
-            <button onClick={() => send(input)} disabled={!input.trim() || streaming}
-              className={cn("w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors", input.trim() && !streaming ? "bg-forest-700 hover:bg-forest-600 text-white" : "bg-white/10 text-white/20 cursor-not-allowed")}>
-              <Send size={14} />
+            <button
+              onClick={() => send(input)}
+              disabled={!input.trim() || streaming}
+              aria-label="Send message"
+              className={cn(
+                "w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors",
+                input.trim() && !streaming
+                  ? "bg-forest-700 hover:bg-forest-600 text-white"
+                  : "bg-white/10 text-white/20 cursor-not-allowed"
+              )}
+            >
+              <Send size={14} aria-hidden />
             </button>
           </div>
-          <p className="text-[10px] text-white/18 mt-1.5 text-center">Enter to send · Shift+Enter for new line · Always verify directly with the administering agency</p>
+          <p className="text-[10px] text-white/18 mt-1.5 text-center">
+            Enter to send · Shift+Enter for new line · Always verify with the administering agency
+          </p>
         </div>
       </div>
     </div>

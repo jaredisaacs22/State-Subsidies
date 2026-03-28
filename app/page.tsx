@@ -321,6 +321,30 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── How It Works ─────────────────────────────────────────────────── */}
+      <section aria-label="How StateSubsidies works" className="bg-white border-b border-slate-100">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <p className="text-center text-[11px] font-semibold uppercase tracking-widest text-slate-400 mb-6">How it works</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {[
+              { step: "1", icon: "🔍", title: "Search or tell the AI your situation", body: "Use the search bar to browse by keyword, or tap 'Get Matched' and answer 4 quick questions. No expertise required." },
+              { step: "2", icon: "✅", title: "Check if you qualify", body: "Each program card has a 'Do I qualify?' button. Answer a few yes/no questions and get an instant confidence score before you apply." },
+              { step: "3", icon: "💰", title: "Apply directly to the agency", body: "Every program links to the official government or agency page. No middleman, no fees — just free access to funding you've earned." },
+            ].map(({ step, icon, title, body }) => (
+              <div key={step} className="flex gap-3">
+                <div className="w-8 h-8 rounded-full bg-forest-700 text-white text-sm font-bold flex items-center justify-center flex-shrink-0 mt-0.5" aria-hidden>
+                  {step}
+                </div>
+                <div>
+                  <p className="text-[13px] font-semibold text-slate-800 mb-1">{icon} {title}</p>
+                  <p className="text-[12px] text-slate-500 leading-relaxed">{body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Browse ───────────────────────────────────────────────────────── */}
       <section id="browse" className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
