@@ -2,45 +2,111 @@ import { NextRequest } from "next/server";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { streamText, tool, stepCountIs } from "ai";
 import { z } from "zod";
+import { ProxyAgent, setGlobalDispatcher } from "undici";
 import { prisma } from "@/lib/db";
 import { parseIncentive } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
-const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+// Node.js native fetch (undici) does not honour HTTPS_PROXY automatically.
+// Set the global dispatcher once so every outbound fetch in this process
+// (including the Anthropic SDK's internal calls) routes through the proxy.
+const proxyUrl = process.env.HTTPS_PROXY || process.env.https_proxy;
+if (proxyUrl) setGlobalDispatcher(new ProxyAgent(proxyUrl));
 
-const SYSTEM = `You are an expert incentive-matching assistant for StateSubsidies.com, helping businesses discover government grants, tax credits, subsidies, loans, and rebates.
+export function GET() {
+  const configured =
+    !!process.env.ANTHROPIC_API_KEY &&
+    process.env.ANTHROPIC_API_KEY !== "your_api_key_here";
+  return Response.json({ configured });
+}
 
-Your goal: gather just enough context (2-3 conversational turns), then call search_incentives to find the best-fit programs.
+const anthropic = createAnthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
+  // ANTHROPIC_BASE_URL env var is set without /v1 in this environment;
+  // explicitly override to the correct versioned endpoint.
+  baseURL: "https://api.anthropic.com/v1",
+});
 
-Context to collect before searching (you may already have enough from the conversation):
-- Business location (state, or "federal" if nationwide)
-- Industry or sector
-- What they want to do (install EV charging, buy equipment, hire workers, export, R&D, etc.)
+const TODAY = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 
-Conversation style:
-- Be concise and friendly — one question at a time
-- If the user gives partial info in their first message, ask only what's still missing
-- Once you have state + industry or intent, call search_incentives immediately
-- You may call search_incentives up to 3 times with different parameters to broaden results
-- Don't ask for employee count or revenue unless truly needed for eligibility
+const SYSTEM_BASE = `You are a world-class government incentive advisor for StateSubsidies.com — a senior grants consultant who has helped hundreds of organizations secure funding. Your job is to find programs users can actually qualify for and tell them honestly what their chances are.
 
-When presenting results:
-- Lead with the 2-3 best matches and explain why they fit the user's situation
-- Mention funding amounts and deadlines prominently
-- If eligibility has key requirements, note them briefly
-- End by inviting a follow-up question or suggesting they visit the source URL
+TODAY'S DATE: ${TODAY}
 
-Today's date: ${new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}.`;
+━━━ AUDIENCE ━━━
+You serve everyone — farmers, small business owners, nonprofits, startups, researchers, school districts, municipalities. Adapt your language to match the user. Mirror technical terms (IRA, SBIR, REAP, prevailing wage) if they use them. Use plain language if they don't. Never be condescending.
+
+━━━ SEARCH STRATEGY ━━━
+- Call search_incentives 2–3 times with varied parameters to maximize coverage
+- First: most specific (state + industry + keyword)
+- Second: broaden (federal + same industry, or remove keyword)
+- Third: adjacent category or different incentive type
+- Never show the same program twice
+
+━━━ PRESENTING RESULTS — REQUIRED FORMAT ━━━
+**Found [N] programs for [brief description].**
+
+For each top program (show 2–4 max):
+**[Program Name]** — [Agency, State/Federal]
+💰 Up to [amount] | 🗓 [deadline or "Rolling"]
+Eligibility confidence: [HIGH / MEDIUM / LOW] — [1-sentence reason]
+[2–3 sentences: what it funds, why it fits this specific user, the #1 requirement to watch]
+
+Then: "**Also worth checking:**" — 1–2 more with just name + one sentence.
+End with: "Want me to walk through applying for [top match]? Or eligibility questions?"
+
+━━━ ELIGIBILITY CONFIDENCE ━━━
+Always rate HIGH / MEDIUM / LOW after every program:
+- HIGH: User clearly meets stated criteria
+- MEDIUM: Likely eligible but missing one confirming detail
+- LOW: Real eligibility risk — tell them what to verify
+
+━━━ TONE ━━━
+- Honest: if a program is unlikely to fit, say so
+- Encouraging but not hype: describe opportunity, don't promise funding
+- Conversational: plain language, no bureaucratic boilerplate
+- Efficient: users came here to find money, not read essays`;
+
+const SYSTEM_TAILORED = `${SYSTEM_BASE}
+
+━━━ MODE: TAILORED MATCH ━━━
+The user has chosen the structured intake path. Walk them through exactly 4 questions — one at a time — before searching:
+
+Q1: Location (state, or "national/federal" if multi-state)
+Q2: Organization type + size (e.g. "LLC with 12 employees", "501(c)(3) nonprofit", "family farm")
+Q3: Specific goal (what they want to fund — be specific: "buy 3 EVs", "install solar", "hire apprentices")
+Q4: Budget range / funding need (how much are they hoping to get?)
+
+After collecting all 4 answers, say: "Great — searching now for programs you're most likely to qualify for..." then call search_incentives.
+
+IMPORTANT: Do NOT search until you have answers to all 4 questions. Do NOT ask all questions at once.`;
+
+const SYSTEM_QUICK = `${SYSTEM_BASE}
+
+━━━ MODE: QUICK SEARCH ━━━
+The user has chosen the quick path. They will describe their situation in one message.
+
+IMMEDIATELY call search_incentives based on whatever they tell you — do not ask clarifying questions before the first search. After presenting results, THEN progressively ask 1–2 follow-up questions to sharpen the match (e.g. state, size, specific goal).
+
+Be fast and direct. Show results first, refine second.`;
+
 
 export async function POST(req: NextRequest) {
+  if (!process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY === "your_api_key_here") {
+    return new Response(
+      JSON.stringify({ error: "AI features require an ANTHROPIC_API_KEY — add it to your .env file." }),
+      { status: 503, headers: { "Content-Type": "application/json" } }
+    );
+  }
   try {
-    const { messages } = await req.json();
+    const { messages, mode } = await req.json();
+    const system = mode === "quick" ? SYSTEM_QUICK : SYSTEM_TAILORED;
     const matchedIncentives: ReturnType<typeof parseIncentive>[] = [];
 
     const result = streamText({
       model: anthropic("claude-sonnet-4-6"),
-      system: SYSTEM,
+      system,
       messages,
       stopWhen: stepCountIs(4),
       tools: {
@@ -90,7 +156,7 @@ export async function POST(req: NextRequest) {
 
             const orClauses: Array<Record<string, unknown>> = [];
             if (input.industryCategory) {
-              orClauses.push({ industryCategories: { contains: input.industryCategory } });
+              orClauses.push({ industryCategories: { contains: input.industryCategory, mode: "insensitive" } });
             }
             if (input.keyword) {
               orClauses.push(

@@ -1,88 +1,120 @@
 "use client";
 
+import { ComposableMap, Geographies, Geography, Annotation } from "react-simple-maps";
 import { cn } from "@/lib/utils";
+
+const GEO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
+
+// FIPS code → state full name (50 states only, no DC)
+const FIPS: Record<string, string> = {
+  "01": "Alabama", "02": "Alaska", "04": "Arizona", "05": "Arkansas",
+  "06": "California", "08": "Colorado", "09": "Connecticut", "10": "Delaware",
+  "12": "Florida", "13": "Georgia", "15": "Hawaii", "16": "Idaho",
+  "17": "Illinois", "18": "Indiana", "19": "Iowa", "20": "Kansas",
+  "21": "Kentucky", "22": "Louisiana", "23": "Maine", "24": "Maryland",
+  "25": "Massachusetts", "26": "Michigan", "27": "Minnesota", "28": "Mississippi",
+  "29": "Missouri", "30": "Montana", "31": "Nebraska", "32": "Nevada",
+  "33": "New Hampshire", "34": "New Jersey", "35": "New Mexico", "36": "New York",
+  "37": "North Carolina", "38": "North Dakota", "39": "Ohio", "40": "Oklahoma",
+  "41": "Oregon", "42": "Pennsylvania", "44": "Rhode Island", "45": "South Carolina",
+  "46": "South Dakota", "47": "Tennessee", "48": "Texas", "49": "Utah",
+  "50": "Vermont", "51": "Virginia", "53": "Washington", "54": "West Virginia",
+  "55": "Wisconsin", "56": "Wyoming",
+};
 
 interface USStateMapProps {
   counts: Record<string, number>;
   selected: string | null;
-  onSelect: (state: string | null) => void;
+  onSelect: (state: string) => void;
+  federalCount?: number;
 }
 
-// Tile-grid cartogram: [abbrev, fullName, col, row]
-const GRID: [string, string, number, number][] = [
-  ["ME", "Maine",          11, 0],
-  ["WA", "Washington",      1, 1], ["MT", "Montana",         2, 1], ["ND", "North Dakota",    3, 1],
-  ["MN", "Minnesota",       4, 1], ["IL", "Illinois",        6, 1], ["VT", "Vermont",         9, 1], ["NH", "New Hampshire",  10, 1],
-  ["OR", "Oregon",          1, 2], ["ID", "Idaho",           2, 2], ["WY", "Wyoming",         3, 2],
-  ["SD", "South Dakota",    4, 2], ["WI", "Wisconsin",       5, 2], ["MI", "Michigan",        6, 2],
-  ["NY", "New York",        8, 2], ["MA", "Massachusetts",   9, 2], ["RI", "Rhode Island",   10, 2],
-  ["CA", "California",      1, 3], ["NV", "Nevada",          2, 3], ["CO", "Colorado",        3, 3],
-  ["NE", "Nebraska",        4, 3], ["IA", "Iowa",            5, 3], ["IN", "Indiana",         6, 3],
-  ["OH", "Ohio",            7, 3], ["PA", "Pennsylvania",    8, 3], ["NJ", "New Jersey",      9, 3], ["CT", "Connecticut",    10, 3],
-  ["AZ", "Arizona",         2, 4], ["NM", "New Mexico",      3, 4], ["KS", "Kansas",          4, 4],
-  ["MO", "Missouri",        5, 4], ["KY", "Kentucky",        6, 4], ["WV", "West Virginia",   7, 4],
-  ["VA", "Virginia",        8, 4], ["MD", "Maryland",        9, 4], ["DE", "Delaware",       10, 4],
-  ["OK", "Oklahoma",        3, 5], ["AR", "Arkansas",        4, 5], ["TN", "Tennessee",       5, 5],
-  ["NC", "North Carolina",  6, 5], ["SC", "South Carolina",  7, 5], ["DC", "Washington D.C.", 8, 5],
-  ["AK", "Alaska",          0, 6], ["TX", "Texas",           3, 6], ["LA", "Louisiana",       4, 6],
-  ["MS", "Mississippi",     5, 6], ["AL", "Alabama",         6, 6], ["GA", "Georgia",         7, 6], ["FL", "Florida", 8, 6],
-  ["HI", "Hawaii",          0, 7],
-];
-
-function getColor(count: number, selected: boolean): string {
-  if (selected) return "bg-brand-600 text-white border-brand-700";
-  if (count === 0) return "bg-slate-100 text-slate-400 border-slate-200 hover:bg-slate-200";
-  if (count <= 2)  return "bg-brand-100 text-brand-700 border-brand-200 hover:bg-brand-200";
-  if (count <= 5)  return "bg-brand-300 text-brand-900 border-brand-400 hover:bg-brand-400";
-  return "bg-brand-500 text-white border-brand-600 hover:bg-brand-600";
+function getFill(count: number, isSelected: boolean): string {
+  if (isSelected) return "#1a5c38";   // forest-700
+  if (count === 0) return "#f1f5f9";  // slate-100
+  if (count <= 2)  return "#dcfce7";  // green-100
+  if (count <= 5)  return "#86efac";  // green-300
+  if (count <= 10) return "#4ade80";  // green-400
+  return "#16a34a";                   // green-600
 }
 
-export function USStateMap({ counts, selected, onSelect }: USStateMapProps) {
-  const maxCol = Math.max(...GRID.map(([,,c]) => c));
-  const maxRow = Math.max(...GRID.map(([,,,r]) => r));
+function getStroke(isSelected: boolean): string {
+  return isSelected ? "#0f3d25" : "#cbd5e1";
+}
 
-  // Build lookup by [col,row]
-  const byPos: Record<string, [string, string, number, number]> = {};
-  for (const s of GRID) byPos[`${s[2]},${s[3]}`] = s;
+export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USStateMapProps) {
+  const isFederal = selected === "United States";
 
   return (
-    <div className="overflow-x-auto">
-      <div className="inline-block">
-        {Array.from({ length: maxRow + 1 }, (_, row) => (
-          <div key={row} className="flex gap-1 mb-1">
-            {Array.from({ length: maxCol + 1 }, (_, col) => {
-              const state = byPos[`${col},${row}`];
-              if (!state) return <div key={col} className="w-10 h-10 flex-shrink-0" />;
-              const [abbrev, name] = state;
-              const count = counts[name] ?? 0;
-              const isSelected = selected === name;
-              return (
-                <button
-                  key={col}
-                  title={`${name}: ${count} program${count !== 1 ? "s" : ""}`}
-                  onClick={() => onSelect(isSelected ? null : name)}
-                  className={cn(
-                    "w-10 h-10 flex-shrink-0 rounded text-xs font-semibold border transition-all duration-150",
-                    getColor(count, isSelected)
-                  )}
-                >
-                  {abbrev}
-                </button>
-              );
-            })}
-          </div>
-        ))}
-      </div>
-      {/* Legend */}
-      <div className="flex items-center gap-4 mt-4 text-xs text-slate-500">
-        <span className="font-medium">Programs:</span>
-        {[["bg-slate-100","0"],["bg-brand-100","1–2"],["bg-brand-300","3–5"],["bg-brand-500 text-white","6+"]].map(([cls,label]) => (
-          <span key={label} className="flex items-center gap-1.5">
-            <span className={cn("w-4 h-4 rounded border border-slate-200", cls)} />
-            {label}
+    <div>
+      {/* Federal button */}
+      <button
+        onClick={() => onSelect(isFederal ? "" : "United States")}
+        className={cn(
+          "mb-3 px-4 py-1.5 rounded-lg border text-xs font-semibold transition-all flex items-center gap-2",
+          isFederal
+            ? "bg-brand-700 text-white border-brand-800 shadow-md"
+            : "bg-brand-50 text-brand-700 border-brand-200 hover:bg-brand-100"
+        )}
+      >
+        🇺🇸 Federal Programs
+        {federalCount > 0 && (
+          <span className={cn(
+            "text-[10px] px-1.5 py-0.5 rounded-full font-bold",
+            isFederal ? "bg-white/20 text-white" : "bg-brand-100 text-brand-800"
+          )}>
+            {federalCount}
           </span>
-        ))}
-      </div>
+        )}
+      </button>
+
+      {/* SVG map */}
+      <ComposableMap
+        projection="geoAlbersUsa"
+        style={{ width: "100%", height: "auto" }}
+        projectionConfig={{ scale: 1000 }}
+      >
+        <Geographies geography={GEO_URL}>
+          {({ geographies }) =>
+            geographies
+              .filter((geo) => FIPS[geo.id])
+              .map((geo) => {
+                const name = FIPS[geo.id];
+                const count = counts[name] ?? 0;
+                const isSelected = selected === name;
+                return (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    onClick={() => onSelect(name)}
+                    style={{
+                      default: {
+                        fill: getFill(count, isSelected),
+                        stroke: getStroke(isSelected),
+                        strokeWidth: isSelected ? 1.5 : 0.5,
+                        outline: "none",
+                        cursor: "pointer",
+                      },
+                      hover: {
+                        fill: isSelected ? "#1a5c38" : count > 0 ? "#4ade80" : "#e2e8f0",
+                        stroke: "#64748b",
+                        strokeWidth: 1,
+                        outline: "none",
+                        cursor: "pointer",
+                      },
+                      pressed: {
+                        fill: "#1a5c38",
+                        outline: "none",
+                      },
+                    }}
+                  >
+                    <title>{`${name}: ${count} program${count !== 1 ? "s" : ""}`}</title>
+                  </Geography>
+                );
+              })
+          }
+        </Geographies>
+      </ComposableMap>
     </div>
   );
 }

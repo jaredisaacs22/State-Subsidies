@@ -28,6 +28,10 @@ export async function GET(request: NextRequest) {
       sortOrder: pickValid(searchParams.get("sortOrder"), ["asc", "desc"] as const) ?? "desc",
       page: parseInt(searchParams.get("page") ?? "1"),
       pageSize: parseInt(searchParams.get("pageSize") ?? "12"),
+      minFunding: searchParams.get("minFunding") ? parseInt(searchParams.get("minFunding")!) : undefined,
+      maxFunding: searchParams.get("maxFunding") ? parseInt(searchParams.get("maxFunding")!) : undefined,
+      verified: searchParams.get("verified") === "true" ? true : undefined,
+      closingSoon: searchParams.get("closingSoon") === "true" ? true : undefined,
     };
     const jurisdictionNameFilter = searchParams.get("jurisdictionName") ?? undefined;
 
@@ -38,7 +42,7 @@ export async function GET(request: NextRequest) {
     if (filters.status) where.status = filters.status;
     if (filters.jurisdictionLevel) where.jurisdictionLevel = filters.jurisdictionLevel;
     if (filters.incentiveType) where.incentiveType = filters.incentiveType;
-    if (jurisdictionNameFilter) where.jurisdictionName = { equals: jurisdictionNameFilter, mode: "insensitive" };
+    if (jurisdictionNameFilter) where.jurisdictionName = { contains: jurisdictionNameFilter, mode: "insensitive" };
 
     // Full-text search across title, summary, agency
     if (filters.search) {
@@ -46,13 +50,27 @@ export async function GET(request: NextRequest) {
         { title: { contains: filters.search, mode: "insensitive" } },
         { shortSummary: { contains: filters.search, mode: "insensitive" } },
         { managingAgency: { contains: filters.search, mode: "insensitive" } },
+        { agencyAcronym: { contains: filters.search, mode: "insensitive" } },
         { jurisdictionName: { contains: filters.search, mode: "insensitive" } },
+        { industryCategories: { contains: filters.search, mode: "insensitive" } },
       ];
     }
 
     // Industry category is stored as JSON array string — use contains
     if (filters.industryCategory) {
-      where.industryCategories = { contains: filters.industryCategory };
+      where.industryCategories = { contains: filters.industryCategory, mode: "insensitive" };
+    }
+
+    if (filters.verified) where.isVerified = true;
+    if (filters.closingSoon) {
+      const now = new Date();
+      const thirtyDays = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+      where.deadline = { gte: now.toISOString(), lte: thirtyDays.toISOString() };
+    }
+    if (filters.minFunding !== undefined || filters.maxFunding !== undefined) {
+      where.fundingAmount = {};
+      if (filters.minFunding !== undefined) where.fundingAmount.gte = filters.minFunding;
+      if (filters.maxFunding !== undefined) where.fundingAmount.lte = filters.maxFunding;
     }
 
     const orderBy =

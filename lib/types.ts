@@ -48,6 +48,10 @@ export interface IncentiveFilters {
   industryCategory?: string;
   status?: IncentiveStatus;
   jurisdictionName?: string;
+  minFunding?: number;
+  maxFunding?: number;
+  verified?: boolean;
+  closingSoon?: boolean;
   sortBy?: "deadline" | "fundingAmount" | "createdAt";
   sortOrder?: "asc" | "desc";
   page?: number;
@@ -95,6 +99,34 @@ export const INDUSTRY_CATEGORIES = [
 
 export type IndustryCategory = (typeof INDUSTRY_CATEGORIES)[number];
 
+// Grouped for the Industry dropdown — same values, organized for readability
+export const INDUSTRY_CATEGORY_GROUPS: { label: string; options: string[] }[] = [
+  {
+    label: "Energy & Clean Tech",
+    options: ["Clean Technology", "Building Electrification", "EV Charging", "Energy Storage", "Energy Management", "Oil & Gas Transition"],
+  },
+  {
+    label: "Transportation",
+    options: ["Fleet", "Automotive", "Aviation", "Maritime", "Public Transit", "Logistics"],
+  },
+  {
+    label: "Land & Resources",
+    options: ["Agriculture", "Forestry", "Mining & Extraction", "Water & Utilities", "Waste Management"],
+  },
+  {
+    label: "Built Environment",
+    options: ["Construction", "Real Estate", "Infrastructure"],
+  },
+  {
+    label: "Business & Industry",
+    options: ["Manufacturing", "Technology", "Research & Development", "Healthcare", "Education", "Food & Beverage", "Financial Services"],
+  },
+  {
+    label: "Other",
+    options: ["Government & Nonprofit", "Retail", "Hospitality", "Telecommunications", "Film & Media"],
+  },
+];
+
 // ─── Badge color maps ────────────────────────────────────────────────────────
 
 export const INCENTIVE_TYPE_COLORS: Record<IncentiveType, string> = {
@@ -116,38 +148,44 @@ export const INCENTIVE_TYPE_BORDER: Record<IncentiveType, string> = {
 };
 
 export const INDUSTRY_COLORS: Record<string, string> = {
-  "Agriculture": "bg-green-100 text-green-800",
-  "Automotive": "bg-blue-100 text-blue-800",
-  "Aviation": "bg-sky-100 text-sky-800",
-  "Building Electrification": "bg-orange-100 text-orange-800",
-  "Clean Technology": "bg-emerald-100 text-emerald-800",
-  "Construction": "bg-amber-100 text-amber-800",
-  "Education": "bg-indigo-100 text-indigo-800",
-  "Energy Management": "bg-yellow-100 text-yellow-800",
-  "Energy Storage": "bg-teal-100 text-teal-800",
-  "EV Charging": "bg-violet-100 text-violet-800",
-  "Film & Media": "bg-pink-100 text-pink-800",
-  "Financial Services": "bg-slate-100 text-slate-700",
-  "Fleet": "bg-sky-100 text-sky-800",
-  "Food & Beverage": "bg-rose-100 text-rose-800",
-  "Forestry": "bg-lime-100 text-lime-800",
-  "Government & Nonprofit": "bg-blue-100 text-blue-800",
-  "Healthcare": "bg-red-100 text-red-800",
-  "Hospitality": "bg-pink-100 text-pink-800",
-  "Infrastructure": "bg-gray-100 text-gray-700",
-  "Logistics": "bg-amber-100 text-amber-800",
-  "Manufacturing": "bg-stone-100 text-stone-800",
-  "Maritime": "bg-cyan-100 text-cyan-800",
-  "Mining & Extraction": "bg-orange-100 text-orange-800",
-  "Oil & Gas Transition": "bg-yellow-100 text-yellow-800",
-  "Public Transit": "bg-purple-100 text-purple-800",
-  "Real Estate": "bg-stone-100 text-stone-700",
-  "Research & Development": "bg-purple-100 text-purple-800",
-  "Retail": "bg-pink-100 text-pink-800",
-  "Technology": "bg-blue-100 text-blue-800",
-  "Telecommunications": "bg-indigo-100 text-indigo-800",
-  "Waste Management": "bg-lime-100 text-lime-800",
-  "Water & Utilities": "bg-cyan-100 text-cyan-800",
+  // Energy & Clean Tech — greens/teals
+  "Agriculture":             "bg-lime-50 text-lime-700",
+  "Clean Technology":        "bg-emerald-50 text-emerald-700",
+  "Building Electrification":"bg-orange-50 text-orange-700",
+  "EV Charging":             "bg-violet-50 text-violet-700",
+  "Energy Storage":          "bg-teal-50 text-teal-700",
+  "Energy Management":       "bg-cyan-50 text-cyan-700",
+  "Oil & Gas Transition":    "bg-amber-50 text-amber-700",
+  // Transportation — blues/sky
+  "Fleet":                   "bg-sky-50 text-sky-700",
+  "Automotive":              "bg-blue-50 text-blue-700",
+  "Aviation":                "bg-indigo-50 text-indigo-700",
+  "Maritime":                "bg-cyan-50 text-cyan-700",
+  "Public Transit":          "bg-blue-50 text-blue-700",
+  "Logistics":               "bg-slate-100 text-slate-600",
+  // Land & Resources
+  "Forestry":                "bg-green-50 text-green-700",
+  "Mining & Extraction":     "bg-stone-100 text-stone-600",
+  "Water & Utilities":       "bg-cyan-50 text-cyan-700",
+  "Waste Management":        "bg-lime-50 text-lime-700",
+  // Built Environment — ambers/stones
+  "Construction":            "bg-amber-50 text-amber-700",
+  "Real Estate":             "bg-stone-100 text-stone-600",
+  "Infrastructure":          "bg-slate-100 text-slate-600",
+  // Business & Industry
+  "Manufacturing":           "bg-gray-100 text-gray-600",
+  "Technology":              "bg-blue-50 text-blue-700",
+  "Research & Development":  "bg-purple-50 text-purple-700",
+  "Healthcare":              "bg-rose-50 text-rose-700",
+  "Education":               "bg-indigo-50 text-indigo-700",
+  "Food & Beverage":         "bg-orange-50 text-orange-700",
+  "Financial Services":      "bg-green-50 text-green-700",
+  // Other
+  "Government & Nonprofit":  "bg-slate-100 text-slate-600",
+  "Retail":                  "bg-pink-50 text-pink-700",
+  "Hospitality":             "bg-pink-50 text-pink-700",
+  "Telecommunications":      "bg-blue-50 text-blue-700",
+  "Film & Media":            "bg-fuchsia-50 text-fuchsia-700",
 };
 
 export const JURISDICTION_COLORS: Record<JurisdictionLevel, string> = {

@@ -1,14 +1,15 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { ChevronDown, SlidersHorizontal, X, Link2, Check } from "lucide-react";
 import { SearchBar } from "@/components/SearchBar";
-import { FilterBar } from "@/components/FilterBar";
+import { FilterSidebar } from "@/components/FilterSidebar";
 import { ResultsGrid } from "@/components/ResultsGrid";
 import { BusinessIntakeChat } from "@/components/BusinessIntakeChat";
+import { AudienceSelector, AUDIENCES } from "@/components/AudienceSelector";
+import type { AudienceId } from "@/components/AudienceSelector";
+import { cn } from "@/lib/utils";
 import type { Incentive, IncentiveFilters, PaginatedResponse } from "@/lib/types";
-
-
-interface Stats { total: number; federal: number; state: number; }
 
 const DEFAULT_FILTERS: IncentiveFilters = {
   search: "",
@@ -16,16 +17,92 @@ const DEFAULT_FILTERS: IncentiveFilters = {
   sortBy: "createdAt",
   sortOrder: "desc",
   page: 1,
-  pageSize: 12,
+  pageSize: 24,
 };
+
+function readFiltersFromURL(): Partial<IncentiveFilters> {
+  if (typeof window === "undefined") return {};
+  const p = new URLSearchParams(window.location.search);
+  const out: Partial<IncentiveFilters> = {};
+  if (p.get("search")) out.search = p.get("search")!;
+  if (p.get("jurisdictionLevel")) out.jurisdictionLevel = p.get("jurisdictionLevel") as IncentiveFilters["jurisdictionLevel"];
+  if (p.get("jurisdictionName")) out.jurisdictionName = p.get("jurisdictionName")!;
+  if (p.get("incentiveType")) out.incentiveType = p.get("incentiveType") as IncentiveFilters["incentiveType"];
+  if (p.get("industryCategory")) out.industryCategory = p.get("industryCategory")!;
+  if (p.get("sortBy")) out.sortBy = p.get("sortBy") as IncentiveFilters["sortBy"];
+  if (p.get("sortOrder")) out.sortOrder = p.get("sortOrder") as "asc" | "desc";
+  if (p.get("minFunding")) out.minFunding = parseInt(p.get("minFunding")!);
+  if (p.get("verified") === "true") out.verified = true;
+  if (p.get("closingSoon") === "true") out.closingSoon = true;
+  if (p.get("page")) out.page = parseInt(p.get("page")!);
+  return out;
+}
+
+// ── Inline sort select ────────────────────────────────────────────────────────
+function SortSelect({
+  value,
+  onChange,
+  className,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  className?: string;
+}) {
+  return (
+    <div className={cn("relative inline-flex items-center", className)}>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="appearance-none text-xs text-slate-600 bg-white border border-slate-200 rounded-lg px-3 py-1.5 pr-7 hover:border-slate-300 focus:outline-none focus:ring-1 focus:ring-forest-700 cursor-pointer"
+      >
+        <option value="createdAt_desc">Newest</option>
+        <option value="createdAt_asc">Oldest</option>
+        <option value="fundingAmount_desc">Highest $</option>
+        <option value="fundingAmount_asc">Lowest $</option>
+        <option value="deadline_asc">Deadline ↑</option>
+        <option value="deadline_desc">Deadline ↓</option>
+      </select>
+      <ChevronDown
+        size={11}
+        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+      />
+    </div>
+  );
+}
+
+// ── Share button ──────────────────────────────────────────────────────────────
+function ShareButton({ url }: { url: string }) {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    await navigator.clipboard.writeText(url).catch(() => {});
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <button
+      onClick={copy}
+      className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-forest-700 transition-colors"
+      title="Copy link to these results"
+    >
+      {copied ? <Check size={12} /> : <Link2 size={12} />}
+      {copied ? "Copied!" : "Share"}
+    </button>
+  );
+}
 
 export default function HomePage() {
   const [filters, setFilters] = useState<IncentiveFilters>(DEFAULT_FILTERS);
   const [results, setResults] = useState<PaginatedResponse<Incentive> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [stats, setStats] = useState<Stats>({ total: 0, federal: 0, state: 0 });
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedAudience, setSelectedAudience] = useState<AudienceId | null>(null);
+  const [stats, setStats] = useState<{ federal: number; state: number; city: number; agency: number } | null>(null);
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    fetch("/api/stats").then(r => r.json()).then(setStats).catch(() => {});
+  }, []);
 
   const fetchIncentives = useCallback(async (f: IncentiveFilters) => {
     setLoading(true);
@@ -40,8 +117,12 @@ export default function HomePage() {
       if (f.status) params.set("status", f.status);
       if (f.sortBy) params.set("sortBy", f.sortBy);
       if (f.sortOrder) params.set("sortOrder", f.sortOrder);
+      if (f.minFunding !== undefined) params.set("minFunding", String(f.minFunding));
+      if (f.maxFunding !== undefined) params.set("maxFunding", String(f.maxFunding));
+      if (f.verified) params.set("verified", "true");
+      if (f.closingSoon) params.set("closingSoon", "true");
       params.set("page", String(f.page ?? 1));
-      params.set("pageSize", String(f.pageSize ?? 12));
+      params.set("pageSize", String(f.pageSize ?? 24));
 
       const res = await fetch(`/api/incentives?${params.toString()}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -54,7 +135,6 @@ export default function HomePage() {
     }
   }, []);
 
-  // Debounce search, immediate for other filters
   const handleFilterChange = useCallback(
     (partial: Partial<IncentiveFilters>) => {
       const newFilters = { ...filters, ...partial, page: 1 };
@@ -70,112 +150,349 @@ export default function HomePage() {
     [filters, fetchIncentives]
   );
 
+  const clearAllFilters = useCallback(() => {
+    handleFilterChange({
+      jurisdictionLevel: undefined,
+      jurisdictionName: undefined,
+      incentiveType: undefined,
+      industryCategory: undefined,
+      minFunding: undefined,
+      maxFunding: undefined,
+      verified: undefined,
+      closingSoon: undefined,
+    });
+  }, [handleFilterChange]);
+
+  // Single mount effect: reads URL params + stored audience, then fetches once
   useEffect(() => {
-    fetchIncentives(DEFAULT_FILTERS);
-    Promise.all([
-      fetch("/api/incentives?pageSize=1&status=ACTIVE").then((r) => r.json()),
-      fetch("/api/incentives?pageSize=1&status=ACTIVE&jurisdictionLevel=FEDERAL").then((r) => r.json()),
-      fetch("/api/incentives?pageSize=1&status=ACTIVE&jurisdictionLevel=STATE").then((r) => r.json()),
-    ]).then(([all, federal, state]) => {
-      setStats({ total: all.total ?? 0, federal: federal.total ?? 0, state: state.total ?? 0 });
-    }).catch(() => {});
-  }, [fetchIncentives]);
+    const urlFilters = readFiltersFromURL();
+    const hasUrlFilters = Object.keys(urlFilters).length > 0;
+
+    // Restore stored audience selection (visual state always)
+    const stored = localStorage.getItem("ss_audience_v1");
+    const storedAudience = stored && AUDIENCES.some((a) => a.id === stored)
+      ? (stored as AudienceId)
+      : null;
+    if (storedAudience) setSelectedAudience(storedAudience);
+
+    // Build initial filters: URL params take precedence; fall back to audience preset
+    let initial: IncentiveFilters = DEFAULT_FILTERS;
+    if (hasUrlFilters) {
+      initial = { ...DEFAULT_FILTERS, ...urlFilters };
+    } else if (storedAudience) {
+      const preset = AUDIENCES.find((a) => a.id === storedAudience)?.filterPreset ?? {};
+      initial = { ...DEFAULT_FILTERS, ...preset };
+    }
+
+    if (initial !== DEFAULT_FILTERS) setFilters(initial);
+    fetchIncentives(initial);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleAudienceSelect = useCallback(
+    (filterPreset: Partial<IncentiveFilters>, audienceId: AudienceId) => {
+      // Toggle off if clicking the same audience again
+      if (selectedAudience === audienceId) {
+        localStorage.removeItem("ss_audience_v1");
+        setSelectedAudience(null);
+        handleFilterChange({ industryCategory: undefined, jurisdictionLevel: undefined, incentiveType: undefined });
+        return;
+      }
+      localStorage.setItem("ss_audience_v1", audienceId);
+      setSelectedAudience(audienceId);
+      handleFilterChange(filterPreset);
+    },
+    [handleFilterChange, selectedAudience]
+  );
+
+  const handleAudienceClear = useCallback(() => {
+    localStorage.removeItem("ss_audience_v1");
+    setSelectedAudience(null);
+    handleFilterChange({ industryCategory: undefined, jurisdictionLevel: undefined, incentiveType: undefined });
+  }, [handleFilterChange]);
+
+  const sortValue = `${filters.sortBy ?? "createdAt"}_${filters.sortOrder ?? "desc"}`;
+  const handleSortChange = (v: string) => {
+    const [sortBy, sortOrder] = v.split("_");
+    handleFilterChange({
+      sortBy: sortBy as IncentiveFilters["sortBy"],
+      sortOrder: sortOrder as "asc" | "desc",
+    });
+  };
+
+  const activeFilterCount = [
+    filters.jurisdictionLevel,
+    filters.jurisdictionName,
+    filters.incentiveType,
+    filters.industryCategory,
+    filters.minFunding,
+    filters.verified,
+    filters.closingSoon,
+  ].filter(Boolean).length;
+
+  const hasActiveFilters = activeFilterCount > 0 || !!filters.search;
 
   return (
     <div className="min-h-screen">
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="relative bg-gradient-to-br from-brand-700 via-brand-800 to-brand-950 text-white pt-14 pb-16 overflow-hidden">
-        {/* Subtle dot-grid pattern */}
-        <div className="absolute inset-0 opacity-[0.07]" style={{backgroundImage:"radial-gradient(circle,#fff 1px,transparent 1px)",backgroundSize:"28px 28px"}} />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm font-medium mb-5">
+      <section className="hero-section relative text-white pt-16 pb-0 overflow-hidden">
+        {/* Forest horizon */}
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-forest-900/20 to-transparent pointer-events-none" />
+
+        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          {/* Eyebrow badge */}
+          <div className="inline-flex items-center gap-2 bg-white/8 border border-white/15 rounded-full px-4 py-1.5 text-sm font-medium mb-7 backdrop-blur-sm">
             <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-            Live data · all 50 states · 144+ programs
+            Free resource · all 50 states · updated daily
           </div>
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4 text-balance">
-            Find government incentives<br className="hidden sm:block" /> for your business
+
+          {/* H1 */}
+          <h1 className="text-4xl sm:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight leading-[1.08] mb-4 text-balance">
+            Find government money<br className="hidden sm:block" /> for your business
           </h1>
-          <p className="text-brand-200 text-lg mb-7 max-w-xl mx-auto text-balance">
-            Grants, tax credits, loans & rebates — Federal, State, City, and Agency programs in one place.
+
+          <p className="text-white/55 text-lg mb-9 max-w-xl mx-auto leading-relaxed">
+            Grants, tax credits, loans &amp; rebates — federal and all 50 states.<br className="hidden sm:block" />
+            Tell us about your situation and we'll find what you qualify for.
           </p>
 
-          <SearchBar
-            value={filters.search ?? ""}
-            onChange={(search) => handleFilterChange({ search })}
-            placeholder="Search programs, agencies, industries…"
-            className="max-w-2xl mx-auto"
-          />
+          {/* Search bar */}
+          <div className="max-w-2xl mx-auto mb-2">
+            <SearchBar
+              value={filters.search ?? ""}
+              onChange={(search) => handleFilterChange({ search })}
+              placeholder="Search programs, agencies, industries…"
+              className="shadow-[0_4px_32px_rgba(0,0,0,0.35)] rounded-xl"
+            />
+          </div>
 
+          {/* Inline AI intake */}
           <BusinessIntakeChat />
 
-          {/* Stats */}
-          <div className="mt-7 flex flex-wrap justify-center gap-3 text-sm">
-            {[
-              { value: stats.total || "144+", label: "Programs" },
-              { value: stats.federal || "34+", label: "Federal" },
-              { value: stats.state || "100+", label: "State & Local" },
-              { value: "$100B+", label: "Est. Available" },
-            ].map(({ value, label }) => (
-              <span key={label} className="glass-overlay px-4 py-2 flex items-baseline gap-1.5">
-                <strong className="text-white text-lg font-bold">{value}</strong>
-                <span className="text-brand-300 text-xs">{label}</span>
+          {/* Agency trust strip */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+            <span className="text-white/30 text-[11px] uppercase tracking-widest font-medium">Sourced from</span>
+            {["USDA", "IRS", "DOE", "EPA", "SBA", "HUD", "CARB", "NYSERDA", "EDA"].map((agency) => (
+              <span key={agency} className="text-white/45 text-[11px] font-semibold tracking-wide hover:text-white/65 transition-colors cursor-default">
+                {agency}
               </span>
             ))}
+            <span className="text-white/25 text-[11px]">+ more</span>
+          </div>
+
+          {/* Stats strip */}
+          <div className="mt-10 -mx-4 sm:-mx-6 lg:-mx-8 bg-black/20 border-t border-white/8 px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex items-center justify-center gap-6 sm:gap-10 flex-wrap">
+              {[
+                { value: results?.total ?? "—", label: "total programs" },
+                { value: stats?.federal ?? "—", label: "federal" },
+                { value: stats?.state ?? "—", label: "state-level" },
+                { value: (stats != null ? (stats.city + stats.agency) : "—"), label: "local / agency" },
+                { value: "$4.2B+", label: "available funding" },
+              ].map(({ value, label }) => (
+                <div key={label} className="text-center">
+                  <div className="stat-number text-xl font-bold text-white leading-tight">
+                    {typeof value === "number" ? value.toLocaleString() : value}
+                  </div>
+                  <div className="text-white/40 text-[11px] font-medium uppercase tracking-wide mt-0.5">
+                    {label}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── Sticky Filter Bar ────────────────────────────────────────────── */}
-      <div className="sticky top-16 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <FilterBar
+      {/* ── How It Works ─────────────────────────────────────────────────── */}
+      <section aria-label="How StateSubsidies works" className="bg-white border-b border-slate-100">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12px] text-slate-500">
+            <span className="font-semibold text-slate-400 uppercase tracking-widest text-[10px]">How it works</span>
+            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>1</span>🔍 Search or ask the AI</span>
+            <span className="text-slate-300 hidden sm:inline">→</span>
+            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>2</span>✅ Check if you qualify</span>
+            <span className="text-slate-300 hidden sm:inline">→</span>
+            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>3</span>💰 Apply directly — free</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Browse ───────────────────────────────────────────────────────── */}
+      <section id="browse" className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        {/* Mobile filter button row */}
+        <div className="lg:hidden flex items-center gap-3 mb-5">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className={cn(
+              "inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg border transition-colors",
+              activeFilterCount > 0
+                ? "border-forest-700 bg-forest-50 text-forest-700"
+                : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+            )}
+          >
+            <SlidersHorizontal size={14} />
+            Filters
+            {activeFilterCount > 0 && (
+              <span className="ml-0.5 bg-forest-700 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                {activeFilterCount}
+              </span>
+            )}
+          </button>
+
+          <span className="text-sm text-slate-500 tabular-nums flex-1">
+            <span className="font-semibold text-slate-700">{results?.total?.toLocaleString() ?? "—"}</span>{" "}
+            programs
+          </span>
+
+          <SortSelect value={sortValue} onChange={handleSortChange} />
+        </div>
+
+        {/* Audience selector — always visible, allows quick persona-based filtering */}
+        <AudienceSelector
+          onSelect={handleAudienceSelect}
+          selectedId={selectedAudience}
+          onClear={handleAudienceClear}
+          className="mb-6"
+        />
+
+        {/* Desktop flex row */}
+        <div className="flex gap-8">
+          {/* Sidebar — desktop only */}
+          <FilterSidebar
             filters={filters}
             onChange={handleFilterChange}
             totalResults={results?.total ?? 0}
+            className="hidden lg:block w-56 flex-shrink-0 sticky top-20 self-start max-h-[calc(100vh-5rem)] overflow-y-auto"
           />
+
+          {/* Main content */}
+          <main className="flex-1 min-w-0">
+            {/* Desktop results header */}
+            <div className="hidden lg:flex items-center justify-between mb-5">
+              <div className="flex items-center gap-3 flex-wrap">
+                <p className="text-sm text-slate-500 tabular-nums">
+                  {results ? (
+                    <>
+                      Showing{" "}
+                      <span className="font-semibold text-slate-800">
+                        {(((filters.page ?? 1) - 1) * (filters.pageSize ?? 24) + 1).toLocaleString()}
+                        –
+                        {Math.min((filters.page ?? 1) * (filters.pageSize ?? 24), results.total).toLocaleString()}
+                      </span>{" "}
+                      of{" "}
+                      <span className="font-semibold text-slate-800">{results.total.toLocaleString()}</span>
+                      {activeFilterCount > 0 && (
+                        <span className="text-slate-400"> · {activeFilterCount} filter{activeFilterCount !== 1 ? "s" : ""}</span>
+                      )}
+                    </>
+                  ) : (
+                    <span className="font-semibold text-slate-800">—</span>
+                  )}
+                </p>
+                {activeFilterCount > 0 && (
+                  <button onClick={clearAllFilters} className="text-xs text-slate-400 hover:text-forest-700 transition-colors underline underline-offset-2">
+                    Clear all
+                  </button>
+                )}
+              </div>
+              <div className="flex items-center gap-3">
+                {(hasActiveFilters || !!filters.search) && (
+                  <ShareButton url={typeof window !== "undefined" ? window.location.href : ""} />
+                )}
+                <SortSelect value={sortValue} onChange={handleSortChange} />
+              </div>
+            </div>
+
+            <ResultsGrid
+              incentives={results?.data ?? []}
+              loading={loading}
+              error={error}
+              hasActiveFilters={hasActiveFilters}
+              onClearFilters={clearAllFilters}
+              searchQuery={filters.search}
+            />
+
+            {/* Pagination */}
+            {results && results.totalPages > 1 && (
+              <div className="flex items-center justify-center gap-3 mt-10">
+                <button
+                  disabled={filters.page === 1}
+                  onClick={() => {
+                    const newFilters = { ...filters, page: (filters.page ?? 1) - 1 };
+                    setFilters(newFilters);
+                    fetchIncentives(newFilters);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  className="btn-ghost border border-slate-200 disabled:opacity-40 text-sm px-4"
+                >
+                  ← Previous
+                </button>
+                <span className="text-sm text-slate-500 tabular-nums">
+                  {filters.page} / {results.totalPages}
+                </span>
+                <button
+                  disabled={filters.page === results.totalPages}
+                  onClick={() => {
+                    const newFilters = { ...filters, page: (filters.page ?? 1) + 1 };
+                    setFilters(newFilters);
+                    fetchIncentives(newFilters);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  className="btn-ghost border border-slate-200 disabled:opacity-40 text-sm px-4"
+                >
+                  Next →
+                </button>
+              </div>
+            )}
+          </main>
         </div>
-      </div>
-
-      {/* ── Results ──────────────────────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-        <ResultsGrid
-          incentives={results?.data ?? []}
-          loading={loading}
-          error={error}
-        />
-
-        {/* Pagination */}
-        {results && results.totalPages > 1 && (
-          <div className="flex justify-center items-center gap-3 mt-10">
-            <button
-              disabled={filters.page === 1}
-              onClick={() => {
-                const newFilters = { ...filters, page: (filters.page ?? 1) - 1 };
-                setFilters(newFilters);
-                fetchIncentives(newFilters);
-              }}
-              className="btn-ghost border border-slate-200 disabled:opacity-40 text-sm px-4"
-            >
-              ← Previous
-            </button>
-            <span className="text-sm text-slate-500 tabular-nums">
-              {filters.page} / {results.totalPages}
-            </span>
-            <button
-              disabled={filters.page === results.totalPages}
-              onClick={() => {
-                const newFilters = { ...filters, page: (filters.page ?? 1) + 1 };
-                setFilters(newFilters);
-                fetchIncentives(newFilters);
-              }}
-              className="btn-ghost border border-slate-200 disabled:opacity-40 text-sm px-4"
-            >
-              Next →
-            </button>
-          </div>
-        )}
       </section>
+
+      {/* ── Mobile sidebar drawer ────────────────────────────────────────── */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-50 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        >
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+
+          {/* Drawer */}
+          <div
+            className="absolute inset-y-0 left-0 w-80 max-w-[90vw] bg-white shadow-2xl flex flex-col animate-fade-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-4 py-4 border-b border-slate-100">
+              <span className="font-semibold text-slate-800 text-sm">Filters</span>
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="p-1.5 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+              >
+                <X size={16} />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto px-4 py-4">
+              <FilterSidebar
+                filters={filters}
+                onChange={(partial) => {
+                  handleFilterChange(partial);
+                }}
+                totalResults={results?.total ?? 0}
+              />
+            </div>
+            <div className="px-4 py-4 border-t border-slate-100">
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="w-full btn-primary py-2.5"
+              >
+                Show {results?.total?.toLocaleString() ?? ""} results
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

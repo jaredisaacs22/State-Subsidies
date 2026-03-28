@@ -1,20 +1,28 @@
 """
 Background Scheduler
 =====================
-Runs all scrapers on a configurable interval, enriches results with Claude,
-and writes them to the database. Designed to run as a long-lived background
-process alongside the Next.js dev/production server.
+Two separate loops:
+
+  • Discovery (every 6 hours) — runs all scrapers looking for NEW programs.
+    Only inserts programs that don't already exist AND pass a quality gate.
+    Existing records are NOT updated during discovery runs.
+
+  • Status refresh (every 24 hours) — marks programs as CLOSED when their
+    deadline has passed.
 
 Usage::
 
-    # Run once immediately, then every 6 hours
+    # Run both loops continuously (default)
     python -m scrapers.scheduler
 
-    # Run once and exit (useful for cron jobs)
+    # Run discovery + refresh once and exit
     python -m scrapers.scheduler --once
 
-    # Custom interval
-    python -m scrapers.scheduler --interval 3600
+    # Run live scrapers (not mock)
+    python -m scrapers.scheduler --live
+
+    # Custom intervals
+    python -m scrapers.scheduler --discover-interval 3600 --refresh-interval 43200
 """
 
 from __future__ import annotations
@@ -23,124 +31,153 @@ import argparse
 import os
 import sys
 import time
+import threading
 from datetime import datetime
 from pathlib import Path
 
 import structlog
 from dotenv import load_dotenv
 
-# Load .env from project root
 load_dotenv(Path(__file__).parent.parent / ".env")
 
 from .carb_scraper import CARBScraper
 from .caltrans_core_scraper import CalTransCOREScraper
-from .db_writer import bulk_upsert
+from .db_writer import insert_new_only, refresh_expired_statuses
 from .enricher import enrich
 from .grants_gov_scraper import GrantsGovScraper
 from .wazip_scraper import WazipScraper
 
 logger = structlog.get_logger()
 
-# Use mock mode unless SCRAPER_MOCK_MODE=false in .env
 MOCK_MODE = os.getenv("SCRAPER_MOCK_MODE", "true").lower() != "false"
 
-# Default interval: 6 hours
-DEFAULT_INTERVAL_SECONDS = 6 * 60 * 60
+DEFAULT_DISCOVER_INTERVAL = 6 * 60 * 60   # 6 hours — find new programs
+DEFAULT_REFRESH_INTERVAL  = 24 * 60 * 60  # 24 hours — update existing status
 
 
-def run_all_scrapers(mock: bool = MOCK_MODE) -> dict:
-    """Run all registered scrapers, enrich results, write to DB."""
-    start = time.time()
-    mode = "mock" if mock else "LIVE"
-    logger.info(f"Starting scrape run ({mode})", timestamp=datetime.utcnow().isoformat())
-
+def _run_scrapers(mock: bool) -> list:
+    """Run all scrapers and return enriched results."""
     all_incentives = []
-    scraper_stats = {}
-
     scrapers = [
-        ("WAZIP", WazipScraper(mock=mock)),
+        ("WAZIP",         WazipScraper(mock=mock)),
         ("CalTrans CORE", CalTransCOREScraper(mock=mock)),
-        ("CARB", CARBScraper(mock=mock)),
-        ("Grants.gov", GrantsGovScraper(mock=mock)),
+        ("CARB",          CARBScraper(mock=mock)),
+        ("Grants.gov",    GrantsGovScraper(mock=mock)),
     ]
-
     for name, scraper in scrapers:
         try:
-            logger.info(f"Running {name} scraper")
             results = scraper.scrape()
-
-            # AI enrichment (no-op if no API key)
-            enriched = []
-            for r in results:
-                enriched.append(enrich(r))
-
+            enriched = [enrich(r) for r in results]
             all_incentives.extend(enriched)
-            scraper_stats[name] = {"found": len(results), "status": "ok"}
-            logger.info(f"{name} scraper complete", found=len(results))
+            logger.info(f"{name} scraped", found=len(results))
         except Exception as e:
             logger.error(f"{name} scraper failed", error=str(e))
-            scraper_stats[name] = {"found": 0, "status": f"error: {e}"}
+    return all_incentives
 
-    # Write to DB
-    if all_incentives:
-        db_stats = bulk_upsert(all_incentives)
-    else:
-        db_stats = {"inserted": 0, "updated": 0, "errors": 0}
+
+def discover_new_programs(mock: bool = MOCK_MODE) -> dict:
+    """
+    Scrape for new programs and insert only those that:
+      1. Don't already exist in the DB (by slug)
+      2. Pass the quality gate (has summary, source URL, and at least one requirement)
+    """
+    start = time.time()
+    logger.info("Discovery run starting", mode="mock" if mock else "live")
+
+    incentives = _run_scrapers(mock)
+    stats = insert_new_only(incentives) if incentives else {"inserted": 0, "skipped": 0, "rejected": 0, "errors": 0}
 
     elapsed = round(time.time() - start, 1)
     summary = {
+        "type": "discovery",
         "timestamp": datetime.utcnow().isoformat(),
-        "mode": mode,
-        "total_found": len(all_incentives),
-        "db": db_stats,
-        "scrapers": scraper_stats,
+        "scraped": len(incentives),
+        **stats,
         "elapsed_seconds": elapsed,
     }
-
-    logger.info("Scrape run complete", **summary)
+    logger.info("Discovery run complete", **summary)
     return summary
 
 
+def refresh_statuses() -> dict:
+    """
+    Mark programs with past deadlines as CLOSED.
+    No scraping — only updates existing DB records.
+    """
+    logger.info("Status refresh starting")
+    stats = refresh_expired_statuses()
+    logger.info("Status refresh complete", **stats)
+    return {"type": "refresh", "timestamp": datetime.utcnow().isoformat(), **stats}
+
+
+def _loop(fn, interval_seconds: int, label: str):
+    """Sleep for interval_seconds then run fn, forever."""
+    while True:
+        time.sleep(interval_seconds)
+        try:
+            result = fn()
+            next_dt = datetime.fromtimestamp(time.time() + interval_seconds).strftime("%H:%M")
+            print(f"[{label}] done — next at {next_dt}  |  {result}")
+        except Exception as e:
+            logger.error(f"{label} loop error", error=str(e))
+
+
 def main():
-    parser = argparse.ArgumentParser(description="SubsidyFinder background scraper scheduler")
-    parser.add_argument("--once", action="store_true", help="Run once and exit")
-    parser.add_argument("--interval", type=int, default=DEFAULT_INTERVAL_SECONDS,
-                        help="Interval in seconds between runs (default: 21600 = 6h)")
-    parser.add_argument("--live", action="store_true", help="Use live scrapers (not mock)")
+    parser = argparse.ArgumentParser(description="StateSubsidies background scheduler")
+    parser.add_argument("--once",              action="store_true",
+                        help="Run discovery + refresh once and exit")
+    parser.add_argument("--discover-interval", type=int, default=DEFAULT_DISCOVER_INTERVAL,
+                        help="Seconds between discovery runs (default: 21600 = 6h)")
+    parser.add_argument("--refresh-interval",  type=int, default=DEFAULT_REFRESH_INTERVAL,
+                        help="Seconds between status refresh runs (default: 86400 = 24h)")
+    parser.add_argument("--live",              action="store_true",
+                        help="Use live scrapers instead of mock data")
     args = parser.parse_args()
 
     mock = not args.live
 
     print(f"\n{'='*60}")
-    print(f"  SubsidyFinder Background Scheduler")
-    print(f"  Mode: {'LIVE scraping' if not mock else 'Mock data'}")
-    print(f"  Interval: {args.interval}s ({args.interval // 3600}h {(args.interval % 3600) // 60}m)")
-    print(f"  AI Enrichment: {'ON (Claude API)' if os.getenv('ANTHROPIC_API_KEY') else 'OFF (no API key)'}")
+    print(f"  StateSubsidies Background Scheduler")
+    print(f"  Scraper mode : {'LIVE' if not mock else 'mock'}")
+    print(f"  Discovery    : every {args.discover_interval // 3600}h — new programs only")
+    print(f"  Status check : every {args.refresh_interval // 3600}h — mark expired CLOSED")
+    print(f"  AI Enrich    : {'ON' if os.getenv('ANTHROPIC_API_KEY') else 'OFF (no API key)'}")
     print(f"{'='*60}\n")
 
-    # Run immediately on start
-    summary = run_all_scrapers(mock=mock)
-    print(f"\n✓ First run complete: {summary['total_found']} incentives found, "
-          f"{summary['db']['inserted']} inserted, {summary['db']['updated']} updated\n")
-
     if args.once:
+        d = discover_new_programs(mock)
+        r = refresh_statuses()
+        print(f"Discovery : {d['inserted']} inserted, {d['skipped']} skipped existing, {d['rejected']} rejected by quality gate")
+        print(f"Refresh   : {r.get('closed', 0)} programs marked CLOSED")
         return
 
-    # Loop
-    while True:
-        next_run = time.time() + args.interval
-        next_run_str = datetime.fromtimestamp(next_run).strftime("%H:%M:%S")
-        print(f"Next run at {next_run_str} (in {args.interval // 3600}h)...")
+    # Run both immediately on startup
+    d = discover_new_programs(mock)
+    r = refresh_statuses()
+    print(f"Startup discovery : {d['inserted']} new, {d['skipped']} skipped, {d['rejected']} rejected quality gate")
+    print(f"Startup refresh   : {r.get('closed', 0)} programs marked CLOSED\n")
 
-        try:
-            time.sleep(args.interval)
-        except KeyboardInterrupt:
-            print("\nScheduler stopped by user.")
-            sys.exit(0)
+    # Discovery thread — every 6h
+    threading.Thread(
+        target=_loop,
+        args=(lambda: discover_new_programs(mock), args.discover_interval, "DISCOVERY"),
+        daemon=True,
+    ).start()
 
-        summary = run_all_scrapers(mock=mock)
-        print(f"✓ Run complete: {summary['total_found']} found, "
-              f"{summary['db']['inserted']} new, {summary['db']['updated']} updated")
+    # Refresh thread — every 24h
+    threading.Thread(
+        target=_loop,
+        args=(refresh_statuses, args.refresh_interval, "REFRESH"),
+        daemon=True,
+    ).start()
+
+    print("Scheduler running. Press Ctrl+C to stop.\n")
+    try:
+        while True:
+            time.sleep(60)
+    except KeyboardInterrupt:
+        print("\nScheduler stopped.")
+        sys.exit(0)
 
 
 if __name__ == "__main__":
