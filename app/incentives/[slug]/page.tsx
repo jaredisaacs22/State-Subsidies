@@ -69,7 +69,28 @@ export default async function IncentiveDetailPage({
 
   const related = await getRelated(incentive);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "GovernmentService",
+    "name": incentive.title,
+    "description": incentive.shortSummary,
+    "provider": {
+      "@type": "GovernmentOrganization",
+      "name": incentive.managingAgency,
+    },
+    "serviceType": incentive.incentiveType.replace(/_/g, " ").toLowerCase(),
+    "areaServed": incentive.jurisdictionName,
+    "url": incentive.sourceUrl,
+    ...(incentive.fundingAmount ? { "offers": { "@type": "Offer", "price": incentive.fundingAmount, "priceCurrency": "USD" } } : {}),
+    ...(incentive.deadline ? { "validThrough": incentive.deadline } : {}),
+  };
+
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Back */}
       <Link
@@ -270,6 +291,7 @@ export default async function IncentiveDetailPage({
       {/* Spacer so content isn't hidden behind sticky bar on mobile */}
       <div className="h-20 lg:hidden" />
     </div>
+    </>
   );
 }
 
