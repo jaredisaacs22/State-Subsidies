@@ -263,47 +263,59 @@ export function BusinessIntakeChat() {
 
   if (!open) {
     return (
-      <div className="mt-4 w-full max-w-2xl mx-auto">
-        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden">
-          <div className="flex items-center gap-3 px-5 pt-4 pb-3">
-            <div className="w-7 h-7 rounded-lg bg-forest-700/70 flex items-center justify-center flex-shrink-0">
-              <Sparkles size={13} className="text-white" />
+      <div className="mt-6 w-full max-w-2xl mx-auto">
+        <div className="rounded-2xl border border-white/12 bg-white/6 backdrop-blur-sm overflow-hidden">
+          {/* Header */}
+          <div className="flex items-center gap-3 px-5 pt-5 pb-2">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-forest-600/80 to-forest-900/80 flex items-center justify-center flex-shrink-0 shadow-inner">
+              <Sparkles size={14} className="text-white" />
             </div>
-            <div>
+            <div className="flex-1 min-w-0">
               {hasPreviousSession ? (
-                <>
+                <div className="flex items-center gap-2">
                   <p className="text-white font-semibold text-sm">Welcome back</p>
-                  <p className="text-white/40 text-[11px]">
-                    {matched.length > 0 ? `${matched.length} programs found` : "Continue your search"}
-                  </p>
-                </>
+                  {matched.length > 0 && (
+                    <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/20 rounded-full px-2 py-0.5 font-medium">
+                      {matched.length} programs found
+                    </span>
+                  )}
+                </div>
               ) : (
-                <>
-                  <p className="text-white font-semibold text-sm">AI Program Finder</p>
-                  <p className="text-white/40 text-[11px]">Describe your situation — get matched instantly</p>
-                </>
+                <p className="text-white font-semibold text-sm">Ask AI to find your programs</p>
               )}
+              <p className="text-white/40 text-[11px] mt-0.5">
+                {hasPreviousSession ? "Continue your search or start fresh" : "Describe your situation — get matched in seconds"}
+              </p>
             </div>
-          </div>
-          <div className="px-5 pb-3 flex flex-wrap gap-1.5 items-center">
-            {SUGGESTIONS.map((s) => (
-              <button key={s.label} onClick={() => send(s.text)}
-                className="text-[11px] px-3 py-1 rounded-full border border-white/12 bg-white/6 text-white/55 hover:bg-white/13 hover:text-white hover:border-white/22 transition-all">
-                {s.label}
-              </button>
-            ))}
             {hasPreviousSession && (
-              <button onClick={reset}
-                className="text-[11px] px-3 py-1 text-white/35 hover:text-white/60 transition-colors underline underline-offset-2">
-                Clear history
+              <button onClick={reset} className="text-[10px] text-white/30 hover:text-white/55 transition-colors underline underline-offset-2 flex-shrink-0">
+                Start over
               </button>
             )}
           </div>
+
+          {/* Quick-start prompts */}
+          <div className="px-5 py-3">
+            <p className="text-white/30 text-[10px] uppercase tracking-widest font-medium mb-2">Quick start</p>
+            <div className="grid grid-cols-2 gap-1.5">
+              {SUGGESTIONS.map((s) => (
+                <button key={s.label} onClick={() => send(s.text)}
+                  className="text-left text-[11px] px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-white/55 hover:bg-white/10 hover:text-white/80 hover:border-white/20 transition-all leading-snug">
+                  <span className="font-medium text-white/70">{s.label}</span>
+                  <span className="block text-white/35 text-[10px] mt-0.5 leading-tight line-clamp-1">{s.text}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Expandable input */}
           <div className="flex items-center gap-2 px-4 pb-4">
-            <button onClick={() => setOpen(true)} className="flex-1 text-left rounded-xl bg-white/8 border border-white/10 px-4 py-2.5 text-sm text-white/30 hover:bg-white/12 hover:text-white/50 transition-colors">
-              Or describe your situation in detail…
+            <button onClick={() => setOpen(true)}
+              className="flex-1 text-left rounded-xl bg-white/5 border border-white/10 px-4 py-2.5 text-sm text-white/25 hover:bg-white/8 hover:text-white/45 hover:border-white/18 transition-all">
+              Or type your own situation…
             </button>
-            <button onClick={() => setOpen(true)} className="w-9 h-9 rounded-xl bg-forest-700 flex items-center justify-center text-white hover:bg-forest-600 transition-colors flex-shrink-0">
+            <button onClick={() => setOpen(true)}
+              className="w-9 h-9 rounded-xl bg-forest-700/80 flex items-center justify-center text-white hover:bg-forest-600/90 transition-colors flex-shrink-0 shadow-sm">
               <Send size={14} />
             </button>
           </div>
@@ -359,11 +371,11 @@ export function BusinessIntakeChat() {
           )}
 
           {!hasUserMessage && (
-            <div className="pl-8 space-y-1.5 pt-1">
+            <div className="pl-8 flex flex-wrap gap-1.5 pt-1">
               {SUGGESTIONS.map((s) => (
                 <button key={s.label} onClick={() => send(s.text)}
-                  className="w-full text-left text-xs px-3.5 py-2 rounded-xl border border-white/10 bg-white/6 text-white/50 hover:bg-white/12 hover:text-white/75 transition-all">
-                  {s.text}
+                  className="text-[11px] px-3 py-1.5 rounded-lg border border-white/10 bg-white/6 text-white/55 hover:bg-white/12 hover:text-white/80 hover:border-white/18 transition-all text-left leading-snug">
+                  {s.label}
                 </button>
               ))}
             </div>
@@ -376,7 +388,12 @@ export function BusinessIntakeChat() {
             </div>
           )}
 
-          {error && <div className="text-xs text-red-300 bg-red-900/30 border border-red-500/30 rounded-xl px-3 py-2">{error} — please try again.</div>}
+          {error && (
+            <div className="text-xs text-red-300 bg-red-900/30 border border-red-500/30 rounded-xl px-4 py-3 leading-relaxed">
+              <strong className="font-semibold">⚠ {error.includes("ANTHROPIC_API_KEY") ? "AI not configured" : "Something went wrong"}</strong>
+              <br />{error.includes("ANTHROPIC_API_KEY") ? "An API key is required to use the AI advisor. Add ANTHROPIC_API_KEY to your .env file and restart." : error}
+            </div>
+          )}
           <div ref={bottomRef} />
         </div>
 
