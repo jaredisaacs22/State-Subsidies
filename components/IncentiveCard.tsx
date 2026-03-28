@@ -8,6 +8,17 @@ import { INCENTIVE_TYPE_BORDER, INDUSTRY_COLORS } from "@/lib/types";
 import { useBookmarks } from "@/lib/useBookmarks";
 import type { Incentive } from "@/lib/types";
 
+function getComplexity(incentive: Incentive): { label: string; color: string; title: string } {
+  const { incentiveType, jurisdictionLevel } = incentive;
+  if (incentiveType === "POINT_OF_SALE_REBATE" || incentiveType === "VOUCHER") {
+    return { label: "Simple", color: "text-emerald-600 bg-emerald-50", title: "Minimal paperwork — point of sale or short application" };
+  }
+  if (jurisdictionLevel === "FEDERAL" && incentiveType === "GRANT") {
+    return { label: "Extensive", color: "text-amber-700 bg-amber-50", title: "Federal grant — detailed application, compliance requirements" };
+  }
+  return { label: "Moderate", color: "text-sky-700 bg-sky-50", title: "Standard state or agency application process" };
+}
+
 interface IncentiveCardProps {
   incentive: Incentive;
   className?: string;
@@ -16,6 +27,7 @@ interface IncentiveCardProps {
 export function IncentiveCard({ incentive, className }: IncentiveCardProps) {
   const { isBookmarked, toggle } = useBookmarks();
   const bookmarked = isBookmarked(incentive.slug);
+  const complexity = getComplexity(incentive);
   const isClosingSoon =
     incentive.deadline !== null &&
     new Date(incentive.deadline).getTime() - Date.now() < 30 * 24 * 60 * 60 * 1000;
@@ -109,6 +121,12 @@ export function IncentiveCard({ incentive, className }: IncentiveCardProps) {
           )}
         </div>
         <div className="flex items-center gap-1">
+          <span
+            title={complexity.title}
+            className={cn("text-[10px] font-medium px-2 py-0.5 rounded-full", complexity.color)}
+          >
+            {complexity.label}
+          </span>
           <button
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(incentive.slug); }}
             className={cn(

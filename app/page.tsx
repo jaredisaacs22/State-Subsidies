@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { ChevronDown, SlidersHorizontal, X } from "lucide-react";
+import { ChevronDown, SlidersHorizontal, X, Link2, Check } from "lucide-react";
 import { SearchBar } from "@/components/SearchBar";
 import { FilterSidebar } from "@/components/FilterSidebar";
 import { ResultsGrid } from "@/components/ResultsGrid";
 import { BusinessIntakeChat } from "@/components/BusinessIntakeChat";
+import { AudienceSelector, AUDIENCES } from "@/components/AudienceSelector";
+import type { AudienceId } from "@/components/AudienceSelector";
 import { cn } from "@/lib/utils";
 import type { Incentive, IncentiveFilters, PaginatedResponse } from "@/lib/types";
 
@@ -50,12 +52,33 @@ function SortSelect({
   );
 }
 
+// ── Share button ──────────────────────────────────────────────────────────────
+function ShareButton({ url }: { url: string }) {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    await navigator.clipboard.writeText(url).catch(() => {});
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <button
+      onClick={copy}
+      className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-forest-700 transition-colors"
+      title="Copy link to these results"
+    >
+      {copied ? <Check size={12} /> : <Link2 size={12} />}
+      {copied ? "Copied!" : "Share"}
+    </button>
+  );
+}
+
 export default function HomePage() {
   const [filters, setFilters] = useState<IncentiveFilters>(DEFAULT_FILTERS);
   const [results, setResults] = useState<PaginatedResponse<Incentive> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedAudience, setSelectedAudience] = useState<AudienceId | null>(null);
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const fetchIncentives = useCallback(async (f: IncentiveFilters) => {
@@ -112,6 +135,23 @@ export default function HomePage() {
   useEffect(() => {
     fetchIncentives(DEFAULT_FILTERS);
   }, [fetchIncentives]);
+
+  // Restore audience from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem("ss_audience_v1");
+    if (stored && AUDIENCES.some((a) => a.id === stored)) {
+      setSelectedAudience(stored as AudienceId);
+    }
+  }, []);
+
+  const handleAudienceSelect = useCallback(
+    (filterPreset: Partial<IncentiveFilters>, audienceId: AudienceId) => {
+      localStorage.setItem("ss_audience_v1", audienceId);
+      setSelectedAudience(audienceId);
+      handleFilterChange(filterPreset);
+    },
+    [handleFilterChange]
+  );
 
   const sortValue = `${filters.sortBy ?? "createdAt"}_${filters.sortOrder ?? "desc"}`;
   const handleSortChange = (v: string) => {
@@ -221,6 +261,14 @@ export default function HomePage() {
           <SortSelect value={sortValue} onChange={handleSortChange} />
         </div>
 
+        {/* Audience selector — shown only when no active filters/search */}
+        {!hasActiveFilters && !filters.search && (
+          <AudienceSelector
+            onSelect={handleAudienceSelect}
+            className="mb-6"
+          />
+        )}
+
         {/* Desktop flex row */}
         <div className="flex gap-8">
           {/* Sidebar — desktop only */}
@@ -235,18 +283,41 @@ export default function HomePage() {
           <main className="flex-1 min-w-0">
             {/* Desktop results header */}
             <div className="hidden lg:flex items-center justify-between mb-5">
-              <p className="text-sm text-slate-500 tabular-nums">
-                <span className="font-semibold text-slate-800">
-                  {results?.total?.toLocaleString() ?? "—"}
-                </span>{" "}
-                programs found
-                {activeFilterCount > 0 && (
-                  <span className="ml-1 text-slate-400">
-                    · {activeFilterCount} filter{activeFilterCount !== 1 ? "s" : ""} active
+              <div className="flex items-center gap-3 flex-wrap">
+                <p className="text-sm text-slate-500 tabular-nums">
+                  <span className="font-semibold text-slate-800">
+                    {results?.total?.toLocaleString() ?? "—"}
+                  </span>{" "}
+                  programs found
+                  {activeFilterCount > 0 && (
+                    <span className="ml-1 text-slate-400">
+                      · {activeFilterCount} filter{activeFilterCount !== 1 ? "s" : ""} active
+                    </span>
+                  )}
+                </p>
+                {selectedAudience && (
+                  <span className="text-xs text-forest-700 bg-forest-50 border border-forest-200 rounded-full px-2.5 py-1 flex items-center gap-1.5">
+                    {AUDIENCES.find((a) => a.id === selectedAudience)?.emoji}
+                    {AUDIENCES.find((a) => a.id === selectedAudience)?.label}
+                    <button
+                      onClick={() => {
+                        setSelectedAudience(null);
+                        localStorage.removeItem("ss_audience_v1");
+                        handleFilterChange({ industryCategory: undefined });
+                      }}
+                      className="hover:text-forest-900"
+                    >
+                      ×
+                    </button>
                   </span>
                 )}
-              </p>
-              <SortSelect value={sortValue} onChange={handleSortChange} />
+              </div>
+              <div className="flex items-center gap-3">
+                {(hasActiveFilters || !!filters.search) && (
+                  <ShareButton url={typeof window !== "undefined" ? window.location.href : ""} />
+                )}
+                <SortSelect value={sortValue} onChange={handleSortChange} />
+              </div>
             </div>
 
             <ResultsGrid
