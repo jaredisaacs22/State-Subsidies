@@ -9,6 +9,7 @@ interface ResultsGridProps {
   error?: string | null;
   hasActiveFilters?: boolean;
   onClearFilters?: () => void;
+  searchQuery?: string;
 }
 
 export function ResultsGrid({
@@ -17,6 +18,7 @@ export function ResultsGrid({
   error,
   hasActiveFilters,
   onClearFilters,
+  searchQuery,
 }: ResultsGridProps) {
   if (loading) {
     return (
@@ -98,7 +100,7 @@ export function ResultsGrid({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
       {incentives.map((incentive) => (
-        <IncentiveCard key={incentive.id} incentive={incentive} />
+        <IncentiveCard key={incentive.id} incentive={incentive} searchQuery={searchQuery} />
       ))}
     </div>
   );

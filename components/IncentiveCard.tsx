@@ -14,6 +14,25 @@ function isNewProgram(createdAt: string): boolean {
   return Date.now() - new Date(createdAt).getTime() < SEVEN_DAYS_MS;
 }
 
+function Highlight({ text, query }: { text: string; query?: string }) {
+  if (!query || query.trim().length < 2) return <>{text}</>;
+  const regex = new RegExp(`(${query.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi");
+  const parts = text.split(regex);
+  return (
+    <>
+      {parts.map((part, i) =>
+        regex.test(part) ? (
+          <mark key={i} className="bg-amber-100 text-amber-900 rounded-[2px] px-0.5 not-italic">
+            {part}
+          </mark>
+        ) : (
+          <span key={i}>{part}</span>
+        )
+      )}
+    </>
+  );
+}
+
 function getComplexity(incentive: Incentive): { label: string; color: string; title: string } {
   const { incentiveType, jurisdictionLevel } = incentive;
   if (incentiveType === "POINT_OF_SALE_REBATE" || incentiveType === "VOUCHER") {
@@ -28,9 +47,10 @@ function getComplexity(incentive: Incentive): { label: string; color: string; ti
 interface IncentiveCardProps {
   incentive: Incentive;
   className?: string;
+  searchQuery?: string;
 }
 
-export function IncentiveCard({ incentive, className }: IncentiveCardProps) {
+export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCardProps) {
   const { isBookmarked, toggle } = useBookmarks();
   const bookmarked = isBookmarked(incentive.slug);
   const complexity = getComplexity(incentive);
@@ -83,7 +103,7 @@ export function IncentiveCard({ incentive, className }: IncentiveCardProps) {
         {/* Title */}
         <Link href={`/incentives/${incentive.slug}`} className="block mb-1.5">
           <h2 className="font-semibold text-slate-900 text-[16px] leading-snug group-hover:text-forest-700 transition-colors line-clamp-2">
-            {incentive.title}
+            <Highlight text={incentive.title} query={searchQuery} />
           </h2>
         </Link>
 
@@ -99,7 +119,7 @@ export function IncentiveCard({ incentive, className }: IncentiveCardProps) {
 
         {/* Summary */}
         <p className="text-sm text-slate-600 leading-relaxed line-clamp-2">
-          {incentive.shortSummary}
+          <Highlight text={incentive.shortSummary} query={searchQuery} />
         </p>
       </div>
 

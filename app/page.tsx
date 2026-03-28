@@ -96,7 +96,12 @@ export default function HomePage() {
   const [error, setError] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedAudience, setSelectedAudience] = useState<AudienceId | null>(null);
+  const [stats, setStats] = useState<{ federal: number; state: number; city: number; agency: number } | null>(null);
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    fetch("/api/stats").then(r => r.json()).then(setStats).catch(() => {});
+  }, []);
 
   // On mount: read URL params into filters
   useEffect(() => {
@@ -272,12 +277,13 @@ export default function HomePage() {
 
           {/* Stats strip */}
           <div className="mt-10 -mx-4 sm:-mx-6 lg:-mx-8 bg-black/20 border-t border-white/8 px-4 sm:px-6 lg:px-8 py-4">
-            <div className="flex items-center justify-center gap-8 sm:gap-12 flex-wrap">
+            <div className="flex items-center justify-center gap-6 sm:gap-10 flex-wrap">
               {[
-                { value: results?.total ?? "—", label: "programs" },
-                { value: "All 50", label: "states covered" },
+                { value: results?.total ?? "—", label: "total programs" },
+                { value: stats?.federal ?? "—", label: "federal" },
+                { value: stats?.state ?? "—", label: "state-level" },
+                { value: (stats != null ? (stats.city + stats.agency) : "—"), label: "local / agency" },
                 { value: "$4.2B+", label: "available funding" },
-                { value: "Daily", label: "updates" },
               ].map(({ value, label }) => (
                 <div key={label} className="text-center">
                   <div className="stat-number text-xl font-bold text-white leading-tight">
@@ -390,6 +396,7 @@ export default function HomePage() {
               error={error}
               hasActiveFilters={hasActiveFilters}
               onClearFilters={clearAllFilters}
+              searchQuery={filters.search}
             />
 
             {/* Pagination */}
