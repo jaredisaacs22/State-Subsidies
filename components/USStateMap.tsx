@@ -1,12 +1,11 @@
 "use client";
 
-import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
+import { ComposableMap, Geographies, Geography, Marker, Annotation } from "react-simple-maps";
 import { geoCentroid } from "d3-geo";
 import { cn } from "@/lib/utils";
 
 const GEO_URL = "/us-states.json";
 
-// FIPS → full state name
 const FIPS: Record<string, string> = {
   "01": "Alabama", "02": "Alaska", "04": "Arizona", "05": "Arkansas",
   "06": "California", "08": "Colorado", "09": "Connecticut", "10": "Delaware",
@@ -23,7 +22,6 @@ const FIPS: Record<string, string> = {
   "55": "Wisconsin", "56": "Wyoming",
 };
 
-// FIPS → 2-letter abbreviation
 const ABBR: Record<string, string> = {
   "01": "AL", "02": "AK", "04": "AZ", "05": "AR",
   "06": "CA", "08": "CO", "09": "CT", "10": "DE",
@@ -40,16 +38,24 @@ const ABBR: Record<string, string> = {
   "55": "WI", "56": "WY",
 };
 
-// Centroid nudges for small/awkward states (longitude offset, latitude offset)
+// States that use an Annotation (callout line) instead of inline label
+// [dx, dy] = pixel offset from centroid to label
+const ANNOTATED: Record<string, [number, number]> = {
+  "09": [28, -8],   // CT
+  "10": [32, 8],    // DE
+  "24": [32, 4],    // MD
+  "25": [34, -14],  // MA
+  "33": [28, -18],  // NH
+  "34": [30, 14],   // NJ
+  "44": [36, 2],    // RI
+  "50": [26, -26],  // VT
+};
+
+// Nudge centroid for states whose auto-centroid is off
+// [lon offset, lat offset] in degrees
 const NUDGE: Record<string, [number, number]> = {
-  "09": [0, 0],   // CT
-  "10": [0, 0],   // DE
-  "24": [1.5, 0], // MD — nudge east away from DC
-  "25": [0, 0],   // MA
-  "33": [0, 0],   // NH
-  "34": [0, 0],   // NJ
-  "44": [0, 0],   // RI
-  "50": [0, 0],   // VT
+  "12": [1.0, -2.8],  // FL — pull south into peninsula
+  "26": [0, -1.0],    // MI — pull south away from UP
 };
 
 interface USStateMapProps {
@@ -102,6 +108,7 @@ export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USS
         <Geographies geography={GEO_URL}>
           {({ geographies }: { geographies: any[] }) => {
             const validGeos = geographies.filter((geo) => FIPS[geo.id]);
+
             return (
               <>
                 {/* State shapes */}
@@ -137,37 +144,80 @@ export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USS
                   );
                 })}
 
-                {/* State abbreviation labels */}
-                {validGeos.map((geo) => {
-                  const fips = geo.id;
-                  const name = FIPS[fips];
-                  const abbr = ABBR[fips];
-                  const isSelected = selected === name;
-                  const centroid = geoCentroid(geo.toJSON ? geo.toJSON() : geo);
-                  const nudge = NUDGE[fips] ?? [0, 0];
-                  return (
-                    <Marker
-                      key={`label-${fips}`}
-                      coordinates={[centroid[0] + nudge[0], centroid[1] + nudge[1]]}
-                      onClick={() => onSelect(name)}
-                    >
-                      <text
-                        textAnchor="middle"
-                        dominantBaseline="central"
-                        style={{
-                          fontSize: "7px",
-                          fontWeight: 700,
-                          fill: isSelected ? "#ffffff" : "#334155",
-                          pointerEvents: "none",
-                          userSelect: "none",
-                          fontFamily: "system-ui, sans-serif",
+                {/* Inline labels for normal-sized states */}
+                {validGeos
+                  .filter((geo) => !ANNOTATED[geo.id])
+                  .map((geo) => {
+                    const fips = geo.id;
+                    const name = FIPS[fips];
+                    const abbr = ABBR[fips];
+                    const isSelected = selected === name;
+                    const centroid = geoCentroid(geo.toJSON ? geo.toJSON() : geo);
+                    const nudge = NUDGE[fips] ?? [0, 0];
+                    return (
+                      <Marker
+                        key={`label-${fips}`}
+                        coordinates={[centroid[0] + nudge[0], centroid[1] + nudge[1]]}
+                        onClick={() => onSelect(name)}
+                      >
+                        <text
+                          textAnchor="middle"
+                          dominantBaseline="central"
+                          style={{
+                            fontSize: "7px",
+                            fontWeight: 700,
+                            fill: isSelected ? "#ffffff" : "#334155",
+                            pointerEvents: "none",
+                            userSelect: "none",
+                            fontFamily: "system-ui, sans-serif",
+                          }}
+                        >
+                          {abbr}
+                        </text>
+                      </Marker>
+                    );
+                  })}
+
+                {/* Annotated callout labels for small NE states */}
+                {validGeos
+                  .filter((geo) => ANNOTATED[geo.id])
+                  .map((geo) => {
+                    const fips = geo.id;
+                    const name = FIPS[fips];
+                    const abbr = ABBR[fips];
+                    const isSelected = selected === name;
+                    const centroid = geoCentroid(geo.toJSON ? geo.toJSON() : geo);
+                    const [dx, dy] = ANNOTATED[fips];
+                    return (
+                      <Annotation
+                        key={`ann-${fips}`}
+                        subject={centroid}
+                        dx={dx}
+                        dy={dy}
+                        connectorProps={{
+                          stroke: "#94a3b8",
+                          strokeWidth: 0.8,
+                          strokeLinecap: "round",
                         }}
                       >
-                        {abbr}
-                      </text>
-                    </Marker>
-                  );
-                })}
+                        <text
+                          textAnchor="start"
+                          dominantBaseline="central"
+                          onClick={() => onSelect(name)}
+                          style={{
+                            fontSize: "6.5px",
+                            fontWeight: 700,
+                            fill: isSelected ? "#1a5c38" : "#334155",
+                            cursor: "pointer",
+                            userSelect: "none",
+                            fontFamily: "system-ui, sans-serif",
+                          }}
+                        >
+                          {abbr}
+                        </text>
+                      </Annotation>
+                    );
+                  })}
               </>
             );
           }}
