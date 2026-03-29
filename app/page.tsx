@@ -256,16 +256,6 @@ export default function HomePage() {
             Tell us about your situation and we'll find what you qualify for.
           </p>
 
-          {/* Search bar */}
-          <div className="max-w-2xl mx-auto mb-2">
-            <SearchBar
-              value={filters.search ?? ""}
-              onChange={(search) => handleFilterChange({ search })}
-              placeholder="Search programs, agencies, industries…"
-              className="shadow-[0_4px_32px_rgba(0,0,0,0.35)] rounded-xl"
-            />
-          </div>
-
           {/* Inline AI intake */}
           <BusinessIntakeChat />
 
@@ -299,13 +289,22 @@ export default function HomePage() {
                   </div>
                 </div>
               ))}
+              <a
+                href="#browse"
+                className="hidden sm:inline-flex items-center gap-1.5 ml-4 text-[11px] font-semibold text-white/50 hover:text-white/85 transition-colors border border-white/15 hover:border-white/30 rounded-full px-3 py-1.5"
+              >
+                Browse all programs →
+              </a>
             </div>
           </div>
         </div>
       </section>
 
+      {/* ── Hero → content gradient bridge ───────────────────────────────── */}
+      <div className="h-1 bg-gradient-to-r from-forest-700/30 via-forest-600/20 to-forest-700/30" />
+
       {/* ── How It Works ─────────────────────────────────────────────────── */}
-      <section aria-label="How StateSubsidies works" className="bg-white border-b border-slate-100">
+      <section aria-label="How StateSubsidies works" className="bg-slate-50 border-b border-slate-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12px] text-slate-500">
             <span className="font-semibold text-slate-400 uppercase tracking-widest text-[10px]">How it works</span>
@@ -347,6 +346,16 @@ export default function HomePage() {
           </span>
 
           <SortSelect value={sortValue} onChange={handleSortChange} />
+        </div>
+
+        {/* Search bar */}
+        <div className="mb-5">
+          <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">Search for programs</p>
+          <SearchBar
+            value={filters.search ?? ""}
+            onChange={(search) => handleFilterChange({ search })}
+            className="max-w-xl"
+          />
         </div>
 
         {/* Audience selector — always visible, allows quick persona-based filtering */}

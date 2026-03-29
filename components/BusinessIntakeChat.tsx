@@ -292,91 +292,107 @@ export function BusinessIntakeChat() {
   // ── Collapsed / mode-selection state ─────────────────────────────────────
   if (!open) {
     return (
-      <div className="mt-6 w-full max-w-2xl mx-auto">
-        <div className="rounded-2xl border border-white/12 bg-white/6 backdrop-blur-sm overflow-hidden">
-          <div className="px-5 pt-5 pb-3">
-            <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-forest-600/80 to-forest-900/80 flex items-center justify-center flex-shrink-0">
-                  <Sparkles size={13} className="text-white" aria-hidden />
-                </div>
-                <span className="text-white font-semibold text-sm">AI Program Finder</span>
-              </div>
-              {hasPreviousSession && (
-                <button onClick={reset} className="text-[10px] text-white/35 hover:text-white/60 transition-colors underline underline-offset-2">
-                  Clear history
-                </button>
-              )}
+      <div className="mt-6 w-full max-w-lg mx-auto">
+        <div className="rounded-2xl overflow-hidden shadow-xl border border-white/20" style={{ background: "rgba(255,255,255,0.97)" }}>
+
+          {/* Header band — dark navy */}
+          <div className="bg-brand-900 px-4 py-3 flex items-center gap-2.5">
+            <div className="w-6 h-6 rounded-md bg-forest-600 flex items-center justify-center flex-shrink-0">
+              <Sparkles size={13} className="text-white" aria-hidden />
             </div>
-            <p className="text-white/40 text-[12px] mt-1 ml-9">
-              {hasPreviousSession
-                ? `Previous session: ${matched.length > 0 ? `${matched.length} programs found` : "in progress"}`
-                : "Tell us your situation — we find every dollar you qualify for."}
-            </p>
+            <p className="text-white font-bold text-sm leading-none flex-1">AI Program Finder</p>
+            {hasPreviousSession && (
+              <span className="text-white/40 text-[11px]">
+                {matched.length > 0 ? `${matched.length} programs found` : "session saved"}
+              </span>
+            )}
           </div>
 
+          {/* Body */}
           {hasPreviousSession ? (
-            <div className="px-5 pb-5 flex gap-2">
-              <button
-                onClick={() => setOpen(true)}
-                className="flex-1 py-2.5 rounded-xl bg-forest-700/80 hover:bg-forest-600/90 text-white text-sm font-semibold transition-colors"
-              >
-                Continue my search
-              </button>
-              <button
-                onClick={reset}
-                aria-label="Start a new search"
-                className="px-4 py-2.5 rounded-xl border border-white/15 text-white/50 hover:text-white/80 hover:border-white/25 text-sm transition-colors"
-              >
-                Start over
-              </button>
+            <div className="px-5 py-5">
+              <p className="text-slate-600 text-sm mb-4">Pick up where you left off, or start a fresh search.</p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setOpen(true)}
+                  className="flex-1 py-2.5 rounded-xl bg-forest-700 hover:bg-forest-600 text-white text-sm font-semibold transition-colors shadow-sm"
+                >
+                  Continue my search
+                </button>
+                <button
+                  onClick={reset}
+                  aria-label="Start a new search"
+                  className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-500 hover:text-slate-700 hover:border-slate-300 text-sm transition-colors"
+                >
+                  Start over
+                </button>
+              </div>
             </div>
           ) : (
             <>
-              <div className="px-5 pb-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {/* Mode cards */}
+              <div className="px-4 pt-3 pb-3 grid grid-cols-2 gap-2">
                 {/* Quick Search */}
                 <button
                   onClick={() => startMode("quick")}
-                  className="group text-left p-4 rounded-xl border border-white/12 bg-white/5 hover:bg-white/10 hover:border-white/22 transition-all"
+                  className="group text-left rounded-lg border border-slate-200 bg-white hover:border-amber-400 hover:shadow-sm transition-all overflow-hidden"
                 >
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <Zap size={14} className="text-amber-400" aria-hidden />
-                    <span className="text-white font-semibold text-sm">Quick Search</span>
-                    <span className="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/20 rounded-full px-1.5 py-0.5 font-medium">~1 min</span>
+                  <div className="h-0.5 bg-amber-400 w-full" />
+                  <div className="p-3">
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <Zap size={12} className="text-amber-500 flex-shrink-0" aria-hidden />
+                      <span className="text-slate-800 font-bold text-[13px]">Quick Search</span>
+                      <span className="ml-auto text-[9px] bg-amber-100 text-amber-700 rounded-full px-1.5 py-0.5 font-semibold whitespace-nowrap">~1 min</span>
+                    </div>
+                    <p className="text-slate-500 text-[11px] leading-snug">One sentence — results in seconds.</p>
                   </div>
-                  <p className="text-white/40 text-[11px] leading-relaxed">
-                    Describe your situation in one sentence — AI searches immediately and asks follow-ups as it goes.
-                  </p>
                 </button>
 
                 {/* Tailored Search */}
                 <button
                   onClick={() => startMode("tailored")}
-                  className="group text-left p-4 rounded-xl border border-white/12 bg-white/5 hover:bg-white/10 hover:border-white/22 transition-all"
+                  className="group text-left rounded-lg border border-slate-200 bg-white hover:border-forest-500 hover:shadow-sm transition-all overflow-hidden"
                 >
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <Target size={14} className="text-emerald-400" aria-hidden />
-                    <span className="text-white font-semibold text-sm">Tailored Search</span>
-                    <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/20 rounded-full px-1.5 py-0.5 font-medium">Most accurate</span>
+                  <div className="h-0.5 bg-forest-600 w-full" />
+                  <div className="p-3">
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <Target size={12} className="text-forest-600 flex-shrink-0" aria-hidden />
+                      <span className="text-slate-800 font-bold text-[13px]">Tailored Search</span>
+                      <span className="ml-auto text-[9px] bg-emerald-100 text-emerald-700 rounded-full px-1.5 py-0.5 font-semibold whitespace-nowrap">Best match</span>
+                    </div>
+                    <p className="text-slate-500 text-[11px] leading-snug">4 quick questions — highest accuracy.</p>
                   </div>
-                  <p className="text-white/40 text-[11px] leading-relaxed">
-                    Answer 4–6 short questions so the AI can find every program you qualify for — nothing missed.
-                  </p>
                 </button>
               </div>
-              <div className="px-5 pb-4 flex items-center gap-2">
+
+              {/* Quick-start input */}
+              <div className="px-4 pb-4 flex gap-2">
                 <input
                   type="text"
-                  placeholder="Or just describe your situation and press Enter…"
+                  placeholder="Or describe your situation and press Enter…"
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && e.currentTarget.value.trim()) {
+                      const val = e.currentTarget.value.trim();
                       startMode("quick");
-                      setTimeout(() => send(e.currentTarget.value.trim()), 100);
+                      setTimeout(() => send(val), 150);
                     }
                   }}
-                  className="flex-1 rounded-xl bg-white/5 border border-white/10 px-4 py-2 text-sm text-white placeholder:text-white/22 focus:outline-none focus:ring-1 focus:ring-forest-500 focus:border-forest-500"
+                  className="flex-1 rounded-lg bg-slate-50 border border-slate-200 px-3 py-2 text-[13px] text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
                   aria-label="Quick-start: describe your situation"
                 />
+                <button
+                  onClick={(e) => {
+                    const input = (e.currentTarget.previousElementSibling as HTMLInputElement);
+                    if (input?.value.trim()) {
+                      const val = input.value.trim();
+                      startMode("quick");
+                      setTimeout(() => send(val), 150);
+                    }
+                  }}
+                  className="px-3 py-2 rounded-lg bg-forest-700 hover:bg-forest-600 text-white transition-colors"
+                >
+                  <Send size={13} aria-hidden />
+                </button>
               </div>
             </>
           )}
@@ -387,7 +403,7 @@ export function BusinessIntakeChat() {
 
   // ── Open chat ──────────────────────────────────────────────────────────────
   return (
-    <div className="mt-4 w-full max-w-2xl mx-auto">
+    <div className="mt-4 w-full max-w-lg mx-auto">
       <div
         className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden flex flex-col"
         style={{ maxHeight: "min(68vh, 560px)" }}
@@ -478,9 +494,9 @@ export function BusinessIntakeChat() {
 
           {/* Matched programs */}
           {matched.length > 0 && (
-            <div className="pl-8 space-y-2 pt-1">
-              <p className="text-[11px] font-semibold text-white/40 uppercase tracking-wider">
-                {matched.length} matched program{matched.length !== 1 ? "s" : ""}
+            <div className="space-y-2 pt-2">
+              <p className="text-[11px] font-semibold text-white/50 uppercase tracking-wider pl-8">
+                {matched.length} program{matched.length !== 1 ? "s" : ""} found — click to view &amp; apply
               </p>
               {matched.map((inc) => <MatchedCard key={inc.id} inc={inc} />)}
             </div>
