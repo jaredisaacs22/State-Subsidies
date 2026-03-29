@@ -134,11 +134,14 @@ export default async function IncentiveDetailPage({
 
         {/* Key Stats Row */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 bg-slate-50 rounded-lg">
-          <Stat
-            icon={<DollarSign size={16} className="text-emerald-600" />}
-            label="Max Funding"
-            value={formatCurrency(incentive.fundingAmount)}
-          />
+          <div>
+            <div className="flex items-center gap-1.5 mb-1">
+              <DollarSign size={16} className="text-emerald-600" />
+              <span className="text-xs text-slate-500 font-medium">Max per Applicant</span>
+            </div>
+            <p className="text-sm font-semibold text-slate-800">{formatCurrency(incentive.fundingAmount)}</p>
+            <p className="text-[10px] text-slate-400 mt-0.5">Maximum a single org can receive</p>
+          </div>
           <Stat
             icon={<Calendar size={16} className="text-amber-600" />}
             label="Deadline"
@@ -214,6 +217,17 @@ export default async function IncentiveDetailPage({
             </a>
             <BookmarkButton slug={incentive.slug} />
           </div>
+
+          {/* Total program funding — only shown when known */}
+          {incentive.totalProgramFunding && (
+            <div className="card p-5">
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">
+                Total Program Budget
+              </p>
+              <p className="text-sm font-semibold text-slate-800">{incentive.totalProgramFunding}</p>
+              <p className="text-[10px] text-slate-400 mt-0.5">Total funds appropriated or remaining for this program</p>
+            </div>
+          )}
 
           {/* Share */}
           <div className="card p-4">

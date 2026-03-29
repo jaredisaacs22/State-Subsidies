@@ -26,7 +26,8 @@ export interface Incentive {
 
   incentiveType: IncentiveType;
 
-  fundingAmount: number | null;
+  fundingAmount: number | null;        // max per applicant
+  totalProgramFunding: string | null;  // total program budget/remaining
   deadline: string | null;
   applicationOpenDate: string | null;
 

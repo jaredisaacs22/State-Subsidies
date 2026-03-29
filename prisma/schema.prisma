@@ -38,9 +38,10 @@ model Incentive {
   incentiveType      String
 
   // Funding details (optional)
-  fundingAmount       Float?
-  deadline            DateTime?
-  applicationOpenDate DateTime?
+  fundingAmount        Float?   // max a single applicant can receive
+  totalProgramFunding  String?  // total program budget/remaining (display string, e.g. "$50M appropriated")
+  deadline             DateTime?
+  applicationOpenDate  DateTime?
 
   // Source
   sourceUrl   String

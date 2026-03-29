@@ -296,8 +296,9 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
         <div className="px-5 pt-3 pb-2 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 min-w-0 flex-wrap">
             {incentive.fundingAmount && (
-              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-100 whitespace-nowrap">
-                {formatCurrency(incentive.fundingAmount)}
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-100 whitespace-nowrap" title="Maximum per applicant">
+                Up to {formatCurrency(incentive.fundingAmount)}
+                <span className="font-normal text-emerald-500 text-[10px]">/ applicant</span>
               </span>
             )}
             {incentive.deadline && (
