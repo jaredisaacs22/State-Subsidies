@@ -218,17 +218,6 @@ export default async function IncentiveDetailPage({
             <BookmarkButton slug={incentive.slug} />
           </div>
 
-          {/* Total program funding — only shown when known */}
-          {incentive.totalProgramFunding && (
-            <div className="card p-5">
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">
-                Total Program Budget
-              </p>
-              <p className="text-sm font-semibold text-slate-800">{incentive.totalProgramFunding}</p>
-              <p className="text-[10px] text-slate-400 mt-0.5">Total funds appropriated or remaining for this program</p>
-            </div>
-          )}
-
           {/* Share */}
           <div className="card p-4">
             <ShareButtons title={incentive.title} />
