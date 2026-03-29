@@ -98,6 +98,51 @@ function ListItem({
   );
 }
 
+function IndustryGroup({
+  group,
+  activeCategory,
+  defaultOpen,
+  onChange,
+}: {
+  group: { label: string; options: string[] };
+  activeCategory?: string;
+  defaultOpen: boolean;
+  onChange: (opt: string) => void;
+}) {
+  const hasActive = group.options.some((o) => o === activeCategory);
+  const [open, setOpen] = useState(defaultOpen || hasActive);
+  return (
+    <div className="mt-1.5">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="flex items-center justify-between w-full px-2.5 py-1 rounded hover:bg-slate-50 group/grp"
+      >
+        <span className={cn(
+          "text-[10px] font-semibold uppercase tracking-wider select-none",
+          hasActive ? "text-forest-700" : "text-slate-400 group-hover/grp:text-slate-500"
+        )}>
+          {group.label}
+          {hasActive && <span className="ml-1.5 text-[9px] bg-forest-100 text-forest-700 rounded-full px-1.5 py-0.5 normal-case font-bold tracking-normal">active</span>}
+        </span>
+        <ChevronDown size={11} className={cn("text-slate-300 transition-transform flex-shrink-0", open && "rotate-180")} />
+      </button>
+      {open && (
+        <div className="mt-0.5 space-y-0.5">
+          {group.options.map((opt) => (
+            <ListItem
+              key={opt}
+              label={opt}
+              active={activeCategory === opt}
+              onClick={() => onChange(opt)}
+              indent
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function BookmarksWidget() {
   const { bookmarks } = useBookmarks();
   if (bookmarks.length === 0) return null;
@@ -231,26 +276,18 @@ export function FilterSidebar({
             active={!filters.industryCategory}
             onClick={() => onChange({ industryCategory: undefined })}
           />
-          {INDUSTRY_CATEGORY_GROUPS.map((group) => (
-            <div key={group.label} className="mt-2 first:mt-1">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 px-2.5 py-1 select-none">
-                {group.label}
-              </p>
-              {group.options.map((opt) => (
-                <ListItem
-                  key={opt}
-                  label={opt}
-                  active={filters.industryCategory === opt}
-                  onClick={() =>
-                    onChange({
-                      industryCategory:
-                        filters.industryCategory === opt ? undefined : opt,
-                    })
-                  }
-                  indent
-                />
-              ))}
-            </div>
+          {INDUSTRY_CATEGORY_GROUPS.map((group, gi) => (
+            <IndustryGroup
+              key={group.label}
+              group={group}
+              activeCategory={filters.industryCategory}
+              defaultOpen={gi === 0}
+              onChange={(opt) =>
+                onChange({
+                  industryCategory: filters.industryCategory === opt ? undefined : opt,
+                })
+              }
+            />
           ))}
         </div>
       </Section>

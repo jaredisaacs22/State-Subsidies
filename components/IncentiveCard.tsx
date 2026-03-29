@@ -315,13 +315,13 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
             aria-expanded={showEligibility}
             aria-label={showEligibility ? "Close eligibility checker" : "Check if you qualify for this program"}
             className={cn(
-              "flex items-center gap-1 text-[10px] font-medium px-2 py-1 rounded-md border transition-all",
+              "flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg border transition-all",
               showEligibility
                 ? "bg-forest-700 text-white border-forest-700"
-                : "bg-white text-forest-700 border-forest-200 hover:bg-forest-50 hover:border-forest-400"
+                : "bg-forest-700 text-white border-forest-700 hover:bg-forest-800"
             )}
           >
-            <ClipboardCheck size={10} aria-hidden />
+            <ClipboardCheck size={11} aria-hidden />
             {showEligibility ? "Hide" : "Do I qualify?"}
           </button>
           <span

@@ -391,6 +391,11 @@ export function BusinessIntakeChat() {
                 </button>
               </div>
 
+              {/* Trust line */}
+              <p className="text-[11px] text-slate-400 text-center px-5 pb-2">
+                Searches <span className="font-semibold text-slate-500">500+ verified programs</span> · all 50 states · sourced from IRS, USDA, DOE, EPA &amp; 40+ agencies
+              </p>
+
               {/* Quick-start input */}
               <div className="px-5 pb-5 border-t border-slate-100 pt-3">
                 <p className="text-[11px] text-slate-400 mb-2 font-medium uppercase tracking-wide">Or skip straight to it</p>

@@ -257,13 +257,19 @@ export default function HomePage() {
           </p>
 
           {/* Search bar */}
-          <div className="max-w-2xl mx-auto mb-2">
+          <div className="max-w-2xl mx-auto mb-3">
             <SearchBar
               value={filters.search ?? ""}
               onChange={(search) => handleFilterChange({ search })}
-              placeholder="Search programs, agencies, industries…"
               className="shadow-[0_4px_32px_rgba(0,0,0,0.35)] rounded-xl"
             />
+          </div>
+
+          {/* Path separator */}
+          <div className="flex items-center gap-3 max-w-xs mx-auto mb-1">
+            <div className="flex-1 h-px bg-white/15" />
+            <span className="text-white/40 text-[11px] font-medium tracking-wide">or get AI-matched programs</span>
+            <div className="flex-1 h-px bg-white/15" />
           </div>
 
           {/* Inline AI intake */}
@@ -299,13 +305,22 @@ export default function HomePage() {
                   </div>
                 </div>
               ))}
+              <a
+                href="#browse"
+                className="hidden sm:inline-flex items-center gap-1.5 ml-4 text-[11px] font-semibold text-white/50 hover:text-white/85 transition-colors border border-white/15 hover:border-white/30 rounded-full px-3 py-1.5"
+              >
+                Browse all programs →
+              </a>
             </div>
           </div>
         </div>
       </section>
 
+      {/* ── Hero → content gradient bridge ───────────────────────────────── */}
+      <div className="h-1 bg-gradient-to-r from-forest-700/30 via-forest-600/20 to-forest-700/30" />
+
       {/* ── How It Works ─────────────────────────────────────────────────── */}
-      <section aria-label="How StateSubsidies works" className="bg-white border-b border-slate-100">
+      <section aria-label="How StateSubsidies works" className="bg-slate-50 border-b border-slate-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12px] text-slate-500">
             <span className="font-semibold text-slate-400 uppercase tracking-widest text-[10px]">How it works</span>
