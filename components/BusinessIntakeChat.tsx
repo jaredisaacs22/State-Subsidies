@@ -296,23 +296,16 @@ export function BusinessIntakeChat() {
         <div className="rounded-2xl overflow-hidden shadow-xl border border-white/20" style={{ background: "rgba(255,255,255,0.97)" }}>
 
           {/* Header band — dark navy */}
-          <div className="bg-brand-900 px-5 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-forest-600 flex items-center justify-center flex-shrink-0 shadow-sm">
-                <Sparkles size={15} className="text-white" aria-hidden />
-              </div>
-              <div>
-                <p className="text-white font-bold text-sm leading-none">AI Program Finder</p>
-                <p className="text-white/50 text-[11px] mt-0.5">
-                  {hasPreviousSession
-                    ? `Session saved · ${matched.length > 0 ? `${matched.length} programs found` : "in progress"}`
-                    : "Powered by Claude · Free to use"}
-                </p>
-              </div>
+          <div className="bg-brand-900 px-4 py-3 flex items-center gap-2.5">
+            <div className="w-6 h-6 rounded-md bg-forest-600 flex items-center justify-center flex-shrink-0">
+              <Sparkles size={13} className="text-white" aria-hidden />
             </div>
-            <span className="text-[10px] font-semibold bg-forest-600/30 text-forest-300 border border-forest-500/30 rounded-full px-2.5 py-1">
-              Free
-            </span>
+            <p className="text-white font-bold text-sm leading-none flex-1">AI Program Finder</p>
+            {hasPreviousSession && (
+              <span className="text-white/40 text-[11px]">
+                {matched.length > 0 ? `${matched.length} programs found` : "session saved"}
+              </span>
+            )}
           </div>
 
           {/* Body */}
@@ -337,96 +330,69 @@ export function BusinessIntakeChat() {
             </div>
           ) : (
             <>
-              {/* Subheading */}
-              <div className="px-5 pt-4 pb-3">
-                <p className="text-slate-500 text-[13px]">Tell us your situation — we find every program you qualify for.</p>
-              </div>
-
               {/* Mode cards */}
-              <div className="px-5 pb-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="px-4 pt-3 pb-3 grid grid-cols-2 gap-2">
                 {/* Quick Search */}
                 <button
                   onClick={() => startMode("quick")}
-                  className="group text-left rounded-xl border border-slate-200 bg-white hover:border-amber-400 hover:shadow-md transition-all overflow-hidden"
+                  className="group text-left rounded-lg border border-slate-200 bg-white hover:border-amber-400 hover:shadow-sm transition-all overflow-hidden"
                 >
-                  <div className="h-1 bg-amber-400 w-full" />
-                  <div className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-7 h-7 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center flex-shrink-0">
-                        <Zap size={13} className="text-amber-500" aria-hidden />
-                      </div>
-                      <span className="text-slate-800 font-bold text-sm">Quick Search</span>
-                      <span className="ml-auto text-[10px] bg-amber-100 text-amber-700 rounded-full px-2 py-0.5 font-semibold">~1 min</span>
+                  <div className="h-0.5 bg-amber-400 w-full" />
+                  <div className="p-3">
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <Zap size={12} className="text-amber-500 flex-shrink-0" aria-hidden />
+                      <span className="text-slate-800 font-bold text-[13px]">Quick Search</span>
+                      <span className="ml-auto text-[9px] bg-amber-100 text-amber-700 rounded-full px-1.5 py-0.5 font-semibold whitespace-nowrap">~1 min</span>
                     </div>
-                    <p className="text-slate-500 text-[12px] leading-relaxed mb-3">
-                      Describe your situation in one sentence — results in seconds.
-                    </p>
-                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-600 group-hover:gap-2 transition-all">
-                      Start quick search →
-                    </span>
+                    <p className="text-slate-500 text-[11px] leading-snug">One sentence — results in seconds.</p>
                   </div>
                 </button>
 
                 {/* Tailored Search */}
                 <button
                   onClick={() => startMode("tailored")}
-                  className="group text-left rounded-xl border border-slate-200 bg-white hover:border-forest-500 hover:shadow-md transition-all overflow-hidden"
+                  className="group text-left rounded-lg border border-slate-200 bg-white hover:border-forest-500 hover:shadow-sm transition-all overflow-hidden"
                 >
-                  <div className="h-1 bg-forest-600 w-full" />
-                  <div className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-7 h-7 rounded-lg bg-emerald-50 border border-emerald-200 flex items-center justify-center flex-shrink-0">
-                        <Target size={13} className="text-forest-600" aria-hidden />
-                      </div>
-                      <span className="text-slate-800 font-bold text-sm">Tailored Search</span>
-                      <span className="ml-auto text-[10px] bg-emerald-100 text-emerald-700 rounded-full px-2 py-0.5 font-semibold">Best match</span>
+                  <div className="h-0.5 bg-forest-600 w-full" />
+                  <div className="p-3">
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <Target size={12} className="text-forest-600 flex-shrink-0" aria-hidden />
+                      <span className="text-slate-800 font-bold text-[13px]">Tailored Search</span>
+                      <span className="ml-auto text-[9px] bg-emerald-100 text-emerald-700 rounded-full px-1.5 py-0.5 font-semibold whitespace-nowrap">Best match</span>
                     </div>
-                    <p className="text-slate-500 text-[12px] leading-relaxed mb-3">
-                      Answer 4 short questions — nothing missed, highest accuracy.
-                    </p>
-                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-forest-700 group-hover:gap-2 transition-all">
-                      Start tailored search →
-                    </span>
+                    <p className="text-slate-500 text-[11px] leading-snug">4 quick questions — highest accuracy.</p>
                   </div>
                 </button>
               </div>
 
-              {/* Trust line */}
-              <p className="text-[11px] text-slate-400 text-center px-5 pb-2">
-                Searches <span className="font-semibold text-slate-500">500+ verified programs</span> · all 50 states · sourced from IRS, USDA, DOE, EPA &amp; 40+ agencies
-              </p>
-
               {/* Quick-start input */}
-              <div className="px-5 pb-5 border-t border-slate-100 pt-3">
-                <p className="text-[11px] text-slate-400 mb-2 font-medium uppercase tracking-wide">Or skip straight to it</p>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="e.g. Solar farm in Texas, need grant funding…"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && e.currentTarget.value.trim()) {
-                        const val = e.currentTarget.value.trim();
-                        startMode("quick");
-                        setTimeout(() => send(val), 150);
-                      }
-                    }}
-                    className="flex-1 rounded-xl bg-slate-50 border border-slate-200 px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
-                    aria-label="Quick-start: describe your situation"
-                  />
-                  <button
-                    onClick={(e) => {
-                      const input = (e.currentTarget.previousElementSibling as HTMLInputElement);
-                      if (input?.value.trim()) {
-                        const val = input.value.trim();
-                        startMode("quick");
-                        setTimeout(() => send(val), 150);
-                      }
-                    }}
-                    className="px-4 py-2.5 rounded-xl bg-forest-700 hover:bg-forest-600 text-white text-sm font-semibold transition-colors"
-                  >
-                    <Send size={14} aria-hidden />
-                  </button>
-                </div>
+              <div className="px-4 pb-4 flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Or describe your situation and press Enter…"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && e.currentTarget.value.trim()) {
+                      const val = e.currentTarget.value.trim();
+                      startMode("quick");
+                      setTimeout(() => send(val), 150);
+                    }
+                  }}
+                  className="flex-1 rounded-lg bg-slate-50 border border-slate-200 px-3 py-2 text-[13px] text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
+                  aria-label="Quick-start: describe your situation"
+                />
+                <button
+                  onClick={(e) => {
+                    const input = (e.currentTarget.previousElementSibling as HTMLInputElement);
+                    if (input?.value.trim()) {
+                      const val = input.value.trim();
+                      startMode("quick");
+                      setTimeout(() => send(val), 150);
+                    }
+                  }}
+                  className="px-3 py-2 rounded-lg bg-forest-700 hover:bg-forest-600 text-white transition-colors"
+                >
+                  <Send size={13} aria-hidden />
+                </button>
               </div>
             </>
           )}
