@@ -293,22 +293,22 @@ export function BusinessIntakeChat() {
   if (!open) {
     return (
       <div className="mt-6 w-full max-w-2xl mx-auto">
-        <div className="rounded-2xl border border-white/12 bg-white/6 backdrop-blur-sm overflow-hidden">
+        <div className="rounded-2xl border border-blue-100 bg-white shadow-lg overflow-hidden">
           <div className="px-5 pt-5 pb-3">
             <div className="flex items-center justify-between mb-1">
               <div className="flex items-center gap-2">
                 <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-forest-600/80 to-forest-900/80 flex items-center justify-center flex-shrink-0">
                   <Sparkles size={13} className="text-white" aria-hidden />
                 </div>
-                <span className="text-white font-semibold text-sm">AI Program Finder</span>
+                <span className="text-brand-800 font-semibold text-sm">AI Program Finder</span>
               </div>
               {hasPreviousSession && (
-                <button onClick={reset} className="text-[10px] text-white/35 hover:text-white/60 transition-colors underline underline-offset-2">
+                <button onClick={reset} className="text-[10px] text-slate-400 hover:text-slate-600 transition-colors underline underline-offset-2">
                   Clear history
                 </button>
               )}
             </div>
-            <p className="text-white/40 text-[12px] mt-1 ml-9">
+            <p className="text-slate-400 text-[12px] mt-1 ml-9">
               {hasPreviousSession
                 ? `Previous session: ${matched.length > 0 ? `${matched.length} programs found` : "in progress"}`
                 : "Tell us your situation — we find every dollar you qualify for."}
@@ -319,14 +319,14 @@ export function BusinessIntakeChat() {
             <div className="px-5 pb-5 flex gap-2">
               <button
                 onClick={() => setOpen(true)}
-                className="flex-1 py-2.5 rounded-xl bg-forest-700/80 hover:bg-forest-600/90 text-white text-sm font-semibold transition-colors"
+                className="flex-1 py-2.5 rounded-xl bg-forest-700 hover:bg-forest-600 text-white text-sm font-semibold transition-colors"
               >
                 Continue my search
               </button>
               <button
                 onClick={reset}
                 aria-label="Start a new search"
-                className="px-4 py-2.5 rounded-xl border border-white/15 text-white/50 hover:text-white/80 hover:border-white/25 text-sm transition-colors"
+                className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-400 hover:text-slate-600 hover:border-slate-300 text-sm transition-colors"
               >
                 Start over
               </button>
@@ -374,7 +374,7 @@ export function BusinessIntakeChat() {
                       setTimeout(() => send(e.currentTarget.value.trim()), 100);
                     }
                   }}
-                  className="flex-1 rounded-xl bg-white/5 border border-white/10 px-4 py-2 text-sm text-white placeholder:text-white/22 focus:outline-none focus:ring-1 focus:ring-forest-500 focus:border-forest-500"
+                  className="flex-1 rounded-xl bg-slate-50 border border-slate-200 px-4 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-forest-500 focus:border-forest-500"
                   aria-label="Quick-start: describe your situation"
                 />
               </div>
