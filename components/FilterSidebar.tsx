@@ -281,7 +281,7 @@ export function FilterSidebar({
               key={group.label}
               group={group}
               activeCategory={filters.industryCategory}
-              defaultOpen={gi === 0}
+              defaultOpen={false}
               onChange={(opt) =>
                 onChange({
                   industryCategory: filters.industryCategory === opt ? undefined : opt,
