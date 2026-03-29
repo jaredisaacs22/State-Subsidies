@@ -485,31 +485,26 @@ export function BusinessIntakeChat() {
 
         {/* Messages */}
         <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4 min-h-0" aria-live="polite" aria-atomic="false">
-          {messages.map((m, i) => {
-            // Hide the last assistant text bubble when matched programs are shown (it's redundant)
-            const isLastAssistant = m.role === "assistant" && i === messages.length - 1;
-            if (isLastAssistant && matched.length > 0 && !streaming) return null;
-            return (
-              <div key={i} className={cn("flex gap-2.5", m.role === "user" ? "justify-end" : "justify-start")}>
-                {m.role === "assistant" && (
-                  <div className="w-6 h-6 rounded-lg bg-forest-700/60 flex items-center justify-center flex-shrink-0 mt-0.5 overflow-hidden" aria-hidden>
-                    <LogoMark size={16} />
-                  </div>
-                )}
-                <div className={cn(
-                  "max-w-[84%] rounded-2xl px-4 py-2.5",
-                  m.role === "user"
-                    ? "bg-forest-700 text-white rounded-br-sm"
-                    : "bg-white/10 text-white rounded-bl-sm border border-white/8"
-                )}>
-                  {m.role === "assistant"
-                    ? <MessageContent text={m.content} streaming={streaming && i === messages.length - 1} />
-                    : <p className="text-sm leading-relaxed">{m.content}</p>
-                  }
+          {messages.map((m, i) => (
+            <div key={i} className={cn("flex gap-2.5", m.role === "user" ? "justify-end" : "justify-start")}>
+              {m.role === "assistant" && (
+                <div className="w-6 h-6 rounded-lg bg-forest-700/60 flex items-center justify-center flex-shrink-0 mt-0.5 overflow-hidden" aria-hidden>
+                  <LogoMark size={16} />
                 </div>
+              )}
+              <div className={cn(
+                "max-w-[84%] rounded-2xl px-4 py-2.5",
+                m.role === "user"
+                  ? "bg-forest-700 text-white rounded-br-sm"
+                  : "bg-white/10 text-white rounded-bl-sm border border-white/8"
+              )}>
+                {m.role === "assistant"
+                  ? <MessageContent text={m.content} streaming={streaming && i === messages.length - 1} />
+                  : <p className="text-sm leading-relaxed">{m.content}</p>
+                }
               </div>
-            );
-          })}
+            </div>
+          ))}
 
           {/* Follow-up chips after AI response */}
           {showFollowUps && (
@@ -528,9 +523,9 @@ export function BusinessIntakeChat() {
 
           {/* Matched programs */}
           {matched.length > 0 && (
-            <div className="pl-8 space-y-2 pt-1">
-              <p className="text-[11px] font-semibold text-white/40 uppercase tracking-wider">
-                {matched.length} matched program{matched.length !== 1 ? "s" : ""}
+            <div className="space-y-2 pt-2">
+              <p className="text-[11px] font-semibold text-white/50 uppercase tracking-wider pl-8">
+                {matched.length} program{matched.length !== 1 ? "s" : ""} found — click to view &amp; apply
               </p>
               {matched.map((inc) => <MatchedCard key={inc.id} inc={inc} />)}
             </div>
