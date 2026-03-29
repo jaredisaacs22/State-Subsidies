@@ -256,22 +256,6 @@ export default function HomePage() {
             Tell us about your situation and we'll find what you qualify for.
           </p>
 
-          {/* Search bar */}
-          <div className="max-w-2xl mx-auto mb-3">
-            <SearchBar
-              value={filters.search ?? ""}
-              onChange={(search) => handleFilterChange({ search })}
-              className="shadow-[0_4px_32px_rgba(0,0,0,0.35)] rounded-xl"
-            />
-          </div>
-
-          {/* Path separator */}
-          <div className="flex items-center gap-3 max-w-xs mx-auto mb-1">
-            <div className="flex-1 h-px bg-white/15" />
-            <span className="text-white/40 text-[11px] font-medium tracking-wide">or get AI-matched programs</span>
-            <div className="flex-1 h-px bg-white/15" />
-          </div>
-
           {/* Inline AI intake */}
           <BusinessIntakeChat />
 
@@ -362,6 +346,16 @@ export default function HomePage() {
           </span>
 
           <SortSelect value={sortValue} onChange={handleSortChange} />
+        </div>
+
+        {/* Search bar */}
+        <div className="mb-5">
+          <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">Search for programs</p>
+          <SearchBar
+            value={filters.search ?? ""}
+            onChange={(search) => handleFilterChange({ search })}
+            className="max-w-xl"
+          />
         </div>
 
         {/* Audience selector — always visible, allows quick persona-based filtering */}

@@ -292,7 +292,7 @@ export function BusinessIntakeChat() {
   // ── Collapsed / mode-selection state ─────────────────────────────────────
   if (!open) {
     return (
-      <div className="mt-6 w-full max-w-2xl mx-auto">
+      <div className="mt-6 w-full max-w-lg mx-auto">
         <div className="rounded-2xl overflow-hidden shadow-xl border border-white/20" style={{ background: "rgba(255,255,255,0.97)" }}>
 
           {/* Header band — dark navy */}
@@ -437,7 +437,7 @@ export function BusinessIntakeChat() {
 
   // ── Open chat ──────────────────────────────────────────────────────────────
   return (
-    <div className="mt-4 w-full max-w-2xl mx-auto">
+    <div className="mt-4 w-full max-w-lg mx-auto">
       <div
         className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden flex flex-col"
         style={{ maxHeight: "min(68vh, 560px)" }}
