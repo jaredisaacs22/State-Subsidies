@@ -193,7 +193,6 @@ interface IncentiveCardProps {
 export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCardProps) {
   const { isBookmarked, toggle } = useBookmarks();
   const bookmarked = isBookmarked(incentive.slug);
-  const complexity = getComplexity(incentive);
   const isNew = isNewProgram(incentive.createdAt);
   const isClosingSoon =
     incentive.deadline !== null &&
@@ -292,48 +291,29 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
       )}
 
       {/* Footer */}
-      <div className="mt-auto px-5 py-3 border-t border-slate-100 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 min-w-0">
-          {incentive.fundingAmount && (
-            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-100 whitespace-nowrap">
-              {formatCurrency(incentive.fundingAmount)}
-            </span>
-          )}
-          {incentive.deadline && (
-            <span className={cn(
-              "flex items-center gap-1 text-xs whitespace-nowrap",
-              isClosingSoon ? "text-amber-600 font-semibold" : "text-slate-400"
-            )}>
-              <Calendar size={11} aria-hidden />
-              {formatDeadline(incentive.deadline)}
-            </span>
-          )}
-        </div>
-        <div className="flex items-center gap-1 flex-shrink-0">
-          <button
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowEligibility((v) => !v); }}
-            aria-expanded={showEligibility}
-            aria-label={showEligibility ? "Close eligibility checker" : "Check if you qualify for this program"}
-            className={cn(
-              "flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg border transition-all",
-              showEligibility
-                ? "bg-forest-700 text-white border-forest-700"
-                : "bg-forest-700 text-white border-forest-700 hover:bg-forest-800"
+      <div className="mt-auto border-t border-slate-100">
+        {/* Meta row: funding + deadline + bookmark */}
+        <div className="px-5 pt-3 pb-2 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 min-w-0 flex-wrap">
+            {incentive.fundingAmount && (
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-100 whitespace-nowrap">
+                {formatCurrency(incentive.fundingAmount)}
+              </span>
             )}
-          >
-            <ClipboardCheck size={11} aria-hidden />
-            {showEligibility ? "Hide" : "Do I qualify?"}
-          </button>
-          <span
-            aria-label={`Application complexity: ${complexity.label} — ${complexity.description}`}
-            className={cn("text-[10px] font-medium px-2 py-0.5 rounded-full", complexity.color)}
-          >
-            {complexity.label}
-          </span>
+            {incentive.deadline && (
+              <span className={cn(
+                "flex items-center gap-1 text-xs whitespace-nowrap",
+                isClosingSoon ? "text-amber-600 font-semibold" : "text-slate-400"
+              )}>
+                <Calendar size={11} aria-hidden />
+                {formatDeadline(incentive.deadline)}
+              </span>
+            )}
+          </div>
           <button
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(incentive.slug); }}
             className={cn(
-              "p-1.5 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-forest-500",
+              "p-1.5 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-forest-500 flex-shrink-0",
               bookmarked
                 ? "text-forest-700 bg-forest-50"
                 : "text-slate-300 hover:text-forest-700 hover:bg-forest-50"
@@ -343,12 +323,30 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
           >
             <Bookmark size={13} className={bookmarked ? "fill-current" : ""} aria-hidden />
           </button>
+        </div>
+
+        {/* Action row: Do I qualify + Details */}
+        <div className="px-5 pb-3 flex items-center gap-2">
+          <button
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowEligibility((v) => !v); }}
+            aria-expanded={showEligibility}
+            aria-label={showEligibility ? "Close eligibility checker" : "Check if you qualify for this program"}
+            className={cn(
+              "flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg border transition-all",
+              showEligibility
+                ? "bg-forest-700 text-white border-forest-700"
+                : "bg-white text-forest-700 border-forest-300 hover:bg-forest-50 hover:border-forest-500"
+            )}
+          >
+            <ClipboardCheck size={11} aria-hidden />
+            {showEligibility ? "Hide checker" : "Do I qualify?"}
+          </button>
           <Link
             href={`/incentives/${incentive.slug}`}
-            className="hidden sm:flex items-center gap-1 text-xs text-forest-700 font-medium opacity-0 group-hover:opacity-100 transition-opacity focus:opacity-100"
+            className="flex items-center gap-1 text-[11px] text-slate-400 hover:text-forest-700 font-medium transition-colors ml-auto"
             aria-label={`View full details for ${incentive.title}`}
           >
-            Details <ArrowRight size={12} aria-hidden />
+            Details <ArrowRight size={11} aria-hidden />
           </Link>
         </div>
       </div>
