@@ -66,12 +66,12 @@ interface USStateMapProps {
 }
 
 function getFill(count: number, isSelected: boolean): string {
-  if (isSelected) return "#1a5c38";
-  if (count === 0) return "#f1f5f9";
-  if (count <= 2)  return "#dcfce7";
-  if (count <= 5)  return "#86efac";
-  if (count <= 10) return "#4ade80";
-  return "#16a34a";
+  if (isSelected) return "#0d2e1c"; // forest-900
+  if (count === 0) return "#f0fdf4"; // forest-50
+  if (count <= 2)  return "#bbf7d0"; // forest-200
+  if (count <= 5)  return "#4ade80"; // forest-400
+  if (count <= 10) return "#1a7a42"; // forest-600
+  return "#14432a";                  // forest-800
 }
 
 export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USStateMapProps) {
@@ -85,15 +85,15 @@ export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USS
         className={cn(
           "mb-3 px-4 py-1.5 rounded-lg border text-xs font-semibold transition-all flex items-center gap-2",
           isFederal
-            ? "bg-brand-700 text-white border-brand-800 shadow-md"
-            : "bg-brand-50 text-brand-700 border-brand-200 hover:bg-brand-100"
+            ? "bg-forest-800 text-white border-forest-900 shadow-md"
+            : "bg-forest-50 text-forest-700 border-forest-200 hover:bg-forest-100"
         )}
       >
         🇺🇸 Federal Programs
         {federalCount > 0 && (
           <span className={cn(
             "text-[10px] px-1.5 py-0.5 rounded-full font-bold",
-            isFederal ? "bg-white/20 text-white" : "bg-brand-100 text-brand-800"
+            isFederal ? "bg-white/20 text-white" : "bg-forest-100 text-forest-800"
           )}>
             {federalCount}
           </span>
@@ -124,19 +124,19 @@ export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USS
                       style={{
                         default: {
                           fill: getFill(count, isSelected),
-                          stroke: isSelected ? "#0f3d25" : "#cbd5e1",
+                          stroke: isSelected ? "#052e16" : "#cbd5e1",
                           strokeWidth: isSelected ? 1.5 : 0.5,
                           outline: "none",
                           cursor: "pointer",
                         },
                         hover: {
-                          fill: isSelected ? "#1a5c38" : count > 0 ? "#4ade80" : "#e2e8f0",
-                          stroke: "#64748b",
+                          fill: isSelected ? "#083324" : count > 0 ? "#22c55e" : "#e2e8f0",
+                          stroke: "#475569",
                           strokeWidth: 1,
                           outline: "none",
                           cursor: "pointer",
                         },
-                        pressed: { fill: "#1a5c38", outline: "none" },
+                        pressed: { fill: "#052e16", outline: "none" },
                       }}
                     >
                       <title>{`${name}: ${count} program${count !== 1 ? "s" : ""}`}</title>
@@ -166,7 +166,7 @@ export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USS
                           style={{
                             fontSize: "7px",
                             fontWeight: 700,
-                            fill: isSelected ? "#ffffff" : "#334155",
+                            fill: isSelected ? "#d1fae5" : "#1e293b",
                             pointerEvents: "none",
                             userSelect: "none",
                             fontFamily: "system-ui, sans-serif",
@@ -207,7 +207,7 @@ export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USS
                           style={{
                             fontSize: "6.5px",
                             fontWeight: 700,
-                            fill: isSelected ? "#1a5c38" : "#334155",
+                            fill: isSelected ? "#052e16" : "#334155",
                             cursor: "pointer",
                             userSelect: "none",
                             fontFamily: "system-ui, sans-serif",

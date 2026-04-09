@@ -75,14 +75,14 @@ export function LogoMark({ height, size, className }: LogoMarkProps) {
       aria-hidden="true"
     >
       <defs>
-        <linearGradient id="us-bg" x1="0" y1="0" x2="0.2" y2="1">
-          <stop offset="0%"   stopColor="#2248d4" />
-          <stop offset="100%" stopColor="#0d2052" />
+        <linearGradient id="us-bg" x1="0" y1="0" x2="0.15" y2="1">
+          <stop offset="0%"   stopColor="#1a7a42" />
+          <stop offset="100%" stopColor="#052e16" />
         </linearGradient>
-        {/* Green glow for activity dots */}
+        {/* Amber glow for activity dots */}
         <radialGradient id="dot-glow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%"   stopColor="#4ade80" stopOpacity="0.4" />
-          <stop offset="100%" stopColor="#4ade80" stopOpacity="0" />
+          <stop offset="0%"   stopColor="#fbbf24" stopOpacity="0.45" />
+          <stop offset="100%" stopColor="#fbbf24" stopOpacity="0" />
         </radialGradient>
       </defs>
 
@@ -92,7 +92,7 @@ export function LogoMark({ height, size, className }: LogoMarkProps) {
       {/* State borders — very subtle white lines */}
       <path
         d={MESH_PATH}
-        stroke="rgba(255,255,255,0.22)"
+        stroke="rgba(255,255,255,0.20)"
         strokeWidth="0.6"
         strokeLinecap="round"
         fill="none"
@@ -102,7 +102,7 @@ export function LogoMark({ height, size, className }: LogoMarkProps) {
       <path
         d={NATION_PATH}
         fill="none"
-        stroke="rgba(255,255,255,0.18)"
+        stroke="rgba(255,255,255,0.15)"
         strokeWidth="0.75"
       />
 
@@ -110,11 +110,11 @@ export function LogoMark({ height, size, className }: LogoMarkProps) {
       {DOTS.map(({ x, y, label }) => (
         <g key={label}>
           {/* Glow halo */}
-          <circle cx={x} cy={y} r={5} fill="#4ade80" opacity={0.18} />
+          <circle cx={x} cy={y} r={5} fill="#fbbf24" opacity={0.22} />
           {/* Solid dot */}
-          <circle cx={x} cy={y} r={2.5} fill="#22c55e" />
+          <circle cx={x} cy={y} r={2.5} fill="#fbbf24" />
           {/* Bright highlight */}
-          <circle cx={x - 0.5} cy={y - 0.5} r={0.8} fill="rgba(255,255,255,0.7)" />
+          <circle cx={x - 0.5} cy={y - 0.5} r={0.8} fill="rgba(255,255,255,0.75)" />
         </g>
       ))}
     </svg>
@@ -135,7 +135,7 @@ export function LogoWordmark({
       {/* Vertical rule */}
       <span
         className="self-stretch w-px rounded-full"
-        style={{ background: dark ? "rgba(255,255,255,0.2)" : "rgba(15,32,82,0.15)" }}
+        style={{ background: dark ? "rgba(255,255,255,0.2)" : "rgba(5,46,22,0.15)" }}
         aria-hidden="true"
       />
 
