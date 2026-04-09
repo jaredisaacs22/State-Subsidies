@@ -52,6 +52,7 @@ export interface IncentiveFilters {
   maxFunding?: number;
   verified?: boolean;
   closingSoon?: boolean;
+  excludeIndustryCategory?: string;
   sortBy?: "deadline" | "fundingAmount" | "createdAt";
   sortOrder?: "asc" | "desc";
   page?: number;

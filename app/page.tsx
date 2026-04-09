@@ -29,6 +29,7 @@ function readFiltersFromURL(): Partial<IncentiveFilters> {
   if (p.get("jurisdictionName")) out.jurisdictionName = p.get("jurisdictionName")!;
   if (p.get("incentiveType")) out.incentiveType = p.get("incentiveType") as IncentiveFilters["incentiveType"];
   if (p.get("industryCategory")) out.industryCategory = p.get("industryCategory")!;
+  if (p.get("excludeIndustryCategory")) out.excludeIndustryCategory = p.get("excludeIndustryCategory")!;
   if (p.get("sortBy")) out.sortBy = p.get("sortBy") as IncentiveFilters["sortBy"];
   if (p.get("sortOrder")) out.sortOrder = p.get("sortOrder") as "asc" | "desc";
   if (p.get("minFunding")) out.minFunding = parseInt(p.get("minFunding")!);
@@ -114,6 +115,7 @@ export default function HomePage() {
       if (f.jurisdictionName) params.set("jurisdictionName", f.jurisdictionName);
       if (f.incentiveType) params.set("incentiveType", f.incentiveType);
       if (f.industryCategory) params.set("industryCategory", f.industryCategory);
+      if (f.excludeIndustryCategory) params.set("excludeIndustryCategory", f.excludeIndustryCategory);
       if (f.status) params.set("status", f.status);
       if (f.sortBy) params.set("sortBy", f.sortBy);
       if (f.sortOrder) params.set("sortOrder", f.sortOrder);
@@ -156,6 +158,7 @@ export default function HomePage() {
       jurisdictionName: undefined,
       incentiveType: undefined,
       industryCategory: undefined,
+      excludeIndustryCategory: undefined,
       minFunding: undefined,
       maxFunding: undefined,
       verified: undefined,
@@ -195,7 +198,7 @@ export default function HomePage() {
       if (selectedAudience === audienceId) {
         localStorage.removeItem("ss_audience_v1");
         setSelectedAudience(null);
-        handleFilterChange({ industryCategory: undefined, jurisdictionLevel: undefined, incentiveType: undefined });
+        handleFilterChange({ industryCategory: undefined, excludeIndustryCategory: undefined, jurisdictionLevel: undefined, incentiveType: undefined });
         return;
       }
       localStorage.setItem("ss_audience_v1", audienceId);
@@ -208,7 +211,7 @@ export default function HomePage() {
   const handleAudienceClear = useCallback(() => {
     localStorage.removeItem("ss_audience_v1");
     setSelectedAudience(null);
-    handleFilterChange({ industryCategory: undefined, jurisdictionLevel: undefined, incentiveType: undefined });
+    handleFilterChange({ industryCategory: undefined, excludeIndustryCategory: undefined, jurisdictionLevel: undefined, incentiveType: undefined });
   }, [handleFilterChange]);
 
   const sortValue = `${filters.sortBy ?? "createdAt"}_${filters.sortOrder ?? "desc"}`;

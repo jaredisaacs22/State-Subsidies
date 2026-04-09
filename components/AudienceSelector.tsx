@@ -27,21 +27,21 @@ export const AUDIENCES: Audience[] = [
     label: "Small Business",
     description: "Under 500 employees, any sector",
     emoji: "🏢",
-    filterPreset: { incentiveType: undefined, jurisdictionLevel: undefined },
+    filterPreset: { excludeIndustryCategory: "Government & Nonprofit" },
   },
   {
     id: "startup",
     label: "Startup",
     description: "Early-stage, R&D, tech ventures",
     emoji: "🚀",
-    filterPreset: { industryCategory: "Technology" },
+    filterPreset: { industryCategory: "Technology", excludeIndustryCategory: "Government & Nonprofit" },
   },
   {
     id: "enterprise",
     label: "Enterprise",
     description: "Large-scale operations, multi-site",
     emoji: "🏭",
-    filterPreset: { jurisdictionLevel: "FEDERAL" },
+    filterPreset: { jurisdictionLevel: "FEDERAL", excludeIndustryCategory: "Government & Nonprofit" },
   },
   {
     id: "nonprofit",
@@ -55,7 +55,7 @@ export const AUDIENCES: Audience[] = [
     label: "Government",
     description: "Municipalities, agencies, public entities",
     emoji: "🏛️",
-    filterPreset: { jurisdictionLevel: "AGENCY" },
+    filterPreset: { industryCategory: "Government & Nonprofit" },
   },
   {
     id: "educator",

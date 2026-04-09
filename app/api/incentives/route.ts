@@ -32,6 +32,7 @@ export async function GET(request: NextRequest) {
       maxFunding: searchParams.get("maxFunding") ? parseInt(searchParams.get("maxFunding")!) : undefined,
       verified: searchParams.get("verified") === "true" ? true : undefined,
       closingSoon: searchParams.get("closingSoon") === "true" ? true : undefined,
+      excludeIndustryCategory: searchParams.get("excludeIndustryCategory") ?? undefined,
     };
     const jurisdictionNameFilter = searchParams.get("jurisdictionName") ?? undefined;
 
@@ -59,6 +60,11 @@ export async function GET(request: NextRequest) {
     // Industry category is stored as JSON array string — use contains
     if (filters.industryCategory) {
       where.industryCategories = { contains: filters.industryCategory, mode: "insensitive" };
+    }
+
+    // Exclude records that contain the given industry category
+    if (filters.excludeIndustryCategory) {
+      where.NOT = { industryCategories: { contains: filters.excludeIndustryCategory, mode: "insensitive" } };
     }
 
     if (filters.verified) where.isVerified = true;
