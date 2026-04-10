@@ -134,19 +134,38 @@ function MatchedCard({ inc }: { inc: Incentive }) {
   );
 }
 
-// ── Keyword suggestions ────────────────────────────────────────────────────────
-const SUGGESTIONS = [
-  // Industry categories
-  "Agriculture", "Clean Technology", "Education", "Energy Management",
-  "EV Charging", "Finance", "Healthcare", "Hospitality", "Logistics",
-  "Manufacturing", "Real Estate", "Research & Development", "Technology",
+// ── Keyword suggestions with synonym aliases ──────────────────────────────────
+const SUGGESTIONS: { label: string; terms: string[] }[] = [
+  // Industry categories — label is the canonical search term that returns most results
+  { label: "Agriculture",           terms: ["farm", "farming", "crop", "livestock", "usda", "rural", "ranch", "food production", "agri"] },
+  { label: "Clean Technology",      terms: ["solar", "wind", "renewable", "green energy", "clean energy", "photovoltaic", "battery storage", "geothermal", "biomass", "biofuel"] },
+  { label: "Energy Management",     terms: ["energy efficiency", "hvac", "insulation", "utility", "electricity", "natural gas", "efficiency upgrade", "energy audit", "smart meter"] },
+  { label: "EV Charging",           terms: ["electric vehicle", "ev", "charging station", "electric truck", "electric fleet", "zero emission", "carb", "evse"] },
+  { label: "Manufacturing",         terms: ["factory", "production", "industrial", "fabrication", "machinery", "equipment", "assembly", "plant", "forge", "defense"] },
+  { label: "Technology",            terms: ["software", "tech", "digital", "it", "cyber", "saas", "app", "ai", "machine learning", "data", "computer"] },
+  { label: "Research & Development",terms: ["r&d", "research", "innovation", "sbir", "sttr", "prototype", "lab", "university", "science", "discovery", "testing"] },
+  { label: "Healthcare",            terms: ["medical", "health", "hospital", "clinic", "biotech", "pharma", "life sciences", "telemedicine", "dental", "mental health"] },
+  { label: "Real Estate",           terms: ["construction", "building", "property", "renovation", "rehab", "brownfield", "pace", "commercial real estate", "developer", "affordable housing"] },
+  { label: "Education",             terms: ["school", "college", "university", "training", "workforce", "job training", "k-12", "childcare", "daycare", "stem"] },
+  { label: "Hospitality",           terms: ["restaurant", "hotel", "tourism", "food service", "lodging", "travel", "events", "bar", "cafe", "brewery"] },
+  { label: "Logistics",             terms: ["trucking", "freight", "distribution", "warehouse", "supply chain", "shipping", "fleet", "transport", "delivery"] },
+  { label: "Finance",               terms: ["microloan", "cdfi", "credit union", "community bank", "capital access", "revolving loan", "investment", "equity"] },
   // Incentive types
-  "Grant", "Tax Credit", "Loan", "Rebate", "Voucher",
-  // Popular topics
-  "solar", "electric vehicle", "energy efficiency", "small business",
-  "rural development", "broadband", "workforce training", "construction",
-  "minority-owned", "women-owned", "startup", "innovation", "food & beverage",
-  "childcare", "housing", "job creation", "export", "biomass", "water",
+  { label: "Grant",                 terms: ["free money", "award", "funding", "no repayment", "no payback"] },
+  { label: "Tax Credit",            terms: ["tax break", "irs", "deduction", "section 48", "section 45", "179d", "credits", "return"] },
+  { label: "Loan",                  terms: ["low interest", "financing", "sba loan", "below market", "debt", "borrow", "lend"] },
+  { label: "Rebate",                terms: ["discount", "cashback", "instant rebate", "utility rebate", "point of sale"] },
+  { label: "Voucher",               terms: ["certificate", "prepaid", "equipment voucher", "hvip", "wazip"] },
+  // Common goal-based terms
+  { label: "small business",        terms: ["startup", "entrepreneur", "sole proprietor", "llc", "s-corp", "under 500", "main street"] },
+  { label: "minority-owned",        terms: ["minority", "mbe", "disadvantaged", "wosb", "8a", "hubzone", "diverse"] },
+  { label: "women-owned",           terms: ["woman", "women", "wbe", "female founder"] },
+  { label: "rural development",     terms: ["rural", "usda rural", "remote area", "underserved", "tribal"] },
+  { label: "broadband",             terms: ["internet", "fiber", "connectivity", "telecom", "5g", "network infrastructure"] },
+  { label: "housing",               terms: ["affordable housing", "hud", "multifamily", "low income housing", "lihtc", "cdbg"] },
+  { label: "job creation",          terms: ["hiring", "employment", "jobs", "workforce expansion", "new hires", "job retention"] },
+  { label: "water",                 terms: ["wastewater", "stormwater", "irrigation", "drinking water", "watershed", "epa water"] },
+  { label: "export",                terms: ["international", "trade", "overseas", "exporter", "import", "global market"] },
 ];
 
 function SearchInput({ onSearch }: { onSearch?: (q: string) => void }) {
@@ -155,8 +174,11 @@ function SearchInput({ onSearch }: { onSearch?: (q: string) => void }) {
 
   const matches = value.trim().length > 0
     ? SUGGESTIONS
-        .filter((s) => s.toLowerCase().includes(value.toLowerCase()))
-        .sort((a, b) => {
+        .filter(({ label, terms }) => {
+          const v = value.toLowerCase();
+          return label.toLowerCase().includes(v) || terms.some((t) => t.includes(v));
+        })
+        .sort(({ label: a }, { label: b }) => {
           const v = value.toLowerCase();
           return (a.toLowerCase().startsWith(v) ? 0 : 1) - (b.toLowerCase().startsWith(v) ? 0 : 1);
         })
@@ -186,14 +208,14 @@ function SearchInput({ onSearch }: { onSearch?: (q: string) => void }) {
         />
         {open && matches.length > 0 && (
           <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden">
-            {matches.map((s) => (
+            {matches.map(({ label }) => (
               <button
-                key={s}
-                onMouseDown={() => submit(s)}
+                key={label}
+                onMouseDown={() => submit(label)}
                 className="w-full text-left px-3 py-2 text-[13px] text-slate-700 hover:bg-forest-50 hover:text-forest-800 transition-colors flex items-center gap-2"
               >
                 <Search size={11} className="text-slate-300 flex-shrink-0" aria-hidden />
-                {s}
+                {label}
               </button>
             ))}
           </div>
