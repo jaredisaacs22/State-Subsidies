@@ -59,3 +59,16 @@ model Incentive {
   @@index([status])
   @@index([deadline])
 }
+
+model PageView {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      String   // pageview | query | click
+  vid       String   // visitor ID
+  page      String
+  ref       String   @default("direct")
+  query     String?  // search query if type=query
+
+  @@index([createdAt])
+  @@index([type])
+}
