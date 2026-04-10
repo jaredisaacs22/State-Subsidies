@@ -134,6 +134,82 @@ function MatchedCard({ inc }: { inc: Incentive }) {
   );
 }
 
+// ── Keyword suggestions ────────────────────────────────────────────────────────
+const SUGGESTIONS = [
+  // Industry categories
+  "Agriculture", "Clean Technology", "Education", "Energy Management",
+  "EV Charging", "Finance", "Healthcare", "Hospitality", "Logistics",
+  "Manufacturing", "Real Estate", "Research & Development", "Technology",
+  // Incentive types
+  "Grant", "Tax Credit", "Loan", "Rebate", "Voucher",
+  // Popular topics
+  "solar", "electric vehicle", "energy efficiency", "small business",
+  "rural development", "broadband", "workforce training", "construction",
+  "minority-owned", "women-owned", "startup", "innovation", "food & beverage",
+  "childcare", "housing", "job creation", "export", "biomass", "water",
+];
+
+function SearchInput({ onSearch }: { onSearch?: (q: string) => void }) {
+  const [value, setValue] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const matches = value.trim().length > 0
+    ? SUGGESTIONS
+        .filter((s) => s.toLowerCase().includes(value.toLowerCase()))
+        .sort((a, b) => {
+          const v = value.toLowerCase();
+          return (a.toLowerCase().startsWith(v) ? 0 : 1) - (b.toLowerCase().startsWith(v) ? 0 : 1);
+        })
+        .slice(0, 7)
+    : [];
+
+  const submit = (q: string) => { onSearch?.(q); setValue(""); setOpen(false); };
+
+  return (
+    <div className="flex gap-2">
+      <div className="relative flex-1">
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => { setValue(e.target.value); setOpen(true); }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && value.trim()) submit(value.trim());
+            if (e.key === "Escape") setOpen(false);
+          }}
+          onFocus={() => value.trim() && setOpen(true)}
+          onBlur={() => setTimeout(() => setOpen(false), 150)}
+          placeholder="Search programs by keyword…"
+          className="w-full rounded-lg bg-slate-50 border border-slate-200 px-3 py-2.5 text-[13px] text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
+          aria-label="Search programs"
+          aria-autocomplete="list"
+          aria-expanded={open && matches.length > 0}
+        />
+        {open && matches.length > 0 && (
+          <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden">
+            {matches.map((s) => (
+              <button
+                key={s}
+                onMouseDown={() => submit(s)}
+                className="w-full text-left px-3 py-2 text-[13px] text-slate-700 hover:bg-forest-50 hover:text-forest-800 transition-colors flex items-center gap-2"
+              >
+                <Search size={11} className="text-slate-300 flex-shrink-0" aria-hidden />
+                {s}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+      <button
+        onClick={() => value.trim() && submit(value.trim())}
+        className="px-3 py-2.5 rounded-lg bg-forest-700 hover:bg-forest-600 text-white transition-colors flex-shrink-0"
+        aria-label="Search"
+      >
+        <Search size={13} aria-hidden />
+      </button>
+    </div>
+  );
+}
+
 // ── Main component ─────────────────────────────────────────────────────────────
 export function BusinessIntakeChat({ onSearch }: { onSearch?: (query: string) => void }) {
   const [open, setOpen] = useState(false);
@@ -312,29 +388,8 @@ export function BusinessIntakeChat({ onSearch }: { onSearch?: (query: string) =>
           {hasPreviousSession ? (
             <div className="px-4 py-4">
               {/* Search bar still accessible when session is saved */}
-              <div className="flex gap-2 mb-3">
-                <input
-                  type="search"
-                  placeholder="Search programs by keyword…"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && e.currentTarget.value.trim()) {
-                      onSearch?.(e.currentTarget.value.trim());
-                      e.currentTarget.value = "";
-                    }
-                  }}
-                  className="flex-1 rounded-lg bg-slate-50 border border-slate-200 px-3 py-2 text-[13px] text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
-                  aria-label="Search programs"
-                />
-                <button
-                  onClick={(e) => {
-                    const inp = (e.currentTarget.previousElementSibling as HTMLInputElement);
-                    if (inp?.value.trim()) { onSearch?.(inp.value.trim()); inp.value = ""; }
-                  }}
-                  className="px-3 py-2 rounded-lg bg-forest-700 hover:bg-forest-600 text-white transition-colors"
-                  aria-label="Search"
-                >
-                  <Search size={13} aria-hidden />
-                </button>
+              <div className="mb-3">
+                <SearchInput onSearch={onSearch} />
               </div>
               <p className="text-slate-500 text-xs mb-3">You have a saved AI session.</p>
               <div className="flex gap-2">
@@ -394,29 +449,8 @@ export function BusinessIntakeChat({ onSearch }: { onSearch?: (query: string) =>
               </div>
 
               {/* ── Plain keyword search (secondary) ── */}
-              <div className="px-4 pt-0 pb-4 flex gap-2">
-                <input
-                  type="search"
-                  placeholder="Search programs by keyword…"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && e.currentTarget.value.trim()) {
-                      onSearch?.(e.currentTarget.value.trim());
-                      e.currentTarget.value = "";
-                    }
-                  }}
-                  className="flex-1 rounded-lg bg-slate-50 border border-slate-200 px-3 py-2.5 text-[13px] text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
-                  aria-label="Search programs"
-                />
-                <button
-                  onClick={(e) => {
-                    const inp = (e.currentTarget.previousElementSibling as HTMLInputElement);
-                    if (inp?.value.trim()) { onSearch?.(inp.value.trim()); inp.value = ""; }
-                  }}
-                  className="px-3 py-2.5 rounded-lg bg-forest-700 hover:bg-forest-600 text-white transition-colors"
-                  aria-label="Search"
-                >
-                  <Search size={13} aria-hidden />
-                </button>
+              <div className="px-4 pt-0 pb-4">
+                <SearchInput onSearch={onSearch} />
               </div>
             </>
           )}
