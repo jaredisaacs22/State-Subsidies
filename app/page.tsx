@@ -313,11 +313,11 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12px] text-slate-500">
             <span className="font-semibold text-slate-400 uppercase tracking-widest text-[10px]">How it works</span>
-            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>1</span>🔍 Search or ask the AI</span>
+            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>1</span>Search or ask the AI</span>
             <span className="text-slate-300 hidden sm:inline">→</span>
-            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>2</span>✅ Check if you qualify</span>
+            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>2</span>Check if you qualify</span>
             <span className="text-slate-300 hidden sm:inline">→</span>
-            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>3</span>💰 Apply directly — free</span>
+            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>3</span>Apply directly — free</span>
           </div>
         </div>
       </section>

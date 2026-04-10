@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { USStateMap } from "@/components/USStateMap";
-import { X, TrendingUp, DollarSign, Clock, Filter } from "lucide-react";
+import { X, DollarSign, Clock, Filter, MapPin } from "lucide-react";
 import Link from "next/link";
 import { formatCurrency, formatDeadline } from "@/lib/utils";
 import type { Incentive, PaginatedResponse } from "@/lib/types";
@@ -149,7 +149,9 @@ export default function MapPage() {
         <div className="lg:col-span-2">
           {!selected ? (
             <div className="bg-white rounded-2xl border border-forest-100 shadow-sm p-8 flex flex-col items-center justify-center text-center h-full min-h-[300px]">
-              <div className="w-16 h-16 bg-forest-50 rounded-2xl flex items-center justify-center mb-4 text-3xl border border-forest-100">🗺️</div>
+              <div className="w-16 h-16 bg-forest-50 rounded-2xl flex items-center justify-center mb-4 border border-forest-100">
+                  <MapPin size={28} className="text-forest-400" />
+                </div>
               <p className="font-semibold text-slate-800 text-lg mb-1">Select a state</p>
               <p className="text-sm text-slate-400 leading-relaxed max-w-xs">
                 Click any state on the map to see its active programs, funding breakdown, and deadlines.

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Send, X, RotateCcw, ChevronDown, ChevronUp, ExternalLink, Sparkles, Zap, Target } from "lucide-react";
+import { Send, X, RotateCcw, ChevronDown, ChevronUp, ExternalLink, Sparkles, Zap, Target, AlertCircle } from "lucide-react";
 import { cn, formatCurrency, formatDeadline } from "@/lib/utils";
 import { INCENTIVE_TYPE_COLORS, JURISDICTION_COLORS } from "@/lib/types";
 import { LogoMark } from "@/components/Logo";
@@ -424,7 +424,9 @@ export function BusinessIntakeChat() {
                   ? "bg-amber-500/15 text-amber-300 border-amber-500/20"
                   : "bg-emerald-500/15 text-emerald-300 border-emerald-500/20"
               )}>
-                {mode === "quick" ? "⚡ Quick" : "🎯 Tailored"}
+                {mode === "quick"
+                  ? <><Zap size={9} className="inline mr-0.5" aria-hidden /> Quick</>
+                  : <><Target size={9} className="inline mr-0.5" aria-hidden /> Tailored</>}
               </span>
             )}
             {expertise !== "beginner" && (
@@ -505,8 +507,9 @@ export function BusinessIntakeChat() {
           {/* Error */}
           {error && (
             <div role="alert" className="text-xs text-red-300 bg-red-900/30 border border-red-500/30 rounded-xl px-4 py-3 leading-relaxed">
-              <strong className="font-semibold">
-                {error.includes("ANTHROPIC_API_KEY") ? "⚠ AI not configured" : "⚠ Something went wrong"}
+              <strong className="font-semibold flex items-center gap-1">
+                <AlertCircle size={12} aria-hidden />
+                {error.includes("ANTHROPIC_API_KEY") ? "AI not configured" : "Something went wrong"}
               </strong>
               <br />
               {error.includes("ANTHROPIC_API_KEY")

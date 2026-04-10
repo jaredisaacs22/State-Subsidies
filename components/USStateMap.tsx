@@ -2,6 +2,7 @@
 
 import { ComposableMap, Geographies, Geography, Marker, Annotation } from "react-simple-maps";
 import { geoCentroid } from "d3-geo";
+import { Flag } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const GEO_URL = "/us-states.json";
@@ -89,7 +90,7 @@ export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USS
             : "bg-forest-50 text-forest-700 border-forest-200 hover:bg-forest-100"
         )}
       >
-        🇺🇸 Federal Programs
+        <Flag size={12} aria-hidden /> Federal Programs
         {federalCount > 0 && (
           <span className={cn(
             "text-[10px] px-1.5 py-0.5 rounded-full font-bold",

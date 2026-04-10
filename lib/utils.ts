@@ -25,7 +25,7 @@ export function formatDeadline(deadline: string | null): string {
   });
 
   if (diffDays < 0) return `Closed (${formatted})`;
-  if (diffDays <= 7) return `⚠ Closing in ${diffDays}d (${formatted})`;
+  if (diffDays <= 7) return `Closing in ${diffDays}d (${formatted})`;
   if (diffDays <= 30) return `${diffDays} days left (${formatted})`;
   return formatted;
 }
