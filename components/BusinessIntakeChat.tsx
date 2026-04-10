@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Send, X, RotateCcw, ChevronDown, ChevronUp, ExternalLink, Sparkles, Zap, Target, AlertCircle } from "lucide-react";
+import { Send, Search, X, RotateCcw, ChevronDown, ChevronUp, ExternalLink, Sparkles, Zap, Target, AlertCircle } from "lucide-react";
 import { cn, formatCurrency, formatDeadline } from "@/lib/utils";
 import { INCENTIVE_TYPE_COLORS, JURISDICTION_COLORS } from "@/lib/types";
 import { LogoMark } from "@/components/Logo";
@@ -135,7 +135,7 @@ function MatchedCard({ inc }: { inc: Incentive }) {
 }
 
 // ── Main component ─────────────────────────────────────────────────────────────
-export function BusinessIntakeChat() {
+export function BusinessIntakeChat({ onSearch }: { onSearch?: (query: string) => void }) {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<ChatMode>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -310,29 +310,86 @@ export function BusinessIntakeChat() {
 
           {/* Body */}
           {hasPreviousSession ? (
-            <div className="px-5 py-5">
-              <p className="text-slate-600 text-sm mb-4">Pick up where you left off, or start a fresh search.</p>
+            <div className="px-4 py-4">
+              {/* Search bar still accessible when session is saved */}
+              <div className="flex gap-2 mb-3">
+                <input
+                  type="search"
+                  placeholder="Search programs by keyword…"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && e.currentTarget.value.trim()) {
+                      onSearch?.(e.currentTarget.value.trim());
+                      e.currentTarget.value = "";
+                    }
+                  }}
+                  className="flex-1 rounded-lg bg-slate-50 border border-slate-200 px-3 py-2 text-[13px] text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
+                  aria-label="Search programs"
+                />
+                <button
+                  onClick={(e) => {
+                    const inp = (e.currentTarget.previousElementSibling as HTMLInputElement);
+                    if (inp?.value.trim()) { onSearch?.(inp.value.trim()); inp.value = ""; }
+                  }}
+                  className="px-3 py-2 rounded-lg bg-forest-700 hover:bg-forest-600 text-white transition-colors"
+                  aria-label="Search"
+                >
+                  <Search size={13} aria-hidden />
+                </button>
+              </div>
+              <p className="text-slate-500 text-xs mb-3">You have a saved AI session.</p>
               <div className="flex gap-2">
                 <button
                   onClick={() => setOpen(true)}
-                  className="flex-1 py-2.5 rounded-xl bg-forest-700 hover:bg-forest-600 text-white text-sm font-semibold transition-colors shadow-sm"
+                  className="flex-1 py-2 rounded-xl bg-forest-700 hover:bg-forest-600 text-white text-sm font-semibold transition-colors shadow-sm"
                 >
-                  Continue my search
+                  Continue AI search
                 </button>
                 <button
                   onClick={reset}
                   aria-label="Start a new search"
-                  className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-500 hover:text-slate-700 hover:border-slate-300 text-sm transition-colors"
+                  className="px-4 py-2 rounded-xl border border-slate-200 text-slate-500 hover:text-slate-700 hover:border-slate-300 text-sm transition-colors"
                 >
-                  Start over
+                  Clear
                 </button>
               </div>
             </div>
           ) : (
             <>
-              {/* Mode cards */}
-              <div className="px-4 pt-3 pb-3 grid grid-cols-2 gap-2">
-                {/* Quick Search */}
+              {/* ── Plain keyword search (primary) ── */}
+              <div className="px-4 pt-4 pb-0 flex gap-2">
+                <input
+                  type="search"
+                  placeholder="Search programs by keyword…"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && e.currentTarget.value.trim()) {
+                      onSearch?.(e.currentTarget.value.trim());
+                      e.currentTarget.value = "";
+                    }
+                  }}
+                  className="flex-1 rounded-lg bg-slate-50 border border-slate-200 px-3 py-2.5 text-[13px] text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
+                  aria-label="Search programs"
+                />
+                <button
+                  onClick={(e) => {
+                    const inp = (e.currentTarget.previousElementSibling as HTMLInputElement);
+                    if (inp?.value.trim()) { onSearch?.(inp.value.trim()); inp.value = ""; }
+                  }}
+                  className="px-3 py-2.5 rounded-lg bg-forest-700 hover:bg-forest-600 text-white transition-colors"
+                  aria-label="Search"
+                >
+                  <Search size={13} aria-hidden />
+                </button>
+              </div>
+
+              {/* ── Divider ── */}
+              <div className="px-4 pt-3 pb-1 flex items-center gap-3">
+                <div className="flex-1 h-px bg-slate-100" />
+                <span className="text-[11px] text-slate-400 font-medium">or get AI-matched results</span>
+                <div className="flex-1 h-px bg-slate-100" />
+              </div>
+
+              {/* ── AI mode cards ── */}
+              <div className="px-4 pt-1 pb-4 grid grid-cols-2 gap-2">
                 <button
                   onClick={() => startMode("quick")}
                   className="group text-left rounded-lg border border-slate-200 bg-white hover:border-amber-400 hover:shadow-sm transition-all overflow-hidden"
@@ -341,14 +398,13 @@ export function BusinessIntakeChat() {
                   <div className="p-3">
                     <div className="flex items-center gap-1.5 mb-1.5">
                       <Zap size={12} className="text-amber-500 flex-shrink-0" aria-hidden />
-                      <span className="text-slate-800 font-bold text-[13px]">Quick Search</span>
+                      <span className="text-slate-800 font-bold text-[13px]">Quick AI</span>
                       <span className="ml-auto text-[9px] bg-amber-100 text-amber-700 rounded-full px-1.5 py-0.5 font-semibold whitespace-nowrap">~1 min</span>
                     </div>
-                    <p className="text-slate-500 text-[11px] leading-snug">One sentence — results in seconds.</p>
+                    <p className="text-slate-500 text-[11px] leading-snug">Describe your situation — instant matches.</p>
                   </div>
                 </button>
 
-                {/* Tailored Search */}
                 <button
                   onClick={() => startMode("tailored")}
                   className="group text-left rounded-lg border border-slate-200 bg-white hover:border-forest-500 hover:shadow-sm transition-all overflow-hidden"
@@ -357,41 +413,11 @@ export function BusinessIntakeChat() {
                   <div className="p-3">
                     <div className="flex items-center gap-1.5 mb-1.5">
                       <Target size={12} className="text-forest-600 flex-shrink-0" aria-hidden />
-                      <span className="text-slate-800 font-bold text-[13px]">Tailored Search</span>
+                      <span className="text-slate-800 font-bold text-[13px]">Tailored AI</span>
                       <span className="ml-auto text-[9px] bg-emerald-100 text-emerald-700 rounded-full px-1.5 py-0.5 font-semibold whitespace-nowrap">Best match</span>
                     </div>
                     <p className="text-slate-500 text-[11px] leading-snug">4 quick questions — highest accuracy.</p>
                   </div>
-                </button>
-              </div>
-
-              {/* Quick-start input */}
-              <div className="px-4 pb-4 flex gap-2">
-                <input
-                  type="text"
-                  placeholder="Or describe your situation and press Enter…"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && e.currentTarget.value.trim()) {
-                      const val = e.currentTarget.value.trim();
-                      startMode("quick");
-                      setTimeout(() => send(val), 150);
-                    }
-                  }}
-                  className="flex-1 rounded-lg bg-slate-50 border border-slate-200 px-3 py-2 text-[13px] text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
-                  aria-label="Quick-start: describe your situation"
-                />
-                <button
-                  onClick={(e) => {
-                    const input = (e.currentTarget.previousElementSibling as HTMLInputElement);
-                    if (input?.value.trim()) {
-                      const val = input.value.trim();
-                      startMode("quick");
-                      setTimeout(() => send(val), 150);
-                    }
-                  }}
-                  className="px-3 py-2 rounded-lg bg-forest-700 hover:bg-forest-600 text-white transition-colors"
-                >
-                  <Send size={13} aria-hidden />
                 </button>
               </div>
             </>

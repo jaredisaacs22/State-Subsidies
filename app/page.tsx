@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ChevronDown, SlidersHorizontal, X, Link2, Check } from "lucide-react";
-import { SearchBar } from "@/components/SearchBar";
 import { FilterSidebar } from "@/components/FilterSidebar";
 import { ResultsGrid } from "@/components/ResultsGrid";
 import { BusinessIntakeChat } from "@/components/BusinessIntakeChat";
@@ -261,8 +260,8 @@ export default function HomePage() {
             Tell us about your situation and we'll find what you qualify for.
           </p>
 
-          {/* Inline AI intake */}
-          <BusinessIntakeChat />
+          {/* Inline AI intake + search */}
+          <BusinessIntakeChat onSearch={(search) => handleFilterChange({ search })} />
 
           {/* Agency trust strip */}
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
@@ -351,16 +350,6 @@ export default function HomePage() {
           </span>
 
           <SortSelect value={sortValue} onChange={handleSortChange} />
-        </div>
-
-        {/* Search bar */}
-        <div className="mb-5">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">Search for programs</p>
-          <SearchBar
-            value={filters.search ?? ""}
-            onChange={(search) => handleFilterChange({ search })}
-            className="max-w-xl"
-          />
         </div>
 
         {/* Audience selector — always visible, allows quick persona-based filtering */}
