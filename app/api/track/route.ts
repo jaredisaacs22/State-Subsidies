@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
   const UPSTASH_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
 
   if (!UPSTASH_URL || !UPSTASH_TOKEN) {
-    return NextResponse.json({ error: 'Missing env vars' }, { status: 500, headers });
+    return NextResponse.json({ ok: true }, { status: 200, headers }); // silently skip if not configured
   }
 
   let body: Record<string, unknown>;

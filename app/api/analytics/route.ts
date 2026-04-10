@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
 
   if (!url || !token) {
-    return NextResponse.json({ error: 'Missing env vars' }, { status: 500, headers });
+    return NextResponse.json({ events: [], queries: [], error: 'Upstash not configured' }, { headers });
   }
 
   const [rawEvents, rawQueries] = await Promise.all([

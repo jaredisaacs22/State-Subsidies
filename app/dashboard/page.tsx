@@ -132,6 +132,7 @@ export default function DashboardPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [lastFetch, setLastFetch] = useState<Date | null>(null);
+  const [upstashMissing, setUpstashMissing] = useState(false);
 
   const fetchData = useCallback(async (s: string) => {
     setLoading(true);
@@ -142,8 +143,9 @@ export default function DashboardPage() {
       });
       if (res.status === 401) { setError("Invalid secret"); setAuthed(false); return; }
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const { events, queries } = await res.json();
-      setStats(computeStats(events ?? [], queries ?? []));
+      const data = await res.json();
+      if (data.error === 'Upstash not configured') setUpstashMissing(true);
+      setStats(computeStats(data.events ?? [], data.queries ?? []));
       setAuthed(true);
       setLastFetch(new Date());
     } catch (e) {
@@ -221,6 +223,14 @@ export default function DashboardPage() {
           </button>
         </div>
       </header>
+
+      {upstashMissing && (
+        <div className="bg-amber-50 border-b border-amber-200 px-6 py-3 text-sm text-amber-800">
+          <strong>Upstash not connected.</strong> Analytics will show empty until{" "}
+          <code className="bg-amber-100 px-1 rounded">UPSTASH_REDIS_REST_URL</code> and{" "}
+          <code className="bg-amber-100 px-1 rounded">UPSTASH_REDIS_REST_TOKEN</code> are added to Vercel environment variables.
+        </div>
+      )}
 
       {stats && (
         <main className="max-w-6xl mx-auto px-6 py-8 space-y-8">
