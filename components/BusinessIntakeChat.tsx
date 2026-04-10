@@ -359,9 +359,8 @@ export function BusinessIntakeChat({ onSearch }: { onSearch?: (query: string) =>
               <div className="px-4 pt-3 pb-2 grid grid-cols-2 gap-2">
                 <button
                   onClick={() => startMode("quick")}
-                  className="group text-left rounded-lg border border-slate-200 bg-white hover:border-amber-400 hover:shadow-sm transition-all overflow-hidden"
+                  className="group text-left rounded-lg border border-slate-200 border-t-2 border-t-amber-400 bg-white hover:border-amber-400 hover:shadow-sm transition-all overflow-hidden"
                 >
-                  <div className="h-0.5 bg-amber-400 w-full" />
                   <div className="p-3">
                     <div className="flex items-center gap-1.5 mb-1.5">
                       <Zap size={12} className="text-amber-500 flex-shrink-0" aria-hidden />
@@ -374,9 +373,8 @@ export function BusinessIntakeChat({ onSearch }: { onSearch?: (query: string) =>
 
                 <button
                   onClick={() => startMode("tailored")}
-                  className="group text-left rounded-lg border border-slate-200 bg-white hover:border-forest-500 hover:shadow-sm transition-all overflow-hidden"
+                  className="group text-left rounded-lg border border-slate-200 border-t-2 border-t-forest-600 bg-white hover:border-forest-500 hover:shadow-sm transition-all overflow-hidden"
                 >
-                  <div className="h-0.5 bg-forest-600 w-full" />
                   <div className="p-3">
                     <div className="flex items-center gap-1.5 mb-1.5">
                       <Target size={12} className="text-forest-600 flex-shrink-0" aria-hidden />
