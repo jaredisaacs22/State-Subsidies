@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'edge';
 
-const SECRET = process.env.DASHBOARD_SECRET || 'ss-dashboard-secret';
+const SECRET = process.env.DASHBOARD_SECRET || '51432';
 
 async function upstashCmd(url: string, token: string, cmd: unknown[]) {
   const res = await fetch(url, {
