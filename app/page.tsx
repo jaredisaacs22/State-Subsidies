@@ -154,7 +154,10 @@ export default function HomePage() {
   );
 
   const clearAllFilters = useCallback(() => {
+    localStorage.removeItem("ss_audience_v1");
+    setSelectedAudience(null);
     handleFilterChange({
+      search: "",
       jurisdictionLevel: undefined,
       jurisdictionName: undefined,
       incentiveType: undefined,
@@ -204,7 +207,14 @@ export default function HomePage() {
       }
       localStorage.setItem("ss_audience_v1", audienceId);
       setSelectedAudience(audienceId);
-      handleFilterChange(filterPreset);
+      // Clear all audience-related fields first so switching audiences never stacks
+      handleFilterChange({
+        industryCategory: undefined,
+        excludeIndustryCategory: undefined,
+        jurisdictionLevel: undefined,
+        incentiveType: undefined,
+        ...filterPreset,
+      });
     },
     [handleFilterChange, selectedAudience]
   );
@@ -360,8 +370,33 @@ export default function HomePage() {
           onSelect={handleAudienceSelect}
           selectedId={selectedAudience}
           onClear={handleAudienceClear}
-          className="mb-6"
+          className="mb-3"
         />
+
+        {/* Active filter chips + master reset */}
+        {(filters.search || hasActiveFilters || selectedAudience) && (
+          <div className="flex flex-wrap items-center gap-2 mb-4">
+            {filters.search && (
+              <span className="inline-flex items-center gap-1.5 text-[12px] bg-forest-50 text-forest-800 border border-forest-200 rounded-full px-3 py-1 font-medium">
+                &ldquo;{filters.search}&rdquo;
+                <button
+                  onClick={() => handleFilterChange({ search: "" })}
+                  className="hover:text-forest-900 flex-shrink-0"
+                  aria-label="Clear search"
+                >
+                  <X size={11} />
+                </button>
+              </span>
+            )}
+            <button
+              onClick={clearAllFilters}
+              className="inline-flex items-center gap-1 text-[12px] text-slate-500 hover:text-slate-800 border border-slate-200 bg-white hover:border-slate-300 rounded-full px-3 py-1 font-medium transition-colors"
+            >
+              <X size={11} />
+              Reset all
+            </button>
+          </div>
+        )}
 
         {/* Desktop flex row */}
         <div className="flex gap-8">
@@ -397,11 +432,6 @@ export default function HomePage() {
                     <span className="font-semibold text-slate-800">—</span>
                   )}
                 </p>
-                {activeFilterCount > 0 && (
-                  <button onClick={clearAllFilters} className="text-xs text-slate-400 hover:text-forest-700 transition-colors underline underline-offset-2">
-                    Clear all
-                  </button>
-                )}
               </div>
               <div className="flex items-center gap-3">
                 {(hasActiveFilters || !!filters.search) && (
