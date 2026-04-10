@@ -355,41 +355,8 @@ export function BusinessIntakeChat({ onSearch }: { onSearch?: (query: string) =>
             </div>
           ) : (
             <>
-              {/* ── Plain keyword search (primary) ── */}
-              <div className="px-4 pt-4 pb-0 flex gap-2">
-                <input
-                  type="search"
-                  placeholder="Search programs by keyword…"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && e.currentTarget.value.trim()) {
-                      onSearch?.(e.currentTarget.value.trim());
-                      e.currentTarget.value = "";
-                    }
-                  }}
-                  className="flex-1 rounded-lg bg-slate-50 border border-slate-200 px-3 py-2.5 text-[13px] text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
-                  aria-label="Search programs"
-                />
-                <button
-                  onClick={(e) => {
-                    const inp = (e.currentTarget.previousElementSibling as HTMLInputElement);
-                    if (inp?.value.trim()) { onSearch?.(inp.value.trim()); inp.value = ""; }
-                  }}
-                  className="px-3 py-2.5 rounded-lg bg-forest-700 hover:bg-forest-600 text-white transition-colors"
-                  aria-label="Search"
-                >
-                  <Search size={13} aria-hidden />
-                </button>
-              </div>
-
-              {/* ── Divider ── */}
-              <div className="px-4 pt-3 pb-1 flex items-center gap-3">
-                <div className="flex-1 h-px bg-slate-100" />
-                <span className="text-[11px] text-slate-400 font-medium">or get AI-matched results</span>
-                <div className="flex-1 h-px bg-slate-100" />
-              </div>
-
               {/* ── AI mode cards ── */}
-              <div className="px-4 pt-1 pb-4 grid grid-cols-2 gap-2">
+              <div className="px-4 pt-3 pb-2 grid grid-cols-2 gap-2">
                 <button
                   onClick={() => startMode("quick")}
                   className="group text-left rounded-lg border border-slate-200 bg-white hover:border-amber-400 hover:shadow-sm transition-all overflow-hidden"
@@ -418,6 +385,39 @@ export function BusinessIntakeChat({ onSearch }: { onSearch?: (query: string) =>
                     </div>
                     <p className="text-slate-500 text-[11px] leading-snug">4 quick questions — highest accuracy.</p>
                   </div>
+                </button>
+              </div>
+
+              {/* ── Divider ── */}
+              <div className="px-4 py-1 flex items-center gap-3">
+                <div className="flex-1 h-px bg-slate-100" />
+                <span className="text-[11px] text-slate-400 font-medium">or search by keyword</span>
+                <div className="flex-1 h-px bg-slate-100" />
+              </div>
+
+              {/* ── Plain keyword search (secondary) ── */}
+              <div className="px-4 pt-0 pb-4 flex gap-2">
+                <input
+                  type="search"
+                  placeholder="Search programs by keyword…"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && e.currentTarget.value.trim()) {
+                      onSearch?.(e.currentTarget.value.trim());
+                      e.currentTarget.value = "";
+                    }
+                  }}
+                  className="flex-1 rounded-lg bg-slate-50 border border-slate-200 px-3 py-2.5 text-[13px] text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
+                  aria-label="Search programs"
+                />
+                <button
+                  onClick={(e) => {
+                    const inp = (e.currentTarget.previousElementSibling as HTMLInputElement);
+                    if (inp?.value.trim()) { onSearch?.(inp.value.trim()); inp.value = ""; }
+                  }}
+                  className="px-3 py-2.5 rounded-lg bg-forest-700 hover:bg-forest-600 text-white transition-colors"
+                  aria-label="Search"
+                >
+                  <Search size={13} aria-hidden />
                 </button>
               </div>
             </>
