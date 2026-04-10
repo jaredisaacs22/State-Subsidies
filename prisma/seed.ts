@@ -521,7 +521,7 @@ const incentives = [
     industryCategories: JSON.stringify(["Government & Nonprofit", "Research & Development", "Technology"]),
     incentiveType: "GRANT", fundingAmount: 3000000, deadline: null,
     sourceUrl: "https://www.eda.gov/funding/programs/build-to-scale",
-    programCode: "EDA-B2S", status: "ACTIVE", isVerified: true, scraperSource: "federal_eda_scraper",
+    programCode: "EDA-B2S", status: "ACTIVE", isVerified: true, scraperSource: "federal_eda_scraper", applicantType: "NONPROFIT",
   },
 
   {
@@ -657,7 +657,7 @@ const incentives = [
     industryCategories: JSON.stringify(["Real Estate", "Infrastructure", "Government & Nonprofit", "Construction"]),
     incentiveType: "GRANT", fundingAmount: 3000000, deadline: null,
     sourceUrl: "https://www.hud.gov/program_offices/comm_planning/cdbg",
-    programCode: "HUD-CDBG", status: "ACTIVE", isVerified: true, scraperSource: "federal_hud_scraper",
+    programCode: "HUD-CDBG", status: "ACTIVE", isVerified: true, scraperSource: "federal_hud_scraper", applicantType: "GOVERNMENT",
   },
 
   // ── California (new) ──────────────────────────────────────────────────────
@@ -1565,7 +1565,7 @@ const incentives = [
     industryCategories: JSON.stringify(["Energy Management", "Government & Nonprofit", "Real Estate", "Education"]),
     incentiveType: "LOAN", fundingAmount: 10000000, deadline: null,
     sourceUrl: "https://www.energy.virginia.gov/efficiency/loans.shtml",
-    programCode: "VA-EERF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    programCode: "VA-EERF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper", applicantType: "GOVERNMENT",
   },
 
   {
@@ -2274,7 +2274,7 @@ const incentives = [
     industryCategories: JSON.stringify(["Manufacturing", "Agriculture", "Energy Management", "Government & Nonprofit"]),
     incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
     sourceUrl: "https://www.wyomingbusiness.org/content/business-ready-community-grant-loan-program",
-    programCode: "WY-BRC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    programCode: "WY-BRC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper", applicantType: "GOVERNMENT",
   },
   // ── Deeper coverage: underrepresented states ──────────────────────────────
   {
@@ -2642,7 +2642,7 @@ const incentives = [
     industryCategories: JSON.stringify(["Healthcare", "Government & Nonprofit", "Education"]),
     incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
     sourceUrl: "https://www.rd.usda.gov/programs-services/community-facilities/community-facilities-direct-loan-grant-program",
-    programCode: "USDA-CF", status: "ACTIVE", isVerified: true, scraperSource: "federal_usda_scraper",
+    programCode: "USDA-CF", status: "ACTIVE", isVerified: true, scraperSource: "federal_usda_scraper", applicantType: "GOVERNMENT",
   },
   {
     title: "USDA ReConnect Program — Rural Broadband",
@@ -2790,7 +2790,7 @@ const incentives = [
     industryCategories: JSON.stringify(["Real Estate", "Construction", "Government & Nonprofit", "Manufacturing"]),
     incentiveType: "GRANT", fundingAmount: 650000, deadline: null,
     sourceUrl: "https://www.epa.gov/brownfields",
-    programCode: "EPA-BFCLEAN", status: "ACTIVE", isVerified: true, scraperSource: "federal_epa_scraper",
+    programCode: "EPA-BFCLEAN", status: "ACTIVE", isVerified: true, scraperSource: "federal_epa_scraper", applicantType: "GOVERNMENT",
   },
   {
     title: "DOT BUILD Grants — Better Utilizing Investments to Leverage Development",

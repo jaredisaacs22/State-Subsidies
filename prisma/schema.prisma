@@ -37,6 +37,9 @@ model Incentive {
   // Values: GRANT | TAX_CREDIT | POINT_OF_SALE_REBATE | SUBSIDY | LOAN | VOUCHER
   incentiveType      String
 
+  // Who can apply: ANY | PRIVATE_BUSINESS | NONPROFIT | GOVERNMENT
+  applicantType      String  @default("ANY")
+
   // Funding details (optional)
   fundingAmount Float?
   deadline      DateTime?

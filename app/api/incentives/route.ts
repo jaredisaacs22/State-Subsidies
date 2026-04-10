@@ -9,6 +9,7 @@ const VALID_JURISDICTION = ["FEDERAL", "STATE", "CITY", "AGENCY"] as const;
 const VALID_TYPE = ["GRANT", "TAX_CREDIT", "POINT_OF_SALE_REBATE", "SUBSIDY", "LOAN", "VOUCHER"] as const;
 const VALID_STATUS = ["ACTIVE", "CLOSED", "UPCOMING", "SUSPENDED"] as const;
 const VALID_SORT = ["createdAt", "fundingAmount", "deadline"] as const;
+const VALID_APPLICANT = ["ANY", "PRIVATE_BUSINESS", "NONPROFIT", "GOVERNMENT"] as const;
 
 function pickValid<T extends string>(value: string | null, allowed: readonly T[]): T | undefined {
   return allowed.includes(value as T) ? (value as T) : undefined;
@@ -35,6 +36,8 @@ export async function GET(request: NextRequest) {
       excludeIndustryCategory: searchParams.get("excludeIndustryCategory") ?? undefined,
     };
     const jurisdictionNameFilter = searchParams.get("jurisdictionName") ?? undefined;
+    // applicantType filter: when "PRIVATE_BUSINESS", exclude GOVERNMENT-only programs
+    const applicantTypeFilter = pickValid(searchParams.get("applicantType"), VALID_APPLICANT);
 
     // Build Prisma where clause
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -43,7 +46,13 @@ export async function GET(request: NextRequest) {
     if (filters.status) where.status = filters.status;
     if (filters.jurisdictionLevel) where.jurisdictionLevel = filters.jurisdictionLevel;
     if (filters.incentiveType) where.incentiveType = filters.incentiveType;
-    if (jurisdictionNameFilter) where.jurisdictionName = { contains: jurisdictionNameFilter, mode: "insensitive" };
+    if (jurisdictionNameFilter) where.jurisdictionName = { equals: jurisdictionNameFilter, mode: "insensitive" };
+    // Exclude government-only programs when filtering for private businesses
+    if (applicantTypeFilter === "PRIVATE_BUSINESS") {
+      where.applicantType = { not: "GOVERNMENT" };
+    } else if (applicantTypeFilter && applicantTypeFilter !== "ANY") {
+      where.applicantType = { in: [applicantTypeFilter, "ANY"] };
+    }
 
     // Full-text search across title, summary, agency
     if (filters.search) {

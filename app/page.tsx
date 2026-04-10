@@ -36,6 +36,7 @@ function readFiltersFromURL(): Partial<IncentiveFilters> {
   if (p.get("verified") === "true") out.verified = true;
   if (p.get("closingSoon") === "true") out.closingSoon = true;
   if (p.get("page")) out.page = parseInt(p.get("page")!);
+  if (p.get("applicantType")) out.applicantType = p.get("applicantType") as IncentiveFilters["applicantType"];
   return out;
 }
 
@@ -123,6 +124,7 @@ export default function HomePage() {
       if (f.maxFunding !== undefined) params.set("maxFunding", String(f.maxFunding));
       if (f.verified) params.set("verified", "true");
       if (f.closingSoon) params.set("closingSoon", "true");
+      if (f.applicantType) params.set("applicantType", f.applicantType);
       params.set("page", String(f.page ?? 1));
       params.set("pageSize", String(f.pageSize ?? 24));
 
