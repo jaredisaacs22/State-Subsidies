@@ -5,7 +5,7 @@ import { IncentiveTypeBadge, JurisdictionBadge, StatusBadge } from "@/components
 import { IncentiveCard } from "@/components/IncentiveCard";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { ShareButtons } from "@/components/ShareButtons";
-import { formatCurrency, formatDeadline, parseIncentive } from "@/lib/utils";
+import { formatCurrency, formatDeadline, parseIncentive, sourceRedirectUrl } from "@/lib/utils";
 import { INDUSTRY_COLORS } from "@/lib/types";
 import { prisma } from "@/lib/db";
 import type { Incentive } from "@/lib/types";
@@ -207,7 +207,7 @@ export default async function IncentiveDetailPage({
               Visit the official agency page. If the link is outdated, use the search option below.
             </p>
             <a
-              href={incentive.sourceUrl}
+              href={sourceRedirectUrl(incentive)}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary w-full justify-center gap-2 mb-2"
@@ -293,7 +293,7 @@ export default async function IncentiveDetailPage({
       {/* Mobile sticky apply bar */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 px-4 py-3 flex items-center gap-2 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]">
         <a
-          href={incentive.sourceUrl}
+          href={sourceRedirectUrl(incentive)}
           target="_blank"
           rel="noopener noreferrer"
           className="btn-primary flex-1 justify-center gap-2 py-2.5"

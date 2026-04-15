@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ExternalLink, Calendar, MapPin, ArrowRight, Bookmark, CheckCircle2, ClipboardCheck, X, CheckCircle, XCircle, HelpCircle, Users, Building2, Landmark } from "lucide-react";
 import { IncentiveTypeBadge, JurisdictionBadge, StatusBadge } from "./Badge";
-import { formatCurrency, formatDeadline, cn } from "@/lib/utils";
+import { formatCurrency, formatDeadline, cn, sourceRedirectUrl } from "@/lib/utils";
 import { INCENTIVE_TYPE_BORDER, INDUSTRY_COLORS } from "@/lib/types";
 import { useBookmarks } from "@/lib/useBookmarks";
 import type { Incentive } from "@/lib/types";
@@ -264,7 +264,7 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
             </span>
           </div>
           <a
-            href={incentive.sourceUrl}
+            href={sourceRedirectUrl(incentive)}
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}

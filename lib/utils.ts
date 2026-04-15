@@ -45,6 +45,16 @@ export function parseIncentive(raw: Record<string, unknown>): Incentive {
   };
 }
 
+/** Build a /api/redirect proxy URL that live-checks the source and falls back to Google */
+export function sourceRedirectUrl(incentive: Pick<Incentive, "sourceUrl" | "title" | "managingAgency">): string {
+  const params = new URLSearchParams({
+    url: incentive.sourceUrl,
+    title: incentive.title,
+    agency: incentive.managingAgency,
+  });
+  return `/api/redirect?${params.toString()}`;
+}
+
 export function slugify(text: string): string {
   return text
     .toLowerCase()

@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Send, Search, X, RotateCcw, ChevronDown, ChevronUp, ExternalLink, Sparkles, Zap, Target, AlertCircle } from "lucide-react";
-import { cn, formatCurrency, formatDeadline } from "@/lib/utils";
+import { cn, formatCurrency, formatDeadline, sourceRedirectUrl } from "@/lib/utils";
 import { INCENTIVE_TYPE_COLORS, JURISDICTION_COLORS } from "@/lib/types";
 import { LogoMark } from "@/components/Logo";
 import type { Incentive } from "@/lib/types";
@@ -117,7 +117,7 @@ function MatchedCard({ inc }: { inc: Incentive }) {
             ))}
             <div className="flex items-center justify-between pt-1">
               <span className="text-slate-400">{formatDeadline(inc.deadline)}</span>
-              <a href={inc.sourceUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-forest-700 hover:text-forest-800 font-semibold text-[11px]">Apply <ExternalLink size={10} /></a>
+              <a href={sourceRedirectUrl(inc)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-forest-700 hover:text-forest-800 font-semibold text-[11px]">Apply <ExternalLink size={10} /></a>
             </div>
           </div>
         )}
