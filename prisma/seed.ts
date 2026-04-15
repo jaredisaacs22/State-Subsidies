@@ -773,7 +773,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Real Estate", "Clean Technology", "Energy Management"]),
     incentiveType: "SUBSIDY", fundingAmount: 300000, deadline: null,
-    sourceUrl: "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/demand-side-management/california-solar-initiative/multifamily-affordable-solar-housing-mash-program",
+    sourceUrl: "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/demand-side-management/california-solar-initiative",
     programCode: "CA-MASH", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -946,7 +946,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Real Estate", "Construction", "Manufacturing"]),
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.dec.ny.gov/chemical/8450.html",
+    sourceUrl: "https://www.dec.ny.gov/chemical/cleanp.html",
     programCode: "NY-BCP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -965,7 +965,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Real Estate", "Building Electrification", "Energy Management", "Construction"]),
     incentiveType: "GRANT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://www.nyc.gov/site/sustainability/legislation/legislation.page",
+    sourceUrl: "https://www.nyc.gov/site/sustainability/",
     programCode: "NYC-LL97", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1064,7 +1064,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Energy Management", "Manufacturing", "Retail", "Water & Utilities"]),
     incentiveType: "SUBSIDY", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.ercot.com/services/programs/load",
+    sourceUrl: "https://www.ercot.com/services/programs",
     programCode: "ERCOT-DR", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1699,7 +1699,7 @@ const incentives = [
     ]),
     industryCategories: JSON.stringify(["Energy Management", "Retail", "Hospitality", "Manufacturing", "Real Estate"]),
     incentiveType: "POINT_OF_SALE_REBATE", fundingAmount: 200000, deadline: null,
-    sourceUrl: "https://www.seattle.gov/city-light/business-solutions/save-energy-and-money/rebates",
+    sourceUrl: "https://www.seattle.gov/city-light/business-solutions/save-energy-and-money",
     programCode: "SCL-EER", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
 
@@ -6612,7 +6612,7 @@ const incentives = [
     keyRequirements: JSON.stringify(["Business must be located in Seattle city limits","Must achieve certification in waste reduction, energy, water, and green purchasing","Annual recertification required","Open to businesses of any size in any sector","Benefits include Seattle City Light and Seattle Public Utilities rate incentives"]),
     industryCategories: JSON.stringify(["Retail","Food & Beverage","Hospitality","Healthcare","Technology"]),
     incentiveType: "SUBSIDY", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.seattle.gov/environment/sustainable-business/seattle-green-businesses", programCode: "SEA-GREEN", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.seattle.gov/environment/sustainable-business", programCode: "SEA-GREEN", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Minneapolis Commercial Property Assessed Clean Energy (C-PACE)", slug: "minneapolis-cpace-program",
     jurisdictionLevel: "CITY", jurisdictionName: "Minneapolis, MN", managingAgency: "City of Minneapolis Community Planning & Economic Development", agencyAcronym: "CPED",
