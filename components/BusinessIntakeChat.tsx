@@ -393,85 +393,66 @@ export function BusinessIntakeChat({ onSearch }: { onSearch?: (query: string) =>
       <div className="mt-6 w-full max-w-lg mx-auto">
         <div className="rounded-2xl overflow-hidden shadow-xl border border-white/20" style={{ background: "rgba(255,255,255,0.97)" }}>
 
-          {/* Header band — dark navy */}
-          <div className="bg-brand-900 px-4 py-3 flex items-center gap-2.5">
-            <div className="w-6 h-6 rounded-md bg-forest-600 flex items-center justify-center flex-shrink-0">
-              <Sparkles size={13} className="text-white" aria-hidden />
+          {/* Subtle header */}
+          <div className="px-4 pt-4 pb-2 flex items-center gap-2">
+            <div className="w-5 h-5 rounded-md bg-forest-600 flex items-center justify-center flex-shrink-0">
+              <Sparkles size={11} className="text-white" aria-hidden />
             </div>
-            <p className="text-white font-bold text-sm leading-none flex-1">AI Program Finder</p>
-            {hasPreviousSession && (
-              <span className="text-white/40 text-[11px]">
-                {matched.length > 0 ? `${matched.length} programs found` : "session saved"}
-              </span>
+            <p className="text-slate-700 font-semibold text-sm">Find your programs</p>
+            {hasPreviousSession && matched.length > 0 && (
+              <span className="ml-auto text-[11px] text-slate-400">{matched.length} saved results</span>
             )}
           </div>
 
           {/* Body */}
           {hasPreviousSession ? (
-            <div className="px-4 py-4">
-              {/* Search bar still accessible when session is saved */}
-              <div className="mb-3">
-                <SearchInput onSearch={onSearch} />
-              </div>
-              <p className="text-slate-500 text-xs mb-3">You have a saved AI session.</p>
+            <div className="px-4 pb-4">
+              <div className="mb-3"><SearchInput onSearch={onSearch} /></div>
               <div className="flex gap-2">
-                <button
-                  onClick={() => setOpen(true)}
-                  className="flex-1 py-2 rounded-xl bg-forest-700 hover:bg-forest-600 text-white text-sm font-semibold transition-colors shadow-sm"
-                >
+                <button onClick={() => setOpen(true)} className="flex-1 py-2 rounded-xl bg-forest-700 hover:bg-forest-600 text-white text-sm font-semibold transition-colors shadow-sm">
                   Continue AI search
                 </button>
-                <button
-                  onClick={reset}
-                  aria-label="Start a new search"
-                  className="px-4 py-2 rounded-xl border border-slate-200 text-slate-500 hover:text-slate-700 hover:border-slate-300 text-sm transition-colors"
-                >
+                <button onClick={reset} aria-label="Clear session" className="px-4 py-2 rounded-xl border border-slate-200 text-slate-500 hover:text-slate-700 hover:border-slate-300 text-sm transition-colors">
                   Clear
                 </button>
               </div>
             </div>
           ) : (
             <>
-              {/* ── AI mode cards ── */}
-              <div className="px-4 pt-3 pb-2 grid grid-cols-2 gap-2">
+              {/* ── AI mode cards — uniform, no wrapping ── */}
+              <div className="px-4 pb-2 grid grid-cols-2 gap-2">
                 <button
                   onClick={() => startMode("quick")}
-                  className="group text-left rounded-lg border border-slate-200 border-t-2 border-t-amber-400 bg-white hover:border-amber-400 hover:shadow-sm transition-all overflow-hidden"
+                  className="text-left p-3 rounded-lg border border-t-2 border-t-amber-400 border-slate-200 bg-white hover:border-amber-400 hover:shadow-sm transition-all"
                 >
-                  <div className="p-3">
-                    <div className="flex items-center gap-1.5 mb-1.5">
-                      <Zap size={12} className="text-amber-500 flex-shrink-0" aria-hidden />
-                      <span className="text-slate-800 font-bold text-[13px]">Quick AI</span>
-                      <span className="ml-auto text-[9px] bg-amber-100 text-amber-700 rounded-full px-1.5 py-0.5 font-semibold whitespace-nowrap">~1 min</span>
-                    </div>
-                    <p className="text-slate-500 text-[11px] leading-snug">Describe your situation — instant matches.</p>
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <Zap size={12} className="text-amber-500 flex-shrink-0" aria-hidden />
+                    <span className="text-slate-800 font-semibold text-[13px] whitespace-nowrap">Quick AI</span>
                   </div>
+                  <p className="text-slate-400 text-[11px] leading-snug">Describe in one message</p>
                 </button>
 
                 <button
                   onClick={() => startMode("tailored")}
-                  className="group text-left rounded-lg border border-slate-200 border-t-2 border-t-forest-600 bg-white hover:border-forest-500 hover:shadow-sm transition-all overflow-hidden"
+                  className="text-left p-3 rounded-lg border border-t-2 border-t-forest-600 border-slate-200 bg-white hover:border-forest-500 hover:shadow-sm transition-all"
                 >
-                  <div className="p-3">
-                    <div className="flex items-center gap-1.5 mb-1.5">
-                      <Target size={12} className="text-forest-600 flex-shrink-0" aria-hidden />
-                      <span className="text-slate-800 font-bold text-[13px]">Tailored AI</span>
-                      <span className="ml-auto text-[9px] bg-emerald-100 text-emerald-700 rounded-full px-1.5 py-0.5 font-semibold whitespace-nowrap">Best match</span>
-                    </div>
-                    <p className="text-slate-500 text-[11px] leading-snug">4 quick questions — highest accuracy.</p>
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <Target size={12} className="text-forest-600 flex-shrink-0" aria-hidden />
+                    <span className="text-slate-800 font-semibold text-[13px] whitespace-nowrap">Tailored AI</span>
                   </div>
+                  <p className="text-slate-400 text-[11px] leading-snug">4 questions, best accuracy</p>
                 </button>
               </div>
 
               {/* ── Divider ── */}
-              <div className="px-4 py-1 flex items-center gap-3">
+              <div className="px-4 py-2 flex items-center gap-3">
                 <div className="flex-1 h-px bg-slate-100" />
-                <span className="text-[11px] text-slate-400 font-medium">or search by keyword</span>
+                <span className="text-[11px] text-slate-400">or search by keyword</span>
                 <div className="flex-1 h-px bg-slate-100" />
               </div>
 
-              {/* ── Plain keyword search (secondary) ── */}
-              <div className="px-4 pt-0 pb-4">
+              {/* ── Search ── */}
+              <div className="px-4 pb-4">
                 <SearchInput onSearch={onSearch} />
               </div>
             </>
