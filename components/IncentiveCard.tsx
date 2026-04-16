@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ExternalLink, Calendar, MapPin, ArrowRight, Bookmark, CheckCircle2, ClipboardCheck, X, CheckCircle, XCircle, HelpCircle } from "lucide-react";
+import { ExternalLink, Calendar, MapPin, ArrowRight, Bookmark, CheckCircle2, ClipboardCheck, X, CheckCircle, XCircle, HelpCircle, Users, Building2, Landmark } from "lucide-react";
 import { IncentiveTypeBadge, JurisdictionBadge, StatusBadge } from "./Badge";
-import { formatCurrency, formatDeadline, cn } from "@/lib/utils";
+import { formatCurrency, formatDeadline, cn, sourceRedirectUrl } from "@/lib/utils";
 import { INCENTIVE_TYPE_BORDER, INDUSTRY_COLORS } from "@/lib/types";
 import { useBookmarks } from "@/lib/useBookmarks";
 import type { Incentive } from "@/lib/types";
@@ -46,6 +46,32 @@ function getComplexity(incentive: Incentive): { label: string; color: string; de
     return { label: "Extensive", color: "text-amber-700 bg-amber-50", description: "Federal grant — detailed application and compliance requirements" };
   }
   return { label: "Moderate", color: "text-sky-700 bg-sky-50", description: "Standard state or agency application process" };
+}
+
+// ── Eligibility audience tag ───────────────────────────────────────────────────
+function getEligibilityTag(categories: string[]): {
+  label: string; color: string; Icon: typeof Users; title: string;
+} {
+  const isGov = categories.includes("Government & Nonprofit");
+  const hasOther = categories.some((c) => c !== "Government & Nonprofit");
+  if (isGov && !hasOther) return {
+    label: "Nonprofits & Gov",
+    color: "bg-slate-100 text-slate-500 border border-slate-200",
+    Icon: Landmark,
+    title: "Eligible: nonprofits and government entities only — not private businesses",
+  };
+  if (isGov && hasOther) return {
+    label: "Open to all",
+    color: "bg-blue-50 text-blue-600 border border-blue-100",
+    Icon: Users,
+    title: "Eligible: private businesses, nonprofits, and government entities",
+  };
+  return {
+    label: "Private business",
+    color: "bg-forest-50 text-forest-700 border border-forest-100",
+    Icon: Building2,
+    title: "Eligible: private businesses and for-profit entities",
+  };
 }
 
 // ── Eligibility Checker ────────────────────────────────────────────────────────
@@ -194,6 +220,7 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
   const { isBookmarked, toggle } = useBookmarks();
   const bookmarked = isBookmarked(incentive.slug);
   const isNew = isNewProgram(incentive.createdAt);
+  const eligibility = getEligibilityTag(incentive.industryCategories);
   const isClosingSoon =
     incentive.deadline !== null &&
     new Date(incentive.deadline).getTime() - Date.now() < 30 * 24 * 60 * 60 * 1000;
@@ -227,9 +254,17 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
                 Verified
               </span>
             )}
+            <span
+              className={cn("badge gap-0.5 text-[10px] font-medium", eligibility.color)}
+              title={eligibility.title}
+              aria-label={eligibility.title}
+            >
+              <eligibility.Icon size={9} aria-hidden />
+              {eligibility.label}
+            </span>
           </div>
           <a
-            href={incentive.sourceUrl}
+            href={sourceRedirectUrl(incentive)}
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}

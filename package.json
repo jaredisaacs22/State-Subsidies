@@ -16,6 +16,7 @@
     "@ai-sdk/anthropic": "^3.0.63",
     "@anthropic-ai/sdk": "^0.80.0",
     "@prisma/client": "^5.10.0",
+    "@vercel/analytics": "^2.0.1",
     "ai": "^6.0.134",
     "clsx": "^2.1.0",
     "https-proxy-agent": "^8.0.0",

@@ -38,9 +38,8 @@ model Incentive {
   incentiveType      String
 
   // Funding details (optional)
-  fundingAmount       Float?
-  totalProgramFunding String?  // total program budget / remaining (display string, e.g. "$50M appropriated")
-  deadline            DateTime?
+  fundingAmount Float?
+  deadline      DateTime?
   applicationOpenDate DateTime?
 
   // Source
@@ -59,4 +58,17 @@ model Incentive {
   @@index([incentiveType])
   @@index([status])
   @@index([deadline])
+}
+
+model PageView {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      String   // pageview | query | click
+  vid       String   // visitor ID
+  page      String
+  ref       String   @default("direct")
+  query     String?  // search query if type=query
+
+  @@index([createdAt])
+  @@index([type])
 }

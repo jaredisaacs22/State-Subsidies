@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ChevronDown, SlidersHorizontal, X, Link2, Check } from "lucide-react";
-import { SearchBar } from "@/components/SearchBar";
 import { FilterSidebar } from "@/components/FilterSidebar";
 import { ResultsGrid } from "@/components/ResultsGrid";
 import { BusinessIntakeChat } from "@/components/BusinessIntakeChat";
@@ -29,12 +28,14 @@ function readFiltersFromURL(): Partial<IncentiveFilters> {
   if (p.get("jurisdictionName")) out.jurisdictionName = p.get("jurisdictionName")!;
   if (p.get("incentiveType")) out.incentiveType = p.get("incentiveType") as IncentiveFilters["incentiveType"];
   if (p.get("industryCategory")) out.industryCategory = p.get("industryCategory")!;
+  if (p.get("excludeIndustryCategory")) out.excludeIndustryCategory = p.get("excludeIndustryCategory")!;
   if (p.get("sortBy")) out.sortBy = p.get("sortBy") as IncentiveFilters["sortBy"];
   if (p.get("sortOrder")) out.sortOrder = p.get("sortOrder") as "asc" | "desc";
   if (p.get("minFunding")) out.minFunding = parseInt(p.get("minFunding")!);
   if (p.get("verified") === "true") out.verified = true;
   if (p.get("closingSoon") === "true") out.closingSoon = true;
   if (p.get("page")) out.page = parseInt(p.get("page")!);
+  if (p.get("applicantType")) out.applicantType = p.get("applicantType") as IncentiveFilters["applicantType"];
   return out;
 }
 
@@ -114,6 +115,7 @@ export default function HomePage() {
       if (f.jurisdictionName) params.set("jurisdictionName", f.jurisdictionName);
       if (f.incentiveType) params.set("incentiveType", f.incentiveType);
       if (f.industryCategory) params.set("industryCategory", f.industryCategory);
+      if (f.excludeIndustryCategory) params.set("excludeIndustryCategory", f.excludeIndustryCategory);
       if (f.status) params.set("status", f.status);
       if (f.sortBy) params.set("sortBy", f.sortBy);
       if (f.sortOrder) params.set("sortOrder", f.sortOrder);
@@ -121,6 +123,7 @@ export default function HomePage() {
       if (f.maxFunding !== undefined) params.set("maxFunding", String(f.maxFunding));
       if (f.verified) params.set("verified", "true");
       if (f.closingSoon) params.set("closingSoon", "true");
+      if (f.applicantType) params.set("applicantType", f.applicantType);
       params.set("page", String(f.page ?? 1));
       params.set("pageSize", String(f.pageSize ?? 24));
 
@@ -151,11 +154,15 @@ export default function HomePage() {
   );
 
   const clearAllFilters = useCallback(() => {
+    localStorage.removeItem("ss_audience_v1");
+    setSelectedAudience(null);
     handleFilterChange({
+      search: "",
       jurisdictionLevel: undefined,
       jurisdictionName: undefined,
       incentiveType: undefined,
       industryCategory: undefined,
+      excludeIndustryCategory: undefined,
       minFunding: undefined,
       maxFunding: undefined,
       verified: undefined,
@@ -195,12 +202,19 @@ export default function HomePage() {
       if (selectedAudience === audienceId) {
         localStorage.removeItem("ss_audience_v1");
         setSelectedAudience(null);
-        handleFilterChange({ industryCategory: undefined, jurisdictionLevel: undefined, incentiveType: undefined });
+        handleFilterChange({ industryCategory: undefined, excludeIndustryCategory: undefined, jurisdictionLevel: undefined, incentiveType: undefined });
         return;
       }
       localStorage.setItem("ss_audience_v1", audienceId);
       setSelectedAudience(audienceId);
-      handleFilterChange(filterPreset);
+      // Clear all audience-related fields first so switching audiences never stacks
+      handleFilterChange({
+        industryCategory: undefined,
+        excludeIndustryCategory: undefined,
+        jurisdictionLevel: undefined,
+        incentiveType: undefined,
+        ...filterPreset,
+      });
     },
     [handleFilterChange, selectedAudience]
   );
@@ -208,7 +222,7 @@ export default function HomePage() {
   const handleAudienceClear = useCallback(() => {
     localStorage.removeItem("ss_audience_v1");
     setSelectedAudience(null);
-    handleFilterChange({ industryCategory: undefined, jurisdictionLevel: undefined, incentiveType: undefined });
+    handleFilterChange({ industryCategory: undefined, excludeIndustryCategory: undefined, jurisdictionLevel: undefined, incentiveType: undefined });
   }, [handleFilterChange]);
 
   const sortValue = `${filters.sortBy ?? "createdAt"}_${filters.sortOrder ?? "desc"}`;
@@ -256,8 +270,11 @@ export default function HomePage() {
             Tell us about your situation and we'll find what you qualify for.
           </p>
 
-          {/* Inline AI intake */}
-          <BusinessIntakeChat />
+          {/* Inline AI intake + search */}
+          <BusinessIntakeChat onSearch={(search) => {
+            handleFilterChange({ search });
+            document.getElementById("browse")?.scrollIntoView({ behavior: "smooth" });
+          }} />
 
           {/* Agency trust strip */}
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
@@ -308,11 +325,11 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12px] text-slate-500">
             <span className="font-semibold text-slate-400 uppercase tracking-widest text-[10px]">How it works</span>
-            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>1</span>🔍 Search or ask the AI</span>
+            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>1</span>Search or ask the AI</span>
             <span className="text-slate-300 hidden sm:inline">→</span>
-            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>2</span>✅ Check if you qualify</span>
+            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>2</span>Check if you qualify</span>
             <span className="text-slate-300 hidden sm:inline">→</span>
-            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>3</span>💰 Apply directly — free</span>
+            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>3</span>Apply directly — free</span>
           </div>
         </div>
       </section>
@@ -348,23 +365,38 @@ export default function HomePage() {
           <SortSelect value={sortValue} onChange={handleSortChange} />
         </div>
 
-        {/* Search bar */}
-        <div className="mb-5">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">Search for programs</p>
-          <SearchBar
-            value={filters.search ?? ""}
-            onChange={(search) => handleFilterChange({ search })}
-            className="max-w-xl"
-          />
-        </div>
-
         {/* Audience selector — always visible, allows quick persona-based filtering */}
         <AudienceSelector
           onSelect={handleAudienceSelect}
           selectedId={selectedAudience}
           onClear={handleAudienceClear}
-          className="mb-6"
+          className="mb-3"
         />
+
+        {/* Active filter chips + master reset */}
+        {(filters.search || hasActiveFilters || selectedAudience) && (
+          <div className="flex flex-wrap items-center gap-2 mb-4">
+            {filters.search && (
+              <span className="inline-flex items-center gap-1.5 text-[12px] bg-forest-50 text-forest-800 border border-forest-200 rounded-full px-3 py-1 font-medium">
+                &ldquo;{filters.search}&rdquo;
+                <button
+                  onClick={() => handleFilterChange({ search: "" })}
+                  className="hover:text-forest-900 flex-shrink-0"
+                  aria-label="Clear search"
+                >
+                  <X size={11} />
+                </button>
+              </span>
+            )}
+            <button
+              onClick={clearAllFilters}
+              className="inline-flex items-center gap-1 text-[12px] text-slate-500 hover:text-slate-800 border border-slate-200 bg-white hover:border-slate-300 rounded-full px-3 py-1 font-medium transition-colors"
+            >
+              <X size={11} />
+              Reset all
+            </button>
+          </div>
+        )}
 
         {/* Desktop flex row */}
         <div className="flex gap-8">
@@ -400,11 +432,6 @@ export default function HomePage() {
                     <span className="font-semibold text-slate-800">—</span>
                   )}
                 </p>
-                {activeFilterCount > 0 && (
-                  <button onClick={clearAllFilters} className="text-xs text-slate-400 hover:text-forest-700 transition-colors underline underline-offset-2">
-                    Clear all
-                  </button>
-                )}
               </div>
               <div className="flex items-center gap-3">
                 {(hasActiveFilters || !!filters.search) && (

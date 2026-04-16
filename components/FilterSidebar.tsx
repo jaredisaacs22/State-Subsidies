@@ -230,6 +230,7 @@ export function FilterSidebar({
     filters.minFunding,
     filters.verified,
     filters.closingSoon,
+    filters.applicantType,
   ].filter(Boolean).length;
 
   const clearAll = () =>
@@ -242,6 +243,7 @@ export function FilterSidebar({
       maxFunding: undefined,
       verified: undefined,
       closingSoon: undefined,
+      applicantType: undefined,
     });
 
   const filteredStates = stateQuery.trim()
@@ -351,6 +353,25 @@ export function FilterSidebar({
               </button>
             )
           )}
+        </div>
+      </Section>
+
+      {/* ── Who Can Apply ───────────────────────────────── */}
+      <Section title="Who Can Apply" defaultOpen>
+        <div className="space-y-0.5">
+          {([
+            { label: "All applicants", value: undefined },
+            { label: "Private businesses", value: "PRIVATE_BUSINESS" as const },
+            { label: "Nonprofits", value: "NONPROFIT" as const },
+            { label: "Government entities", value: "GOVERNMENT" as const },
+          ] as { label: string; value: IncentiveFilters["applicantType"] }[]).map(({ label, value }) => (
+            <ListItem
+              key={label}
+              label={label}
+              active={filters.applicantType === value}
+              onClick={() => onChange({ applicantType: value })}
+            />
+          ))}
         </div>
       </Section>
 

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Send, X, RotateCcw, ChevronDown, ChevronUp, ExternalLink, Sparkles, Zap, Target } from "lucide-react";
-import { cn, formatCurrency, formatDeadline } from "@/lib/utils";
+import { Send, Search, X, RotateCcw, ChevronDown, ChevronUp, ExternalLink, Sparkles, Zap, Target, AlertCircle } from "lucide-react";
+import { cn, formatCurrency, formatDeadline, sourceRedirectUrl } from "@/lib/utils";
 import { INCENTIVE_TYPE_COLORS, JURISDICTION_COLORS } from "@/lib/types";
 import { LogoMark } from "@/components/Logo";
 import type { Incentive } from "@/lib/types";
@@ -117,7 +117,7 @@ function MatchedCard({ inc }: { inc: Incentive }) {
             ))}
             <div className="flex items-center justify-between pt-1">
               <span className="text-slate-400">{formatDeadline(inc.deadline)}</span>
-              <a href={inc.sourceUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-forest-700 hover:text-forest-800 font-semibold text-[11px]">Apply <ExternalLink size={10} /></a>
+              <a href={sourceRedirectUrl(inc)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-forest-700 hover:text-forest-800 font-semibold text-[11px]">Apply <ExternalLink size={10} /></a>
             </div>
           </div>
         )}
@@ -134,8 +134,106 @@ function MatchedCard({ inc }: { inc: Incentive }) {
   );
 }
 
+// ── Keyword suggestions with synonym aliases ──────────────────────────────────
+const SUGGESTIONS: { label: string; terms: string[] }[] = [
+  // Industry categories — label is the canonical search term that returns most results
+  { label: "Agriculture",           terms: ["farm", "farming", "crop", "livestock", "usda", "rural", "ranch", "food production", "agri"] },
+  { label: "Clean Technology",      terms: ["solar", "wind", "renewable", "green energy", "clean energy", "photovoltaic", "battery storage", "geothermal", "biomass", "biofuel"] },
+  { label: "Energy Management",     terms: ["energy efficiency", "hvac", "insulation", "utility", "electricity", "natural gas", "efficiency upgrade", "energy audit", "smart meter"] },
+  { label: "EV Charging",           terms: ["electric vehicle", "ev", "charging station", "electric truck", "electric fleet", "zero emission", "carb", "evse"] },
+  { label: "Manufacturing",         terms: ["factory", "production", "industrial", "fabrication", "machinery", "equipment", "assembly", "plant", "forge", "defense"] },
+  { label: "Technology",            terms: ["software", "tech", "digital", "it", "cyber", "saas", "app", "ai", "machine learning", "data", "computer"] },
+  { label: "Research & Development",terms: ["r&d", "research", "innovation", "sbir", "sttr", "prototype", "lab", "university", "science", "discovery", "testing"] },
+  { label: "Healthcare",            terms: ["medical", "health", "hospital", "clinic", "biotech", "pharma", "life sciences", "telemedicine", "dental", "mental health"] },
+  { label: "Real Estate",           terms: ["construction", "building", "property", "renovation", "rehab", "brownfield", "pace", "commercial real estate", "developer", "affordable housing"] },
+  { label: "Education",             terms: ["school", "college", "university", "training", "workforce", "job training", "k-12", "childcare", "daycare", "stem"] },
+  { label: "Hospitality",           terms: ["restaurant", "hotel", "tourism", "food service", "lodging", "travel", "events", "bar", "cafe", "brewery"] },
+  { label: "Logistics",             terms: ["trucking", "freight", "distribution", "warehouse", "supply chain", "shipping", "fleet", "transport", "delivery"] },
+  { label: "Finance",               terms: ["microloan", "cdfi", "credit union", "community bank", "capital access", "revolving loan", "investment", "equity"] },
+  // Incentive types
+  { label: "Grant",                 terms: ["free money", "award", "funding", "no repayment", "no payback"] },
+  { label: "Tax Credit",            terms: ["tax break", "irs", "deduction", "section 48", "section 45", "179d", "credits", "return"] },
+  { label: "Loan",                  terms: ["low interest", "financing", "sba loan", "below market", "debt", "borrow", "lend"] },
+  { label: "Rebate",                terms: ["discount", "cashback", "instant rebate", "utility rebate", "point of sale"] },
+  { label: "Voucher",               terms: ["certificate", "prepaid", "equipment voucher", "hvip", "wazip"] },
+  // Common goal-based terms
+  { label: "small business",        terms: ["startup", "entrepreneur", "sole proprietor", "llc", "s-corp", "under 500", "main street"] },
+  { label: "minority-owned",        terms: ["minority", "mbe", "disadvantaged", "wosb", "8a", "hubzone", "diverse"] },
+  { label: "women-owned",           terms: ["woman", "women", "wbe", "female founder"] },
+  { label: "rural development",     terms: ["rural", "usda rural", "remote area", "underserved", "tribal"] },
+  { label: "broadband",             terms: ["internet", "fiber", "connectivity", "telecom", "5g", "network infrastructure"] },
+  { label: "housing",               terms: ["affordable housing", "hud", "multifamily", "low income housing", "lihtc", "cdbg"] },
+  { label: "job creation",          terms: ["hiring", "employment", "jobs", "workforce expansion", "new hires", "job retention"] },
+  { label: "water",                 terms: ["wastewater", "stormwater", "irrigation", "drinking water", "watershed", "epa water"] },
+  { label: "export",                terms: ["international", "trade", "overseas", "exporter", "import", "global market"] },
+];
+
+function SearchInput({ onSearch }: { onSearch?: (q: string) => void }) {
+  const [value, setValue] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const matches = value.trim().length > 0
+    ? SUGGESTIONS
+        .filter(({ label, terms }) => {
+          const v = value.toLowerCase();
+          return label.toLowerCase().includes(v) || terms.some((t) => t.includes(v));
+        })
+        .sort(({ label: a }, { label: b }) => {
+          const v = value.toLowerCase();
+          return (a.toLowerCase().startsWith(v) ? 0 : 1) - (b.toLowerCase().startsWith(v) ? 0 : 1);
+        })
+        .slice(0, 7)
+    : [];
+
+  const submit = (q: string) => { onSearch?.(q); setValue(""); setOpen(false); };
+
+  return (
+    <div className="flex gap-2">
+      <div className="relative flex-1">
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => { setValue(e.target.value); setOpen(true); }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && value.trim()) submit(value.trim());
+            if (e.key === "Escape") setOpen(false);
+          }}
+          onFocus={() => value.trim() && setOpen(true)}
+          onBlur={() => setTimeout(() => setOpen(false), 150)}
+          placeholder="Search programs by keyword…"
+          className="w-full rounded-lg bg-slate-50 border border-slate-200 px-3 py-2.5 text-[13px] text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
+          aria-label="Search programs"
+          aria-autocomplete="list"
+          aria-expanded={open && matches.length > 0}
+        />
+        {open && matches.length > 0 && (
+          <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden">
+            {matches.map(({ label }) => (
+              <button
+                key={label}
+                onMouseDown={() => submit(label)}
+                className="w-full text-left px-3 py-2 text-[13px] text-slate-700 hover:bg-forest-50 hover:text-forest-800 transition-colors flex items-center gap-2"
+              >
+                <Search size={11} className="text-slate-300 flex-shrink-0" aria-hidden />
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+      <button
+        onClick={() => value.trim() && submit(value.trim())}
+        className="px-3 py-2.5 rounded-lg bg-forest-700 hover:bg-forest-600 text-white transition-colors flex-shrink-0"
+        aria-label="Search"
+      >
+        <Search size={13} aria-hidden />
+      </button>
+    </div>
+  );
+}
+
 // ── Main component ─────────────────────────────────────────────────────────────
-export function BusinessIntakeChat() {
+export function BusinessIntakeChat({ onSearch }: { onSearch?: (query: string) => void }) {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<ChatMode>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -295,104 +393,67 @@ export function BusinessIntakeChat() {
       <div className="mt-6 w-full max-w-lg mx-auto">
         <div className="rounded-2xl overflow-hidden shadow-xl border border-white/20" style={{ background: "rgba(255,255,255,0.97)" }}>
 
-          {/* Header band — dark navy */}
-          <div className="bg-brand-900 px-4 py-3 flex items-center gap-2.5">
-            <div className="w-6 h-6 rounded-md bg-forest-600 flex items-center justify-center flex-shrink-0">
-              <Sparkles size={13} className="text-white" aria-hidden />
+          {/* Subtle header */}
+          <div className="px-4 pt-4 pb-2 flex items-center gap-2">
+            <div className="w-5 h-5 rounded-md bg-forest-600 flex items-center justify-center flex-shrink-0">
+              <Sparkles size={11} className="text-white" aria-hidden />
             </div>
-            <p className="text-white font-bold text-sm leading-none flex-1">AI Program Finder</p>
-            {hasPreviousSession && (
-              <span className="text-white/40 text-[11px]">
-                {matched.length > 0 ? `${matched.length} programs found` : "session saved"}
-              </span>
+            <p className="text-slate-700 font-semibold text-sm">Find your programs</p>
+            {hasPreviousSession && matched.length > 0 && (
+              <span className="ml-auto text-[11px] text-slate-400">{matched.length} saved results</span>
             )}
           </div>
 
           {/* Body */}
           {hasPreviousSession ? (
-            <div className="px-5 py-5">
-              <p className="text-slate-600 text-sm mb-4">Pick up where you left off, or start a fresh search.</p>
+            <div className="px-4 pb-4">
+              <div className="mb-3"><SearchInput onSearch={onSearch} /></div>
               <div className="flex gap-2">
-                <button
-                  onClick={() => setOpen(true)}
-                  className="flex-1 py-2.5 rounded-xl bg-forest-700 hover:bg-forest-600 text-white text-sm font-semibold transition-colors shadow-sm"
-                >
-                  Continue my search
+                <button onClick={() => setOpen(true)} className="flex-1 py-2 rounded-xl bg-forest-700 hover:bg-forest-600 text-white text-sm font-semibold transition-colors shadow-sm">
+                  Continue AI search
                 </button>
-                <button
-                  onClick={reset}
-                  aria-label="Start a new search"
-                  className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-500 hover:text-slate-700 hover:border-slate-300 text-sm transition-colors"
-                >
-                  Start over
+                <button onClick={reset} aria-label="Clear session" className="px-4 py-2 rounded-xl border border-slate-200 text-slate-500 hover:text-slate-700 hover:border-slate-300 text-sm transition-colors">
+                  Clear
                 </button>
               </div>
             </div>
           ) : (
             <>
-              {/* Mode cards */}
-              <div className="px-4 pt-3 pb-3 grid grid-cols-2 gap-2">
-                {/* Quick Search */}
+              {/* ── AI mode cards — uniform, no wrapping ── */}
+              <div className="px-4 pb-2 grid grid-cols-2 gap-2">
                 <button
                   onClick={() => startMode("quick")}
-                  className="group text-left rounded-lg border border-slate-200 bg-white hover:border-amber-400 hover:shadow-sm transition-all overflow-hidden"
+                  className="text-left p-3 rounded-lg border border-t-2 border-t-amber-400 border-slate-200 bg-white hover:border-amber-400 hover:shadow-sm transition-all"
                 >
-                  <div className="h-0.5 bg-amber-400 w-full" />
-                  <div className="p-3">
-                    <div className="flex items-center gap-1.5 mb-1.5">
-                      <Zap size={12} className="text-amber-500 flex-shrink-0" aria-hidden />
-                      <span className="text-slate-800 font-bold text-[13px]">Quick Search</span>
-                      <span className="ml-auto text-[9px] bg-amber-100 text-amber-700 rounded-full px-1.5 py-0.5 font-semibold whitespace-nowrap">~1 min</span>
-                    </div>
-                    <p className="text-slate-500 text-[11px] leading-snug">One sentence — results in seconds.</p>
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <Zap size={12} className="text-amber-500 flex-shrink-0" aria-hidden />
+                    <span className="text-slate-800 font-semibold text-[13px] whitespace-nowrap">Quick AI</span>
                   </div>
+                  <p className="text-slate-400 text-[11px] leading-snug">Describe in one message</p>
                 </button>
 
-                {/* Tailored Search */}
                 <button
                   onClick={() => startMode("tailored")}
-                  className="group text-left rounded-lg border border-slate-200 bg-white hover:border-forest-500 hover:shadow-sm transition-all overflow-hidden"
+                  className="text-left p-3 rounded-lg border border-t-2 border-t-forest-600 border-slate-200 bg-white hover:border-forest-500 hover:shadow-sm transition-all"
                 >
-                  <div className="h-0.5 bg-forest-600 w-full" />
-                  <div className="p-3">
-                    <div className="flex items-center gap-1.5 mb-1.5">
-                      <Target size={12} className="text-forest-600 flex-shrink-0" aria-hidden />
-                      <span className="text-slate-800 font-bold text-[13px]">Tailored Search</span>
-                      <span className="ml-auto text-[9px] bg-emerald-100 text-emerald-700 rounded-full px-1.5 py-0.5 font-semibold whitespace-nowrap">Best match</span>
-                    </div>
-                    <p className="text-slate-500 text-[11px] leading-snug">4 quick questions — highest accuracy.</p>
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <Target size={12} className="text-forest-600 flex-shrink-0" aria-hidden />
+                    <span className="text-slate-800 font-semibold text-[13px] whitespace-nowrap">Tailored AI</span>
                   </div>
+                  <p className="text-slate-400 text-[11px] leading-snug">4 questions, best accuracy</p>
                 </button>
               </div>
 
-              {/* Quick-start input */}
-              <div className="px-4 pb-4 flex gap-2">
-                <input
-                  type="text"
-                  placeholder="Or describe your situation and press Enter…"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && e.currentTarget.value.trim()) {
-                      const val = e.currentTarget.value.trim();
-                      startMode("quick");
-                      setTimeout(() => send(val), 150);
-                    }
-                  }}
-                  className="flex-1 rounded-lg bg-slate-50 border border-slate-200 px-3 py-2 text-[13px] text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
-                  aria-label="Quick-start: describe your situation"
-                />
-                <button
-                  onClick={(e) => {
-                    const input = (e.currentTarget.previousElementSibling as HTMLInputElement);
-                    if (input?.value.trim()) {
-                      const val = input.value.trim();
-                      startMode("quick");
-                      setTimeout(() => send(val), 150);
-                    }
-                  }}
-                  className="px-3 py-2 rounded-lg bg-forest-700 hover:bg-forest-600 text-white transition-colors"
-                >
-                  <Send size={13} aria-hidden />
-                </button>
+              {/* ── Divider ── */}
+              <div className="px-4 py-2 flex items-center gap-3">
+                <div className="flex-1 h-px bg-slate-100" />
+                <span className="text-[11px] text-slate-400">or search by keyword</span>
+                <div className="flex-1 h-px bg-slate-100" />
+              </div>
+
+              {/* ── Search ── */}
+              <div className="px-4 pb-4">
+                <SearchInput onSearch={onSearch} />
               </div>
             </>
           )}
@@ -424,7 +485,9 @@ export function BusinessIntakeChat() {
                   ? "bg-amber-500/15 text-amber-300 border-amber-500/20"
                   : "bg-emerald-500/15 text-emerald-300 border-emerald-500/20"
               )}>
-                {mode === "quick" ? "⚡ Quick" : "🎯 Tailored"}
+                {mode === "quick"
+                  ? <><Zap size={9} className="inline mr-0.5" aria-hidden /> Quick</>
+                  : <><Target size={9} className="inline mr-0.5" aria-hidden /> Tailored</>}
               </span>
             )}
             {expertise !== "beginner" && (
@@ -505,8 +568,9 @@ export function BusinessIntakeChat() {
           {/* Error */}
           {error && (
             <div role="alert" className="text-xs text-red-300 bg-red-900/30 border border-red-500/30 rounded-xl px-4 py-3 leading-relaxed">
-              <strong className="font-semibold">
-                {error.includes("ANTHROPIC_API_KEY") ? "⚠ AI not configured" : "⚠ Something went wrong"}
+              <strong className="font-semibold flex items-center gap-1">
+                <AlertCircle size={12} aria-hidden />
+                {error.includes("ANTHROPIC_API_KEY") ? "AI not configured" : "Something went wrong"}
               </strong>
               <br />
               {error.includes("ANTHROPIC_API_KEY")

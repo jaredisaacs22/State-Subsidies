@@ -1,5 +1,7 @@
 "use client";
 
+import { Building2, Zap, Factory, Heart, Landmark, BookOpen, Wheat, FlaskConical } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { IncentiveFilters } from "@/lib/types";
 
@@ -17,7 +19,7 @@ interface Audience {
   id: AudienceId;
   label: string;
   description: string;
-  emoji: string;
+  icon: LucideIcon;
   filterPreset: Partial<IncentiveFilters>;
 }
 
@@ -26,56 +28,56 @@ export const AUDIENCES: Audience[] = [
     id: "small_business",
     label: "Small Business",
     description: "Under 500 employees, any sector",
-    emoji: "🏢",
-    filterPreset: { incentiveType: undefined, jurisdictionLevel: undefined },
+    icon: Building2,
+    filterPreset: { excludeIndustryCategory: "Government & Nonprofit" },
   },
   {
     id: "startup",
     label: "Startup",
     description: "Early-stage, R&D, tech ventures",
-    emoji: "🚀",
-    filterPreset: { industryCategory: "Technology" },
+    icon: Zap,
+    filterPreset: { industryCategory: "Technology", excludeIndustryCategory: "Government & Nonprofit" },
   },
   {
     id: "enterprise",
     label: "Enterprise",
     description: "Large-scale operations, multi-site",
-    emoji: "🏭",
-    filterPreset: { jurisdictionLevel: "FEDERAL" },
+    icon: Factory,
+    filterPreset: { jurisdictionLevel: "FEDERAL", excludeIndustryCategory: "Government & Nonprofit" },
   },
   {
     id: "nonprofit",
     label: "Nonprofit",
     description: "501(c)(3) organizations and charities",
-    emoji: "🤝",
+    icon: Heart,
     filterPreset: { industryCategory: "Government & Nonprofit" },
   },
   {
     id: "government",
     label: "Government",
     description: "Municipalities, agencies, public entities",
-    emoji: "🏛️",
-    filterPreset: { jurisdictionLevel: "AGENCY" },
+    icon: Landmark,
+    filterPreset: { industryCategory: "Government & Nonprofit" },
   },
   {
     id: "educator",
     label: "Educator / School",
     description: "K–12, districts, community colleges",
-    emoji: "🎓",
+    icon: BookOpen,
     filterPreset: { industryCategory: "Education" },
   },
   {
     id: "farmer",
     label: "Agriculture",
     description: "Farms, ranches, food producers",
-    emoji: "🌾",
+    icon: Wheat,
     filterPreset: { industryCategory: "Agriculture" },
   },
   {
     id: "researcher",
     label: "Research / University",
     description: "Academic research teams and labs",
-    emoji: "🔬",
+    icon: FlaskConical,
     filterPreset: { industryCategory: "Research & Development" },
   },
 ];
@@ -106,6 +108,7 @@ export function AudienceSelector({ onSelect, selectedId, onClear, className }: A
       <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
         {AUDIENCES.map((a) => {
           const active = selectedId === a.id;
+          const Icon = a.icon;
           return (
             <button
               key={a.id}
@@ -117,7 +120,15 @@ export function AudienceSelector({ onSelect, selectedId, onClear, className }: A
                   : "border-slate-200 bg-white hover:border-forest-500 hover:bg-forest-50 hover:shadow-sm"
               )}
             >
-              <div className="text-xl mb-1.5">{a.emoji}</div>
+              <div className="mb-1.5">
+                <Icon
+                  size={16}
+                  className={cn(
+                    "transition-colors",
+                    active ? "text-forest-700" : "text-slate-400 group-hover:text-forest-600"
+                  )}
+                />
+              </div>
               <div className={cn(
                 "font-semibold text-[12px] leading-tight",
                 active ? "text-forest-800" : "text-slate-800 group-hover:text-forest-800"

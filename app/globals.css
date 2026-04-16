@@ -84,10 +84,10 @@
   /* ── Hero section ─────────────────────────────────────────────────── */
   .hero-section {
     background:
-      radial-gradient(ellipse 70% 60% at 10% 0%,  rgba(13,32,82,0.92)  0%, transparent 60%),
-      radial-gradient(ellipse 60% 50% at 90% 100%, rgba(26,92,56,0.28)  0%, transparent 65%),
-      radial-gradient(ellipse 80% 80% at 50% 50%,  rgba(22,56,132,0.55) 0%, transparent 80%),
-      #0a1a40;
+      radial-gradient(ellipse 65% 55% at 5% 0%,    rgba(26,122,66,0.80)  0%, transparent 55%),
+      radial-gradient(ellipse 55% 60% at 95% 20%,  rgba(20,100,50,0.50)  0%, transparent 60%),
+      radial-gradient(ellipse 80% 80% at 50% 50%,  rgba(8,50,25,0.55)   0%, transparent 85%),
+      #081a0e;
   }
 
   /* ── Skeleton shimmer (left-to-right sweep, not pulse) ────────────── */
