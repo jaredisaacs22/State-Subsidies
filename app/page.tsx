@@ -250,22 +250,26 @@ export default function HomePage() {
     <div className="min-h-screen">
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="hero-section relative text-white pt-16 pb-0 overflow-hidden">
+        {/* Subtle grid overlay */}
+        <div className="hero-grid absolute inset-0 pointer-events-none" />
+        {/* Ambient center glow */}
+        <div className="hero-glow absolute inset-0 pointer-events-none" />
         {/* Forest horizon */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-forest-900/20 to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
 
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           {/* Eyebrow badge */}
-          <div className="inline-flex items-center gap-2 bg-white/8 border border-white/15 rounded-full px-4 py-1.5 text-sm font-medium mb-7 backdrop-blur-sm">
-            <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-            Free resource · all 50 states · updated daily
+          <div className="inline-flex items-center gap-2 bg-white/[0.07] border border-white/[0.12] rounded-full px-4 py-1.5 text-sm font-medium mb-7 backdrop-blur-md shadow-[0_0_0_1px_rgba(255,255,255,0.04)_inset]">
+            <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+            <span className="text-white/80">Free resource · all 50 states · updated daily</span>
           </div>
 
           {/* H1 */}
-          <h1 className="text-4xl sm:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight leading-[1.08] mb-4 text-balance">
+          <h1 className="text-4xl sm:text-5xl lg:text-[3.35rem] font-extrabold tracking-[-0.02em] leading-[1.06] mb-4 text-balance">
             Find government money<br className="hidden sm:block" /> for your business
           </h1>
 
-          <p className="text-white/55 text-lg mb-9 max-w-xl mx-auto leading-relaxed">
+          <p className="text-white/50 text-lg mb-9 max-w-xl mx-auto leading-relaxed">
             Grants, tax credits, loans &amp; rebates — federal and all 50 states.<br className="hidden sm:block" />
             Tell us about your situation and we'll find what you qualify for.
           </p>
@@ -288,29 +292,32 @@ export default function HomePage() {
           </div>
 
           {/* Stats strip */}
-          <div className="mt-10 -mx-4 sm:-mx-6 lg:-mx-8 bg-black/20 border-t border-white/8 px-4 sm:px-6 lg:px-8 py-4">
-            <div className="flex items-center justify-center gap-6 sm:gap-10 flex-wrap">
+          <div className="mt-10 -mx-4 sm:-mx-6 lg:-mx-8 bg-black/25 border-t border-white/[0.07] px-4 sm:px-6 lg:px-8 py-5 backdrop-blur-sm">
+            <div className="flex items-center justify-center flex-wrap">
               {[
-                { value: results?.total ?? "—", label: "total programs" },
-                { value: stats?.federal ?? "—", label: "federal" },
-                { value: stats?.state ?? "—", label: "state-level" },
-                { value: (stats != null ? (stats.city + stats.agency) : "—"), label: "local / agency" },
-                { value: "$4.2B+", label: "available funding" },
-              ].map(({ value, label }) => (
-                <div key={label} className="text-center">
-                  <div className="stat-number text-xl font-bold text-white leading-tight">
-                    {typeof value === "number" ? value.toLocaleString() : value}
+                { value: results?.total ?? "—", label: "Programs" },
+                { value: stats?.federal ?? "—", label: "Federal" },
+                { value: stats?.state ?? "—", label: "State" },
+                { value: (stats != null ? (stats.city + stats.agency) : "—"), label: "Local & Agency" },
+                { value: "$4.2B+", label: "Available" },
+              ].map(({ value, label }, i) => (
+                <div key={label} className="flex items-center">
+                  <div className="text-center px-5 sm:px-8">
+                    <div className="stat-number text-xl font-bold text-white leading-tight">
+                      {typeof value === "number" ? value.toLocaleString() : value}
+                    </div>
+                    <div className="text-white/35 text-[10px] font-medium uppercase tracking-widest mt-0.5">
+                      {label}
+                    </div>
                   </div>
-                  <div className="text-white/40 text-[11px] font-medium uppercase tracking-wide mt-0.5">
-                    {label}
-                  </div>
+                  {i < 4 && <div className="w-px h-8 bg-white/[0.08] flex-shrink-0" />}
                 </div>
               ))}
               <a
                 href="#browse"
-                className="hidden sm:inline-flex items-center gap-1.5 ml-4 text-[11px] font-semibold text-white/50 hover:text-white/85 transition-colors border border-white/15 hover:border-white/30 rounded-full px-3 py-1.5"
+                className="hidden sm:inline-flex items-center gap-1.5 ml-6 text-[11px] font-semibold text-white/45 hover:text-white/80 transition-colors border border-white/[0.12] hover:border-white/25 rounded-full px-3.5 py-1.5"
               >
-                Browse all programs →
+                Browse all →
               </a>
             </div>
           </div>
@@ -318,18 +325,26 @@ export default function HomePage() {
       </section>
 
       {/* ── Hero → content gradient bridge ───────────────────────────────── */}
-      <div className="h-1 bg-gradient-to-r from-forest-700/30 via-forest-600/20 to-forest-700/30" />
+      <div className="h-px bg-gradient-to-r from-transparent via-forest-600/40 to-transparent" />
 
       {/* ── How It Works ─────────────────────────────────────────────────── */}
-      <section aria-label="How StateSubsidies works" className="bg-slate-50 border-b border-slate-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12px] text-slate-500">
-            <span className="font-semibold text-slate-400 uppercase tracking-widest text-[10px]">How it works</span>
-            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>1</span>Search or ask the AI</span>
-            <span className="text-slate-300 hidden sm:inline">→</span>
-            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>2</span>Check if you qualify</span>
-            <span className="text-slate-300 hidden sm:inline">→</span>
-            <span className="flex items-center gap-1.5"><span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>3</span>Apply directly — free</span>
+      <section aria-label="How StateSubsidies works" className="bg-white border-b border-slate-200">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+          <div className="flex flex-wrap items-center justify-center gap-x-1 gap-y-3">
+            <span className="font-semibold text-slate-400 uppercase tracking-widest text-[10px] mr-4">How it works</span>
+            {[
+              { n: "1", text: "Search or ask the AI" },
+              { n: "2", text: "Check if you qualify" },
+              { n: "3", text: "Apply directly — free" },
+            ].map(({ n, text }, i) => (
+              <div key={n} className="flex items-center gap-1">
+                <span className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-[12px] text-slate-600 font-medium">
+                  <span className="w-5 h-5 rounded-full bg-forest-700 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0" aria-hidden>{n}</span>
+                  {text}
+                </span>
+                {i < 2 && <span className="text-slate-300 text-xs mx-1 hidden sm:inline">→</span>}
+              </div>
+            ))}
           </div>
         </div>
       </section>
