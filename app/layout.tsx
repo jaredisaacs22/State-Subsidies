@@ -18,15 +18,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div className="h-[3px] bg-gradient-to-r from-forest-800 via-forest-600 to-forest-800 sticky top-0 z-50" />
+        <header className="bg-white/95 backdrop-blur-sm border-b border-slate-200/80 sticky top-[3px] z-50 shadow-[0_1px_12px_rgba(0,0,0,0.05)]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-15 flex items-center justify-between" style={{ height: "3.75rem" }}>
             <a href="/" className="flex items-center gap-2.5 group">
-              <LogoMark size={34} />
+              <LogoMark size={32} />
               <div className="flex flex-col leading-none">
-                <span className="font-bold text-slate-900 text-[16px] tracking-tight">
+                <span className="font-bold text-slate-900 text-[15.5px] tracking-tight group-hover:text-forest-800 transition-colors">
                   State<span className="text-forest-700">Subsidies</span>
                 </span>
-                <span className="hidden sm:block text-[10px] text-slate-400 font-normal tracking-wide uppercase mt-0.5">
+                <span className="hidden sm:block text-[10px] text-slate-400 font-normal tracking-widest uppercase mt-0.5">
                   Federal &amp; State Programs
                 </span>
               </div>
