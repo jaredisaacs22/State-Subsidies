@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink, ArrowLeft, Building2, Calendar, DollarSign, CheckCircle2, Globe, Search } from "lucide-react";
+import { ExternalLink, ArrowLeft, Building2, Calendar, DollarSign, CheckCircle2, Globe } from "lucide-react";
 import { IncentiveTypeBadge, JurisdictionBadge, StatusBadge } from "@/components/Badge";
 import { IncentiveCard } from "@/components/IncentiveCard";
 import { BookmarkButton } from "@/components/BookmarkButton";
@@ -204,25 +204,16 @@ export default async function IncentiveDetailPage({
           <div className="card p-5 bg-forest-50 border-forest-100">
             <p className="text-sm font-semibold text-forest-900 mb-1">Apply or Learn More</p>
             <p className="text-xs text-forest-700/70 mb-3 leading-relaxed">
-              Visit the official agency page. If the link is outdated, use the search option below.
+              Visit the official agency page to view requirements and apply.
             </p>
             <a
               href={sourceRedirectUrl(incentive)}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary w-full justify-center gap-2 mb-2"
+              className="btn-primary w-full justify-center gap-2 mb-3"
             >
               Official Source
               <ExternalLink size={14} />
-            </a>
-            <a
-              href={`https://www.google.com/search?q=${encodeURIComponent(incentive.title + " " + incentive.managingAgency)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full flex items-center justify-center gap-1.5 text-xs text-forest-700 hover:text-forest-900 border border-forest-200 rounded-lg py-2 mb-3 transition-colors bg-white hover:bg-forest-50"
-            >
-              <Search size={11} />
-              Search Google for this program
             </a>
             <BookmarkButton slug={incentive.slug} />
             <p className="text-[10px] text-slate-400 mt-2 text-center leading-snug">
@@ -300,15 +291,6 @@ export default async function IncentiveDetailPage({
         >
           Official Source
           <ExternalLink size={14} />
-        </a>
-        <a
-          href={`https://www.google.com/search?q=${encodeURIComponent(incentive.title + " " + incentive.managingAgency)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-ghost border border-slate-200 py-2.5 px-3 flex items-center gap-1 text-xs"
-          title="Search Google for this program"
-        >
-          <Search size={13} />
         </a>
         <BookmarkButton slug={incentive.slug} />
       </div>

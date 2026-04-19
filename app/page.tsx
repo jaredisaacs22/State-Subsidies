@@ -258,20 +258,14 @@ export default function HomePage() {
         <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
 
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          {/* Eyebrow badge */}
-          <div className="inline-flex items-center gap-2 bg-white/[0.07] border border-white/[0.12] rounded-full px-4 py-1.5 text-sm font-medium mb-7 backdrop-blur-md shadow-[0_0_0_1px_rgba(255,255,255,0.04)_inset]">
-            <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-            <span className="text-white/80">Free resource · all 50 states · updated daily</span>
-          </div>
-
           {/* H1 */}
           <h1 className="text-4xl sm:text-5xl lg:text-[3.35rem] font-extrabold tracking-[-0.02em] leading-[1.06] mb-4 text-balance">
             Find government money<br className="hidden sm:block" /> for your business
           </h1>
 
           <p className="text-white/50 text-lg mb-9 max-w-xl mx-auto leading-relaxed">
-            Grants, tax credits, loans &amp; rebates — federal and all 50 states.<br className="hidden sm:block" />
-            Tell us about your situation and we'll find what you qualify for.
+            Grants, tax credits, loans &amp; rebates across every state and federal agency.<br className="hidden sm:block" />
+            Tell us about your business and we'll find what you qualify for.
           </p>
 
           {/* Inline AI intake + search */}
