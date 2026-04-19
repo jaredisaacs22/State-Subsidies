@@ -264,8 +264,8 @@ export default function HomePage() {
           </h1>
 
           <p className="text-white/50 text-lg mb-9 max-w-xl mx-auto leading-relaxed">
-            Grants, tax credits, loans &amp; rebates — federal and all 50 states.<br className="hidden sm:block" />
-            Tell us about your situation and we'll find what you qualify for.
+            Grants, tax credits, loans &amp; rebates across every state and federal agency.<br className="hidden sm:block" />
+            Tell us about your business and we'll find what you qualify for.
           </p>
 
           {/* Inline AI intake + search */}
@@ -276,7 +276,6 @@ export default function HomePage() {
 
           {/* Agency trust strip */}
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-            <span className="text-white/30 text-[11px] font-medium">Free · updated daily ·</span>
             <span className="text-white/30 text-[11px] uppercase tracking-widest font-medium">Sourced from</span>
             {["USDA", "IRS", "DOE", "EPA", "SBA", "HUD", "CARB", "NYSERDA", "EDA"].map((agency) => (
               <span key={agency} className="text-white/45 text-[11px] font-semibold tracking-wide hover:text-white/65 transition-colors cursor-default">
