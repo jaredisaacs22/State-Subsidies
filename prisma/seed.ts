@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+import { caPrograms } from "./seed-ca-programs";
+import { otherPrograms } from "./seed-other-programs";
 
 const prisma = new PrismaClient();
 
