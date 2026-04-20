@@ -6037,13 +6037,6 @@ const incentives = [
     sourceUrl: "https://mtrevenue.gov/taxes/", programCode: "MT-RD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── HAWAII ───────────────────────────────────────────────────────────────────
-  { title: "Hawaii High Technology Business Investment Tax Credit", slug: "hawaii-high-tech-investment-tax-credit",
-    jurisdictionLevel: "STATE", jurisdictionName: "Hawaii", managingAgency: "Hawaii Department of Taxation", agencyAcronym: "DOTAX",
-    shortSummary: "Provides a 35% tax credit for qualified investments in Hawaii high-technology businesses. Designed to attract venture capital and angel investment into the state's growing tech sector.",
-    keyRequirements: JSON.stringify(["Investment must be in a qualified high-tech business headquartered in Hawaii","Eligible sectors: software, biotech, nanotech, ocean sciences, astronomy","Credit: 35% of investment, capped per investor per year","Qualifying business must derive 75%+ of gross income from high-tech activities","Tax credit certificate issued by DOTAX upon application"]),
-    industryCategories: JSON.stringify(["Technology","Research & Development","Healthcare","Clean Technology"]),
-    incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://tax.hawaii.gov/forms/a1_b1_3hightechforms/", programCode: "HI-HITECH", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Hawaii Renewable Energy Technologies Income Tax Credit", slug: "hawaii-renewable-energy-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Hawaii", managingAgency: "Hawaii Department of Taxation", agencyAcronym: "DOTAX",
@@ -6202,21 +6195,7 @@ const incentives = [
     sourceUrl: "https://dnrec.delaware.gov/waste-hazardous/brownfields/", programCode: "DE-BROWNFIELD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── RHODE ISLAND ─────────────────────────────────────────────────────────────
-  { title: "Rhode Island Rebuild RI Tax Credit", slug: "rhode-island-rebuild-ri-tax-credit",
-    jurisdictionLevel: "STATE", jurisdictionName: "Rhode Island", managingAgency: "Rhode Island Commerce Corporation", agencyAcronym: "RI Commerce",
-    shortSummary: "Provides up to 20% income tax credits for investments in commercial real estate projects in Rhode Island, including new construction, adaptive reuse, and substantial rehabilitation. Targets mixed-use, commercial, and industrial properties.",
-    keyRequirements: JSON.stringify(["Minimum project cost: $5 million","Rehabilitation or new construction of commercial, mixed-use, or industrial property","Developer must demonstrate financing gap requiring tax credit","RI Commerce Board approval required before construction","Jobs and economic impact thresholds must be met"]),
-    industryCategories: JSON.stringify(["Real Estate","Construction","Manufacturing","Technology"]),
-    incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://commerceri.com/incentives/tax-credits-and-financing/rebuild-rhode-island-tax-credit-infosys/", programCode: "RI-REBUILD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
-  { title: "Rhode Island Qualified Jobs Incentive Act", slug: "rhode-island-qualified-jobs-incentive",
-    jurisdictionLevel: "STATE", jurisdictionName: "Rhode Island", managingAgency: "Rhode Island Commerce Corporation", agencyAcronym: "RI Commerce",
-    shortSummary: "Provides a $7,500 per new full-time job income tax credit for businesses creating 10+ qualified jobs in Rhode Island over a 10-year period. Designed for growing companies in high-value sectors.",
-    keyRequirements: JSON.stringify(["Must create at least 10 new full-time jobs in Rhode Island","Minimum salary: $50,000 per new hire (indexed annually)","10-year credit term; credits issued annually per job retained","Company must be in a qualified sector (excluding retail, food service)","Pre-approval from RI Commerce before hiring begins"]),
-    industryCategories: JSON.stringify(["Technology","Financial Services","Healthcare","Manufacturing"]),
-    incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://commerceri.com/financing/tax-credits/qualified-jobs-incentive-tax-credit/", programCode: "RI-QJI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Rhode Island Small Business Assistance Program (SSBCI)", slug: "rhode-island-ssbci-loan",
     jurisdictionLevel: "STATE", jurisdictionName: "Rhode Island", managingAgency: "RI Division of Banking / RI Commerce", agencyAcronym: "RI Commerce",
@@ -6343,13 +6322,6 @@ const incentives = [
     sourceUrl: "https://wisconsinsbdc.org/", programCode: "WI-SBDC-LOAN", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── TENNESSEE ─────────────────────────────────────────────────────────────────
-  { title: "Tennessee FastTrack Infrastructure Development Program", slug: "tennessee-fasttrack-infrastructure",
-    jurisdictionLevel: "STATE", jurisdictionName: "Tennessee", managingAgency: "Tennessee Department of Economic & Community Development", agencyAcronym: "TNECD",
-    shortSummary: "Provides grants to local governments for infrastructure improvements (roads, water, sewer, broadband) needed to support new or expanding businesses. Awarded in conjunction with major job creation projects.",
-    keyRequirements: JSON.stringify(["Local government must sponsor application on behalf of the business","Business must create minimum number of jobs at qualifying wages","Infrastructure must be directly required by and for the new project","Grant awarded to local government; not directly to business","TNECD approval required before construction begins"]),
-    industryCategories: JSON.stringify(["Manufacturing","Logistics","Infrastructure","Technology"]),
-    incentiveType: "GRANT", fundingAmount: 2000000, deadline: null,
-    sourceUrl: "https://www.tn.gov/revenue/for-businesses/tax-incentives.html", programCode: "TN-FASTTRACK", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Tennessee Rural Opportunity Fund Loan", slug: "tennessee-rural-opportunity-fund",
     jurisdictionLevel: "STATE", jurisdictionName: "Tennessee", managingAgency: "Tennessee Treasury / TNECD", agencyAcronym: "TNECD",
@@ -6418,13 +6390,6 @@ const incentives = [
     sourceUrl: "https://www.apprenticeshipcarolina.com/", programCode: "SC-APPRENTICE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── NORTH CAROLINA ────────────────────────────────────────────────────────────
-  { title: "North Carolina One North Carolina Fund", slug: "north-carolina-one-nc-fund",
-    jurisdictionLevel: "STATE", jurisdictionName: "North Carolina", managingAgency: "NC Department of Commerce", agencyAcronym: "NC Commerce",
-    shortSummary: "North Carolina's primary discretionary economic development grant — awarded to communities to attract significant job-creation projects. Grants go to local governments, which pass funds to businesses.",
-    keyRequirements: JSON.stringify(["Company must create a substantial number of net new jobs in NC","Minimum average wages at or above county average","Capital investment requirement negotiated based on project","Local government match required","Pre-announcement commitment — company must not have publicly announced decision"]),
-    industryCategories: JSON.stringify(["Manufacturing","Technology","Financial Services","Healthcare","Logistics"]),
-    incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://nccommerce.com/grants-incentives", programCode: "NC-ONE-NC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "North Carolina Film and Entertainment Grant", slug: "north-carolina-film-entertainment-grant",
     jurisdictionLevel: "STATE", jurisdictionName: "North Carolina", managingAgency: "NC Department of Commerce", agencyAcronym: "NC Commerce",
@@ -6642,28 +6607,6 @@ const incentives = [
 
   // ── ADDITIONAL FEDERAL PROGRAMS ────────────────────────────────────────────
   {
-    title: "DOE 48C Advanced Energy Manufacturing Tax Credit",
-    slug: "doe-advanced-energy-manufacturing-48c",
-    jurisdictionLevel: "FEDERAL", jurisdictionName: "United States",
-    managingAgency: "U.S. Department of Energy / IRS", agencyAcronym: "DOE",
-    shortSummary: "30% investment tax credit for qualifying advanced energy manufacturing projects, including EV components, solar and wind equipment, energy storage, and grid infrastructure. Part of the Inflation Reduction Act's $10 billion allocation to reindustrialize domestic clean energy supply chains.",
-    keyRequirements: JSON.stringify(["Project must manufacture qualifying advanced energy property in the US","Eligible: EV batteries/components, solar PV, wind turbines, energy storage, grid tech","Credit: 30% of qualified investment (10% in non-energy communities)","Must apply to DOE for allocation; competitive selection","Allocated credits used on IRS Form 3468"]),
-    industryCategories: JSON.stringify(["Clean Technology", "Manufacturing", "Energy Storage", "Automotive"]),
-    incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.energy.gov/lpo/advanced-energy-manufacturing-tax-credit-48c", programCode: "FED-48C", status: "ACTIVE", isVerified: true, scraperSource: "federal_scraper",
-  },
-  {
-    title: "USDA Business & Industry (B&I) Loan Guarantee Program",
-    slug: "usda-business-industry-loan-guarantee",
-    jurisdictionLevel: "FEDERAL", jurisdictionName: "United States",
-    managingAgency: "USDA Rural Development", agencyAcronym: "USDA-RD",
-    shortSummary: "Federal loan guarantees up to 80% on loans of $1M–$25M from private lenders for businesses in rural areas (populations under 50,000). Covers working capital, real estate, equipment, and business acquisition to create and retain jobs in rural communities.",
-    keyRequirements: JSON.stringify(["Business must be in a rural area (population under 50,000)","Guarantee: 80% for loans up to $5M; 70% for $5M–$10M; 60% for $10M–$25M","Loan purpose: working capital, real estate, equipment, acquisition","Lender must be an approved USDA participating financial institution","Must create or retain rural jobs; personal guarantee required"]),
-    industryCategories: JSON.stringify(["Agriculture", "Manufacturing", "Healthcare", "Food & Beverage", "Logistics"]),
-    incentiveType: "LOAN", fundingAmount: 25000000, deadline: null,
-    sourceUrl: "https://www.rd.usda.gov/programs-services/business-programs/business-industry-loan-guarantees", programCode: "USDA-BI", status: "ACTIVE", isVerified: true, scraperSource: "federal_scraper",
-  },
-  {
     title: "EPA Clean Ports Program — Shore Power & Electrification",
     slug: "epa-clean-ports-program",
     jurisdictionLevel: "FEDERAL", jurisdictionName: "United States",
@@ -6741,17 +6684,6 @@ const incentives = [
     industryCategories: JSON.stringify(["Aviation", "Manufacturing", "Technology", "Research & Development"]),
     incentiveType: "TAX_CREDIT", fundingAmount: 1500000, deadline: null,
     sourceUrl: "https://floridajobs.org/business-growth-and-partnerships/incentives/tax-refund-programs", programCode: "FL-DEFENSE-SR", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
-  },
-  {
-    title: "Illinois EDGE — Economic Development for a Growing Economy Tax Credit",
-    slug: "illinois-edge-tax-credit",
-    jurisdictionLevel: "STATE", jurisdictionName: "Illinois",
-    managingAgency: "Illinois Department of Commerce and Economic Opportunity", agencyAcronym: "DCEO",
-    shortSummary: "Corporate income tax credits for Illinois businesses creating at least 10 new full-time jobs, providing credits equal to 50% of the income taxes withheld from new employees for up to 10 years. Retains and attracts corporate headquarters, manufacturers, and technology companies.",
-    keyRequirements: JSON.stringify(["Minimum 10 new full-time jobs (5 for businesses in distressed areas)","Average wage must equal or exceed county average","Credit: 50% of state income taxes withheld from new employees","10-year credit period","Must demonstrate Illinois is in competition with another state for the project"]),
-    industryCategories: JSON.stringify(["Manufacturing", "Technology", "Financial Services", "Healthcare"]),
-    incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://dceo.illinois.gov/expandrelocate/incentives/taxassistance/edge.html", programCode: "IL-EDGE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
     title: "Washington State Clean Energy Fund",
@@ -6876,8 +6808,83 @@ const incentives = [
     incentiveType: "SUBSIDY", fundingAmount: 5000000, deadline: null,
     sourceUrl: "https://www.nashville.gov/departments/mayors-office/economic-development", programCode: "NASH-MCIP", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
-  ...caPrograms,
-  ...otherPrograms,
+
+  // ── Batch A: Louisiana, Arkansas, Mississippi, Kansas, Iowa ────────────────
+
+
+  { title: "Arkansas Quick Action Closing Fund", slug: "arkansas-quick-action-closing-fund",
+    jurisdictionLevel: "STATE", jurisdictionName: "Arkansas",
+    managingAgency: "Arkansas Economic Development Commission", agencyAcronym: "AEDC",
+    shortSummary: "Discretionary fund providing cash grants to businesses making location or expansion decisions in competition with other states. Used as a last-resort incentive to close competitive deals that will create significant jobs and investment in Arkansas.",
+    keyRequirements: JSON.stringify(["Project must be creating or retaining jobs in competition with another state","Governor's office discretionary approval required","Average wages must exceed county average wage","Eligible: capital investment, infrastructure, training costs","No minimum size — deal competitiveness and job quality determine eligibility"]),
+    industryCategories: JSON.stringify(["Manufacturing","Technology","Logistics","Corporate HQ","Food & Beverage"]),
+    incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
+    sourceUrl: "https://www.arkansasedc.com/incentives/quick-action-closing-fund", programCode: "AR-QACF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+
+
+
+
+  // ── Batch B: Nebraska, New Hampshire, New Jersey, North Dakota, Oklahoma ───
+
+  { title: "Nebraska Advantage Act", slug: "nebraska-advantage-act",
+    jurisdictionLevel: "STATE", jurisdictionName: "Nebraska",
+    managingAgency: "Nebraska Department of Economic Development", agencyAcronym: "NDED",
+    shortSummary: "Provides refundable income tax credits and sales tax exemptions for businesses that invest in Nebraska and create new jobs. Tiers range from Tier 1 (small investments) to Tier 6 (transformational projects) with credits scaled to job creation and capital investment.",
+    keyRequirements: JSON.stringify(["Minimum new employment and capital investment thresholds vary by tier","Tier 1: 10 new employees + $1M investment; Tier 6: 500 new employees + $20M","Eligible: manufacturing, processing, research, headquarters, teleservices","Credits are refundable — excess credits paid as cash","Application before project begins; 5-year performance period"]),
+    industryCategories: JSON.stringify(["Manufacturing","Technology","Corporate HQ","Agriculture","Logistics"]),
+    incentiveType: "TAX_CREDIT", fundingAmount: 5000000, deadline: null,
+    sourceUrl: "https://opportunity.nebraska.gov/programs/nebraska-advantage/", programCode: "NE-ADV", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+
+  { title: "New Hampshire Business Finance Authority Loan Guarantee", slug: "nh-bfa-loan-guarantee",
+    jurisdictionLevel: "STATE", jurisdictionName: "New Hampshire",
+    managingAgency: "New Hampshire Business Finance Authority", agencyAcronym: "NH BFA",
+    shortSummary: "Guarantees up to 90% of bank loans for NH small and mid-size businesses that cannot qualify for conventional financing. Helps companies access capital for real estate, equipment, working capital, and business acquisition. Loan guarantees typically range from $100,000 to $10 million.",
+    keyRequirements: JSON.stringify(["Business must be located in or relocating to New Hampshire","Must demonstrate inability to secure full conventional financing without guarantee","Eligible uses: real estate, equipment, working capital, acquisitions","Guarantee: up to 90% of loan principal","NH BFA approval required before bank extends the loan"]),
+    industryCategories: JSON.stringify(["Manufacturing","Technology","Healthcare","Retail","Construction"]),
+    incentiveType: "LOAN", fundingAmount: 10000000, deadline: null,
+    sourceUrl: "https://www.nhbfa.com/programs/loan-guarantees/", programCode: "NH-BFA-LG", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+
+
+  { title: "North Dakota Workforce Development Loan Fund", slug: "north-dakota-workforce-loan-fund",
+    jurisdictionLevel: "STATE", jurisdictionName: "North Dakota",
+    managingAgency: "Bank of North Dakota", agencyAcronym: "BND",
+    shortSummary: "Provides low-interest loans to ND businesses for job training, skill development, and workforce expansion. Supports companies training new hires or upskilling existing employees in key industries. Loan amounts typically $25,000–$500,000 at below-market interest rates.",
+    keyRequirements: JSON.stringify(["Business must be North Dakota-based","Training must result in identifiable job skills or advancement","Eligible: new hire training, apprenticeships, equipment training","Loan: $25,000–$500,000 at below-market interest rates","Must demonstrate repayment capacity through business financials"]),
+    industryCategories: JSON.stringify(["Manufacturing","Agriculture","Energy","Healthcare","Technology"]),
+    incentiveType: "LOAN", fundingAmount: 500000, deadline: null,
+    sourceUrl: "https://www.banknd.nd.gov/business-finance/workforce-development/", programCode: "ND-WDF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+
+
+  // ── Batch C: Pennsylvania, South Dakota, Vermont, West Virginia, Wyoming ───
+
+  { title: "Pennsylvania Industrial Development Authority Loan", slug: "pennsylvania-pida-loan",
+    jurisdictionLevel: "STATE", jurisdictionName: "Pennsylvania",
+    managingAgency: "Pennsylvania Industrial Development Authority", agencyAcronym: "PIDA",
+    shortSummary: "Provides low-interest loans to businesses for land and building acquisition, construction, and renovation to create or retain jobs in Pennsylvania. Loan rates are significantly below conventional market rates, reducing carrying costs for capital projects.",
+    keyRequirements: JSON.stringify(["Business must be creating or retaining full-time jobs in Pennsylvania","Loan used for land, building purchase, construction, or renovation","Rate: approximately 2.25%–3.75% depending on project and location","Project must be in an eligible use category: industrial, R&D, agribusiness, or tech","Applications processed through certified economic development organizations"]),
+    industryCategories: JSON.stringify(["Manufacturing","Technology","Agriculture","Construction","Healthcare"]),
+    incentiveType: "LOAN", fundingAmount: 2000000, deadline: null,
+    sourceUrl: "https://dced.pa.gov/programs/pennsylvania-industrial-development-authority-pida/", programCode: "PA-PIDA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+
+
+
+  { title: "West Virginia Research & Development Tax Credit", slug: "west-virginia-rd-tax-credit",
+    jurisdictionLevel: "STATE", jurisdictionName: "West Virginia",
+    managingAgency: "West Virginia State Tax Department", agencyAcronym: "WV Tax",
+    shortSummary: "Non-refundable business tax credit equal to 10% of qualifying R&D expenditures conducted in West Virginia, with an additional 5% credit for collaboration with WV universities. Supports diversifying WV's economy through innovation and technology development.",
+    keyRequirements: JSON.stringify(["R&D must be conducted within West Virginia","Qualifying expenses mirror federal IRC Section 41 QRE definition","Base credit: 10% of qualifying R&D expenditures","Additional 5% credit for R&D performed with WV colleges or universities","Nonrefundable; 10-year carryforward period allowed"]),
+    industryCategories: JSON.stringify(["Technology","Manufacturing","Energy","Healthcare","Agriculture"]),
+    incentiveType: "TAX_CREDIT", fundingAmount: 500000, deadline: null,
+    sourceUrl: "https://tax.wv.gov/Business/TaxCredits/Pages/RDCredit.aspx", programCode: "WV-RD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+
+  { title: "Wyoming Business Ready Community Grant & Loan Program", slug: "wyoming-brc-grant-loan",
+    jurisdictionLevel: "STATE", jurisdictionName: "Wyoming",
+    managingAgency: "Wyoming Business Council", agencyAcronym: "WBC",
+    shortSummary: "Provides grants and low-interest loans to Wyoming communities for infrastructure improvements that directly support new or expanding private businesses creating jobs. Covers water, sewer, roads, broadband, and building rehab to prepare sites for business investment.",
+    keyRequirements: JSON.stringify(["Business must commit to creating a minimum number of jobs in Wyoming","Infrastructure project directly tied to the business investment decision","Community (city, county) applies on behalf of the qualifying business","Business commitment letter and job creation agreement required","Match: 15–25% local government contribution required"]),
+    industryCategories: JSON.stringify(["Manufacturing","Technology","Energy","Agriculture","Logistics"]),
+    incentiveType: "GRANT", fundingAmount: 1500000, deadline: null,
+    sourceUrl: "https://wyomingbusiness.org/programs/business-ready-community-grant-loan-program/", programCode: "WY-BRC2", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 ];
 
 async function main() {
