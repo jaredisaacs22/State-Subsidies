@@ -25,7 +25,8 @@ jobs:
 
       - name: Run scrapers (mock mode)
         # Use --mock until live scraper targets are validated stable.
-        # Switch to --live to pull real data from .gov sources.
+        # KEEP --mock. Live scraper data is not quality-controlled.
+        # Add new programs manually to prisma/seed-ca-programs.ts or seed-other-programs.ts.
         run: python -m scrapers.runner --mock --output /tmp/incentives.json
 
       - name: Write scraped data to database

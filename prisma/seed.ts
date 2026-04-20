@@ -6890,6 +6890,17 @@ const incentives = [
 async function main() {
   console.log("🌱 Seeding database...");
 
+  // Remove low-quality Grants.gov scraped records before upserting curated data
+  const purged = await prisma.incentive.deleteMany({
+    where: {
+      OR: [
+        { shortSummary: { startsWith: "Federal grant opportunity:" } },
+        { scraperSource: "grants_gov_api", industryCategories: '["General Business"]' },
+      ],
+    },
+  });
+  if (purged.count > 0) console.log(`  🗑  Purged ${purged.count} low-quality scraper records`);
+
   for (const incentive of incentives) {
     await prisma.incentive.upsert({
       where: { slug: incentive.slug },
