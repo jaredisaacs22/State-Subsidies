@@ -1,8 +1,8 @@
 name: Initialize Database
 
-# Run this ONCE after setting up Vercel Postgres / Neon.
-# Pushes the Prisma schema to the database and seeds it with initial data.
-# Trigger manually from: GitHub → Actions → Initialize Database → Run workflow
+# Run this ONCE after setting up Vercel Postgres / Neon, or any time you want
+# to reseed the database with the latest seed.ts data.
+# Trigger manually: GitHub → Actions → Initialize Database → Run workflow
 
 on:
   workflow_dispatch:
@@ -14,12 +14,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: "npm"
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
       - name: Install dependencies
         run: npm ci
@@ -27,18 +31,22 @@ jobs:
       - name: Check DATABASE_URL_UNPOOLED secret is set
         run: |
           if [ -z "$DATABASE_URL" ]; then
-            echo "❌ DATABASE_URL_UNPOOLED secret is not set or is empty."
-            echo "   Add it at: GitHub repo → Settings → Secrets and variables → Actions"
+            echo "❌ DATABASE_URL_UNPOOLED secret is not set."
+            echo ""
+            echo "   This is a GitHub Secret — not a Vercel env var. Add it here:"
+            echo "   GitHub repo → Settings → Secrets and variables → Actions → New repository secret"
+            echo "   Name:  DATABASE_URL_UNPOOLED"
+            echo "   Value: copy from Vercel → Storage → your Postgres DB → .env.local tab"
+            echo "          (starts with postgres://... and does NOT contain '-pooler')"
             exit 1
           fi
-          echo "✅ DATABASE_URL is set (${#DATABASE_URL} chars)"
+          echo "✅ DATABASE_URL_UNPOOLED is set (${#DATABASE_URL} chars)"
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
 
       - name: Push schema to database
         run: npx prisma db push --accept-data-loss
         env:
-          # Use the unpooled (direct) URL for DDL — pgbouncer doesn't support schema changes
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
 
       - name: Seed database
