@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+import { caPrograms } from "./seed-ca-programs";
+import { otherPrograms } from "./seed-other-programs";
 
 const prisma = new PrismaClient();
 
@@ -6874,6 +6876,8 @@ const incentives = [
     incentiveType: "SUBSIDY", fundingAmount: 5000000, deadline: null,
     sourceUrl: "https://www.nashville.gov/departments/mayors-office/economic-development", programCode: "NASH-MCIP", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
+  ...caPrograms,
+  ...otherPrograms,
 ];
 
 async function main() {
