@@ -13,39 +13,28 @@ jobs:
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
 
-      # upsert_env: remove if exists (ignore error), then add fresh
+      # VERCEL_SCOPE is your Vercel username or team slug (vercel.com/<scope>).
+      # For personal accounts it equals your username. Leave blank to omit.
       - name: Set UPSTASH_REDIS_REST_URL
         run: |
-          vercel env rm UPSTASH_REDIS_REST_URL production \
-            --token=${{ secrets.VERCEL_TOKEN }} \
-            --scope=${{ secrets.VERCEL_SCOPE }} \
-            --yes 2>/dev/null || true
-          echo "${{ secrets.UPSTASH_REDIS_REST_URL }}" | vercel env add UPSTASH_REDIS_REST_URL production \
-            --token=${{ secrets.VERCEL_TOKEN }} \
-            --scope=${{ secrets.VERCEL_SCOPE }} \
-            --yes
+          SCOPE="${{ secrets.VERCEL_SCOPE }}"
+          SCOPE_FLAG="${SCOPE:+--scope=$SCOPE}"
+          vercel env rm UPSTASH_REDIS_REST_URL production $SCOPE_FLAG --token=${{ secrets.VERCEL_TOKEN }} --yes 2>/dev/null || true
+          echo "${{ secrets.UPSTASH_REDIS_REST_URL }}" | vercel env add UPSTASH_REDIS_REST_URL production $SCOPE_FLAG --token=${{ secrets.VERCEL_TOKEN }} --yes
 
       - name: Set UPSTASH_REDIS_REST_TOKEN
         run: |
-          vercel env rm UPSTASH_REDIS_REST_TOKEN production \
-            --token=${{ secrets.VERCEL_TOKEN }} \
-            --scope=${{ secrets.VERCEL_SCOPE }} \
-            --yes 2>/dev/null || true
-          echo "${{ secrets.UPSTASH_REDIS_REST_TOKEN }}" | vercel env add UPSTASH_REDIS_REST_TOKEN production \
-            --token=${{ secrets.VERCEL_TOKEN }} \
-            --scope=${{ secrets.VERCEL_SCOPE }} \
-            --yes
+          SCOPE="${{ secrets.VERCEL_SCOPE }}"
+          SCOPE_FLAG="${SCOPE:+--scope=$SCOPE}"
+          vercel env rm UPSTASH_REDIS_REST_TOKEN production $SCOPE_FLAG --token=${{ secrets.VERCEL_TOKEN }} --yes 2>/dev/null || true
+          echo "${{ secrets.UPSTASH_REDIS_REST_TOKEN }}" | vercel env add UPSTASH_REDIS_REST_TOKEN production $SCOPE_FLAG --token=${{ secrets.VERCEL_TOKEN }} --yes
 
       - name: Set DASHBOARD_SECRET
         run: |
-          vercel env rm DASHBOARD_SECRET production \
-            --token=${{ secrets.VERCEL_TOKEN }} \
-            --scope=${{ secrets.VERCEL_SCOPE }} \
-            --yes 2>/dev/null || true
-          echo "51432" | vercel env add DASHBOARD_SECRET production \
-            --token=${{ secrets.VERCEL_TOKEN }} \
-            --scope=${{ secrets.VERCEL_SCOPE }} \
-            --yes
+          SCOPE="${{ secrets.VERCEL_SCOPE }}"
+          SCOPE_FLAG="${SCOPE:+--scope=$SCOPE}"
+          vercel env rm DASHBOARD_SECRET production $SCOPE_FLAG --token=${{ secrets.VERCEL_TOKEN }} --yes 2>/dev/null || true
+          echo "51432" | vercel env add DASHBOARD_SECRET production $SCOPE_FLAG --token=${{ secrets.VERCEL_TOKEN }} --yes
 
       - name: Done
         run: echo "✅ Vercel env vars set. Trigger a redeploy on Vercel for changes to take effect."

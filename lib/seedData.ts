@@ -1,5 +1,7 @@
 // Auto-generated from prisma/seed.ts – used by instrumentation.ts for runtime auto-seeding
-// To add programs, edit prisma/seed.ts and run the seed or re-deploy.
+// To add programs, edit prisma/seed-ca-programs.ts or seed-other-programs.ts and re-deploy.
+import { caPrograms } from "../prisma/seed-ca-programs";
+import { otherPrograms } from "../prisma/seed-other-programs";
 
 export const INCENTIVES = [
   // ── 1. WAZIP Off-Road Equipment Grant ───────────────────────────────────
@@ -6872,4 +6874,6 @@ export const INCENTIVES = [
     incentiveType: "SUBSIDY", fundingAmount: 5000000, deadline: null,
     sourceUrl: "https://www.nashville.gov/departments/mayors-office/economic-development", programCode: "NASH-MCIP", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
+  ...caPrograms,
+  ...otherPrograms,
 ];

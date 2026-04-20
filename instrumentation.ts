@@ -5,15 +5,15 @@ export async function register() {
 
   try {
     const { prisma } = await import("./lib/db");
+    const { INCENTIVES } = await import("./lib/seedData");
     const count = await prisma.incentive.count();
 
-    if (count >= 530) {
+    if (count >= INCENTIVES.length) {
       await prisma.$disconnect();
       return;
     }
 
-    console.log(`[seed] ${count} programs in DB — upserting to 530...`);
-    const { INCENTIVES } = await import("./lib/seedData");
+    console.log(`[seed] ${count} programs in DB — upserting to ${INCENTIVES.length}...`);
 
     for (const inc of INCENTIVES) {
       await prisma.incentive.upsert({
