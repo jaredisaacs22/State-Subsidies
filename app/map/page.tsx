@@ -39,18 +39,11 @@ export default function MapPage() {
   const [summary, setSummary] = useState<StateSummary | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Fetch all incentives once to build state counts (STATE level only)
+  // Fetch per-state counts (includes AGENCY/CITY attributed to parent state)
   useEffect(() => {
-    fetch("/api/incentives?pageSize=500&status=ACTIVE&jurisdictionLevel=STATE")
+    fetch("/api/stats/states")
       .then((r) => r.json())
-      .then((data: PaginatedResponse<Incentive>) => {
-        const c: Record<string, number> = {};
-        for (const inc of data.data) {
-          const name = inc.jurisdictionName;
-          c[name] = (c[name] ?? 0) + 1;
-        }
-        setCounts(c);
-      })
+      .then((data: { counts: Record<string, number> }) => setCounts(data.counts))
       .catch(() => {});
   }, []);
 
@@ -68,8 +61,8 @@ export default function MapPage() {
     setLoading(true);
     const isFederal = selected === "United States";
     const url = isFederal
-      ? `/api/incentives?pageSize=50&status=ACTIVE&jurisdictionLevel=FEDERAL`
-      : `/api/incentives?pageSize=50&status=ACTIVE&jurisdictionName=${encodeURIComponent(selected)}`;
+      ? `/api/incentives?pageSize=200&status=ACTIVE&jurisdictionLevel=FEDERAL`
+      : `/api/incentives?pageSize=200&status=ACTIVE&jurisdictionName=${encodeURIComponent(selected)}`;
     fetch(url)
       .then((r) => r.json())
       .then((data: PaginatedResponse<Incentive>) => {
