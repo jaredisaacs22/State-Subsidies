@@ -9,33 +9,33 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Primary: deep forest green — consistent with logo and map
+        // Primary: deep navy/indigo — financial, trustworthy, premium
         brand: {
-          50:  "#f0fdf4",
-          100: "#dcfce7",
-          200: "#bbf7d0",
-          300: "#86efac",
-          400: "#4ade80",
-          500: "#22a85a",
-          600: "#1a7a42",
-          700: "#1a5c38",
-          800: "#14432a",
-          900: "#0d2e1c",
-          950: "#071a10",
+          50:  "#eef2ff",
+          100: "#e0e7ff",
+          200: "#c7d2fe",
+          300: "#a5b4fc",
+          400: "#818cf8",
+          500: "#4f46e5",
+          600: "#3730a3",
+          700: "#312e81",
+          800: "#1e1b6b",
+          900: "#13104a",
+          950: "#080630",
         },
-        // Alias: forest mirrors brand for semantic clarity
+        // Alias: forest kept for class-name compat, now maps to navy/indigo
         forest: {
-          50:  "#f0fdf4",
-          100: "#dcfce7",
-          200: "#bbf7d0",
-          300: "#86efac",
-          400: "#4ade80",
-          500: "#22a85a",
-          600: "#1a7a42",
-          700: "#1a5c38",
-          800: "#14432a",
-          900: "#0d2e1c",
-          950: "#071a10",
+          50:  "#eef2ff",
+          100: "#e0e7ff",
+          200: "#c7d2fe",
+          300: "#a5b4fc",
+          400: "#818cf8",
+          500: "#4f46e5",
+          600: "#3730a3",
+          700: "#312e81",
+          800: "#1e1b6b",
+          900: "#13104a",
+          950: "#080630",
         },
         // Accent: warm amber — used sparingly for highlights and logo dots
         amber: {

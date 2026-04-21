@@ -76,8 +76,8 @@ export function LogoMark({ height, size, className }: LogoMarkProps) {
     >
       <defs>
         <linearGradient id="us-bg" x1="0" y1="0" x2="0.15" y2="1">
-          <stop offset="0%"   stopColor="#1a7a42" />
-          <stop offset="100%" stopColor="#052e16" />
+          <stop offset="0%"   stopColor="#3730a3" />
+          <stop offset="100%" stopColor="#0f0d3d" />
         </linearGradient>
         {/* Amber glow for activity dots */}
         <radialGradient id="dot-glow" cx="50%" cy="50%" r="50%">
