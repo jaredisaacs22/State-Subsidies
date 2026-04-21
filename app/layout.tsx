@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <div className="h-[3px] bg-gradient-to-r from-forest-800 via-forest-600 to-forest-800 sticky top-0 z-50" />
+        <div className="h-[3px] bg-gradient-to-r from-[#1e1b6b] via-[#0d9488] to-[#1e1b6b] sticky top-0 z-50" />
         <header className="bg-white/95 backdrop-blur-sm border-b border-slate-200/80 sticky top-[3px] z-50 shadow-[0_1px_12px_rgba(0,0,0,0.05)]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-15 flex items-center justify-between" style={{ height: "3.75rem" }}>
             <a href="/" className="flex items-center gap-2.5 group">
