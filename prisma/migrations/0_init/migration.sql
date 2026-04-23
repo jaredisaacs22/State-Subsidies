@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "Incentive" (
+CREATE TABLE IF NOT EXISTS "Incentive" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE "Incentive" (
 );
 
 -- CreateTable
-CREATE TABLE "PageView" (
+CREATE TABLE IF NOT EXISTS "PageView" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "type" TEXT NOT NULL,
@@ -40,22 +40,22 @@ CREATE TABLE "PageView" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Incentive_slug_key" ON "Incentive"("slug");
+CREATE UNIQUE INDEX IF NOT EXISTS "Incentive_slug_key" ON "Incentive"("slug");
 
 -- CreateIndex
-CREATE INDEX "Incentive_jurisdictionLevel_idx" ON "Incentive"("jurisdictionLevel");
+CREATE INDEX IF NOT EXISTS "Incentive_jurisdictionLevel_idx" ON "Incentive"("jurisdictionLevel");
 
 -- CreateIndex
-CREATE INDEX "Incentive_incentiveType_idx" ON "Incentive"("incentiveType");
+CREATE INDEX IF NOT EXISTS "Incentive_incentiveType_idx" ON "Incentive"("incentiveType");
 
 -- CreateIndex
-CREATE INDEX "Incentive_status_idx" ON "Incentive"("status");
+CREATE INDEX IF NOT EXISTS "Incentive_status_idx" ON "Incentive"("status");
 
 -- CreateIndex
-CREATE INDEX "Incentive_deadline_idx" ON "Incentive"("deadline");
+CREATE INDEX IF NOT EXISTS "Incentive_deadline_idx" ON "Incentive"("deadline");
 
 -- CreateIndex
-CREATE INDEX "PageView_createdAt_idx" ON "PageView"("createdAt");
+CREATE INDEX IF NOT EXISTS "PageView_createdAt_idx" ON "PageView"("createdAt");
 
 -- CreateIndex
-CREATE INDEX "PageView_type_idx" ON "PageView"("type");
+CREATE INDEX IF NOT EXISTS "PageView_type_idx" ON "PageView"("type");
