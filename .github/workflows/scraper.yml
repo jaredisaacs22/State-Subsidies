@@ -16,6 +16,8 @@ on:
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - uses: actions/checkout@v4
 
@@ -33,7 +35,7 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SCRAPER_MOCK_MODE: "false"
-        run: python3 -m scrapers.scheduler --once --live
+        run: python3 -m scrapers.scheduler --once --live 2>&1 | tee /tmp/scrape.log
 
       - name: Upload scrape log as artifact
         uses: actions/upload-artifact@v4

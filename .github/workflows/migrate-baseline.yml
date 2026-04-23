@@ -13,6 +13,8 @@ on:
 jobs:
   baseline:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - uses: actions/checkout@v4
 
@@ -34,6 +36,9 @@ jobs:
           echo "DATABASE_URL_UNPOOLED is set (${#DATABASE_URL} chars)"
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
+
+      - name: Generate Prisma client
+        run: npx prisma generate
 
       - name: Resolve 0_init as applied
         run: npx prisma migrate resolve --applied "0_init"
