@@ -1,0 +1,46 @@
+name: Migrate Baseline (one-time)
+
+# ONE-TIME USE: marks 0_init as already-applied on the existing live DB that
+# was previously set up with `prisma db push`. Running this WITHOUT --applied
+# would re-run the CREATE TABLE SQL and fail because tables already exist.
+#
+# Trigger: GitHub → Actions → Migrate Baseline (one-time) → Run workflow.
+# After it succeeds once, delete this file (or leave it — it is dispatch-only).
+
+on:
+  workflow_dispatch:
+
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Guard — DATABASE_URL_UNPOOLED is set
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "DATABASE_URL_UNPOOLED secret is not set. Aborting."
+            exit 1
+          fi
+          echo "DATABASE_URL_UNPOOLED is set (${#DATABASE_URL} chars)"
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
+
+      - name: Resolve 0_init as applied
+        run: npx prisma migrate resolve --applied "0_init"
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
+
+      - name: Verify — migrate status
+        run: npx prisma migrate status
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
