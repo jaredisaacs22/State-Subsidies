@@ -1,32 +1,40 @@
 name: Set Vercel Environment Variables
 
 on:
-  workflow_dispatch:  # Run manually from GitHub Actions tab
+  workflow_dispatch:
 
 jobs:
   set-env:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
 
+      # VERCEL_SCOPE is your Vercel username or team slug (vercel.com/<scope>).
+      # For personal accounts it equals your username. Leave blank to omit.
       - name: Set UPSTASH_REDIS_REST_URL
         run: |
-          echo "${{ secrets.UPSTASH_REDIS_REST_URL }}" | vercel env add UPSTASH_REDIS_REST_URL production --token=${{ secrets.VERCEL_TOKEN }} --yes 2>/dev/null || \
-          vercel env rm UPSTASH_REDIS_REST_URL production --token=${{ secrets.VERCEL_TOKEN }} --yes 2>/dev/null && \
-          echo "${{ secrets.UPSTASH_REDIS_REST_URL }}" | vercel env add UPSTASH_REDIS_REST_URL production --token=${{ secrets.VERCEL_TOKEN }} --yes
+          SCOPE="${{ secrets.VERCEL_SCOPE }}"
+          SCOPE_FLAG="${SCOPE:+--scope=$SCOPE}"
+          vercel env rm UPSTASH_REDIS_REST_URL production $SCOPE_FLAG --token=${{ secrets.VERCEL_TOKEN }} --yes 2>/dev/null || true
+          echo "${{ secrets.UPSTASH_REDIS_REST_URL }}" | vercel env add UPSTASH_REDIS_REST_URL production $SCOPE_FLAG --token=${{ secrets.VERCEL_TOKEN }} --yes
 
       - name: Set UPSTASH_REDIS_REST_TOKEN
         run: |
-          echo "${{ secrets.UPSTASH_REDIS_REST_TOKEN }}" | vercel env add UPSTASH_REDIS_REST_TOKEN production --token=${{ secrets.VERCEL_TOKEN }} --yes 2>/dev/null || \
-          vercel env rm UPSTASH_REDIS_REST_TOKEN production --token=${{ secrets.VERCEL_TOKEN }} --yes 2>/dev/null && \
-          echo "${{ secrets.UPSTASH_REDIS_REST_TOKEN }}" | vercel env add UPSTASH_REDIS_REST_TOKEN production --token=${{ secrets.VERCEL_TOKEN }} --yes
+          SCOPE="${{ secrets.VERCEL_SCOPE }}"
+          SCOPE_FLAG="${SCOPE:+--scope=$SCOPE}"
+          vercel env rm UPSTASH_REDIS_REST_TOKEN production $SCOPE_FLAG --token=${{ secrets.VERCEL_TOKEN }} --yes 2>/dev/null || true
+          echo "${{ secrets.UPSTASH_REDIS_REST_TOKEN }}" | vercel env add UPSTASH_REDIS_REST_TOKEN production $SCOPE_FLAG --token=${{ secrets.VERCEL_TOKEN }} --yes
 
       - name: Set DASHBOARD_SECRET
         run: |
-          echo "51432" | vercel env add DASHBOARD_SECRET production --token=${{ secrets.VERCEL_TOKEN }} --yes 2>/dev/null || \
-          vercel env rm DASHBOARD_SECRET production --token=${{ secrets.VERCEL_TOKEN }} --yes 2>/dev/null && \
-          echo "51432" | vercel env add DASHBOARD_SECRET production --token=${{ secrets.VERCEL_TOKEN }} --yes
+          SCOPE="${{ secrets.VERCEL_SCOPE }}"
+          SCOPE_FLAG="${SCOPE:+--scope=$SCOPE}"
+          vercel env rm DASHBOARD_SECRET production $SCOPE_FLAG --token=${{ secrets.VERCEL_TOKEN }} --yes 2>/dev/null || true
+          echo "51432" | vercel env add DASHBOARD_SECRET production $SCOPE_FLAG --token=${{ secrets.VERCEL_TOKEN }} --yes
 
       - name: Done
         run: echo "✅ Vercel env vars set. Trigger a redeploy on Vercel for changes to take effect."
