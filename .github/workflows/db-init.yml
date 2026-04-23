@@ -1,8 +1,8 @@
 name: Initialize Database
 
-# Run this ONCE after setting up Vercel Postgres / Neon, or any time you want
-# to reseed the database with the latest seed.ts data.
-# Trigger manually: GitHub → Actions → Initialize Database → Run workflow
+# Applies pending migrations then reseeds the database.
+# Safe to re-run — migrations are idempotent, seed uses upsert.
+# Trigger: GitHub → Actions → Initialize Database → Run workflow
 
 on:
   workflow_dispatch:
@@ -26,34 +26,33 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Check DATABASE_URL_UNPOOLED secret is set
+      - name: Diagnose — check secret and URL shape
         run: |
           if [ -z "$DATABASE_URL" ]; then
             echo "❌ DATABASE_URL_UNPOOLED secret is not set."
-            echo ""
-            echo "   This is a GitHub Secret — not a Vercel env var. Add it here:"
-            echo "   GitHub repo → Settings → Secrets and variables → Actions → New repository secret"
+            echo "   Go to: GitHub repo → Settings → Secrets → Actions → Repository secrets"
             echo "   Name:  DATABASE_URL_UNPOOLED"
-            echo "   Value: copy from Vercel → Storage → your Postgres DB → .env.local tab"
-            echo "          (starts with postgres://... and does NOT contain '-pooler')"
+            echo "   Value: from Vercel → Storage → DB → .env.local → POSTGRES_URL_NON_POOLING"
             exit 1
           fi
-          echo "✅ DATABASE_URL_UNPOOLED is set (${#DATABASE_URL} chars)"
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
-
-      - name: Apply migrations (or push schema on first run)
-        run: |
-          # migrate deploy applies any pending migrations without data loss.
-          # On a brand-new DB with no _prisma_migrations table it will apply 0_init.
-          # On an existing DB that was set up with db push, run this ONCE first:
-          #   npx prisma migrate resolve --applied "0_init"
-          npx prisma migrate deploy
+          CHARS=${#DATABASE_URL}
+          echo "✅ DATABASE_URL_UNPOOLED is set ($CHARS chars)"
+          if echo "$DATABASE_URL" | grep -q "\-pooler"; then
+            echo "❌ URL contains '-pooler' — this is the pooled URL. Must use the direct/unpooled URL."
+            exit 1
+          fi
+          echo "✅ URL does not contain '-pooler' (direct connection confirmed)"
+          HOST=$(echo "$DATABASE_URL" | sed 's/.*@\([^:/]*\).*/\1/')
+          PORT=$(echo "$DATABASE_URL" | sed 's/.*:\([0-9]*\)\/.*/\1/')
+          echo "   Host: $HOST  Port: $PORT"
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
 
       - name: Generate Prisma client
         run: npx prisma generate
+
+      - name: Apply migrations
+        run: npx prisma migrate deploy
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
 
