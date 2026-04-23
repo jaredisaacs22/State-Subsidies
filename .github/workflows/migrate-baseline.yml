@@ -37,6 +37,9 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
 
+      - name: Generate Prisma client
+        run: npx prisma generate
+
       - name: Resolve 0_init as applied
         run: npx prisma migrate resolve --applied "0_init"
         env:

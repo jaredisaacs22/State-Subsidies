@@ -52,6 +52,11 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
 
+      - name: Generate Prisma client
+        run: npx prisma generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
+
       - name: Seed database
         run: npx ts-node --compiler-options '{"module":"CommonJS"}' prisma/seed.ts
         env:
