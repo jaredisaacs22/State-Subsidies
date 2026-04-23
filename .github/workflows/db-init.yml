@@ -10,20 +10,18 @@ on:
 jobs:
   init:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        env:
-          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: "npm"
-        env:
-          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
       - name: Install dependencies
         run: npm ci
@@ -51,6 +49,11 @@ jobs:
           # On an existing DB that was set up with db push, run this ONCE first:
           #   npx prisma migrate resolve --applied "0_init"
           npx prisma migrate deploy
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
+
+      - name: Generate Prisma client
+        run: npx prisma generate
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
 
