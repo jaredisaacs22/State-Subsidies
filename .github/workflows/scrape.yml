@@ -44,4 +44,4 @@ jobs:
           print(f"Done — inserted: {stats['inserted']}, updated: {stats['updated']}, errors: {stats['errors']}")
           EOF
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}

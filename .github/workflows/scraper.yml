@@ -30,7 +30,7 @@ jobs:
 
       - name: Run scrapers
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SCRAPER_MOCK_MODE: "false"
         run: python3 -m scrapers.scheduler --once --live

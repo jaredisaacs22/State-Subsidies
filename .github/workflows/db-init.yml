@@ -44,8 +44,13 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
 
-      - name: Push schema to database
-        run: npx prisma db push --accept-data-loss
+      - name: Apply migrations (or push schema on first run)
+        run: |
+          # migrate deploy applies any pending migrations without data loss.
+          # On a brand-new DB with no _prisma_migrations table it will apply 0_init.
+          # On an existing DB that was set up with db push, run this ONCE first:
+          #   npx prisma migrate resolve --applied "0_init"
+          npx prisma migrate deploy
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
 
