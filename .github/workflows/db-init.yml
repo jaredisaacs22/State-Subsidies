@@ -51,12 +51,21 @@ jobs:
       - name: Generate Prisma client
         run: npx prisma generate
 
+      - name: Show migration status (pre-deploy diagnostic)
+        # Informational — shows what is pending before we attempt to apply.
+        # Exits 1 for pending migrations by design; || true prevents failure.
+        run: npx prisma migrate status || true
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
+
       - name: Apply migrations
         run: npx prisma migrate deploy
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
 
       - name: Seed database
-        run: npx ts-node --compiler-options '{"module":"CommonJS"}' prisma/seed.ts
+        # Uses the package.json db:seed script — avoids shell quoting issues
+        # with ts-node --compiler-options in CI environments.
+        run: npm run db:seed
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}

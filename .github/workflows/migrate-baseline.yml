@@ -64,7 +64,10 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
 
-      - name: Verify — migration status
-        run: npx prisma migrate status
+      - name: Verify — migration status (informational)
+        # || true: prisma migrate status exits 1 if any migrations are pending.
+        # After baseline, 1_add_scrape_run will appear pending until db-init runs.
+        # This step is diagnostic only — do NOT fail the baseline job on pending migrations.
+        run: npx prisma migrate status || true
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
