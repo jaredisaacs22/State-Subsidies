@@ -24,3 +24,6 @@ click==8.1.7          # CLI runner
 # AI enrichment — used by scrapers/enricher.py to clean scraped text
 anthropic==0.40.0
 
+# Testing — SS-002 §7.1 contract tests
+pytest==8.3.3
+

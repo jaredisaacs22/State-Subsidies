@@ -1,0 +1,73 @@
+[
+  {
+    "id": "GRANT-001-SOLAR",
+    "number": "DE-FOA-0003001",
+    "title": "Community Solar Deployment Initiative",
+    "synopsis": "Funding to support deployment of community solar projects in low-to-moderate income communities. Projects must demonstrate measurable kWh production and community benefit. Eligible applicants include municipalities, nonprofits, and cooperatives. Federal cost share up to 50% of total project costs.",
+    "agencyCode": "DOE",
+    "agencyName": "U.S. Department of Energy",
+    "awardCeiling": "5000000",
+    "awardFloor": "500000",
+    "closeDate": "12152026",
+    "_expected": {
+      "passes_quality_gate": true,
+      "industry_categories_includes": ["Clean Technology"],
+      "incentive_type": "GRANT",
+      "jurisdiction_level": "FEDERAL"
+    }
+  },
+  {
+    "id": "GRANT-002-EV",
+    "number": "DOT-FHWA-0042",
+    "title": "Electric Vehicle Charging Infrastructure Grants",
+    "synopsis": "Competitive grants to deploy publicly accessible EV charging infrastructure along Alternative Fuel Corridors. Funds level-2 and DC fast charging equipment, installation, and 5 years of operations and maintenance. State DOTs, MPOs, and tribal governments eligible.",
+    "agencyCode": "DOT",
+    "agencyName": "U.S. Department of Transportation",
+    "awardCeiling": "15000000",
+    "closeDate": "2026-06-30",
+    "_expected": {
+      "passes_quality_gate": true,
+      "industry_categories_includes": ["EV Charging"],
+      "incentive_type": "GRANT"
+    }
+  },
+  {
+    "id": "GRANT-003-AG",
+    "number": "USDA-RBS-2026",
+    "title": "Rural Energy for America Program (REAP)",
+    "synopsis": "Loan guarantees and grants for renewable energy systems and energy efficiency improvements for farm operators and rural small businesses in the agriculture sector. Eligible technologies include solar, wind, biomass, geothermal, and energy efficiency upgrades. Up to 50% of total project costs covered.",
+    "agencyCode": "USDA",
+    "awardCeiling": "1000000",
+    "awardFloor": "1500",
+    "closeDate": "03312027",
+    "_expected": {
+      "passes_quality_gate": true,
+      "industry_categories_includes": ["Agriculture"],
+      "agency_acronym": "USDA"
+    }
+  },
+  {
+    "id": "REJECT-001-VAGUE",
+    "number": "ADMIN-0001",
+    "title": "Federal grant opportunity: General",
+    "synopsis": "See website.",
+    "agencyCode": "GENERIC",
+    "awardCeiling": "0",
+    "_expected": {
+      "passes_quality_gate": false,
+      "rejection_reason_contains": ["synopsis", "funding", "boilerplate"]
+    }
+  },
+  {
+    "id": "REJECT-002-NO-FUNDING",
+    "number": "DOE-FOA-0099",
+    "title": "Workshop Only Series on Energy Topics",
+    "synopsis": "A series of workshops will be held throughout the year to discuss various federal energy initiatives and gather public input. This is a workshop only event with no funding awards distributed to attendees or participants.",
+    "agencyCode": "DOE",
+    "awardCeiling": "0",
+    "_expected": {
+      "passes_quality_gate": false,
+      "rejection_reason_contains": ["funding", "title"]
+    }
+  }
+]
