@@ -9,8 +9,8 @@ import { parseIncentive } from "@/lib/utils";
 export const dynamic = "force-dynamic";
 
 // Node.js native fetch (undici) does not honour HTTPS_PROXY automatically.
-// Set the global dispatcher once so every outbound fetch in this process
-// (including the Anthropic SDK's internal calls) routes through the proxy.
+// Only enable the proxy when explicitly configured — Vercel production should
+// not route through any proxy.
 const proxyUrl = process.env.HTTPS_PROXY || process.env.https_proxy;
 if (proxyUrl) setGlobalDispatcher(new ProxyAgent(proxyUrl));
 
@@ -21,11 +21,12 @@ export function GET() {
   return Response.json({ configured });
 }
 
+// Honor ANTHROPIC_BASE_URL when set (e.g. for proxies/staging), otherwise
+// default to the public Anthropic API. Some envs set it without /v1 — the SDK
+// handles that transparently.
 const anthropic = createAnthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
-  // ANTHROPIC_BASE_URL env var is set without /v1 in this environment;
-  // explicitly override to the correct versioned endpoint.
-  baseURL: "https://api.anthropic.com/v1",
+  baseURL: process.env.ANTHROPIC_BASE_URL || "https://api.anthropic.com/v1",
 });
 
 const TODAY = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });

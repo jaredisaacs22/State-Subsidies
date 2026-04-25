@@ -21,7 +21,6 @@ from .models import ScrapedIncentive, IncentiveType, JurisdictionLevel
 
 logger = structlog.get_logger()
 
-ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
 CLAUDE_MODEL = "claude-haiku-4-5-20251001"  # fast + cheap for enrichment
 
 
@@ -30,22 +29,23 @@ def enrich(incentive: ScrapedIncentive, raw_text: str = "") -> ScrapedIncentive:
     Optionally enrich a scraped incentive using Claude.
     If no API key is set, returns the incentive unchanged.
     """
-    if not ANTHROPIC_API_KEY:
+    api_key = os.getenv("ANTHROPIC_API_KEY", "")
+    if not api_key:
         logger.debug("No ANTHROPIC_API_KEY — skipping AI enrichment")
         return incentive
 
     try:
-        return _claude_enrich(incentive, raw_text)
+        return _claude_enrich(incentive, raw_text, api_key)
     except Exception as e:
         logger.warning("AI enrichment failed, using raw data", error=str(e))
         return incentive
 
 
-def _claude_enrich(incentive: ScrapedIncentive, raw_text: str) -> ScrapedIncentive:
+def _claude_enrich(incentive: ScrapedIncentive, raw_text: str, api_key: str) -> ScrapedIncentive:
     """Call Claude to extract structured fields from raw scraped content."""
     import anthropic
 
-    client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+    client = anthropic.Anthropic(api_key=api_key)
 
     content_for_claude = raw_text or (
         f"Title: {incentive.title}\n"

@@ -21,18 +21,20 @@ from .models import ScrapedIncentive
 
 logger = structlog.get_logger()
 
-_DATABASE_URL = os.getenv("DATABASE_URL", "")
-
-
 def _get_conn():
-    """Open a psycopg2 connection. Raises clearly if DATABASE_URL is missing or SQLite."""
-    url = _DATABASE_URL
+    """Open a psycopg2 connection. Raises clearly if DATABASE_URL is missing or wrong shape."""
+    url = os.getenv("DATABASE_URL", "")
     if not url:
         raise RuntimeError("DATABASE_URL environment variable is not set.")
     if url.startswith("file:") or url.startswith("sqlite"):
         raise RuntimeError(
             "DATABASE_URL points to a SQLite file, but PostgreSQL is required for the "
             "scraper DB writer. Set DATABASE_URL to a postgresql:// connection string."
+        )
+    if "-pooler" in url:
+        raise RuntimeError(
+            "DATABASE_URL contains '-pooler' (PgBouncer endpoint). psycopg2 bulk writes "
+            "require the direct/unpooled URL. In CI, use the DATABASE_URL_UNPOOLED secret."
         )
     return psycopg2.connect(url, cursor_factory=psycopg2.extras.RealDictCursor)
 
@@ -224,6 +226,58 @@ def refresh_expired_statuses() -> dict:
         errors += 1
 
     return {"closed": closed, "errors": errors}
+
+
+def record_scrape_run(
+    source: str,
+    stats: dict,
+    started_at: datetime,
+    status: str = "SUCCESS",
+    notes: str | None = None,
+) -> str:
+    """
+    Write one ScrapeRun record to the DB. Returns the inserted id.
+    stats keys: rowsConsidered (or scraped), rowsInserted (or inserted),
+    rowsUpdated (or updated), rowsSkipped (or skipped), qualityGateRejections (or rejected).
+    """
+    finished_at = datetime.utcnow()
+    duration_ms = int((finished_at - started_at).total_seconds() * 1000)
+    record_id = str(uuid.uuid4()).replace("-", "")[:25]
+
+    conn = _get_conn()
+    try:
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    INSERT INTO "ScrapeRun" (
+                        id, source, "startedAt", "finishedAt", status,
+                        "rowsConsidered", "rowsInserted", "rowsUpdated",
+                        "rowsSkipped", "qualityGateRejections", "durationMs", notes
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """,
+                    (
+                        record_id,
+                        source,
+                        started_at,
+                        finished_at,
+                        status,
+                        stats.get("rowsConsidered", stats.get("scraped", 0)),
+                        stats.get("rowsInserted", stats.get("inserted", 0)),
+                        stats.get("rowsUpdated", stats.get("updated", 0)),
+                        stats.get("rowsSkipped", stats.get("skipped", 0)),
+                        stats.get("qualityGateRejections", stats.get("rejected", 0)),
+                        duration_ms,
+                        notes,
+                    ),
+                )
+        logger.info("ScrapeRun recorded", source=source, status=status, duration_ms=duration_ms)
+        return record_id
+    except Exception as e:
+        logger.warning("Failed to record ScrapeRun", source=source, error=str(e))
+        return record_id
+    finally:
+        conn.close()
 
 
 def bulk_upsert(incentives: list[ScrapedIncentive]) -> dict:

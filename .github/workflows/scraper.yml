@@ -30,16 +30,27 @@ jobs:
       - name: Install scraper dependencies
         run: pip install -r scrapers/requirements.txt
 
-      - name: Run scrapers
+      - name: Run scrapers (dry-run by default — see SS-002)
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SCRAPER_MOCK_MODE: "false"
+          DRY_RUN: "1"
         run: python3 -m scrapers.scheduler --once --live 2>&1 | tee /tmp/scrape.log
 
       - name: Upload scrape log as artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: scrape-log-${{ github.run_id }}
           path: /tmp/scrape.log
           retention-days: 7
+
+      - name: Upload dry-run report as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scrape-report-${{ github.run_id }}
+          path: /tmp/scrape-report.json
+          if-no-files-found: ignore
+          retention-days: 14
