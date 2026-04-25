@@ -88,7 +88,8 @@ export async function GET() {
     }
 
     return NextResponse.json({ counts });
-  } catch {
+  } catch (error) {
+    console.error('[GET /api/stats/states]', error);
     return NextResponse.json({ counts: {} });
   }
 }

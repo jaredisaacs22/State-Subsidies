@@ -23,19 +23,25 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Keep only last 5000 events to avoid unbounded growth
-    const oldest = await prisma.pageView.findMany({
-      orderBy: { createdAt: 'desc' },
-      skip: 5000,
-      take: 1,
-      select: { createdAt: true },
-    });
-    if (oldest.length > 0) {
-      await prisma.pageView.deleteMany({ where: { createdAt: { lte: oldest[0].createdAt } } });
+    // Keep only last 5000 events to avoid unbounded growth.
+    // Run pruning probabilistically (1% of requests) so we don't double the DB
+    // load on every pageview — at typical traffic this still keeps the table
+    // bounded within a small window of 5000 + a few hundred.
+    if (Math.random() < 0.01) {
+      const oldest = await prisma.pageView.findMany({
+        orderBy: { createdAt: 'desc' },
+        skip: 5000,
+        take: 1,
+        select: { createdAt: true },
+      });
+      if (oldest.length > 0) {
+        await prisma.pageView.deleteMany({ where: { createdAt: { lte: oldest[0].createdAt } } });
+      }
     }
 
     return NextResponse.json({ ok: true });
-  } catch {
+  } catch (error) {
+    console.error('[POST /api/track]', error);
     return NextResponse.json({ ok: true }); // never error on tracking
   }
 }

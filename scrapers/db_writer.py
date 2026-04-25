@@ -21,18 +21,20 @@ from .models import ScrapedIncentive
 
 logger = structlog.get_logger()
 
-_DATABASE_URL = os.getenv("DATABASE_URL", "")
-
-
 def _get_conn():
-    """Open a psycopg2 connection. Raises clearly if DATABASE_URL is missing or SQLite."""
-    url = _DATABASE_URL
+    """Open a psycopg2 connection. Raises clearly if DATABASE_URL is missing or wrong shape."""
+    url = os.getenv("DATABASE_URL", "")
     if not url:
         raise RuntimeError("DATABASE_URL environment variable is not set.")
     if url.startswith("file:") or url.startswith("sqlite"):
         raise RuntimeError(
             "DATABASE_URL points to a SQLite file, but PostgreSQL is required for the "
             "scraper DB writer. Set DATABASE_URL to a postgresql:// connection string."
+        )
+    if "-pooler" in url:
+        raise RuntimeError(
+            "DATABASE_URL contains '-pooler' (PgBouncer endpoint). psycopg2 bulk writes "
+            "require the direct/unpooled URL. In CI, use the DATABASE_URL_UNPOOLED secret."
         )
     return psycopg2.connect(url, cursor_factory=psycopg2.extras.RealDictCursor)
 

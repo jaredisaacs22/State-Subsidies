@@ -14,6 +14,12 @@ function pickValid<T extends string>(value: string | null, allowed: readonly T[]
   return allowed.includes(value as T) ? (value as T) : undefined;
 }
 
+function safeInt(value: string | null, fallback: number): number {
+  if (!value) return fallback;
+  const n = parseInt(value, 10);
+  return Number.isFinite(n) ? n : fallback;
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl;
@@ -26,10 +32,10 @@ export async function GET(request: NextRequest) {
       status: pickValid(searchParams.get("status"), VALID_STATUS) ?? "ACTIVE",
       sortBy: pickValid(searchParams.get("sortBy"), VALID_SORT) ?? "createdAt",
       sortOrder: pickValid(searchParams.get("sortOrder"), ["asc", "desc"] as const) ?? "desc",
-      page: parseInt(searchParams.get("page") ?? "1"),
-      pageSize: parseInt(searchParams.get("pageSize") ?? "12"),
-      minFunding: searchParams.get("minFunding") ? parseInt(searchParams.get("minFunding")!) : undefined,
-      maxFunding: searchParams.get("maxFunding") ? parseInt(searchParams.get("maxFunding")!) : undefined,
+      page: safeInt(searchParams.get("page"), 1),
+      pageSize: safeInt(searchParams.get("pageSize"), 12),
+      minFunding: searchParams.get("minFunding") ? safeInt(searchParams.get("minFunding"), 0) : undefined,
+      maxFunding: searchParams.get("maxFunding") ? safeInt(searchParams.get("maxFunding"), 0) : undefined,
       verified: searchParams.get("verified") === "true" ? true : undefined,
       closingSoon: searchParams.get("closingSoon") === "true" ? true : undefined,
       excludeIndustryCategory: searchParams.get("excludeIndustryCategory") ?? undefined,
@@ -71,7 +77,7 @@ export async function GET(request: NextRequest) {
     if (filters.closingSoon) {
       const now = new Date();
       const thirtyDays = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
-      where.deadline = { gte: now.toISOString(), lte: thirtyDays.toISOString() };
+      where.deadline = { gte: now, lte: thirtyDays };
     }
     if (filters.minFunding !== undefined || filters.maxFunding !== undefined) {
       where.fundingAmount = {};

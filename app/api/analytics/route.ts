@@ -3,9 +3,13 @@ import { prisma } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
-const SECRET = process.env.DASHBOARD_SECRET || '51432';
+const SECRET = process.env.DASHBOARD_SECRET;
 
 export async function GET(req: NextRequest) {
+  if (!SECRET) {
+    console.error('[analytics] DASHBOARD_SECRET env var not set — endpoint disabled');
+    return NextResponse.json({ error: 'Endpoint not configured' }, { status: 503 });
+  }
   if (req.headers.get('x-dashboard-secret') !== SECRET) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -36,7 +40,8 @@ export async function GET(req: NextRequest) {
         q: e.query ?? undefined,
       })),
     });
-  } catch {
+  } catch (error) {
+    console.error('[GET /api/analytics]', error);
     return NextResponse.json({ events: [], queries: [] });
   }
 }
