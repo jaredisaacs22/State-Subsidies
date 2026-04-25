@@ -72,3 +72,20 @@ model PageView {
   @@index([createdAt])
   @@index([type])
 }
+
+model ScrapeRun {
+  id                    String   @id @default(cuid())
+  source                String
+  startedAt             DateTime
+  finishedAt            DateTime
+  status                String   // SUCCESS | FAIL | PARTIAL
+  rowsConsidered        Int
+  rowsInserted          Int
+  rowsUpdated           Int
+  rowsSkipped           Int
+  qualityGateRejections Int
+  durationMs            Int
+  notes                 String?
+
+  @@index([source, finishedAt])
+}
