@@ -73,6 +73,14 @@ SKIP_TITLE_KEYWORDS = [
     "conference", "symposium", "workshop only", "training only",
 ]
 
+# SS-002 §4 — source-agnostic boilerplate prefix block.
+# These are titles the April 20 incident produced. They must never reach the DB.
+BOILERPLATE_TITLE_PREFIXES = [
+    "federal grant opportunity:",
+    "federal grant opportunity",
+    "general business",
+]
+
 MIN_SYNOPSIS_LENGTH = 120
 MIN_AWARD_AMOUNT = 10_000
 
@@ -154,6 +162,9 @@ class GrantsGovScraper(BaseScraper):
         title_lower = title.lower()
         if any(kw in title_lower for kw in SKIP_TITLE_KEYWORDS):
             return False, f"title matches skip keyword"
+
+        if any(title_lower.startswith(p) for p in BOILERPLATE_TITLE_PREFIXES):
+            return False, f"title is boilerplate (April 20 regression class)"
 
         # Must match at least one business-relevant category
         combined = (title + " " + synopsis).lower()

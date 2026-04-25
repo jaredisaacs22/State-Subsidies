@@ -30,6 +30,12 @@ jobs:
       - name: Install scraper dependencies
         run: pip install -r scrapers/requirements.txt
 
+      - name: Contract tests (SS-002 §7.1 — blocking gate)
+        # Parsers must satisfy golden fixtures before any scrape runs.
+        # A failure here means the parser changed in a way that would
+        # poison the DB — block the scrape, do not write rows.
+        run: python3 -m pytest tests/ -v
+
       - name: Run scrapers (dry-run by default — see SS-002)
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}

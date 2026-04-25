@@ -73,10 +73,24 @@ The following cannot be done by Claude and require direct Jared action:
 |---|---|
 | SS-010: `vercel.json` hardening (decoupled build) | ✅ Done (PR #23 / `1057634`) |
 | SS-002: Env audit (GitHub + Vercel scope) | ✅ Fixed in code; secrets confirmed by Jared manually |
-| SS-002: `ScrapeRun` model + migration | 🔄 In progress this session |
-| SS-002: `DRY_RUN=1` flag in scheduler | 🔄 In progress this session |
-| SS-002: Per-source golden fixtures + contract tests | ⬜ Next |
+| SS-002: `ScrapeRun` model + migration | ✅ Done (PR #24) |
+| SS-002: `DRY_RUN=1` flag in scheduler | ✅ Done (PR #24) |
+| SS-002: `migrate-baseline` + `db-init` workflow fixes | ✅ Done (PR #25, PR #26) — confirmed working by Jared |
+| SS-002 §7.1: Per-source golden fixtures + contract tests | ✅ Done (PR #27) — Grants.gov first source |
+| SS-002 §4: Boilerplate-prefix gate (April 20 regression) | ✅ Done (PR #27) |
 | SS-012: Eval harness (CI gate before live writes) | ⬜ Pending |
+| SS-002 §9 step 7: 3 clean Grants.gov dry-run artifacts | ⬜ Next — requires running scraper.yml from main 3× |
+| SS-002 §9 step 8: Promote Grants.gov to live writes | ⬜ Blocked on step 7 |
+
+## PRs merged this session
+
+| # | Title | Result |
+|---|---|---|
+| 23 | Comprehensive API + scraper audit (10 P0/P1/P2 fixes) | ✅ merged |
+| 24 | SS-002: ScrapeRun model, DRY_RUN flag, CEO session record | ✅ merged |
+| 25 | Resolve migrate-baseline and db-init workflow failures | ✅ merged |
+| 26 | Real DB connection test for migrate + db-init workflows | ✅ merged — Jared confirmed working |
+| 27 | SS-002 §7.1: Grants.gov golden fixtures + contract tests | 🔄 open at session end |
 
 ---
 
