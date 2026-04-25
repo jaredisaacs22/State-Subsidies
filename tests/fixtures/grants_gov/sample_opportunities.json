@@ -47,6 +47,166 @@
     }
   },
   {
+    "id": "GRANT-004-WORKFORCE",
+    "number": "DOL-ETA-2026-01",
+    "title": "Strengthening Community Colleges Workforce Training Grants",
+    "synopsis": "Competitive grants to community colleges and consortia for workforce development programs in high-demand sectors. Funds curriculum development, equipment, instructor training, and apprenticeship pathways. Required match of 10% from non-federal sources for all awarded projects.",
+    "agencyCode": "DOL",
+    "agencyName": "U.S. Department of Labor",
+    "awardCeiling": "2500000",
+    "closeDate": "09302026",
+    "_expected": {
+      "passes_quality_gate": true,
+      "industry_categories_includes": ["Government & Nonprofit"]
+    }
+  },
+  {
+    "id": "GRANT-005-WATER",
+    "number": "EPA-WIFIA-2026",
+    "title": "Water Infrastructure Finance and Innovation Act Loans",
+    "synopsis": "Long-term low-interest loans for large-scale drinking water and wastewater infrastructure projects. Eligible borrowers include municipalities, public water systems, and corporations operating water utilities. Minimum project size $20 million; loan term up to 35 years.",
+    "agencyCode": "EPA",
+    "awardCeiling": "100000000",
+    "awardFloor": "20000000",
+    "closeDate": "12312026",
+    "_expected": {
+      "passes_quality_gate": true,
+      "industry_categories_includes": ["Water & Utilities"]
+    }
+  },
+  {
+    "id": "GRANT-006-MFG",
+    "number": "DOC-EDA-MFG-2026",
+    "title": "Build Back Better Regional Manufacturing Challenge",
+    "synopsis": "Regional grants to coalitions developing manufacturing innovation hubs. Activities include research, workforce, supply-chain integration, and equipment for advanced manufacturing facilities. Coalitions must include at least 4 member organizations spanning industry, academia, and government.",
+    "agencyCode": "DOC",
+    "awardCeiling": "75000000",
+    "closeDate": "11152026",
+    "_expected": {
+      "passes_quality_gate": true,
+      "industry_categories_includes": ["Manufacturing"]
+    }
+  },
+  {
+    "id": "GRANT-007-RESEARCH",
+    "number": "NSF-SBIR-2026-01",
+    "title": "Small Business Innovation Research (SBIR) Phase II",
+    "synopsis": "Phase II awards for small businesses with successful Phase I outcomes. Funds prototype-to-product development, including research and engineering staff, equipment, materials, and milestone-based deliverables. Awardees must have completed Phase I within 24 months. Independent technical reviews required.",
+    "agencyCode": "NSF",
+    "awardCeiling": "1500000",
+    "closeDate": "07152026",
+    "_expected": {
+      "passes_quality_gate": true,
+      "industry_categories_includes": ["Research & Development"]
+    }
+  },
+  {
+    "id": "GRANT-008-BROADBAND",
+    "number": "NTIA-BEAD-2026",
+    "title": "Broadband Equity, Access, and Deployment Program",
+    "synopsis": "State-led infrastructure grants for last-mile fiber to unserved and underserved communities. Funds construction, equipment, customer-side installation, and 5 years of low-cost service guarantees. Subgrantees include private ISPs, electric cooperatives, and tribal entities for broadband deployment to qualifying households.",
+    "agencyCode": "DOC",
+    "agencyName": "National Telecommunications and Information Administration",
+    "awardCeiling": "50000000",
+    "closeDate": "2026-08-30",
+    "_expected": {
+      "passes_quality_gate": true,
+      "industry_categories_includes": ["Telecommunications"]
+    }
+  },
+  {
+    "id": "GRANT-009-FREIGHT",
+    "number": "DOT-MARAD-2026",
+    "title": "Port Infrastructure Development Program — Heavy-Duty Truck Electrification",
+    "synopsis": "Grants for ports modernizing heavy-duty drayage truck and freight operations through electrification. Funds zero-emission trucks, charging equipment, and grid upgrades. Recipients must commit to operations and maintenance plans for 10 years post-installation.",
+    "agencyCode": "DOT",
+    "awardCeiling": "30000000",
+    "closeDate": "10302026",
+    "_expected": {
+      "passes_quality_gate": true,
+      "industry_categories_includes": ["Logistics"]
+    }
+  },
+  {
+    "id": "GRANT-010-HOUSING",
+    "number": "HUD-CDBG-2026",
+    "title": "Community Development Block Grant — Energy Efficient Housing",
+    "synopsis": "Formula grants to states and entitlement communities for energy-efficient housing development and rehabilitation projects. Funds insulation, HVAC modernization, weatherization, and solar PV installations on affordable rental and owner-occupied housing units in low-to-moderate income census tracts.",
+    "agencyCode": "HUD",
+    "awardCeiling": "12000000",
+    "closeDate": "06302026",
+    "_expected": {
+      "passes_quality_gate": true,
+      "industry_categories_includes": ["Real Estate"]
+    }
+  },
+  {
+    "id": "GRANT-011-HEALTH",
+    "number": "HRSA-MCHB-2026",
+    "title": "Maternal and Child Health Services Block Grant",
+    "synopsis": "Annual block grants to states and territories supporting maternal, child, and adolescent health programs. Funds clinical services, screening, public-health workforce, and health-system infrastructure improvements. Required state match of 75 cents per federal dollar awarded.",
+    "agencyCode": "HRSA",
+    "awardCeiling": "8000000",
+    "closeDate": "05312026",
+    "_expected": {
+      "passes_quality_gate": true,
+      "industry_categories_includes": ["Healthcare"]
+    }
+  },
+  {
+    "id": "GRANT-012-FLEET",
+    "number": "EPA-DERA-2026",
+    "title": "Diesel Emissions Reduction Act — Fleet Replacement",
+    "synopsis": "Grants for replacing pre-2010 diesel engines in school buses, transit buses, refuse trucks, and on-highway trucks with cleaner alternatives. Eligible projects include zero-emission fleet replacements. Funds cover up to 45% of incremental cost for zero-emission options.",
+    "agencyCode": "EPA",
+    "awardCeiling": "4000000",
+    "closeDate": "08152026",
+    "_expected": {
+      "passes_quality_gate": true,
+      "industry_categories_includes": ["Fleet"]
+    }
+  },
+  {
+    "id": "GRANT-013-CONSTRUCTION",
+    "number": "DOE-EE-CONSTRUCTION-2026",
+    "title": "Industrial Demonstrations Program — Construction Materials",
+    "synopsis": "Cost-share grants for first-of-a-kind facility demonstrations of low-carbon cement, steel, and aluminum production technologies in the construction sector. Funds capital equipment, commissioning, and 24 months of performance verification. Recipients must commit to deployment of the demonstrated technology to commercial scale.",
+    "agencyCode": "DOE",
+    "awardCeiling": "200000000",
+    "awardFloor": "10000000",
+    "closeDate": "11302026",
+    "_expected": {
+      "passes_quality_gate": true,
+      "industry_categories_includes": ["Construction"]
+    }
+  },
+  {
+    "id": "GRANT-014-TRANSIT",
+    "number": "DOT-FTA-LowNo-2026",
+    "title": "Low or No Emission Transit Bus Program",
+    "synopsis": "Capital grants to public transit agencies for purchasing zero- and low-emission buses, charging or fueling infrastructure, facility modifications, and workforce training for the transit sector. Eligible technologies include battery electric, fuel cell, and hybrid bus platforms certified by the Federal Transit Administration.",
+    "agencyCode": "DOT",
+    "awardCeiling": "20000000",
+    "closeDate": "07012026",
+    "_expected": {
+      "passes_quality_gate": true,
+      "industry_categories_includes": ["Public Transit"]
+    }
+  },
+  {
+    "id": "GRANT-015-STORAGE",
+    "number": "DOE-OE-STORAGE-2026",
+    "title": "Long-Duration Energy Storage Demonstrations",
+    "synopsis": "Cost-share grants for utility-scale battery storage demonstrations of 10+ hour duration. Funds engineering, equipment procurement, site preparation, and three years of operational data collection. Awardees must publish performance data publicly. Battery storage assets must remain operational at the demonstration site for 10 years.",
+    "agencyCode": "DOE",
+    "awardCeiling": "50000000",
+    "closeDate": "09152026",
+    "_expected": {
+      "passes_quality_gate": true,
+      "industry_categories_includes": ["Energy Storage"]
+    }
+  },
+  {
     "id": "REJECT-001-VAGUE",
     "number": "ADMIN-0001",
     "title": "Federal grant opportunity: General",
@@ -68,6 +228,42 @@
     "_expected": {
       "passes_quality_gate": false,
       "rejection_reason_contains": ["funding", "title"]
+    }
+  },
+  {
+    "id": "REJECT-003-PLANNING",
+    "number": "EPA-PLAN-2026",
+    "title": "Planning Only Studies for Future Air Quality Initiatives",
+    "synopsis": "Funding for state and local air agencies to conduct planning studies and feasibility assessments. No equipment purchases or implementation activities are eligible. Projects must produce a final report with recommendations within 18 months of award.",
+    "agencyCode": "EPA",
+    "awardCeiling": "150000",
+    "_expected": {
+      "passes_quality_gate": false,
+      "rejection_reason_contains": ["title"]
+    }
+  },
+  {
+    "id": "REJECT-004-NO-CATEGORY",
+    "number": "MISC-2026-001",
+    "title": "Special Outreach and Engagement Activities",
+    "synopsis": "Outreach activities funding intended to support general public engagement with federal program offices. Eligible activities include hosting public meetings and producing communications materials about program offerings to qualifying audiences. Outreach plans required from all awardees.",
+    "agencyCode": "GENERIC",
+    "awardCeiling": "75000",
+    "_expected": {
+      "passes_quality_gate": false,
+      "rejection_reason_contains": ["category"]
+    }
+  },
+  {
+    "id": "REJECT-005-BOILERPLATE",
+    "number": "X-9999",
+    "title": "General Business Innovation Hub Program",
+    "synopsis": "This federal grant opportunity supports a broad range of solar, manufacturing, and energy efficiency activities for small business applicants. Eligible expenses include equipment, installation, materials, and operations and maintenance costs over the project period.",
+    "agencyCode": "DOE",
+    "awardCeiling": "200000",
+    "_expected": {
+      "passes_quality_gate": false,
+      "rejection_reason_contains": ["boilerplate"]
     }
   }
 ]
