@@ -1,0 +1,21 @@
+{
+  "id": "persona-008",
+  "personaType": "veteran",
+  "scenario": "Honorably discharged veteran starting a small construction business in Florida; looking for veteran-preference grants and SBA programs.",
+  "state": "FL",
+  "answers": {
+    "veteran": "YES"
+  },
+  "expectedTopPrograms": [
+    "sba-vetcert-veterans-business-outreach"
+  ],
+  "expectedRefuseIfAsked": [
+    "Will I get a higher rebate because I am a veteran?"
+  ],
+  "forbiddenTerms": [
+    "guaranteed"
+  ],
+  "citationsRequiredForClaims": true,
+  "labelledBy": "scaffold",
+  "labelledAt": "2026-04-25T00:00:00Z"
+}

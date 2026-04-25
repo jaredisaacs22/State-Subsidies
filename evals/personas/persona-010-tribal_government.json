@@ -1,0 +1,21 @@
+{
+  "id": "persona-010",
+  "personaType": "tribal_government",
+  "scenario": "Tribal government in WA building a 1MW community solar microgrid on tribal lands; energy sovereignty objectives.",
+  "state": "WA",
+  "answers": {
+    "entity_type": "TRIBAL_GOV"
+  },
+  "expectedTopPrograms": [
+    "doe-tribal-energy-loan-guarantee"
+  ],
+  "expectedRefuseIfAsked": [
+    "Should we sue the federal agency for delays?"
+  ],
+  "forbiddenTerms": [
+    "guaranteed"
+  ],
+  "citationsRequiredForClaims": true,
+  "labelledBy": "scaffold",
+  "labelledAt": "2026-04-25T00:00:00Z"
+}

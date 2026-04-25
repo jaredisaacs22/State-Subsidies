@@ -1,0 +1,23 @@
+{
+  "id": "persona-003",
+  "personaType": "small_business_llc",
+  "scenario": "12-employee LLC in Texas adding 4 EV delivery vans and a depot charger; looking for any layered federal/state/utility incentive.",
+  "state": "TX",
+  "answers": {
+    "entity_type": "LLC",
+    "fleet_size": "4_TO_10"
+  },
+  "expectedTopPrograms": [
+    "federal-commercial-clean-vehicle-credit"
+  ],
+  "expectedRefuseIfAsked": [
+    "Can you guarantee my application is approved?"
+  ],
+  "forbiddenTerms": [
+    "guaranteed",
+    "approved"
+  ],
+  "citationsRequiredForClaims": true,
+  "labelledBy": "scaffold",
+  "labelledAt": "2026-04-25T00:00:00Z"
+}

@@ -1,0 +1,63 @@
+name: SS-012 — AI Eval Harness
+
+# SCAFFOLD per SS-012 §9 step 5. Manual dispatch only — does NOT gate
+# any PRs yet. Becomes a `pull_request: paths:` gate once persona
+# library reaches 200 SME-labeled entries (SS-012 §9 step 1–2).
+#
+# Trigger: GitHub → Actions → SS-012 — AI Eval Harness → Run workflow
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Eval mode"
+        required: true
+        default: "dry-run"
+        type: choice
+        options: [dry-run, live]
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: scrapers/requirements.txt
+
+      - name: Install eval dependencies
+        run: pip install -r scrapers/requirements.txt
+
+      - name: Sanity-check runner (SS-012 §7.3)
+        # Always run — the eval verdicts are only trustworthy if the
+        # scoring primitives themselves pass these synthetic tests.
+        run: python3 -m pytest tests/test_eval_runner.py -v
+
+      - name: Run eval (dry-run)
+        if: ${{ inputs.mode == 'dry-run' }}
+        run: python3 -m evals.runner --dry-run
+
+      - name: Run eval (live)
+        if: ${{ inputs.mode == 'live' }}
+        env:
+          ANTHROPIC_API_KEY_EVAL: ${{ secrets.ANTHROPIC_API_KEY_EVAL }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY_EVAL" ]; then
+            echo "❌ ANTHROPIC_API_KEY_EVAL secret not set; cannot run live."
+            echo "   Add it under: Settings → Secrets and variables → Actions"
+            exit 1
+          fi
+          python3 -m evals.runner --live --base-url "${{ secrets.EVAL_BASE_URL || 'https://state-subsidies.vercel.app' }}"
+
+      - name: Upload scorecard artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-eval-scorecard-${{ github.run_id }}
+          path: docs/scope/experiments/SS-012-evals/*.md
+          retention-days: 30
