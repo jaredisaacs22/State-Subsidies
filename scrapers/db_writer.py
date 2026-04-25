@@ -226,6 +226,58 @@ def refresh_expired_statuses() -> dict:
     return {"closed": closed, "errors": errors}
 
 
+def record_scrape_run(
+    source: str,
+    stats: dict,
+    started_at: datetime,
+    status: str = "SUCCESS",
+    notes: str | None = None,
+) -> str:
+    """
+    Write one ScrapeRun record to the DB. Returns the inserted id.
+    stats keys: rowsConsidered (or scraped), rowsInserted (or inserted),
+    rowsUpdated (or updated), rowsSkipped (or skipped), qualityGateRejections (or rejected).
+    """
+    finished_at = datetime.utcnow()
+    duration_ms = int((finished_at - started_at).total_seconds() * 1000)
+    record_id = str(uuid.uuid4()).replace("-", "")[:25]
+
+    conn = _get_conn()
+    try:
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    INSERT INTO "ScrapeRun" (
+                        id, source, "startedAt", "finishedAt", status,
+                        "rowsConsidered", "rowsInserted", "rowsUpdated",
+                        "rowsSkipped", "qualityGateRejections", "durationMs", notes
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """,
+                    (
+                        record_id,
+                        source,
+                        started_at,
+                        finished_at,
+                        status,
+                        stats.get("rowsConsidered", stats.get("scraped", 0)),
+                        stats.get("rowsInserted", stats.get("inserted", 0)),
+                        stats.get("rowsUpdated", stats.get("updated", 0)),
+                        stats.get("rowsSkipped", stats.get("skipped", 0)),
+                        stats.get("qualityGateRejections", stats.get("rejected", 0)),
+                        duration_ms,
+                        notes,
+                    ),
+                )
+        logger.info("ScrapeRun recorded", source=source, status=status, duration_ms=duration_ms)
+        return record_id
+    except Exception as e:
+        logger.warning("Failed to record ScrapeRun", source=source, error=str(e))
+        return record_id
+    finally:
+        conn.close()
+
+
 def bulk_upsert(incentives: list[ScrapedIncentive]) -> dict:
     """Upsert a list of incentives. Returns stats dict with inserted/updated/errors counts."""
     inserted = 0

@@ -42,7 +42,7 @@ load_dotenv(Path(__file__).parent.parent / ".env")
 
 from .carb_scraper import CARBScraper
 from .caltrans_core_scraper import CalTransCOREScraper
-from .db_writer import insert_new_only, refresh_expired_statuses
+from .db_writer import insert_new_only, record_scrape_run, refresh_expired_statuses
 from .enricher import enrich
 from .grants_gov_scraper import GrantsGovScraper
 from .wazip_scraper import WazipScraper
@@ -50,6 +50,9 @@ from .wazip_scraper import WazipScraper
 logger = structlog.get_logger()
 
 MOCK_MODE = os.getenv("SCRAPER_MOCK_MODE", "true").lower() != "false"
+# DRY_RUN=1 writes a JSON report artifact instead of touching the DB.
+# All new scraper CI jobs default to DRY_RUN=1 until per-source qualification is complete.
+DRY_RUN = os.getenv("DRY_RUN", "0") == "1"
 
 DEFAULT_DISCOVER_INTERVAL = 6 * 60 * 60   # 6 hours — find new programs
 DEFAULT_REFRESH_INTERVAL  = 24 * 60 * 60  # 24 hours — update existing status
@@ -75,22 +78,64 @@ def _run_scrapers(mock: bool) -> list:
     return all_incentives
 
 
-def discover_new_programs(mock: bool = MOCK_MODE) -> dict:
+def _write_dry_run_report(incentives: list, report_path: str = "/tmp/scrape-report.json") -> None:
+    """Serialize scraped records to a JSON artifact for human review (DRY_RUN mode)."""
+    import json
+
+    report = [
+        {
+            "title": inc.title,
+            "slug": inc.slug,
+            "jurisdictionLevel": inc.jurisdiction_level.value if hasattr(inc.jurisdiction_level, "value") else str(inc.jurisdiction_level),
+            "jurisdictionName": inc.jurisdiction_name,
+            "managingAgency": inc.managing_agency,
+            "incentiveType": inc.incentive_type.value if hasattr(inc.incentive_type, "value") else str(inc.incentive_type),
+            "shortSummary": inc.short_summary,
+            "sourceUrl": inc.source_url,
+            "keyRequirements": inc.key_requirements,
+            "industryCategories": inc.industry_categories,
+            "fundingAmount": inc.funding_amount,
+        }
+        for inc in incentives
+    ]
+    Path(report_path).write_text(json.dumps(report, indent=2, default=str))
+    logger.info("DRY_RUN report written", path=report_path, rows=len(report))
+
+
+def discover_new_programs(mock: bool = MOCK_MODE, dry_run: bool = DRY_RUN) -> dict:
     """
     Scrape for new programs and insert only those that:
       1. Don't already exist in the DB (by slug)
       2. Pass the quality gate (has summary, source URL, and at least one requirement)
+
+    When dry_run=True, writes /tmp/scrape-report.json instead of touching the DB.
     """
+    from datetime import datetime as dt
+    started_at = dt.utcnow()
     start = time.time()
-    logger.info("Discovery run starting", mode="mock" if mock else "live")
+    logger.info("Discovery run starting", mode="mock" if mock else "live", dry_run=dry_run)
 
     incentives = _run_scrapers(mock)
-    stats = insert_new_only(incentives) if incentives else {"inserted": 0, "skipped": 0, "rejected": 0, "errors": 0}
+
+    if dry_run:
+        _write_dry_run_report(incentives)
+        stats = {"inserted": 0, "skipped": 0, "rejected": 0, "errors": 0, "dry_run": True}
+    else:
+        stats = insert_new_only(incentives) if incentives else {"inserted": 0, "skipped": 0, "rejected": 0, "errors": 0}
+        try:
+            record_scrape_run(
+                source="all",
+                stats={**stats, "scraped": len(incentives)},
+                started_at=started_at,
+                status="FAIL" if stats.get("errors", 0) > 0 else "SUCCESS",
+            )
+        except Exception as e:
+            logger.warning("Could not record ScrapeRun", error=str(e))
 
     elapsed = round(time.time() - start, 1)
     summary = {
         "type": "discovery",
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": dt.utcnow().isoformat(),
         "scraped": len(incentives),
         **stats,
         "elapsed_seconds": elapsed,
@@ -136,31 +181,37 @@ def main():
 
     mock = not args.live
 
+    dry_run = DRY_RUN
+
     print(f"\n{'='*60}")
     print(f"  StateSubsidies Background Scheduler")
     print(f"  Scraper mode : {'LIVE' if not mock else 'mock'}")
+    print(f"  Dry-run      : {'YES — writing /tmp/scrape-report.json (no DB writes)' if dry_run else 'NO — writing to DB'}")
     print(f"  Discovery    : every {args.discover_interval // 3600}h — new programs only")
     print(f"  Status check : every {args.refresh_interval // 3600}h — mark expired CLOSED")
     print(f"  AI Enrich    : {'ON' if os.getenv('ANTHROPIC_API_KEY') else 'OFF (no API key)'}")
     print(f"{'='*60}\n")
 
     if args.once:
-        d = discover_new_programs(mock)
+        d = discover_new_programs(mock, dry_run=dry_run)
         r = refresh_statuses()
         print(f"Discovery : {d['inserted']} inserted, {d['skipped']} skipped existing, {d['rejected']} rejected by quality gate")
         print(f"Refresh   : {r.get('closed', 0)} programs marked CLOSED")
         return
 
     # Run both immediately on startup
-    d = discover_new_programs(mock)
+    d = discover_new_programs(mock, dry_run=dry_run)
     r = refresh_statuses()
-    print(f"Startup discovery : {d['inserted']} new, {d['skipped']} skipped, {d['rejected']} rejected quality gate")
+    if dry_run:
+        print(f"Startup discovery (DRY RUN) : {d['scraped']} scraped — see /tmp/scrape-report.json")
+    else:
+        print(f"Startup discovery : {d['inserted']} new, {d['skipped']} skipped, {d['rejected']} rejected quality gate")
     print(f"Startup refresh   : {r.get('closed', 0)} programs marked CLOSED\n")
 
     # Discovery thread — every 6h
     threading.Thread(
         target=_loop,
-        args=(lambda: discover_new_programs(mock), args.discover_interval, "DISCOVERY"),
+        args=(lambda: discover_new_programs(mock, dry_run=dry_run), args.discover_interval, "DISCOVERY"),
         daemon=True,
     ).start()
 
