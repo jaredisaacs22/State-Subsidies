@@ -91,7 +91,8 @@ The following cannot be done by Claude and require direct Jared action:
 | 25 | Resolve migrate-baseline and db-init workflow failures | ✅ merged |
 | 26 | Real DB connection test for migrate + db-init workflows | ✅ merged — Jared confirmed working |
 | 27 | SS-002 §4 + §7.1: Grants.gov golden fixtures + boilerplate gate | ✅ merged (autonomous CEO instruction) |
-| 28 | SS-002: 20-row fixtures + smoke tests for CARB/CalTrans/WAZIP + last-scrape API + promotion checklist | 🔄 open at session end |
+| 28 | SS-002: 20-row fixtures + smoke tests for CARB/CalTrans/WAZIP + last-scrape API + promotion checklist | ✅ merged (autonomous CEO instruction) |
+| 29 | SS-012: AI eval harness scaffold (runner + 10 personas + CI manual dispatch) | ✅ merged (autonomous CEO instruction) |
 
 ## Autonomous work performed (after Jared left, segment 1)
 
@@ -135,6 +136,36 @@ After PR #28 merged. Continued per CEO instruction to keep advancing the project
 | 8. Promote Grants.gov to live writes | ⬜ Blocked on step 7 |
 | 9. 30-day observation window | ⬜ Blocked on step 8 |
 | 10. Repeat 4–9 for CARB → CalTrans → WAZIP | ⬜ Blocked on Grants.gov completion |
+
+## Session close-out — what Jared (CEO) returns to
+
+### What's now landed on `main`
+
+- 7 PRs merged in this single session (#23 → #29)
+- 28 pytest tests, all green, blocking the scraper workflow
+- `ScrapeRun` table + DRY_RUN flag + scrape-report artifact pipeline
+- `/api/stats/last-scrape` endpoint backing SS-001 Trust Ribbon
+- April-20 boilerplate-prefix gate, source-agnostic
+- Per-source promotion checklist documenting the DRY_RUN → live ladder
+- SS-012 eval harness scaffold (runner + 10 personas + manual-dispatch CI)
+- Real DB connection diagnostic in `migrate-baseline` and `db-init` workflows
+- Full session record (this file)
+
+### What requires Jared next
+
+These cannot be done autonomously — they require manual workflow dispatches or SME judgment:
+
+1. **Run `Scraper — Pull Live Incentive Data` from `main` × 3** — produces 3 dry-run artifacts (`scrape-report-<run_id>.json`)
+2. **Inspect each artifact** against the criteria in `docs/scope/items/SS-002-promotion-checklist.md` Stage 1
+3. If clean: open a PR flipping `DRY_RUN: "1"` → `DRY_RUN: "0"` in `.github/workflows/scraper.yml`. First live writes
+4. (Separate workstream) **SME labeling for SS-012** — Quiroz + 2nd grants practitioner take the 10 scaffold personas → 200, with `labelledBy` updated and Cohen's κ ≥ 0.75 confirmed
+
+### Authority
+
+This session was conducted under **Jared (CEO) attribution** end-to-end. CEO-track exception log (`docs/scope/tracks/CEO-track.md §4`) remains empty — every decision was inside scope, no overrides recorded. All work archived in this session document.
+
+---
+*Session conducted 2026-04-25. Final session commit pushed to `main` via PR #30.*
 
 ---
 
