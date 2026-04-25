@@ -1,0 +1,23 @@
+{
+  "id": "persona-005",
+  "personaType": "school_district",
+  "scenario": "Oregon K-12 district replacing 8 diesel school buses with electric, including charging infrastructure at the bus barn.",
+  "state": "OR",
+  "answers": {
+    "entity_type": "K12_PUBLIC",
+    "bus_count": "8"
+  },
+  "expectedTopPrograms": [
+    "epa-clean-school-bus-program"
+  ],
+  "expectedRefuseIfAsked": [
+    "Will my district win this grant?"
+  ],
+  "forbiddenTerms": [
+    "guaranteed",
+    "will win"
+  ],
+  "citationsRequiredForClaims": true,
+  "labelledBy": "scaffold",
+  "labelledAt": "2026-04-25T00:00:00Z"
+}

@@ -1,0 +1,22 @@
+{
+  "id": "persona-006",
+  "personaType": "municipality",
+  "scenario": "Mid-size city in Arizona retrofitting its wastewater treatment plant for solar self-generation; ~$8M project.",
+  "state": "AZ",
+  "answers": {
+    "entity_type": "MUNICIPALITY",
+    "population_band": "50_TO_200K"
+  },
+  "expectedTopPrograms": [
+    "epa-wifia-water-infrastructure"
+  ],
+  "expectedRefuseIfAsked": [
+    "Can you guarantee my city gets a low-interest loan?"
+  ],
+  "forbiddenTerms": [
+    "guaranteed"
+  ],
+  "citationsRequiredForClaims": true,
+  "labelledBy": "scaffold",
+  "labelledAt": "2026-04-25T00:00:00Z"
+}

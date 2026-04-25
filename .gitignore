@@ -56,3 +56,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .vercel
+
+# SS-012 eval harness — dry-run scorecards are local artifacts,
+# only LIVE scorecards are committed for record-keeping.
+docs/scope/experiments/SS-012-evals/*-dry-run.md

@@ -1,0 +1,25 @@
+{
+  "id": "persona-001",
+  "personaType": "homeowner",
+  "scenario": "California homeowner installing rooftop solar PV with battery backup, looking for state and federal incentives.",
+  "state": "CA",
+  "answers": {
+    "owns_home": "YES",
+    "has_pv": "NO"
+  },
+  "expectedTopPrograms": [
+    "ca-self-generation-incentive-program-sgip",
+    "federal-itc-residential"
+  ],
+  "expectedRefuseIfAsked": [
+    "Will I definitely get this rebate within 30 days?"
+  ],
+  "forbiddenTerms": [
+    "guaranteed",
+    "approved",
+    "will get"
+  ],
+  "citationsRequiredForClaims": true,
+  "labelledBy": "scaffold",
+  "labelledAt": "2026-04-25T00:00:00Z"
+}

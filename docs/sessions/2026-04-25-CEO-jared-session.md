@@ -93,7 +93,7 @@ The following cannot be done by Claude and require direct Jared action:
 | 27 | SS-002 §4 + §7.1: Grants.gov golden fixtures + boilerplate gate | ✅ merged (autonomous CEO instruction) |
 | 28 | SS-002: 20-row fixtures + smoke tests for CARB/CalTrans/WAZIP + last-scrape API + promotion checklist | 🔄 open at session end |
 
-## Autonomous work performed (after Jared left)
+## Autonomous work performed (after Jared left, segment 1)
 
 Per CEO instruction "stay aligned with project plan and any tasks associated":
 
@@ -105,6 +105,22 @@ Per CEO instruction "stay aligned with project plan and any tasks associated":
 6. **Updated April 20 incident record** (`docs/scope/experiments/SS-002-scraper-incidents.md`) — closed the "what gate would have caught this?" gap; the gate is now implemented and CI-blocking.
 7. **17 pytest tests passing locally** before commit.
 
+## Autonomous work performed (after Jared left, segment 2)
+
+After PR #28 merged. Continued per CEO instruction to keep advancing the project plan.
+
+1. **Merged PR #28** to `main`.
+2. **Read SS-012 scope** in full and identified the autonomous-feasible subset (scaffold + dry-run mode + sanity tests + manual-dispatch CI; NOT the 200-persona library or PR-gating, both of which require SME labeling).
+3. **Built SS-012 eval harness scaffold:**
+   - `evals/runner.py` — Python runner with three scoring primitives (recall@K accuracy, safety with forbidden-terms + refusal-list check, citation integrity), persona schema validation, dry-run synthetic-stub mode, and live mode (placeholder for SS-012 §9 step 3).
+   - `evals/personas/*.json` — **10 starter personas** spanning the SS-007 audience model: homeowner, farm operator, small business LLC, 501(c)(3) nonprofit, school district, municipality, grad student, veteran, low-income household, tribal government. Every persona forbids "guaranteed" (SS-008 safety floor).
+   - `evals/README.md` — explicit WIP markers; what the scaffold does and does not yet do.
+4. **Sanity tests** (`tests/test_eval_runner.py`, 11 tests) implementing SS-012 §7.3 — synthetic always-wrong scores 0, always-right scores 1; persona file-loading guard rails.
+5. **CI workflow** `.github/workflows/ai-eval.yml` — manual dispatch only, dry-run/live modes, sanity tests run on every dispatch, scorecard uploaded as artifact. **Does NOT gate any PRs** — that wires up only after persona library reaches 200 SME-labeled entries (SS-012 §9 step 3).
+6. **Updated April 20 incident scaffold** entry to reflect that the gate is now CI-blocking.
+7. **`.gitignore`** entry to exclude dev `*-dry-run.md` scorecards from commits — only LIVE scorecards get archived (per SS-012 §10 institutional-memory rule).
+8. **All 28 pytest tests passing** locally before commit (17 scraper + 11 eval).
+
 ## Final state of SS-002 workplan
 
 | §9 step | Status |
@@ -114,7 +130,7 @@ Per CEO instruction "stay aligned with project plan and any tasks associated":
 | 3. DRY_RUN flag in scheduler | ✅ PR #24 |
 | 4. 20-row golden fixtures (Grants.gov) + smoke tests for other 3 | ✅ PR #28 |
 | 5. Contract tests as blocking CI step | ✅ PR #27 + #28 |
-| 6. SS-012 eval harness as second blocking check | ⬜ Future PR |
+| 6. SS-012 eval harness as second blocking check | 🔄 Scaffold landed (PR #29) — runner + 10 personas + CI manual-dispatch. PR-gating wires after 200 SME-labeled personas. |
 | 7. Grants.gov 3 clean dry-run artifacts | ⬜ Awaiting Jared's manual workflow dispatches |
 | 8. Promote Grants.gov to live writes | ⬜ Blocked on step 7 |
 | 9. 30-day observation window | ⬜ Blocked on step 8 |
