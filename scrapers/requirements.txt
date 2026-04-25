@@ -20,3 +20,7 @@ asyncio-throttle==1.0.2
 tenacity==8.2.3       # retry logic
 structlog==24.1.0     # structured logging
 click==8.1.7          # CLI runner
+
+# AI enrichment — used by scrapers/enricher.py to clean scraped text
+anthropic==0.40.0
+

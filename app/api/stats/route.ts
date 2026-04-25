@@ -16,7 +16,8 @@ export async function GET() {
     ]);
 
     return NextResponse.json({ total, federal, state, city, agency });
-  } catch {
+  } catch (error) {
+    console.error('[GET /api/stats]', error);
     return NextResponse.json({ total: 0, federal: 0, state: 0, city: 0, agency: 0 });
   }
 }
