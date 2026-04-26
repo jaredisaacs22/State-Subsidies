@@ -1,0 +1,30 @@
+{
+  "_summary": {
+    "perSource": {
+      "WAZIP": {
+        "status": "fail",
+        "rows": 0,
+        "error": "RetryError[<Future at 0x7f8bd12d4a50 state=finished raised HTTPStatusError>]"
+      },
+      "CalTrans CORE": {
+        "status": "ok",
+        "rows": 0,
+        "error": null
+      },
+      "CARB": {
+        "status": "fail",
+        "rows": 0,
+        "error": "RetryError[<Future at 0x7f8bd1189250 state=finished raised HTTPStatusError>]"
+      },
+      "Grants.gov": {
+        "status": "ok",
+        "rows": 0,
+        "error": null
+      }
+    },
+    "totalScraped": 0,
+    "qualityGatePass": 0,
+    "qualityGateFail": 0
+  },
+  "rows": []
+}
