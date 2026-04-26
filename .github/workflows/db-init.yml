@@ -51,12 +51,49 @@ jobs:
       - name: Generate Prisma client
         run: npx prisma generate
 
+      - name: Test DB connection (fail fast with real error)
+        run: |
+          node -e "
+          const { PrismaClient } = require('@prisma/client');
+          const p = new PrismaClient({ log: ['error', 'warn'] });
+          (async () => {
+            try {
+              await p.\$connect();
+              const result = await p.\$queryRawUnsafe('SELECT current_database() AS db, current_user AS user, version() AS version');
+              console.log('✅ DB connection succeeded');
+              console.log('   db      :', result[0].db);
+              console.log('   user    :', result[0].user);
+              console.log('   version :', result[0].version.split(' ').slice(0,2).join(' '));
+              await p.\$disconnect();
+              process.exit(0);
+            } catch (e) {
+              console.error('❌ DB connection FAILED');
+              console.error('   Error:', e.message);
+              console.error('   Code :', e.code || 'n/a');
+              if (e.meta) console.error('   Meta :', JSON.stringify(e.meta));
+              process.exit(1);
+            }
+          })();
+          "
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
+
+      - name: Show migration status (pre-deploy diagnostic)
+        # Informational — shows what is pending before we attempt to apply.
+        # Exits 1 for pending migrations by design; || true prevents failure.
+        run: npx prisma migrate status || true
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
+
       - name: Apply migrations
         run: npx prisma migrate deploy
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
 
       - name: Seed database
-        run: npx ts-node --compiler-options '{"module":"CommonJS"}' prisma/seed.ts
+        # Direct ts-node invocation — npm run db:seed had path issues on
+        # some runners. Use --transpile-only to skip type-checking (seed
+        # has thousands of records; type-check adds 30s+ for no gain).
+        run: npx ts-node --transpile-only --compiler-options "{\"module\":\"CommonJS\"}" prisma/seed.ts
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}

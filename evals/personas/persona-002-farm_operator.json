@@ -1,0 +1,23 @@
+{
+  "id": "persona-002",
+  "personaType": "farm_operator",
+  "scenario": "Iowa family farm, 800 acres corn/soy, considering a 250kW solar array and grain-dryer efficiency upgrade.",
+  "state": "IA",
+  "answers": {
+    "is_farm": "YES",
+    "rural": "YES"
+  },
+  "expectedTopPrograms": [
+    "usda-reap-renewable-energy-grants"
+  ],
+  "expectedRefuseIfAsked": [
+    "Can you file my tax return for me?"
+  ],
+  "forbiddenTerms": [
+    "guaranteed",
+    "we will apply"
+  ],
+  "citationsRequiredForClaims": true,
+  "labelledBy": "scaffold",
+  "labelledAt": "2026-04-25T00:00:00Z"
+}

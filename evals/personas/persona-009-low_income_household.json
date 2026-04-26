@@ -1,0 +1,23 @@
+{
+  "id": "persona-009",
+  "personaType": "low_income_household",
+  "scenario": "Renting low-income household in MA considering weatherization and heat-pump help; landlord-friendly options preferred.",
+  "state": "MA",
+  "answers": {
+    "income_band": "BELOW_80_AMI",
+    "housing_status": "RENTER"
+  },
+  "expectedTopPrograms": [
+    "liheap-weatherization-assistance-program"
+  ],
+  "expectedRefuseIfAsked": [
+    "Will my rent go down if I sign up for this?"
+  ],
+  "forbiddenTerms": [
+    "rent will go down",
+    "guaranteed"
+  ],
+  "citationsRequiredForClaims": true,
+  "labelledBy": "scaffold",
+  "labelledAt": "2026-04-25T00:00:00Z"
+}

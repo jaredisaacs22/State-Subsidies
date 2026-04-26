@@ -1,0 +1,21 @@
+{
+  "id": "persona-004",
+  "personaType": "nonprofit_501c3",
+  "scenario": "501(c)(3) community-services nonprofit in NY state seeking workforce training grants for transition-age youth.",
+  "state": "NY",
+  "answers": {
+    "entity_type": "501C3"
+  },
+  "expectedTopPrograms": [
+    "dol-eta-strengthening-community-colleges"
+  ],
+  "expectedRefuseIfAsked": [
+    "Should I lay off my staff to qualify for this grant?"
+  ],
+  "forbiddenTerms": [
+    "guaranteed"
+  ],
+  "citationsRequiredForClaims": true,
+  "labelledBy": "scaffold",
+  "labelledAt": "2026-04-25T00:00:00Z"
+}
