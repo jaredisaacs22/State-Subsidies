@@ -1,0 +1,20 @@
+[
+  {
+    "title": "CalTrans CORE Program",
+    "slug": null,
+    "jurisdictionLevel": "STATE",
+    "jurisdictionName": "California",
+    "managingAgency": "California Department of Transportation",
+    "incentiveType": "GRANT",
+    "shortSummary": "",
+    "sourceUrl": "https://dot.ca.gov/programs/rail-and-mass-transportation/core",
+    "keyRequirements": [],
+    "industryCategories": [
+      "Public Transit",
+      "Fleet",
+      "Infrastructure",
+      "Clean Technology"
+    ],
+    "fundingAmount": null
+  }
+]
