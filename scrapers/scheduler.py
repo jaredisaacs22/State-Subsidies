@@ -58,6 +58,27 @@ DEFAULT_DISCOVER_INTERVAL = 6 * 60 * 60   # 6 hours — find new programs
 DEFAULT_REFRESH_INTERVAL  = 24 * 60 * 60  # 24 hours — update existing status
 
 
+def _unwrap_error(e: Exception) -> str:
+    """
+    Tenacity wraps the real error in RetryError. Unwrap it to surface the
+    underlying HTTP status code or exception class. Without this, every
+    scraper failure shows up as "RetryError[<Future raised HTTPStatusError>]"
+    in the artifact and we have to guess what actually went wrong.
+    """
+    if hasattr(e, "last_attempt"):
+        try:
+            inner = e.last_attempt.exception()  # type: ignore[attr-defined]
+            response = getattr(inner, "response", None)
+            if response is not None:
+                status = getattr(response, "status_code", "?")
+                url = str(getattr(response, "url", "?"))
+                return f"HTTP {status} from {url} :: {type(inner).__name__}"
+            return f"{type(inner).__name__}: {inner}"
+        except Exception:
+            pass
+    return f"{type(e).__name__}: {e}"
+
+
 def _run_scrapers(mock: bool) -> tuple[list, dict]:
     """
     Run all scrapers and return (enriched results, per-source counts).
@@ -77,13 +98,18 @@ def _run_scrapers(mock: bool) -> tuple[list, dict]:
             results = scraper.scrape()
             enriched = [enrich(r) for r in results]
             all_incentives.extend(enriched)
-            counts[name] = {"status": "ok", "rows": len(results), "error": None}
+            entry: dict = {"status": "ok", "rows": len(results), "error": None}
+            # Surface scraper-specific diagnostics if the scraper exposes them
+            if hasattr(scraper, "_diagnostics"):
+                entry["diagnostics"] = scraper._diagnostics  # type: ignore[attr-defined]
+            counts[name] = entry
             logger.info(f"{name} scraped", found=len(results))
             print(f"  {name:<14} ✓  {len(results)} row(s)")
         except Exception as e:
-            counts[name] = {"status": "fail", "rows": 0, "error": str(e)}
-            logger.error(f"{name} scraper failed", error=str(e))
-            print(f"  {name:<14} ✗  FAILED: {e}")
+            unwrapped = _unwrap_error(e)
+            counts[name] = {"status": "fail", "rows": 0, "error": unwrapped}
+            logger.error(f"{name} scraper failed", error=unwrapped)
+            print(f"  {name:<14} ✗  FAILED: {unwrapped}")
     return all_incentives, counts
 
 

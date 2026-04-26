@@ -120,8 +120,14 @@ class GrantsGovScraper(BaseScraper):
         ]
 
         seen_ids: set[str] = set()
+        # Diagnostics surfaced into the dry-run artifact so reviewers can
+        # tell "API returned 0" vs "API returned N, parser rejected all N".
+        per_term: dict[str, dict] = {}
+        total_raw_hits = 0
+        total_parsed = 0
 
         for term in search_terms:
+            term_diag = {"raw_hits": 0, "new_ids": 0, "parsed": 0, "error": None}
             try:
                 payload = {
                     "keyword": term,
@@ -133,20 +139,41 @@ class GrantsGovScraper(BaseScraper):
                 response.raise_for_status()
                 data = response.json()
 
-                for opp in data.get("oppHits", []):
+                opp_hits = data.get("oppHits", [])
+                term_diag["raw_hits"] = len(opp_hits)
+                total_raw_hits += len(opp_hits)
+
+                for opp in opp_hits:
                     opp_id = str(opp.get("id", ""))
                     if opp_id in seen_ids:
                         continue
                     seen_ids.add(opp_id)
+                    term_diag["new_ids"] += 1
 
                     incentive = self._parse_opportunity(opp)
                     if incentive:
                         results.append(incentive)
+                        term_diag["parsed"] += 1
+                        total_parsed += 1
 
-                self._log.info("Grants.gov term results", term=term, found=len(results))
+                self._log.info("Grants.gov term results",
+                               term=term,
+                               raw=term_diag["raw_hits"],
+                               parsed=term_diag["parsed"])
 
             except Exception as e:
+                term_diag["error"] = f"{type(e).__name__}: {e}"
                 self._log.error("Grants.gov search failed", term=term, error=str(e))
+
+            per_term[term] = term_diag
+
+        # Attach diagnostics for the artifact summary
+        self._diagnostics = {
+            "total_raw_hits": total_raw_hits,
+            "total_parsed": total_parsed,
+            "rejected_by_quality_gate": total_raw_hits - total_parsed,
+            "per_term": per_term,
+        }
 
         self._log.info("Grants.gov total after quality filter", count=len(results))
         return results
