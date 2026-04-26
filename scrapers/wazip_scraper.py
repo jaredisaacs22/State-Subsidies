@@ -146,6 +146,16 @@ class WazipScraper(BaseScraper):
         funding_amount = self._extract_max_funding(soup)
         deadline = self._extract_deadline(soup)
 
+        # SS-002 §4 — do not emit stub rows when the live page didn't match
+        # our extractors. Same rule as CalTrans CORE: better zero than empty.
+        if not summary.strip() or len(summary.strip()) < 20 or not requirements:
+            self._log.warning(
+                "incomplete extraction — skipping WAZIP row",
+                summary_chars=len(summary.strip()),
+                requirements_count=len(requirements),
+            )
+            return []
+
         incentive = ScrapedIncentive(
             title=title,
             jurisdiction_level=JurisdictionLevel.AGENCY,
