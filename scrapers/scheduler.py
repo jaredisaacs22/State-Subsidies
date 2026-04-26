@@ -58,9 +58,14 @@ DEFAULT_DISCOVER_INTERVAL = 6 * 60 * 60   # 6 hours — find new programs
 DEFAULT_REFRESH_INTERVAL  = 24 * 60 * 60  # 24 hours — update existing status
 
 
-def _run_scrapers(mock: bool) -> list:
-    """Run all scrapers and return enriched results."""
+def _run_scrapers(mock: bool) -> tuple[list, dict]:
+    """
+    Run all scrapers and return (enriched results, per-source counts).
+    Per-source counts include success / fail / row counts so silent failures
+    are visible in the dry-run report and the workflow stdout.
+    """
     all_incentives = []
+    counts: dict[str, dict] = {}
     scrapers = [
         ("WAZIP",         WazipScraper(mock=mock)),
         ("CalTrans CORE", CalTransCOREScraper(mock=mock)),
@@ -72,18 +77,55 @@ def _run_scrapers(mock: bool) -> list:
             results = scraper.scrape()
             enriched = [enrich(r) for r in results]
             all_incentives.extend(enriched)
+            counts[name] = {"status": "ok", "rows": len(results), "error": None}
             logger.info(f"{name} scraped", found=len(results))
+            print(f"  {name:<14} ✓  {len(results)} row(s)")
         except Exception as e:
+            counts[name] = {"status": "fail", "rows": 0, "error": str(e)}
             logger.error(f"{name} scraper failed", error=str(e))
-    return all_incentives
+            print(f"  {name:<14} ✗  FAILED: {e}")
+    return all_incentives, counts
 
 
-def _write_dry_run_report(incentives: list, report_path: str = "/tmp/scrape-report.json") -> None:
-    """Serialize scraped records to a JSON artifact for human review (DRY_RUN mode)."""
+def _quality_gate_check(inc) -> tuple[bool, list[str]]:
+    """
+    Source-agnostic quality gate matching db_writer._passes_quality_gate.
+    Returns (would_pass, list_of_reasons_if_fail). Used to annotate dry-run reports.
+    """
+    reasons: list[str] = []
+    title = (inc.title or "").strip()
+    summary = (inc.short_summary or "").strip()
+    if len(title) < 5:
+        reasons.append("title<5_chars")
+    if len(summary) < 20:
+        reasons.append("summary<20_chars")
+    if not inc.source_url or not inc.source_url.startswith("http"):
+        reasons.append("bad_source_url")
+    if not inc.key_requirements or len(inc.key_requirements) < 1:
+        reasons.append("no_requirements")
+    return (len(reasons) == 0), reasons
+
+
+def _write_dry_run_report(
+    incentives: list,
+    counts: dict,
+    report_path: str = "/tmp/scrape-report.json",
+) -> None:
+    """Serialize scraped records to a JSON artifact for human review (DRY_RUN mode).
+
+    Annotates each row with `_qualityGate` so the artifact reviewer sees which
+    rows would actually be written to the DB vs filtered. Adds a summary section
+    so silent scraper failures are visible at the top of the artifact.
+    """
     import json
 
-    report = [
-        {
+    rows = []
+    pass_count = 0
+    for inc in incentives:
+        passes, reasons = _quality_gate_check(inc)
+        if passes:
+            pass_count += 1
+        rows.append({
             "title": inc.title,
             "slug": inc.slug,
             "jurisdictionLevel": inc.jurisdiction_level.value if hasattr(inc.jurisdiction_level, "value") else str(inc.jurisdiction_level),
@@ -95,11 +137,29 @@ def _write_dry_run_report(incentives: list, report_path: str = "/tmp/scrape-repo
             "keyRequirements": inc.key_requirements,
             "industryCategories": inc.industry_categories,
             "fundingAmount": inc.funding_amount,
-        }
-        for inc in incentives
-    ]
+            "_qualityGate": {"pass": passes, "reasons": reasons},
+        })
+
+    report = {
+        "_summary": {
+            "perSource": counts,
+            "totalScraped": len(incentives),
+            "qualityGatePass": pass_count,
+            "qualityGateFail": len(incentives) - pass_count,
+        },
+        "rows": rows,
+    }
     Path(report_path).write_text(json.dumps(report, indent=2, default=str))
-    logger.info("DRY_RUN report written", path=report_path, rows=len(report))
+    logger.info(
+        "DRY_RUN report written",
+        path=report_path,
+        rows=len(rows),
+        gate_pass=pass_count,
+        gate_fail=len(rows) - pass_count,
+    )
+    print(f"\nDry-run summary: {pass_count}/{len(rows)} rows would pass quality gate")
+    if pass_count < len(rows):
+        print(f"  ⚠  {len(rows) - pass_count} row(s) would be REJECTED — inspect _qualityGate.reasons in {report_path}")
 
 
 def discover_new_programs(mock: bool = MOCK_MODE, dry_run: bool = DRY_RUN) -> dict:
@@ -115,10 +175,10 @@ def discover_new_programs(mock: bool = MOCK_MODE, dry_run: bool = DRY_RUN) -> di
     start = time.time()
     logger.info("Discovery run starting", mode="mock" if mock else "live", dry_run=dry_run)
 
-    incentives = _run_scrapers(mock)
+    incentives, per_source_counts = _run_scrapers(mock)
 
     if dry_run:
-        _write_dry_run_report(incentives)
+        _write_dry_run_report(incentives, per_source_counts)
         stats = {"inserted": 0, "skipped": 0, "rejected": 0, "errors": 0, "dry_run": True}
     else:
         stats = insert_new_only(incentives) if incentives else {"inserted": 0, "skipped": 0, "rejected": 0, "errors": 0}
