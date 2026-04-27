@@ -1,0 +1,123 @@
+name: CI — PR Gates
+
+# SS-002/SS-005/SS-010 foundation hardening:
+# every PR (and every push to main) must pass these gates before merge.
+# Nothing here writes to production resources.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Cancel superseded runs when a PR pushes again — saves CI minutes.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── Python: scraper contract tests (SS-002 §7.1) ─────────────────────────
+  pytest:
+    name: pytest (scraper contract tests)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: Install scraper dependencies
+        run: pip install -r scrapers/requirements.txt
+      - name: Run pytest
+        run: python3 -m pytest tests/ -v
+
+  # ── TypeScript: type-check + lint + SS-005 §10 grep gate ─────────────────
+  typecheck:
+    name: typecheck + lint + grep gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - name: Install Node dependencies
+        run: npm ci
+      - name: Generate Prisma client (typegen)
+        run: npx prisma generate
+      - name: TypeScript type-check
+        run: npx tsc --noEmit
+      - name: ESLint
+        # Permissive on warnings initially — failure on errors only.
+        # Tighten with --max-warnings 0 once warnings are zero.
+        run: npx next lint
+      # SS-005 §10 — no hardcoded billion-dollar headline figures in app/
+      - name: Hardcoded-numbers grep gate (SS-005 §10)
+        run: |
+          if grep -rE '\$[0-9]+(\.[0-9]+)?B\+' app/ ; then
+            echo "::error::SS-005 §10 — hardcoded billion-dollar figure found in app/. Use <Stat> with live DB data."
+            exit 1
+          fi
+          echo "PASS: no hardcoded \$XB+ figures in app/"
+
+  # ── Prisma: schema ↔ migrations drift gate (SS-010) ───────────────────────
+  # Prevents the "schema.prisma changed but no migration was added" failure
+  # mode that would silently skip schema updates in production.
+  prisma-drift:
+    name: prisma migration drift
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: shadow
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - name: Install Node dependencies
+        run: npm ci
+      - name: Verify schema ↔ migrations are in sync
+        env:
+          SHADOW_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/shadow
+        run: |
+          # Diff: starting from the migrations folder, applying schema.prisma
+          # should produce ZERO additional changes. If it doesn't, schema.prisma
+          # changed without a corresponding migration — block the PR.
+          npx prisma migrate diff \
+            --from-migrations prisma/migrations \
+            --to-schema-datamodel prisma/schema.prisma \
+            --shadow-database-url "$SHADOW_DATABASE_URL" \
+            --exit-code \
+            && echo "PASS: schema.prisma is in sync with prisma/migrations" \
+            || (echo "::error::schema.prisma changed but no migration was added. Run: npx prisma migrate dev --name <descriptive-name>" && exit 1)
+
+  # ── Next.js production build sanity ──────────────────────────────────────
+  build:
+    name: next build (production sanity)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - name: Install Node dependencies
+        run: npm ci
+      - name: Generate Prisma client
+        run: npx prisma generate
+      - name: Build
+        # DATABASE_URL is a dummy here — Next.js build does not connect to the
+        # DB; it only needs the env var present for the prisma client init.
+        env:
+          DATABASE_URL: postgresql://dummy:dummy@localhost:5432/dummy
+        run: npx next build
