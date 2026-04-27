@@ -104,49 +104,141 @@ class GrantsGovScraper(BaseScraper):
             return self._mock_results()
         return self._scrape_live()
 
-    DETAIL_URL = "https://apply07.grants.gov/grantsws/rest/opportunity/details"
+    # Detail endpoints to try in order. The first one that returns a 2xx
+    # response with a parseable "synopsis" or "synopsisDesc" field becomes
+    # the chosen endpoint for the rest of the run. Lets us recover from
+    # API restructuring without code change.
+    DETAIL_ENDPOINTS = [
+        # Apply07 grantsws (S2S-style; what we tried first)
+        {
+            "url": "https://apply07.grants.gov/grantsws/rest/opportunity/details",
+            "method": "POST",
+            "id_field": "oppId",
+            "id_type": int,
+        },
+        # api.grants.gov public v1 — current public API
+        {
+            "url": "https://api.grants.gov/v1/api/fetchOpportunity",
+            "method": "POST",
+            "id_field": "opportunityId",
+            "id_type": int,
+        },
+        # www.grants.gov mirror of grantsws (occasionally works when apply07 doesn't)
+        {
+            "url": "https://www.grants.gov/grantsws/rest/opportunity/details",
+            "method": "POST",
+            "id_field": "oppId",
+            "id_type": int,
+        },
+    ]
 
-    def _fetch_detail(self, opp_id: str) -> dict:
+    def _try_detail_endpoint(self, endpoint: dict, opp_id: str) -> tuple[dict | None, str]:
         """
-        Fetch the full opportunity detail for an oppId.
-        The /search endpoint returns titles/IDs/agency only — no synopsis.
-        Synopsis lives at /opportunity/details. Without this call, the
-        quality gate (synopsis ≥ 120 chars) rejects every opportunity.
-        Returns {} on any failure so the caller can fall back gracefully.
+        Try one detail endpoint. Returns (parsed_json or None, diagnostic_msg).
+        Diagnostic msg captures status/response preview when call fails.
         """
         try:
-            response = self._client.post(
-                self.DETAIL_URL, json={"oppId": int(opp_id)}, timeout=20
-            )
-            response.raise_for_status()
-            return response.json() or {}
+            payload_id = endpoint["id_type"](opp_id)
+        except (ValueError, TypeError):
+            return None, f"id_cast_failed (id={opp_id!r})"
+
+        payload = {endpoint["id_field"]: payload_id}
+        try:
+            if endpoint["method"] == "POST":
+                response = self._client.post(endpoint["url"], json=payload, timeout=20)
+            else:
+                response = self._client.get(endpoint["url"], params=payload, timeout=20)
+            status = response.status_code
+            if status >= 400:
+                preview = (response.text or "")[:120].replace("\n", " ")
+                return None, f"HTTP {status} preview={preview!r}"
+            try:
+                data = response.json()
+            except Exception as e:
+                preview = (response.text or "")[:120].replace("\n", " ")
+                return None, f"json_parse_failed: {e} preview={preview!r}"
+            # Reject empty / non-dict responses
+            if not isinstance(data, dict) or not data:
+                return None, f"empty_response (type={type(data).__name__})"
+            # Newer api.grants.gov wraps in "data": {...}
+            if "data" in data and isinstance(data["data"], dict):
+                data = data["data"]
+            return data, "ok"
         except Exception as e:
-            self._log.debug("Detail fetch failed", opp_id=opp_id, error=str(e))
-            return {}
+            return None, f"{type(e).__name__}: {e}"
+
+    def _fetch_detail(self, opp_id: str, diag_state: dict) -> dict:
+        """
+        Fetch the full opportunity detail. Walks DETAIL_ENDPOINTS in order;
+        once one succeeds, sticks with it via diag_state['chosen_endpoint'].
+        """
+        # Stick with whichever endpoint last worked
+        chosen = diag_state.get("chosen_endpoint")
+        if chosen is not None:
+            data, msg = self._try_detail_endpoint(chosen, opp_id)
+            if data:
+                return data
+            # Chosen endpoint suddenly broke — fall through to retry all
+
+        for ep in self.DETAIL_ENDPOINTS:
+            data, msg = self._try_detail_endpoint(ep, opp_id)
+            if data:
+                diag_state["chosen_endpoint"] = ep
+                diag_state["chosen_endpoint_url"] = ep["url"]
+                return data
+            # Capture first failure reason per endpoint for the artifact
+            key = f"endpoint_first_error::{ep['url']}"
+            if key not in diag_state:
+                diag_state[key] = msg
+
+        return {}
 
     def _merge_detail_into_opp(self, opp: dict, detail: dict) -> dict:
         """
         Pull the fields _parse_opportunity needs from the detail response
         and overlay them onto the search-result dict.
-        Detail response shape (Grants.gov v1 grantsws):
-          synopsis: { synopsisDesc, awardCeiling, awardFloor, estimatedFunding,
-                      applicantEligibilityDesc, agencyCode, ... }
+
+        The shape varies by endpoint:
+          - apply07/grantsws → {"synopsis": {"synopsisDesc": ...}}
+          - api.grants.gov v1 → {"opportunity": {"description": ...}}  (varies)
+          - sometimes flat → {"synopsisDesc": ...} or {"description": ...}
+        We probe a few field paths to be robust to all of them.
         """
-        synopsis_block = detail.get("synopsis") or {}
         merged = dict(opp)
-        if synopsis_block.get("synopsisDesc"):
-            merged["synopsis"] = synopsis_block["synopsisDesc"]
+
+        synopsis_block = (
+            detail.get("synopsis")
+            or detail.get("opportunity")
+            or detail
+            or {}
+        )
+        if not isinstance(synopsis_block, dict):
+            synopsis_block = {}
+
+        # Synopsis text
+        for path in ("synopsisDesc", "description", "synopsis", "summary"):
+            val = synopsis_block.get(path) or detail.get(path)
+            if val and isinstance(val, str) and val.strip():
+                merged["synopsis"] = val
+                break
+
+        # Funding
         for field in ("awardCeiling", "awardFloor", "estimatedFunding"):
-            val = synopsis_block.get(field)
+            val = synopsis_block.get(field) or detail.get(field)
             if val and not merged.get(field):
                 merged[field] = val
-        if synopsis_block.get("agencyCode") and not merged.get("agencyCode"):
-            merged["agencyCode"] = synopsis_block["agencyCode"]
-        if synopsis_block.get("agencyName") and not merged.get("agencyName"):
-            merged["agencyName"] = synopsis_block["agencyName"]
-        # closeDate sometimes only on detail
-        if synopsis_block.get("responseDate") and not merged.get("closeDate"):
-            merged["closeDate"] = synopsis_block["responseDate"]
+
+        # Agency
+        for field in ("agencyCode", "agencyName"):
+            val = synopsis_block.get(field) or detail.get(field)
+            if val and not merged.get(field):
+                merged[field] = val
+
+        # Close date
+        close = synopsis_block.get("responseDate") or detail.get("closeDate")
+        if close and not merged.get("closeDate"):
+            merged["closeDate"] = close
+
         return merged
 
     def _scrape_live(self) -> list[ScrapedIncentive]:
@@ -172,6 +264,10 @@ class GrantsGovScraper(BaseScraper):
         total_parsed = 0
         detail_fetch_failed = 0
         detail_fetch_succeeded = 0
+        # Detail-endpoint state — survives across opp IDs so we stick with
+        # the first endpoint that works AND capture per-endpoint failure
+        # reasons in the artifact.
+        detail_diag: dict = {}
 
         for term in search_terms:
             term_diag = {"raw_hits": 0, "new_ids": 0, "parsed": 0, "error": None}
@@ -198,7 +294,7 @@ class GrantsGovScraper(BaseScraper):
                     term_diag["new_ids"] += 1
 
                     # /search returns title+id only. Fetch detail to get synopsis.
-                    detail = self._fetch_detail(opp_id)
+                    detail = self._fetch_detail(opp_id, detail_diag)
                     if detail:
                         detail_fetch_succeeded += 1
                         opp = self._merge_detail_into_opp(opp, detail)
@@ -228,6 +324,12 @@ class GrantsGovScraper(BaseScraper):
             "unique_ids": len(seen_ids),
             "detail_fetch_succeeded": detail_fetch_succeeded,
             "detail_fetch_failed": detail_fetch_failed,
+            "detail_endpoint_chosen": detail_diag.get("chosen_endpoint_url"),
+            "detail_endpoint_first_errors": {
+                k.split("::", 1)[1]: v
+                for k, v in detail_diag.items()
+                if k.startswith("endpoint_first_error::")
+            },
             "total_parsed": total_parsed,
             "rejected_by_quality_gate": len(seen_ids) - total_parsed,
             "per_term": per_term,
