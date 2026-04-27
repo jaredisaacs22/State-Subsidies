@@ -1,0 +1,602 @@
+{
+  "_summary": {
+    "perSource": {
+      "WAZIP": {
+        "status": "ok",
+        "rows": 0,
+        "error": null
+      },
+      "CalTrans CORE": {
+        "status": "ok",
+        "rows": 0,
+        "error": null
+      },
+      "CARB": {
+        "status": "ok",
+        "rows": 0,
+        "error": null
+      },
+      "Grants.gov": {
+        "status": "ok",
+        "rows": 21,
+        "error": null,
+        "diagnostics": {
+          "total_raw_hits": 140,
+          "unique_ids": 34,
+          "detail_fetch_succeeded": 34,
+          "detail_fetch_failed": 0,
+          "detail_endpoint_chosen": "https://api.grants.gov/v1/api/fetchOpportunity",
+          "detail_endpoint_first_errors": {
+            "https://apply07.grants.gov/grantsws/rest/opportunity/details": "HTTP 415 preview='<!doctype html><html lang=\"en\"><head><title>HTTP Status 415 \u2013 Unsupported Media Type</title><style type=\"text/css\">body '"
+          },
+          "total_parsed": 21,
+          "rejected_by_quality_gate": 13,
+          "per_term": {
+            "small business energy efficiency grant": {
+              "raw_hits": 20,
+              "new_ids": 20,
+              "parsed": 10,
+              "error": null
+            },
+            "clean energy manufacturing grant": {
+              "raw_hits": 20,
+              "new_ids": 0,
+              "parsed": 0,
+              "error": null
+            },
+            "electric vehicle fleet grant": {
+              "raw_hits": 20,
+              "new_ids": 3,
+              "parsed": 3,
+              "error": null
+            },
+            "agricultural efficiency grant": {
+              "raw_hits": 20,
+              "new_ids": 0,
+              "parsed": 0,
+              "error": null
+            },
+            "workforce development manufacturing": {
+              "raw_hits": 20,
+              "new_ids": 3,
+              "parsed": 2,
+              "error": null
+            },
+            "broadband infrastructure rural": {
+              "raw_hits": 20,
+              "new_ids": 8,
+              "parsed": 6,
+              "error": null
+            },
+            "economic development business": {
+              "raw_hits": 20,
+              "new_ids": 0,
+              "parsed": 0,
+              "error": null
+            }
+          }
+        }
+      }
+    },
+    "totalScraped": 21,
+    "qualityGatePass": 21,
+    "qualityGateFail": 0
+  },
+  "rows": [
+    {
+      "title": "Voluntary Public Access and Habitat Incentive Program competition for Federal fiscal year (FY) 2026",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "U.S. Department of Agriculture",
+      "incentiveType": "GRANT",
+      "shortSummary": "NRCS is offering up to $52 million in competitive grants through the Voluntary Public Access-Habitat Incentive Program (VPA-HIP) to support state and Tribal governments in creating or enhancing programs that incentivize private landowners to voluntarily open farm, ranch, and forest land for public hunting, fishing, and wildlife-dependent recreation.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=362026",
+      "keyRequirements": [
+        "Must be an eligible applicant as defined in the opportunity listing",
+        "Must register with SAM.gov prior to application submission",
+        "Application must be submitted through Grants.gov by the posted deadline",
+        "Review full Notice of Funding Opportunity (NOFO) for detailed requirements"
+      ],
+      "industryCategories": [
+        "Agriculture"
+      ],
+      "fundingAmount": 3000000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "FY25 Center of Excellence-University of Illinois Urbana-Champaign (Supplemental)",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "U.S. Department of Transportation",
+      "incentiveType": "GRANT",
+      "shortSummary": "Supplemental funding opportunity to support the Center of Excellence at University of Illinois Urbana-Champaign for research and development in passenger and freight rail transportation. The program funds basic and applied research, education, workforce development, and technology transfer focused on safety, efficiency, reliability, and sustainability of rail systems.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=362047",
+      "keyRequirements": [
+        "Must be an eligible applicant as defined in the opportunity listing",
+        "Application must be submitted through Grants.gov by posted deadline",
+        "SAM.gov registration required prior to application",
+        "Existing grant agreement number 69A36524520020RRDIL must be active"
+      ],
+      "industryCategories": [
+        "Infrastructure",
+        "Public Transit"
+      ],
+      "fundingAmount": 2500000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "Estimated Fiscal Year 2026 Adult Education and Family Literacy Act State Award Amounts",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "Office of Career Technical and Adult Education",
+      "incentiveType": "GRANT",
+      "shortSummary": "This program provides estimated FY 2026 state allocations under the Adult Education and Family Literacy Act (AEFLA) to support adult education and family literacy initiatives. States receive funding based on formula allocations to improve workforce readiness and educational attainment among adults.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=362050",
+      "keyRequirements": [
+        "Must be an eligible applicant as defined in the opportunity listing",
+        "Application must be submitted through Grants.gov by the posted deadline",
+        "SAM.gov registration required prior to application",
+        "Review full Notice of Funding Opportunity (NOFO) for detailed requirements"
+      ],
+      "industryCategories": [
+        "Government & Nonprofit",
+        "Research & Development"
+      ],
+      "fundingAmount": 101469588.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "F26AS00013 FY 2026 Clean Vessel Act (CVA) Notice of Funding Opportunity",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "Fish and Wildlife Service",
+      "incentiveType": "GRANT",
+      "shortSummary": "The Clean Vessel Act Grant Program provides cost-sharing awards to state and territorial agencies to establish recreational boating facilities that prevent waste disposal into public waterways. Funding comes from the Sport Fish Restoration and Boating Trust Fund to improve recreational boating infrastructure and environmental protection.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=362055",
+      "keyRequirements": [
+        "Must be a designated agency of a U.S. state, territory, or the District of Columbia",
+        "Must register with SAM.gov prior to application submission",
+        "Application must be submitted through Grants.gov by posted deadline",
+        "Must meet eligible applicant criteria defined in the funding opportunity notice"
+      ],
+      "industryCategories": [
+        "Infrastructure",
+        "Public Transit"
+      ],
+      "fundingAmount": 1500000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "High-performance Optimized Recycled Nuclear Isotopes for Gen IV reactors (HORNIG)",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "U.S. Department of Energy",
+      "incentiveType": "GRANT",
+      "shortSummary": "ARPA-E funding opportunity for research and development of high-performance recycled nuclear isotopes optimized for Generation IV reactor technology. Applications must be submitted through Grants.gov by the posted deadline with SAM.gov registration.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=362035",
+      "keyRequirements": [
+        "Must be an eligible applicant as defined in the opportunity listing",
+        "SAM.gov registration required prior to application",
+        "Application must be submitted through Grants.gov by posted deadline",
+        "Review full Notice of Funding Opportunity (NOFO) for detailed requirements"
+      ],
+      "industryCategories": [
+        "Energy Management",
+        "Clean Technology"
+      ],
+      "fundingAmount": 7000000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "WMATA Transportation &ndash; Shuttle Services Route A90",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "Washington Headquarters Services",
+      "incentiveType": "GRANT",
+      "shortSummary": "This program funds contractors to provide comprehensive express shuttle bus transportation services for Department of War personnel between the Pentagon Transit Center and Mark Center Station. The funding supports the establishment and operation of Route A90 as a reliable and continual transit service.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=362032",
+      "keyRequirements": [
+        "Must be an eligible applicant as defined in the opportunity listing",
+        "SAM.gov registration required prior to application",
+        "Application must be submitted through Grants.gov by posted deadline",
+        "Review full Notice of Funding Opportunity (NOFO) for detailed requirements"
+      ],
+      "industryCategories": [
+        "Public Transit",
+        "Fleet"
+      ],
+      "fundingAmount": 6440000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "Strengthening U.S. Studies in Higher Education in Argentina",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "U.S. Mission to Argentina",
+      "incentiveType": "GRANT",
+      "shortSummary": "This program supports the strengthening of U.S. Studies programs in higher education institutions in Argentina through funding for academic collaboration and mutual understanding initiatives. It provides structured, interdisciplinary education on U.S. society, governance, history, and culture to students and faculty.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=362037",
+      "keyRequirements": [
+        "Must be an eligible applicant as defined in the opportunity listing",
+        "Application must be submitted through Grants.gov by the posted deadline",
+        "SAM.gov registration required prior to application",
+        "Review full Notice of Funding Opportunity (NOFO) for detailed requirements"
+      ],
+      "industryCategories": [
+        "Research & Development"
+      ],
+      "fundingAmount": 20000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "Assistive Technology Program for Farmers with Disabilities",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "U.S. Department of Agriculture",
+      "incentiveType": "GRANT",
+      "shortSummary": "The AgrAbility program provides funding and technical assistance to support individuals with disabilities, including veterans, engaged in agricultural enterprises. It works through cooperative demonstration projects at state and regional levels to increase success and sustainability in farming operations.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=362043",
+      "keyRequirements": [
+        "Must be an eligible applicant as defined in the opportunity listing",
+        "Application must be submitted through Grants.gov by posted deadline",
+        "SAM.gov registration required prior to application",
+        "Review full Notice of Funding Opportunity (NOFO) for detailed requirements"
+      ],
+      "industryCategories": [
+        "Agriculture"
+      ],
+      "fundingAmount": 530000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "2026 Alaska Marine Education and Training Mini-Grant Program",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "U.S. Department of Commerce",
+      "incentiveType": "GRANT",
+      "shortSummary": "This mini-grant program supports workforce development and training for marine-related professions, including marine science, aquaculture, and maritime operations. It also funds projects enhancing seafood safety, management practices, technological innovation in fishing, and consumer education on seafood quality and sustainability.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=362034",
+      "keyRequirements": [
+        "Must be eligible applicant as defined in opportunity listing",
+        "Application must be submitted through Grants.gov by posted deadline",
+        "SAM.gov registration required prior to application",
+        "Project must support marine workforce development, aquaculture, or maritime operations"
+      ],
+      "industryCategories": [
+        "Agriculture",
+        "Manufacturing"
+      ],
+      "fundingAmount": 75000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "INSPIRING GENERATIONS OF NEW INNOVATORS TO IMPACT TECHNOLOGIES IN ENERGY 2026 (IGNIITE 2026)",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "U.S. Department of Energy",
+      "incentiveType": "GRANT",
+      "shortSummary": "IGNIITE 2026 is a Department of Energy ARPA-E funding opportunity designed to support innovative early-stage energy technologies and inspire new researchers and innovators in the energy sector. Applicants must submit applications through the ARPA-E eXCHANGE platform by the posted deadline.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=362036",
+      "keyRequirements": [
+        "Must be an eligible applicant as defined in the opportunity listing",
+        "Application must be submitted through ARPA-E eXCHANGE (not Grants.gov)",
+        "SAM.gov registration required prior to application",
+        "Must comply with all detailed requirements in the full Notice of Funding Opportunity (NOFO)"
+      ],
+      "industryCategories": [
+        "Energy Management",
+        "Clean Technology"
+      ],
+      "fundingAmount": 500000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "U.S. Mission New Zealand  Annual Program Statement",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "U.S. Mission to New Zealand",
+      "incentiveType": "GRANT",
+      "shortSummary": "The U.S. Department of State's Mission New Zealand seeks organizations to implement programs that strengthen U.S.-New Zealand economic, scientific, and cultural ties. This open competition supports capacity-building projects that advance bilateral relationships across multiple sectors.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=361866",
+      "keyRequirements": [
+        "Must be an eligible applicant as defined in the opportunity listing",
+        "SAM.gov registration required prior to application submission",
+        "Application must be submitted through Grants.gov by posted deadline",
+        "Review full Notice of Funding Opportunity (NOFO) for detailed requirements"
+      ],
+      "industryCategories": [
+        "Research & Development"
+      ],
+      "fundingAmount": 100000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "U.S. Mission Public Diplomacy  Grants Program &ndash; Cook Islands &amp; Niue",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "U.S. Mission to New Zealand",
+      "incentiveType": "GRANT",
+      "shortSummary": "The U.S. Department of State's U.S. Mission New Zealand invites applications to implement programs that advance U.S.-Cook Islands and U.S.-Niue maritime cooperation, economic and cultural ties. The program supports local solutions and builds local capacity to increase economic linkages with the United States.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=361867",
+      "keyRequirements": [
+        "Must be an eligible applicant as defined in the opportunity listing",
+        "Application must be submitted through Grants.gov by the posted deadline",
+        "SAM.gov registration required prior to application",
+        "Review full Notice of Funding Opportunity (NOFO) for detailed requirements"
+      ],
+      "industryCategories": [
+        "Healthcare"
+      ],
+      "fundingAmount": 50000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "2026 Alumni Engagement Innovation Fund, Bosnia and Herzegovina",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "U.S. Mission to Bosnia and Herzegovina",
+      "incentiveType": "GRANT",
+      "shortSummary": "The 2026 Alumni Engagement Innovation Fund provides grants to U.S. government-funded exchange program alumni in Bosnia and Herzegovina to develop and implement community-benefit projects. All projects must celebrate Freedom 250 (U.S. 250th birthday) and align with shared interests and policy objectives.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=362010",
+      "keyRequirements": [
+        "Must be eligible applicant as defined in opportunity listing",
+        "Prior participation in U.S. government-funded exchange programs",
+        "Application submitted through Grants.gov by posted deadline",
+        "SAM.gov registration required",
+        "Project must promote Freedom 250 celebration",
+        "Project must benefit local communities"
+      ],
+      "industryCategories": [
+        "Research & Development"
+      ],
+      "fundingAmount": 35000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "BJA FY 25 Invited to Apply- Transforming Prison Cultures, Climates, and Spaces",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "Bureau of Justice Assistance",
+      "incentiveType": "GRANT",
+      "shortSummary": "BJA FY 2025 funding opportunity supporting state departments of corrections in implementing the Safe Inside Initiative to improve prison safety, security, and reduce recidivism. Focuses on transforming prison cultures and spaces while addressing workforce challenges in correctional facilities.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=362040",
+      "keyRequirements": [
+        "Must be an eligible applicant as defined in the opportunity listing",
+        "Application must be submitted through Grants.gov by posted deadline",
+        "SAM.gov registration required prior to application",
+        "State departments of corrections or eligible correctional agencies"
+      ],
+      "industryCategories": [
+        "Government & Nonprofit"
+      ],
+      "fundingAmount": 1000000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "AEIF:  Celebrating Freedom 250 and Advancing USA-ROC",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "U.S. Mission to the Republic of the Congo",
+      "incentiveType": "GRANT",
+      "shortSummary": "The U.S. Department of State Embassy Brazzaville is soliciting applications to implement a program advancing U.S. foreign policy priorities in the Republic of the Congo, celebrating the Freedom 250 milestone, and promoting American innovation, technology, and commercial ties.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=362011",
+      "keyRequirements": [
+        "Must be an eligible applicant as defined in the opportunity listing",
+        "Application must be submitted through Grants.gov by the posted deadline",
+        "SAM.gov registration required prior to application",
+        "Review full Notice of Funding Opportunity (NOFO) for detailed requirements"
+      ],
+      "industryCategories": [
+        "Research & Development"
+      ],
+      "fundingAmount": 35000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "Federally Recognized Tribes Extension Program",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "U.S. Department of Agriculture",
+      "incentiveType": "GRANT",
+      "shortSummary": "The Federally Recognized Tribes Extension Program (FRTEP) provides funding for Extension programs that deliver education and research-based knowledge to Tribal communities. The program supports informal education and outreach activities designed to improve quality of life and economic well-being on Tribal lands.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=362018",
+      "keyRequirements": [
+        "Must be an eligible applicant as defined in the opportunity listing",
+        "Application must be submitted through Grants.gov by the posted deadline",
+        "SAM.gov registration required prior to application",
+        "Review full Notice of Funding Opportunity (NOFO) for detailed requirements"
+      ],
+      "industryCategories": [
+        "Agriculture"
+      ],
+      "fundingAmount": 102000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "Rural Health and Safety Education Competitive Grants Program",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "U.S. Department of Agriculture",
+      "incentiveType": "GRANT",
+      "shortSummary": "The Rural Health and Safety Education Competitive Grants Program provides funding to foster quality of life in rural communities by supporting rural development programs and disseminating information about rural conditions. The program aims to improve coordination among federal agencies, state and local governments, institutions, and private organizations in rural areas.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=362028",
+      "keyRequirements": [
+        "Must be an eligible applicant as defined in the opportunity listing",
+        "Application must be submitted through Grants.gov by posted deadline",
+        "SAM.gov registration required prior to application",
+        "Review full Notice of Funding Opportunity (NOFO) for detailed requirements"
+      ],
+      "industryCategories": [
+        "Agriculture"
+      ],
+      "fundingAmount": 350000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "Tribal Colleges Research Grants Program",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "U.S. Department of Agriculture",
+      "incentiveType": "GRANT",
+      "shortSummary": "The Tribal Colleges Research Grants Program supports research capacity development at tribal colleges in agriculture, natural resources, and human sciences. It aims to prepare students for competitive agricultural careers through innovative research projects, including those utilizing artificial intelligence and data science technologies.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=362029",
+      "keyRequirements": [
+        "Must be an eligible tribal college applicant as defined in the opportunity listing",
+        "Application must be submitted through Grants.gov by the posted deadline",
+        "SAM.gov registration required prior to application submission",
+        "Research focus must be in agriculture, natural resources, or human sciences"
+      ],
+      "industryCategories": [
+        "Agriculture"
+      ],
+      "fundingAmount": 2500000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "Regional Food System Partnership Fiscal Year 2026",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "U.S. Department of Agriculture",
+      "incentiveType": "GRANT",
+      "shortSummary": "The USDA Agricultural Marketing Service offers grants to support partnerships that connect public and private resources to plan and develop local and regional food systems. This program is part of the Local Agriculture Market Program (LAMP) and aims to strengthen regional food system infrastructure.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=361992",
+      "keyRequirements": [
+        "Must be an eligible applicant as defined in the opportunity listing",
+        "Application must be submitted through Grants.gov by the posted deadline",
+        "SAM.gov registration required prior to application",
+        "Partnership must connect public and private resources",
+        "Project must support local and regional food system development"
+      ],
+      "industryCategories": [
+        "Agriculture",
+        "Infrastructure"
+      ],
+      "fundingAmount": 1000000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "Species Recovery Grants to States (Section 6 Program)",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "U.S. Department of Commerce",
+      "incentiveType": "GRANT",
+      "shortSummary": "Federal grants provided to eligible state agencies to support conservation and recovery of endangered or threatened species under the Endangered Species Act, particularly those under NOAA's National Marine Fisheries Service jurisdiction. Funds support cooperative efforts between federal and state governments to protect listed species in state waters.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=361998",
+      "keyRequirements": [
+        "Must be an eligible state agency applicant as defined in the opportunity listing",
+        "SAM.gov registration required prior to application submission",
+        "Application must be submitted through Grants.gov by posted deadline",
+        "Focus on species listed as endangered or threatened under the Endangered Species Act"
+      ],
+      "industryCategories": [
+        "Agriculture"
+      ],
+      "fundingAmount": 250000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "title": "Farmers Market Promotion Program Fiscal Year 2026",
+      "slug": null,
+      "jurisdictionLevel": "FEDERAL",
+      "jurisdictionName": "United States",
+      "managingAgency": "U.S. Department of Agriculture",
+      "incentiveType": "GRANT",
+      "shortSummary": "The USDA Agricultural Marketing Service Farmers Market Promotion Program provides grants to support the development and expansion of direct producer-to-consumer markets. The program aims to increase access to and availability of locally and regionally produced agricultural products.",
+      "sourceUrl": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=361993",
+      "keyRequirements": [
+        "Must be an eligible applicant as defined in the opportunity listing",
+        "Application must be submitted through Grants.gov by the posted deadline",
+        "SAM.gov registration required prior to application",
+        "Compliance with full Notice of Funding Opportunity (NOFO) requirements"
+      ],
+      "industryCategories": [
+        "Agriculture"
+      ],
+      "fundingAmount": 500000.0,
+      "_qualityGate": {
+        "pass": true,
+        "reasons": []
+      }
+    }
+  ]
+}
