@@ -104,6 +104,51 @@ class GrantsGovScraper(BaseScraper):
             return self._mock_results()
         return self._scrape_live()
 
+    DETAIL_URL = "https://apply07.grants.gov/grantsws/rest/opportunity/details"
+
+    def _fetch_detail(self, opp_id: str) -> dict:
+        """
+        Fetch the full opportunity detail for an oppId.
+        The /search endpoint returns titles/IDs/agency only — no synopsis.
+        Synopsis lives at /opportunity/details. Without this call, the
+        quality gate (synopsis ≥ 120 chars) rejects every opportunity.
+        Returns {} on any failure so the caller can fall back gracefully.
+        """
+        try:
+            response = self._client.post(
+                self.DETAIL_URL, json={"oppId": int(opp_id)}, timeout=20
+            )
+            response.raise_for_status()
+            return response.json() or {}
+        except Exception as e:
+            self._log.debug("Detail fetch failed", opp_id=opp_id, error=str(e))
+            return {}
+
+    def _merge_detail_into_opp(self, opp: dict, detail: dict) -> dict:
+        """
+        Pull the fields _parse_opportunity needs from the detail response
+        and overlay them onto the search-result dict.
+        Detail response shape (Grants.gov v1 grantsws):
+          synopsis: { synopsisDesc, awardCeiling, awardFloor, estimatedFunding,
+                      applicantEligibilityDesc, agencyCode, ... }
+        """
+        synopsis_block = detail.get("synopsis") or {}
+        merged = dict(opp)
+        if synopsis_block.get("synopsisDesc"):
+            merged["synopsis"] = synopsis_block["synopsisDesc"]
+        for field in ("awardCeiling", "awardFloor", "estimatedFunding"):
+            val = synopsis_block.get(field)
+            if val and not merged.get(field):
+                merged[field] = val
+        if synopsis_block.get("agencyCode") and not merged.get("agencyCode"):
+            merged["agencyCode"] = synopsis_block["agencyCode"]
+        if synopsis_block.get("agencyName") and not merged.get("agencyName"):
+            merged["agencyName"] = synopsis_block["agencyName"]
+        # closeDate sometimes only on detail
+        if synopsis_block.get("responseDate") and not merged.get("closeDate"):
+            merged["closeDate"] = synopsis_block["responseDate"]
+        return merged
+
     def _scrape_live(self) -> list[ScrapedIncentive]:
         self._log.info("Fetching from Grants.gov API")
         results: list[ScrapedIncentive] = []
@@ -125,6 +170,8 @@ class GrantsGovScraper(BaseScraper):
         per_term: dict[str, dict] = {}
         total_raw_hits = 0
         total_parsed = 0
+        detail_fetch_failed = 0
+        detail_fetch_succeeded = 0
 
         for term in search_terms:
             term_diag = {"raw_hits": 0, "new_ids": 0, "parsed": 0, "error": None}
@@ -150,6 +197,14 @@ class GrantsGovScraper(BaseScraper):
                     seen_ids.add(opp_id)
                     term_diag["new_ids"] += 1
 
+                    # /search returns title+id only. Fetch detail to get synopsis.
+                    detail = self._fetch_detail(opp_id)
+                    if detail:
+                        detail_fetch_succeeded += 1
+                        opp = self._merge_detail_into_opp(opp, detail)
+                    else:
+                        detail_fetch_failed += 1
+
                     incentive = self._parse_opportunity(opp)
                     if incentive:
                         results.append(incentive)
@@ -170,8 +225,11 @@ class GrantsGovScraper(BaseScraper):
         # Attach diagnostics for the artifact summary
         self._diagnostics = {
             "total_raw_hits": total_raw_hits,
+            "unique_ids": len(seen_ids),
+            "detail_fetch_succeeded": detail_fetch_succeeded,
+            "detail_fetch_failed": detail_fetch_failed,
             "total_parsed": total_parsed,
-            "rejected_by_quality_gate": total_raw_hits - total_parsed,
+            "rejected_by_quality_gate": len(seen_ids) - total_parsed,
             "per_term": per_term,
         }
 

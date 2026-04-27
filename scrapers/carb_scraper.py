@@ -118,7 +118,14 @@ class CARBScraper(BaseScraper):
         self.mock = mock
 
     def scrape(self) -> list[ScrapedIncentive]:
-        html = MOCK_CARB_HTML if self.mock else self.fetch(self.BASE_URL)
+        if not self.mock:
+            # SS-002: live URL https://ww2.arb.ca.gov/our-work/programs/low-carbon-transportation-investments
+            # returned HTTP 404 in 2026-04 dry-runs. CARB restructured the
+            # programs site. Until a stable replacement URL + selectors are
+            # validated, live mode is disabled. Mock mode remains active.
+            self._log.warning("CARB live URL is dead (HTTP 404); skipping live scrape")
+            return []
+        html = MOCK_CARB_HTML
         return self._parse_page(html)
 
     def _parse_page(self, html: str) -> list[ScrapedIncentive]:
