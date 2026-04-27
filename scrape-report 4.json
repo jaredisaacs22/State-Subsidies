@@ -1,0 +1,82 @@
+{
+  "_summary": {
+    "perSource": {
+      "WAZIP": {
+        "status": "ok",
+        "rows": 0,
+        "error": null
+      },
+      "CalTrans CORE": {
+        "status": "ok",
+        "rows": 0,
+        "error": null
+      },
+      "CARB": {
+        "status": "ok",
+        "rows": 0,
+        "error": null
+      },
+      "Grants.gov": {
+        "status": "ok",
+        "rows": 0,
+        "error": null,
+        "diagnostics": {
+          "total_raw_hits": 140,
+          "unique_ids": 34,
+          "detail_fetch_succeeded": 0,
+          "detail_fetch_failed": 34,
+          "total_parsed": 0,
+          "rejected_by_quality_gate": 34,
+          "per_term": {
+            "small business energy efficiency grant": {
+              "raw_hits": 20,
+              "new_ids": 20,
+              "parsed": 0,
+              "error": null
+            },
+            "clean energy manufacturing grant": {
+              "raw_hits": 20,
+              "new_ids": 0,
+              "parsed": 0,
+              "error": null
+            },
+            "electric vehicle fleet grant": {
+              "raw_hits": 20,
+              "new_ids": 3,
+              "parsed": 0,
+              "error": null
+            },
+            "agricultural efficiency grant": {
+              "raw_hits": 20,
+              "new_ids": 0,
+              "parsed": 0,
+              "error": null
+            },
+            "workforce development manufacturing": {
+              "raw_hits": 20,
+              "new_ids": 3,
+              "parsed": 0,
+              "error": null
+            },
+            "broadband infrastructure rural": {
+              "raw_hits": 20,
+              "new_ids": 8,
+              "parsed": 0,
+              "error": null
+            },
+            "economic development business": {
+              "raw_hits": 20,
+              "new_ids": 0,
+              "parsed": 0,
+              "error": null
+            }
+          }
+        }
+      }
+    },
+    "totalScraped": 0,
+    "qualityGatePass": 0,
+    "qualityGateFail": 0
+  },
+  "rows": []
+}
