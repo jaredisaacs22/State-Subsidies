@@ -12,6 +12,17 @@ export function formatCurrency(amount: number | null): string {
   return `$${amount.toLocaleString()}`;
 }
 
+/** Compact money formatter for headline stat figures (e.g. $25M, $152K). */
+export function fmtMoney(amount: number | null | undefined): string {
+  if (amount == null) return "—";
+  if (amount >= 1_000_000) {
+    const m = amount / 1_000_000;
+    return `$${m % 1 === 0 ? m.toFixed(0) : m.toFixed(1)}M`;
+  }
+  if (amount >= 1_000) return `$${Math.round(amount / 1_000)}K`;
+  return `$${Math.round(amount).toLocaleString()}`;
+}
+
 export function formatDeadline(deadline: string | null): string {
   if (!deadline) return "Rolling / No deadline";
   const d = new Date(deadline);

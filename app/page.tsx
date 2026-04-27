@@ -7,7 +7,8 @@ import { ResultsGrid } from "@/components/ResultsGrid";
 import { BusinessIntakeChat } from "@/components/BusinessIntakeChat";
 import { AudienceSelector, AUDIENCES } from "@/components/AudienceSelector";
 import type { AudienceId } from "@/components/AudienceSelector";
-import { cn } from "@/lib/utils";
+import { cn, fmtMoney } from "@/lib/utils";
+import { Stat } from "@/components/Stat";
 import type { Incentive, IncentiveFilters, PaginatedResponse } from "@/lib/types";
 
 const DEFAULT_FILTERS: IncentiveFilters = {
@@ -98,7 +99,10 @@ export default function HomePage() {
   const [error, setError] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedAudience, setSelectedAudience] = useState<AudienceId | null>(null);
-  const [stats, setStats] = useState<{ federal: number; state: number; city: number; agency: number } | null>(null);
+  const [stats, setStats] = useState<{
+    federal: number; state: number; city: number; agency: number;
+    medianAward: number | null; largestActive: number | null; asOf: string | null;
+  } | null>(null);
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -285,28 +289,34 @@ export default function HomePage() {
             <span className="text-white/25 text-[11px]">+ more</span>
           </div>
 
-          {/* Stats strip */}
+          {/* Stats strip — SS-005: all figures live from DB, no hardcoded numbers */}
           <div className="mt-10 -mx-4 sm:-mx-6 lg:-mx-8 bg-black/25 border-t border-white/[0.07] px-4 sm:px-6 lg:px-8 py-5 backdrop-blur-sm">
             <div className="flex items-center justify-center flex-wrap">
-              {[
-                { value: results?.total ?? "—", label: "Programs" },
-                { value: stats?.federal ?? "—", label: "Federal" },
-                { value: stats?.state ?? "—", label: "State" },
-                { value: (stats != null ? (stats.city + stats.agency) : "—"), label: "Local & Agency" },
-                { value: "$4.2B+", label: "Available" },
-              ].map(({ value, label }, i) => (
-                <div key={label} className="flex items-center">
-                  <div className="text-center px-5 sm:px-8">
-                    <div className="stat-number text-xl font-bold text-white leading-tight">
-                      {typeof value === "number" ? value.toLocaleString() : value}
+              {(() => {
+                const asOf = stats?.asOf ? new Date(stats.asOf) : null;
+                const items = [
+                  { value: results?.total ?? "—", label: "Programs" },
+                  { value: stats?.federal ?? "—", label: "Federal" },
+                  { value: stats?.state ?? "—", label: "State" },
+                  { value: stats != null ? (stats.city + stats.agency) : "—", label: "Local & Agency" },
+                  { value: fmtMoney(stats?.largestActive), label: "Largest active" },
+                  { value: fmtMoney(stats?.medianAward), label: "Median award" },
+                ];
+                return items.map(({ value, label }, i) => (
+                  <div key={label} className="flex items-center">
+                    <div className="px-4 sm:px-6">
+                      <Stat
+                        value={value}
+                        label={label}
+                        asOf={asOf}
+                        methodologyAnchor="how-we-count"
+                        dark
+                      />
                     </div>
-                    <div className="text-white/35 text-[10px] font-medium uppercase tracking-widest mt-0.5">
-                      {label}
-                    </div>
+                    {i < items.length - 1 && <div className="w-px h-8 bg-white/[0.08] flex-shrink-0" />}
                   </div>
-                  {i < 4 && <div className="w-px h-8 bg-white/[0.08] flex-shrink-0" />}
-                </div>
-              ))}
+                ));
+              })()}
               <a
                 href="#browse"
                 className="hidden sm:inline-flex items-center gap-1.5 ml-6 text-[11px] font-semibold text-white/45 hover:text-white/80 transition-colors border border-white/[0.12] hover:border-white/25 rounded-full px-3.5 py-1.5"
