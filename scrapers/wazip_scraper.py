@@ -132,7 +132,15 @@ class WazipScraper(BaseScraper):
     # ── Public API ────────────────────────────────────────────────────────
 
     def scrape(self) -> list[ScrapedIncentive]:
-        html = MOCK_WAZIP_HTML if self.mock else self.fetch(self.BASE_URL)
+        if not self.mock:
+            # SS-002: live URL https://www.valleyair.org/grant_programs/WAZIP/wazip_main/
+            # returned HTTP 404 in 2026-04 dry-runs. The Valley Air District
+            # restructured their site and the WAZIP path no longer exists.
+            # Until the new URL is identified and selectors re-validated,
+            # live mode is disabled. Mock mode remains active for tests.
+            self._log.warning("WAZIP live URL is dead (HTTP 404); skipping live scrape")
+            return []
+        html = MOCK_WAZIP_HTML
         return self._parse_page(html, source_url=self.BASE_URL)
 
     # ── Extraction Logic ──────────────────────────────────────────────────

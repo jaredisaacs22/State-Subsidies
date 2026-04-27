@@ -81,6 +81,33 @@ BOILERPLATE_TITLE_PREFIXES = [
     "general business",
 ]
 
+# api.grants.gov detail responses sometimes return the agency *contact*
+# text in the agencyName field (e.g. "Jose Berna\nGrants Specialist").
+# 2026-04 dry-run #5 had 13 of 21 rows polluted this way. These suffixes
+# never appear in a real agency name.
+CONTACT_TITLE_TAILS = (
+    "grantor", "specialist", "clerk", "officer", "director",
+    "manager", "administrator", "coordinator", "analyst",
+)
+
+
+def _looks_like_contact_text(s: str) -> bool:
+    """True if the value looks like a person+title contact string, not an agency name."""
+    if not s:
+        return False
+    if "\n" in s:
+        return True
+    last = s.split()[-1].rstrip(",.").lower() if s.split() else ""
+    return last in CONTACT_TITLE_TAILS
+
+
+def _clean_agency_name(s: str) -> str:
+    """Strip newline-and-after and surrounding whitespace from a polluted agency string."""
+    if not s:
+        return s
+    return s.split("\n", 1)[0].strip()
+
+
 MIN_SYNOPSIS_LENGTH = 120
 MIN_AWARD_AMOUNT = 10_000
 
@@ -104,6 +131,152 @@ class GrantsGovScraper(BaseScraper):
             return self._mock_results()
         return self._scrape_live()
 
+    # Detail endpoints to try in order. The first one that returns a 2xx
+    # response with a parseable "synopsis" or "synopsisDesc" field becomes
+    # the chosen endpoint for the rest of the run. Lets us recover from
+    # API restructuring without code change.
+    DETAIL_ENDPOINTS = [
+        # Apply07 grantsws (S2S-style; what we tried first)
+        {
+            "url": "https://apply07.grants.gov/grantsws/rest/opportunity/details",
+            "method": "POST",
+            "id_field": "oppId",
+            "id_type": int,
+        },
+        # api.grants.gov public v1 — current public API
+        {
+            "url": "https://api.grants.gov/v1/api/fetchOpportunity",
+            "method": "POST",
+            "id_field": "opportunityId",
+            "id_type": int,
+        },
+        # www.grants.gov mirror of grantsws (occasionally works when apply07 doesn't)
+        {
+            "url": "https://www.grants.gov/grantsws/rest/opportunity/details",
+            "method": "POST",
+            "id_field": "oppId",
+            "id_type": int,
+        },
+    ]
+
+    def _try_detail_endpoint(self, endpoint: dict, opp_id: str) -> tuple[dict | None, str]:
+        """
+        Try one detail endpoint. Returns (parsed_json or None, diagnostic_msg).
+        Diagnostic msg captures status/response preview when call fails.
+        """
+        try:
+            payload_id = endpoint["id_type"](opp_id)
+        except (ValueError, TypeError):
+            return None, f"id_cast_failed (id={opp_id!r})"
+
+        payload = {endpoint["id_field"]: payload_id}
+        try:
+            if endpoint["method"] == "POST":
+                response = self._client.post(endpoint["url"], json=payload, timeout=20)
+            else:
+                response = self._client.get(endpoint["url"], params=payload, timeout=20)
+            status = response.status_code
+            if status >= 400:
+                preview = (response.text or "")[:120].replace("\n", " ")
+                return None, f"HTTP {status} preview={preview!r}"
+            try:
+                data = response.json()
+            except Exception as e:
+                preview = (response.text or "")[:120].replace("\n", " ")
+                return None, f"json_parse_failed: {e} preview={preview!r}"
+            # Reject empty / non-dict responses
+            if not isinstance(data, dict) or not data:
+                return None, f"empty_response (type={type(data).__name__})"
+            # Newer api.grants.gov wraps in "data": {...}
+            if "data" in data and isinstance(data["data"], dict):
+                data = data["data"]
+            return data, "ok"
+        except Exception as e:
+            return None, f"{type(e).__name__}: {e}"
+
+    def _fetch_detail(self, opp_id: str, diag_state: dict) -> dict:
+        """
+        Fetch the full opportunity detail. Walks DETAIL_ENDPOINTS in order;
+        once one succeeds, sticks with it via diag_state['chosen_endpoint'].
+        """
+        # Stick with whichever endpoint last worked
+        chosen = diag_state.get("chosen_endpoint")
+        if chosen is not None:
+            data, msg = self._try_detail_endpoint(chosen, opp_id)
+            if data:
+                return data
+            # Chosen endpoint suddenly broke — fall through to retry all
+
+        for ep in self.DETAIL_ENDPOINTS:
+            data, msg = self._try_detail_endpoint(ep, opp_id)
+            if data:
+                diag_state["chosen_endpoint"] = ep
+                diag_state["chosen_endpoint_url"] = ep["url"]
+                return data
+            # Capture first failure reason per endpoint for the artifact
+            key = f"endpoint_first_error::{ep['url']}"
+            if key not in diag_state:
+                diag_state[key] = msg
+
+        return {}
+
+    def _merge_detail_into_opp(self, opp: dict, detail: dict) -> dict:
+        """
+        Pull the fields _parse_opportunity needs from the detail response
+        and overlay them onto the search-result dict.
+
+        The shape varies by endpoint:
+          - apply07/grantsws → {"synopsis": {"synopsisDesc": ...}}
+          - api.grants.gov v1 → {"opportunity": {"description": ...}}  (varies)
+          - sometimes flat → {"synopsisDesc": ...} or {"description": ...}
+        We probe a few field paths to be robust to all of them.
+        """
+        merged = dict(opp)
+
+        synopsis_block = (
+            detail.get("synopsis")
+            or detail.get("opportunity")
+            or detail
+            or {}
+        )
+        if not isinstance(synopsis_block, dict):
+            synopsis_block = {}
+
+        # Synopsis text
+        for path in ("synopsisDesc", "description", "synopsis", "summary"):
+            val = synopsis_block.get(path) or detail.get(path)
+            if val and isinstance(val, str) and val.strip():
+                merged["synopsis"] = val
+                break
+
+        # Funding
+        for field in ("awardCeiling", "awardFloor", "estimatedFunding"):
+            val = synopsis_block.get(field) or detail.get(field)
+            if val and not merged.get(field):
+                merged[field] = val
+
+        # Agency code can come from anywhere; trust it
+        for field in ("agencyCode",):
+            val = synopsis_block.get(field) or detail.get(field)
+            if val and not merged.get(field):
+                merged[field] = val
+
+        # Agency NAME from the detail response is unreliable: api.grants.gov
+        # sometimes puts contact-person text here (dry-run #5: 13 of 21 rows).
+        # Reject contact-shaped values; prefer the search-result agency field
+        # which is consistently the real agency.
+        for field in ("agencyName", "agency"):
+            val = synopsis_block.get(field) or detail.get(field)
+            if val and not merged.get(field) and not _looks_like_contact_text(val):
+                merged[field] = val
+
+        # Close date
+        close = synopsis_block.get("responseDate") or detail.get("closeDate")
+        if close and not merged.get("closeDate"):
+            merged["closeDate"] = close
+
+        return merged
+
     def _scrape_live(self) -> list[ScrapedIncentive]:
         self._log.info("Fetching from Grants.gov API")
         results: list[ScrapedIncentive] = []
@@ -120,8 +293,20 @@ class GrantsGovScraper(BaseScraper):
         ]
 
         seen_ids: set[str] = set()
+        # Diagnostics surfaced into the dry-run artifact so reviewers can
+        # tell "API returned 0" vs "API returned N, parser rejected all N".
+        per_term: dict[str, dict] = {}
+        total_raw_hits = 0
+        total_parsed = 0
+        detail_fetch_failed = 0
+        detail_fetch_succeeded = 0
+        # Detail-endpoint state — survives across opp IDs so we stick with
+        # the first endpoint that works AND capture per-endpoint failure
+        # reasons in the artifact.
+        detail_diag: dict = {}
 
         for term in search_terms:
+            term_diag = {"raw_hits": 0, "new_ids": 0, "parsed": 0, "error": None}
             try:
                 payload = {
                     "keyword": term,
@@ -133,20 +318,58 @@ class GrantsGovScraper(BaseScraper):
                 response.raise_for_status()
                 data = response.json()
 
-                for opp in data.get("oppHits", []):
+                opp_hits = data.get("oppHits", [])
+                term_diag["raw_hits"] = len(opp_hits)
+                total_raw_hits += len(opp_hits)
+
+                for opp in opp_hits:
                     opp_id = str(opp.get("id", ""))
                     if opp_id in seen_ids:
                         continue
                     seen_ids.add(opp_id)
+                    term_diag["new_ids"] += 1
+
+                    # /search returns title+id only. Fetch detail to get synopsis.
+                    detail = self._fetch_detail(opp_id, detail_diag)
+                    if detail:
+                        detail_fetch_succeeded += 1
+                        opp = self._merge_detail_into_opp(opp, detail)
+                    else:
+                        detail_fetch_failed += 1
 
                     incentive = self._parse_opportunity(opp)
                     if incentive:
                         results.append(incentive)
+                        term_diag["parsed"] += 1
+                        total_parsed += 1
 
-                self._log.info("Grants.gov term results", term=term, found=len(results))
+                self._log.info("Grants.gov term results",
+                               term=term,
+                               raw=term_diag["raw_hits"],
+                               parsed=term_diag["parsed"])
 
             except Exception as e:
+                term_diag["error"] = f"{type(e).__name__}: {e}"
                 self._log.error("Grants.gov search failed", term=term, error=str(e))
+
+            per_term[term] = term_diag
+
+        # Attach diagnostics for the artifact summary
+        self._diagnostics = {
+            "total_raw_hits": total_raw_hits,
+            "unique_ids": len(seen_ids),
+            "detail_fetch_succeeded": detail_fetch_succeeded,
+            "detail_fetch_failed": detail_fetch_failed,
+            "detail_endpoint_chosen": detail_diag.get("chosen_endpoint_url"),
+            "detail_endpoint_first_errors": {
+                k.split("::", 1)[1]: v
+                for k, v in detail_diag.items()
+                if k.startswith("endpoint_first_error::")
+            },
+            "total_parsed": total_parsed,
+            "rejected_by_quality_gate": len(seen_ids) - total_parsed,
+            "per_term": per_term,
+        }
 
         self._log.info("Grants.gov total after quality filter", count=len(results))
         return results
@@ -221,8 +444,37 @@ class GrantsGovScraper(BaseScraper):
                     except ValueError:
                         pass
 
+            # Agency name resolution chain (defensive against api.grants.gov
+            # detail responses that put contact text in agencyName):
+            #   1. AGENCY_MAP[exact code]   — e.g. "DOE" → "U.S. Department of Energy"
+            #   2. AGENCY_MAP[prefix code]  — e.g. "USDA-NRCS" → "USDA" → mapped
+            #   3. raw agencyName / agency, IF it doesn't look like contact text
+            #   4. Reject the row — better zero than ship a contact name as the agency
             agency_code = opp.get("agencyCode", "")
-            agency_name = AGENCY_MAP.get(agency_code, opp.get("agencyName", "Federal Agency"))
+            raw_name = opp.get("agencyName") or opp.get("agency") or ""
+
+            mapped = (
+                AGENCY_MAP.get(agency_code)
+                or (AGENCY_MAP.get(agency_code.split("-", 1)[0]) if agency_code and "-" in agency_code else None)
+            )
+            code_prefix = agency_code.split("-", 1)[0] if agency_code else ""
+            if mapped:
+                agency_name = mapped
+            elif raw_name and not _looks_like_contact_text(raw_name):
+                agency_name = raw_name
+            elif code_prefix and 2 <= len(code_prefix) <= 6 and code_prefix.isupper():
+                # 4-letter federal agency acronym is informational and not wrong.
+                # E.g. "HRSA", "NIH", "FCC", "DOL". Better than fabricating.
+                agency_name = code_prefix
+            else:
+                self._log.warning(
+                    "rejecting row: cannot determine agency",
+                    title=title[:60],
+                    code=agency_code,
+                    raw=raw_name[:80],
+                )
+                return None
+
             opp_number = opp.get("number", "")
             source_url = f"https://www.grants.gov/web/grants/view-opportunity.html?oppId={opp.get('id', '')}"
 
