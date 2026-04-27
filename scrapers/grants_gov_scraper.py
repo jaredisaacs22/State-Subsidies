@@ -81,6 +81,33 @@ BOILERPLATE_TITLE_PREFIXES = [
     "general business",
 ]
 
+# api.grants.gov detail responses sometimes return the agency *contact*
+# text in the agencyName field (e.g. "Jose Berna\nGrants Specialist").
+# 2026-04 dry-run #5 had 13 of 21 rows polluted this way. These suffixes
+# never appear in a real agency name.
+CONTACT_TITLE_TAILS = (
+    "grantor", "specialist", "clerk", "officer", "director",
+    "manager", "administrator", "coordinator", "analyst",
+)
+
+
+def _looks_like_contact_text(s: str) -> bool:
+    """True if the value looks like a person+title contact string, not an agency name."""
+    if not s:
+        return False
+    if "\n" in s:
+        return True
+    last = s.split()[-1].rstrip(",.").lower() if s.split() else ""
+    return last in CONTACT_TITLE_TAILS
+
+
+def _clean_agency_name(s: str) -> str:
+    """Strip newline-and-after and surrounding whitespace from a polluted agency string."""
+    if not s:
+        return s
+    return s.split("\n", 1)[0].strip()
+
+
 MIN_SYNOPSIS_LENGTH = 120
 MIN_AWARD_AMOUNT = 10_000
 
@@ -228,10 +255,19 @@ class GrantsGovScraper(BaseScraper):
             if val and not merged.get(field):
                 merged[field] = val
 
-        # Agency
-        for field in ("agencyCode", "agencyName"):
+        # Agency code can come from anywhere; trust it
+        for field in ("agencyCode",):
             val = synopsis_block.get(field) or detail.get(field)
             if val and not merged.get(field):
+                merged[field] = val
+
+        # Agency NAME from the detail response is unreliable: api.grants.gov
+        # sometimes puts contact-person text here (dry-run #5: 13 of 21 rows).
+        # Reject contact-shaped values; prefer the search-result agency field
+        # which is consistently the real agency.
+        for field in ("agencyName", "agency"):
+            val = synopsis_block.get(field) or detail.get(field)
+            if val and not merged.get(field) and not _looks_like_contact_text(val):
                 merged[field] = val
 
         # Close date
@@ -408,8 +444,37 @@ class GrantsGovScraper(BaseScraper):
                     except ValueError:
                         pass
 
+            # Agency name resolution chain (defensive against api.grants.gov
+            # detail responses that put contact text in agencyName):
+            #   1. AGENCY_MAP[exact code]   — e.g. "DOE" → "U.S. Department of Energy"
+            #   2. AGENCY_MAP[prefix code]  — e.g. "USDA-NRCS" → "USDA" → mapped
+            #   3. raw agencyName / agency, IF it doesn't look like contact text
+            #   4. Reject the row — better zero than ship a contact name as the agency
             agency_code = opp.get("agencyCode", "")
-            agency_name = AGENCY_MAP.get(agency_code, opp.get("agencyName", "Federal Agency"))
+            raw_name = opp.get("agencyName") or opp.get("agency") or ""
+
+            mapped = (
+                AGENCY_MAP.get(agency_code)
+                or (AGENCY_MAP.get(agency_code.split("-", 1)[0]) if agency_code and "-" in agency_code else None)
+            )
+            code_prefix = agency_code.split("-", 1)[0] if agency_code else ""
+            if mapped:
+                agency_name = mapped
+            elif raw_name and not _looks_like_contact_text(raw_name):
+                agency_name = raw_name
+            elif code_prefix and 2 <= len(code_prefix) <= 6 and code_prefix.isupper():
+                # 4-letter federal agency acronym is informational and not wrong.
+                # E.g. "HRSA", "NIH", "FCC", "DOL". Better than fabricating.
+                agency_name = code_prefix
+            else:
+                self._log.warning(
+                    "rejecting row: cannot determine agency",
+                    title=title[:60],
+                    code=agency_code,
+                    raw=raw_name[:80],
+                )
+                return None
+
             opp_number = opp.get("number", "")
             source_url = f"https://www.grants.gov/web/grants/view-opportunity.html?oppId={opp.get('id', '')}"
 
