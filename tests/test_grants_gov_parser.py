@@ -73,6 +73,48 @@ def test_industry_categories_inferred_correctly(opportunities, scraper):
             )
 
 
+def test_contact_text_in_agency_field_is_rejected_or_cleaned(scraper):
+    """
+    Regression test for dry-run #5 finding: api.grants.gov detail responses
+    sometimes return contact-person text in agencyName ("Jose Berna\\nGrantor").
+    Parser must either substitute a real agency from AGENCY_MAP or refuse the row.
+    """
+    # Case A: agencyCode known → AGENCY_MAP wins, contact text is ignored
+    opp_a = {
+        "id": "TEST-A",
+        "number": "USDA-001",
+        "title": "USDA Solar Demonstration Grant",
+        "synopsis": (
+            "USDA Rural Energy for America Program supports renewable energy "
+            "and energy efficiency improvements for farms and rural small "
+            "businesses. Grant covers 50% of project costs."
+        ),
+        "agencyCode": "USDA",
+        "agencyName": "Jose Berna\nGrants Specialist",  # poison
+        "awardCeiling": "1000000",
+    }
+    result_a = scraper._parse_opportunity(opp_a)
+    assert result_a is not None
+    assert result_a.managing_agency == "U.S. Department of Agriculture"
+    assert "\n" not in result_a.managing_agency
+
+    # Case B: agencyCode unknown + agencyName is contact text → row rejected
+    opp_b = {
+        "id": "TEST-B",
+        "number": "MISC-001",
+        "title": "Some Solar Innovation Grant",
+        "synopsis": (
+            "Funding to support solar innovation activities for small business "
+            "applicants. Eligible expenses include equipment and installation."
+        ),
+        "agencyCode": "OBSCURE-AGENCY",
+        "agencyName": "Nicole A Savoy\nGrantor",  # contact text, no map fallback
+        "awardCeiling": "100000",
+    }
+    result_b = scraper._parse_opportunity(opp_b)
+    assert result_b is None, "row with contact-text agency and no map fallback must be rejected"
+
+
 def test_april_20_failure_class_blocked(scraper):
     """
     Regression test for the April 20 incident:
