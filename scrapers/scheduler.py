@@ -110,6 +110,13 @@ def _run_scrapers(mock: bool) -> tuple[list, dict]:
             counts[name] = {"status": "fail", "rows": 0, "error": unwrapped}
             logger.error(f"{name} scraper failed", error=unwrapped)
             print(f"  {name:<14} ✗  FAILED: {unwrapped}")
+            counts[name] = {"status": "ok", "rows": len(results), "error": None}
+            logger.info(f"{name} scraped", found=len(results))
+            print(f"  {name:<14} ✓  {len(results)} row(s)")
+        except Exception as e:
+            counts[name] = {"status": "fail", "rows": 0, "error": str(e)}
+            logger.error(f"{name} scraper failed", error=str(e))
+            print(f"  {name:<14} ✗  FAILED: {e}")
     return all_incentives, counts
 
 
