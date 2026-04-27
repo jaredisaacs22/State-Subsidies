@@ -36,12 +36,12 @@ jobs:
         # poison the DB — block the scrape, do not write rows.
         run: python3 -m pytest tests/ -v
 
-      - name: Run scrapers (dry-run by default — see SS-002)
+      - name: Run scrapers (SS-002 §9 step 8 — live writes enabled)
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SCRAPER_MOCK_MODE: "false"
-          DRY_RUN: "1"
+          DRY_RUN: "0"
         run: python3 -m scrapers.scheduler --once --live 2>&1 | tee /tmp/scrape.log
 
       - name: Upload scrape log as artifact
