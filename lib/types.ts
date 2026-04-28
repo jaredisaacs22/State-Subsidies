@@ -3,6 +3,8 @@
 export type JurisdictionLevel = "FEDERAL" | "STATE" | "CITY" | "AGENCY";
 export type IncentiveType = "GRANT" | "TAX_CREDIT" | "POINT_OF_SALE_REBATE" | "SUBSIDY" | "LOAN" | "VOUCHER";
 export type IncentiveStatus = "ACTIVE" | "CLOSED" | "UPCOMING" | "SUSPENDED";
+// SS-003: parse quality signal. LOW rows filtered from AI advisor (SS-008).
+export type ParseConfidence = "HIGH" | "MEDIUM" | "LOW";
 
 // ─── Core Incentive shape returned by API ───────────────────────────────────
 
@@ -30,12 +32,23 @@ export interface Incentive {
   deadline: string | null;
   applicationOpenDate: string | null;
 
-  sourceUrl: string;
-  programCode: string | null;
-  status: IncentiveStatus;
+  sourceUrl:    string;
+  sourceDomain: string;
+  programCode:  string | null;
+
+  // SS-003 provenance fields
+  sourceHash:      string | null;
+  parseConfidence: ParseConfidence;
+  parseNotes:      string | null;
+  lastVerifiedAt:  string | null;
+  lastVerifiedBy:  string | null;
+  firstSeenAt:     string;
+  lastSeenAt:      string;
+
+  status:     IncentiveStatus;
   isVerified: boolean;
 
-  scrapedAt: string | null;
+  scrapedAt:     string | null;
   scraperSource: string | null;
 }
 
