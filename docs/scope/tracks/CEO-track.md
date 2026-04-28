@@ -16,14 +16,18 @@ These are the commits and actions where CEO-track was the originating voice on t
 - **04/19/2026** — state-coverage pushes (`d715e2e` 16-state add; `ed52617` 530-program seed); source-URL redirect proxy; runtime auto-seed via `instrumentation.ts`.
 - **04/21/2026** — requested unified-panel response on "how do I unlock scrapers + fix Vercel env scope?" (transcript message 70). Panel returned a 6-step plan (recorded in §3 below). No code landed before COO paused the workstream.
 
-## 2. Active workstream — PAUSED
+## 2. Active workstream — RESUMED & SHIPPED (04/27/2026)
 
 **Title:** *Unlock scrapers + fix Vercel env scope* — originally 6 steps from the 04/21 unified-panel response.
-**Status:** **PAUSED on 04/21/2026** by COO mandate. No edits, PRs, Vercel env changes, or GitHub-secret rotations may be performed under this workstream until the COO explicitly resumes it, or until this workstream is re-authored as scope item `SS-002` (which it has been — see §3).
+**Status:** **SHIPPED on 04/27/2026.** Tracked under SS-002. Grants.gov scraper graduated from DRY_RUN to live writes after 6 dry-run cycles cleaned up parser quality (boilerplate filter, agency-map fallback chain, contact-text rejection, detail-endpoint fallback chain). Final validation run produced 21/21 rows passing the quality gate, 34/34 detail fetches succeeded, zero contact-text agency pollution. PR #42 merged 04/27/2026 flips `DRY_RUN=0` in `.github/workflows/scraper.yml`.
 
-**Why the pause:** the COO's position is that tactical execution without a ratified scope invites regressions. The scope document at `docs/scope/**` is the unified source of truth. Anything tactical gets folded into an SS-###.
+**Foundation hardening shipped alongside (PR #44):**
+- First-time CI gates on `pull_request`: pytest contract tests (SS-002 §7.1), `tsc --noEmit`, `next lint`, prisma migration-drift gate (SS-010), Next.js build sanity, SS-005 §10 grep gate.
+- These were all *missing* before this session — a parser regression or schema drift could have merged silently.
 
-## 3. Migration of CEO workstream into scope
+**Why this took 6 cycles:** each dry-run revealed a new failure class: stub rows from HTML scrapers, dead URLs (WAZIP/CARB 404s), wrong API endpoint, detail-endpoint fallback chain needed, contact-text in `agencyName`. Each fix landed as a separate PR with its own contract test. The contract-test suite is now in CI, so the same class of bugs cannot regress without being caught at PR time.
+
+## 2a. Migration of CEO workstream into scope (historical)
 
 The paused 6-step plan has been absorbed, preserved, and upgraded into:
 
@@ -64,4 +68,4 @@ Empty log is the expected steady state.
 
 ---
 
-*Last updated: 04/22/2026. CEO pause holds until scope v1.0 P0 items are resolved or CEO explicitly resumes with COO sign-off.*
+*Last updated: 04/27/2026. SS-002 closed; foundation CI gates landed in PR #44. Next CEO-track tactical work resumes per COO sign-off on the next P0 (SS-001 H1 + Trust Ribbon mounting, gated on Okonkwo legal review per SS-001 §7.4).*
