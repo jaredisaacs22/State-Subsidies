@@ -16,6 +16,25 @@ These are the commits and actions where CEO-track was the originating voice on t
 - **04/19/2026** — state-coverage pushes (`d715e2e` 16-state add; `ed52617` 530-program seed); source-URL redirect proxy; runtime auto-seed via `instrumentation.ts`.
 - **04/21/2026** — requested unified-panel response on "how do I unlock scrapers + fix Vercel env scope?" (transcript message 70). Panel returned a 6-step plan (recorded in §3 below). No code landed before COO paused the workstream.
 
+## 2b. Active workstream — 04/28/2026 session
+
+**Title:** *Backend foundation hardening — rate limiting + production migration auto-deploy*
+**Status:** **SHIPPED 04/28/2026.**
+
+### Rate limiting (middleware.ts — new file)
+- `POST /api/chat`: **10 req/min per IP** — each call invokes Anthropic; without this a single abusive client could exhaust the entire API budget.
+- `POST /api/track`: **100 req/min per IP** — prevents event-flood DB writes.
+- In-process sliding window with LRU eviction capped at 10 000 entries. Returns `429` + `Retry-After` + `X-RateLimit-*` headers so well-behaved clients can self-throttle.
+- Architecture: Next.js Edge middleware runs before route handlers; zero overhead on the happy path. Comment in-file documents the Vercel KV / Upstash Redis upgrade path for multi-region deployments.
+
+### Production migration auto-deploy (vercel.json + package.json)
+- New `vercel-build` script in `package.json`: generates the Prisma client, then runs `prisma migrate deploy` **only when `DATABASE_URL_UNPOOLED` is set** (i.e., Vercel production/preview), then `next build`.
+- `vercel.json` `buildCommand` now points to `npm run vercel-build` instead of the inline command.
+- Effect: Vercel deploys automatically apply any pending migrations before the new app code goes live — no manual `db-init.yml` dispatch needed for schema changes. Falls back safely to skip-migrate when the env var is absent (CI, local dev).
+- CI drift gate (`ci.yml` `prisma-drift` job) continues to catch un-migrated schema changes at PR time — the two mechanisms are complementary.
+
+---
+
 ## 2. Active workstream — RESUMED & SHIPPED (04/27/2026)
 
 **Title:** *Unlock scrapers + fix Vercel env scope* — originally 6 steps from the 04/21 unified-panel response.
@@ -68,4 +87,4 @@ Empty log is the expected steady state.
 
 ---
 
-*Last updated: 04/27/2026. SS-002 closed; foundation CI gates landed in PR #44. Next CEO-track tactical work resumes per COO sign-off on the next P0 (SS-001 H1 + Trust Ribbon mounting, gated on Okonkwo legal review per SS-001 §7.4).*
+*Last updated: 04/28/2026. Rate limiting (middleware.ts) + production migration auto-deploy (vercel.json) shipped in PR #45. Next CEO-track tactical work: SS-001 H1 + Trust Ribbon mounting (gated on Okonkwo legal review per SS-001 §7.4), then SS-003 provenance schema migration.*

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
+    "vercel-build": "prisma generate && if [ -n \"$DATABASE_URL_UNPOOLED\" ]; then DATABASE_URL=\"$DATABASE_URL_UNPOOLED\" npx prisma migrate deploy; fi && next build",
     "db:migrate": "prisma migrate deploy",
     "start": "next start",
     "lint": "next lint",
