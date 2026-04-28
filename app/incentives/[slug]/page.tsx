@@ -5,6 +5,7 @@ import { IncentiveTypeBadge, JurisdictionBadge, StatusBadge } from "@/components
 import { IncentiveCard } from "@/components/IncentiveCard";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { ShareButtons } from "@/components/ShareButtons";
+import { ProvenancePanel } from "@/components/ProvenancePanel";
 import { formatCurrency, formatDeadline, parseIncentive, sourceRedirectUrl } from "@/lib/utils";
 import { INDUSTRY_COLORS } from "@/lib/types";
 import { prisma } from "@/lib/db";
@@ -269,16 +270,8 @@ export default async function IncentiveDetailPage({
             </div>
           )}
 
-          {incentive.scrapedAt && (
-            <p className="text-xs text-slate-400 text-center">
-              Data last updated{" "}
-              {new Date(incentive.scrapedAt).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </p>
-          )}
+          {/* SS-003: provenance panel */}
+          <ProvenancePanel incentive={incentive} />
         </div>
       </div>
       {/* Mobile sticky apply bar */}

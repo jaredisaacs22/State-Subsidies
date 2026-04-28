@@ -361,6 +361,26 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
           </button>
         </div>
 
+        {/* SS-003: compact provenance line */}
+        {(incentive.sourceDomain || incentive.sourceUrl) && (
+          <p className="px-5 pb-1 text-[10px] text-slate-400 leading-snug">
+            via{" "}
+            <span className="font-mono">
+              {incentive.sourceDomain || (() => { try { return new URL(incentive.sourceUrl).hostname; } catch { return incentive.sourceUrl; } })()}
+            </span>
+            {" · "}
+            <span
+              className={cn(
+                "font-semibold",
+                incentive.parseConfidence === "HIGH"   ? "text-emerald-600" :
+                incentive.parseConfidence === "MEDIUM" ? "text-amber-600"   : "text-red-500"
+              )}
+            >
+              {incentive.parseConfidence ?? "MEDIUM"}
+            </span>
+          </p>
+        )}
+
         {/* Action row: Do I qualify + Details */}
         <div className="px-5 pb-3 flex items-center gap-2">
           <button
