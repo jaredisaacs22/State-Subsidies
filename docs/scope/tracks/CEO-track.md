@@ -87,4 +87,4 @@ Empty log is the expected steady state.
 
 ---
 
-*Last updated: 04/28/2026. Rate limiting (middleware.ts) + production migration auto-deploy (vercel.json) shipped in PR #45. Next CEO-track tactical work: SS-001 H1 + Trust Ribbon mounting (gated on Okonkwo legal review per SS-001 §7.4), then SS-003 provenance schema migration.*
+*Last updated: 04/28/2026 (continued session). SS-003 (all three PRs) + SS-008 non-gated pieces shipped into PR #45. Next CEO-track tactical work: SS-001 H1 + Trust Ribbon mounting (gated on Okonkwo legal review per SS-001 §7.4). If SS-001 still blocked: SS-007 audience model expansion.*

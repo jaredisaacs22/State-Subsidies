@@ -1,8 +1,8 @@
-# Session — 2026-04-28 — Backend Foundation Hardening (Pt. 2)
+# Session — 2026-04-28 — Backend Foundation Hardening (Pt. 2) + SS-003 + SS-008
 
 **Author:** Developer 1 (CEO)
 **Branch:** `claude/consulting-framework-setup-ibuHt`
-**PRs touched:** #44 (closed/merged), #45 (open, draft)
+**PRs touched:** #44 (closed/merged), #45 (open, contains all work below)
 **Predecessor session:** 2026-04-27 (SS-002 close + SS-005 + first CI gates + `/api/health`)
 
 ---
@@ -129,12 +129,42 @@ Multi-week each. Defer until SS-003 + SS-008 land.
 
 ---
 
-## 6. How to resume next session
+## 6. Continued this session — SS-003 + SS-008
 
-Read these three files in order, in any new local Claude Code session:
+### SS-003 PR A — Provenance schema migration
+- `prisma/schema.prisma`: `ParseConfidence` enum + 8 new fields on `Incentive` (`sourceDomain`, `sourceHash`, `parseConfidence`, `parseNotes`, `lastVerifiedAt`, `lastVerifiedBy`, `firstSeenAt`, `lastSeenAt`)
+- `prisma/migrations/2_add_provenance/migration.sql`: ALTER TABLE + CREATE INDEX for `sourceDomain` and `parseConfidence`
+- `prisma/backfill-provenance.ts`: one-time script to populate `sourceDomain`, `firstSeenAt`, `lastSeenAt` on all existing rows
+- `lib/types.ts`: `ParseConfidence` type + new fields on `Incentive` interface
+- `components/TrustRibbon.tsx`: `govSourcesEstimate` now uses indexed `sourceDomain` (endsWith ".gov") instead of unindexed `sourceUrl` contains
 
-1. `docs/scope/tracks/CEO-track.md` — full attribution history + active workstream state
-2. This file (`docs/scope/sessions/2026-04-28-foundation-hardening.md`) — what just shipped
-3. `docs/scope/items/SS-003-provenance-schema.md` — next P0 spec
+### SS-003 PR B — Scraper-side provenance emission
+- `scrapers/fingerprint.py` (new): `compute_source_hash()` + `infer_parse_confidence()`
+- `scrapers/models.py`: `ParseConfidence` enum + `source_domain` (auto-derived), `source_hash`, `parse_confidence`, `parse_notes` on `ScrapedIncentive`
+- `scrapers/db_writer.py`: upsert now writes all provenance fields; `firstSeenAt` set on INSERT only
+- `scrapers/grants_gov_scraper.py`: calls fingerprint module on each parsed opportunity
 
-That's it. No conversation history needed. The scope docs are the persistent memory.
+### SS-008 — AI safety rails (non-gated pieces)
+- `components/AIDisclaimer.tsx` (new): per-message disclaimer, `role="note"`, legal copy v1
+- `components/BusinessIntakeChat.tsx`: disclaimer wired into each completed assistant turn; "not configured" UX no longer exposes `ANTHROPIC_API_KEY` env var
+- `app/api/chat/route.ts`: SAFETY RULES block in system prompt (prohibited words + legal/tax reroute); removed conflicting ELIGIBILITY CONFIDENCE section; `parseConfidence != LOW` filter on `search_incentives`; 503 body sanitized
+
+### SS-003 PR C — ProvenancePanel UI
+- `components/ProvenancePanel.tsx` (new): full citation panel — source link, hash+copy, confidence badge, first/last seen, human verification, methodology + report-error links
+- Detail page: ProvenancePanel replaces bare `scrapedAt` block in sidebar
+- `components/IncentiveCard.tsx`: compact "via {domain} · HIGH/MEDIUM/LOW" provenance line above action buttons
+
+**Deferred to next session:** keyRequirements/industryCategories JSON→Array flip (SS-003 Phase 2; requires migrating 5 Prisma query call sites).
+
+## 7. How to resume next session
+
+Read these files in order:
+
+1. `docs/scope/tracks/CEO-track.md`
+2. This file
+3. `docs/scope/items/SS-001-hero-and-trust-ribbon.md` (gated on Okonkwo legal review — check if cleared)
+4. If SS-001 still blocked: `docs/scope/items/SS-007-audience-model.md` — next independent P1
+
+Pending ops:
+- Merge PR #45 once CI green
+- Run `prisma/backfill-provenance.ts` against production DB after migration deploys

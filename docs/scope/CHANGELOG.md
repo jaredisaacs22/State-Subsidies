@@ -2,6 +2,15 @@
 
 Major revisions only. Per-commit history lives in `git log docs/scope/**`.
 
+## 1.3.0 — 2026-04-28 (CEO) — continued session
+
+SS-003 and SS-008 non-gated pieces.
+
+- **SS-003 PR A** — Provenance schema: `ParseConfidence` enum + 8 new fields on Incentive; migration `2_add_provenance`; backfill script; `lib/types.ts` updated; TrustRibbon upgraded to indexed `sourceDomain` filter.
+- **SS-003 PR B** — Scraper provenance emission: `fingerprint.py` (`compute_source_hash`, `infer_parse_confidence`); `ScrapedIncentive` gains `source_domain`, `source_hash`, `parse_confidence`, `parse_notes`; `db_writer.py` writes all new fields.
+- **SS-003 PR C** — `ProvenancePanel` component (detail page) + compact card provenance line (domain · confidence).
+- **SS-008 (non-gated)** — `AIDisclaimer` per-message component; system prompt safety rails (prohibited words, legal/tax reroute); `parseConfidence != LOW` filter on AI search; env-var exposure fixed in not-configured UI.
+
 ## 1.2.0 — 2026-04-28 (CEO)
 
 Backend foundation hardening, part 2.
