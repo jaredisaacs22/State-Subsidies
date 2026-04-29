@@ -66,9 +66,11 @@ def upsert_incentive(incentive: ScrapedIncentive) -> str:
                         "shortSummary", "keyRequirements",
                         "industryCategories", "incentiveType",
                         "fundingAmount", deadline, "applicationOpenDate",
-                        "sourceUrl", "programCode",
+                        "sourceUrl", "sourceDomain", "programCode",
                         status, "isVerified",
-                        "scrapedAt", "scraperSource"
+                        "scrapedAt", "scraperSource",
+                        "sourceHash", "parseConfidence", "parseNotes",
+                        "firstSeenAt", "lastSeenAt"
                     ) VALUES (
                         %s, %s, %s,
                         %s, %s,
@@ -77,8 +79,10 @@ def upsert_incentive(incentive: ScrapedIncentive) -> str:
                         %s, %s,
                         %s, %s,
                         %s, %s, %s,
+                        %s, %s, %s,
                         %s, %s,
                         %s, %s,
+                        %s, %s, %s,
                         %s, %s
                     )
                     ON CONFLICT (slug) DO UPDATE SET
@@ -96,9 +100,14 @@ def upsert_incentive(incentive: ScrapedIncentive) -> str:
                         deadline              = EXCLUDED.deadline,
                         "applicationOpenDate" = EXCLUDED."applicationOpenDate",
                         "sourceUrl"           = EXCLUDED."sourceUrl",
+                        "sourceDomain"        = EXCLUDED."sourceDomain",
                         "programCode"         = EXCLUDED."programCode",
                         "scrapedAt"           = EXCLUDED."scrapedAt",
-                        "scraperSource"       = EXCLUDED."scraperSource"
+                        "scraperSource"       = EXCLUDED."scraperSource",
+                        "sourceHash"          = EXCLUDED."sourceHash",
+                        "parseConfidence"     = EXCLUDED."parseConfidence",
+                        "parseNotes"          = EXCLUDED."parseNotes",
+                        "lastSeenAt"          = EXCLUDED."lastSeenAt"
                     RETURNING id
                     """,
                     (
@@ -116,11 +125,17 @@ def upsert_incentive(incentive: ScrapedIncentive) -> str:
                         incentive.deadline,
                         incentive.application_open_date,
                         incentive.source_url,
+                        incentive.source_domain,
                         incentive.program_code,
                         incentive.status.value,
                         False,
                         now,
                         incentive.scraper_source,
+                        incentive.source_hash,
+                        incentive.parse_confidence.value,
+                        incentive.parse_notes,
+                        now,  # firstSeenAt — set on INSERT only (not in ON CONFLICT SET)
+                        now,  # lastSeenAt
                     ),
                 )
                 row = cur.fetchone()

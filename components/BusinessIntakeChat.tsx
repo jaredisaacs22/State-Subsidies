@@ -5,6 +5,7 @@ import { Send, Search, X, RotateCcw, ChevronDown, ChevronUp, ExternalLink, Spark
 import { cn, formatCurrency, formatDeadline, sourceRedirectUrl } from "@/lib/utils";
 import { INCENTIVE_TYPE_COLORS, JURISDICTION_COLORS } from "@/lib/types";
 import { LogoMark } from "@/components/Logo";
+import { AIDisclaimer } from "@/components/AIDisclaimer";
 import type { Incentive } from "@/lib/types";
 
 interface Message {
@@ -377,9 +378,9 @@ export function BusinessIntakeChat({ onSearch }: { onSearch?: (query: string) =>
             <Sparkles size={14} className="text-white/30" aria-hidden />
           </div>
           <div>
-            <p className="text-white/55 font-semibold text-sm">AI advisor not configured</p>
+            <p className="text-white/55 font-semibold text-sm">AI suggestions temporarily unavailable</p>
             <p className="text-white/30 text-[11px] mt-0.5 leading-relaxed">
-              Add your <code className="font-mono bg-white/8 px-1 rounded">ANTHROPIC_API_KEY</code> to <code className="font-mono bg-white/8 px-1 rounded">.env</code> and restart to enable AI program matching.
+              You can still search and filter the full directory below.
             </p>
           </div>
         </div>
@@ -533,7 +534,15 @@ export function BusinessIntakeChat({ onSearch }: { onSearch?: (query: string) =>
                   : "bg-white/10 text-white rounded-bl-sm border border-white/8"
               )}>
                 {m.role === "assistant"
-                  ? <MessageContent text={m.content} streaming={streaming && i === messages.length - 1} />
+                  ? (
+                    <>
+                      <MessageContent text={m.content} streaming={streaming && i === messages.length - 1} />
+                      {/* SS-008: disclaimer on every completed assistant turn */}
+                      {!(streaming && i === messages.length - 1) && m.content.length > 0 && (
+                        <AIDisclaimer />
+                      )}
+                    </>
+                  )
                   : <p className="text-sm leading-relaxed">{m.content}</p>
                 }
               </div>
@@ -570,11 +579,11 @@ export function BusinessIntakeChat({ onSearch }: { onSearch?: (query: string) =>
             <div role="alert" className="text-xs text-red-300 bg-red-900/30 border border-red-500/30 rounded-xl px-4 py-3 leading-relaxed">
               <strong className="font-semibold flex items-center gap-1">
                 <AlertCircle size={12} aria-hidden />
-                {error.includes("ANTHROPIC_API_KEY") ? "AI not configured" : "Something went wrong"}
+                {error.includes("ANTHROPIC_API_KEY") ? "AI suggestions unavailable" : "Something went wrong"}
               </strong>
               <br />
               {error.includes("ANTHROPIC_API_KEY")
-                ? "Add ANTHROPIC_API_KEY to your .env file and restart."
+                ? "AI features are not available right now. You can still search and filter the full directory."
                 : error}
             </div>
           )}
