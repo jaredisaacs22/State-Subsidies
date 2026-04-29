@@ -1,0 +1,57 @@
+name: Backfill — SS-003 Provenance
+
+# One-time backfill: populate sourceDomain, firstSeenAt, lastSeenAt
+# on all existing Incentive rows after migration 2_add_provenance applies.
+# Idempotent — safe to re-run. Trigger: GitHub → Actions → Run workflow.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify DATABASE_URL_UNPOOLED is set
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "::error::DATABASE_URL_UNPOOLED secret is not set in repo settings."
+            exit 1
+          fi
+          if echo "$DATABASE_URL" | grep -q "\-pooler"; then
+            echo "::error::URL contains '-pooler' — must use the direct/unpooled URL."
+            exit 1
+          fi
+          echo "PASS: DATABASE_URL_UNPOOLED present, no -pooler in URL"
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Confirm migration 2_add_provenance has applied
+        run: npx prisma migrate status
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
+
+      - name: Run backfill
+        run: |
+          npx ts-node --transpile-only \
+            --compiler-options '{"module":"CommonJS"}' \
+            prisma/backfill-provenance.ts
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
