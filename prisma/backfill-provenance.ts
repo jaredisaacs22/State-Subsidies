@@ -1,13 +1,12 @@
 /**
- * SS-003 backfill — run once immediately after migration 2_add_provenance.
+ * SS-003 backfill — DEPRECATED in favor of the inline UPDATE in
+ * prisma/migrations/2_add_provenance/migration.sql, which now backfills
+ * sourceDomain, firstSeenAt, and lastSeenAt atomically as part of the
+ * migration transaction.
  *
- * Populates on every existing Incentive row:
- *   sourceDomain  — hostname extracted from sourceUrl
- *   firstSeenAt   — createdAt (best proxy for first observation)
- *   lastSeenAt    — scrapedAt ?? createdAt (most recent confirmed observation)
- *
- * parseConfidence already defaults to MEDIUM in the migration; no change needed.
- * sourceHash stays null until scrapers begin computing and emitting it (SS-003 PR B).
+ * Kept as a fallback for cases where the migration was applied in a state
+ * that left some rows un-backfilled (e.g. partial transaction recovery).
+ * Re-running it is idempotent and safe.
  *
  * Run:
  *   npx ts-node --transpile-only --compiler-options '{"module":"CommonJS"}' prisma/backfill-provenance.ts
