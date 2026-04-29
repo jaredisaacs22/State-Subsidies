@@ -10,6 +10,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// SS-003: parse quality signal. LOW rows are filtered from the AI advisor (SS-008).
+enum ParseConfidence {
+  HIGH
+  MEDIUM
+  LOW
+}
+
 model Incentive {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
@@ -43,8 +50,18 @@ model Incentive {
   applicationOpenDate DateTime?
 
   // Source
-  sourceUrl   String
-  programCode String? // official government program code
+  sourceUrl    String
+  sourceDomain String  @default("") @db.VarChar(253) // hostname only; indexed for Trust Ribbon .gov count
+  programCode  String? // official government program code
+
+  // SS-003: provenance + quality
+  sourceHash      String?         @db.Char(64)    // SHA-256 hex of stripped HTML; null until scraper emits it
+  parseConfidence ParseConfidence @default(MEDIUM)
+  parseNotes      String?                         // human-readable reason for MEDIUM/LOW
+  lastVerifiedAt  DateTime?
+  lastVerifiedBy  String?         @db.VarChar(64) // reviewer handle + role, e.g. "RQ (SME)"
+  firstSeenAt     DateTime        @default(now())
+  lastSeenAt      DateTime        @default(now())
 
   // Status: ACTIVE | CLOSED | UPCOMING | SUSPENDED
   status     String  @default("ACTIVE")
@@ -58,6 +75,8 @@ model Incentive {
   @@index([incentiveType])
   @@index([status])
   @@index([deadline])
+  @@index([sourceDomain])
+  @@index([parseConfidence])
 }
 
 model PageView {

@@ -8,8 +8,9 @@ from __future__ import annotations
 from datetime import datetime
 from enum import Enum
 from typing import Optional
-from pydantic import BaseModel, HttpUrl, field_validator
+from pydantic import BaseModel, field_validator, model_validator
 import re
+from urllib.parse import urlparse
 
 
 class JurisdictionLevel(str, Enum):
@@ -35,6 +36,13 @@ class IncentiveStatus(str, Enum):
     SUSPENDED = "SUSPENDED"
 
 
+# SS-003: parse quality signal. Mirrors the Prisma ParseConfidence enum.
+class ParseConfidence(str, Enum):
+    HIGH   = "HIGH"
+    MEDIUM = "MEDIUM"
+    LOW    = "LOW"
+
+
 class ScrapedIncentive(BaseModel):
     """A raw incentive record returned by a scraper before DB upsert."""
 
@@ -58,8 +66,15 @@ class ScrapedIncentive(BaseModel):
     application_open_date: Optional[datetime] = None
 
     source_url: str
+    # SS-003: derived automatically from source_url; scrapers need not set it.
+    source_domain: str = ""
     program_code: Optional[str] = None
     status: IncentiveStatus = IncentiveStatus.ACTIVE
+
+    # SS-003 provenance fields
+    source_hash:      Optional[str] = None              # SHA-256 hex of stripped source
+    parse_confidence: ParseConfidence = ParseConfidence.MEDIUM
+    parse_notes:      Optional[str] = None              # reason for MEDIUM/LOW
 
     scraper_source: Optional[str] = None
 
@@ -79,3 +94,13 @@ class ScrapedIncentive(BaseModel):
             lines = [l.strip().lstrip("•·-–—*").strip() for l in v.splitlines() if l.strip()]
             return [l for l in lines if l]
         return v
+
+    @model_validator(mode="after")
+    def derive_source_domain(self) -> "ScrapedIncentive":
+        """Extract hostname from source_url when source_domain is not explicitly set."""
+        if not self.source_domain and self.source_url:
+            try:
+                self.source_domain = urlparse(self.source_url).hostname or ""
+            except Exception:
+                self.source_domain = ""
+        return self

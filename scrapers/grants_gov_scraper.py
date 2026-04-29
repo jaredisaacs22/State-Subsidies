@@ -21,6 +21,7 @@ from datetime import datetime
 from typing import Optional
 
 from .base_scraper import BaseScraper
+from .fingerprint import compute_source_hash, infer_parse_confidence
 from .models import IncentiveType, JurisdictionLevel, ScrapedIncentive
 
 KEYWORD_CATEGORY_MAP = {
@@ -478,7 +479,7 @@ class GrantsGovScraper(BaseScraper):
             opp_number = opp.get("number", "")
             source_url = f"https://www.grants.gov/web/grants/view-opportunity.html?oppId={opp.get('id', '')}"
 
-            return ScrapedIncentive(
+            incentive = ScrapedIncentive(
                 title=title,
                 jurisdiction_level=JurisdictionLevel.FEDERAL,
                 jurisdiction_name="United States",
@@ -498,7 +499,14 @@ class GrantsGovScraper(BaseScraper):
                 source_url=source_url,
                 program_code=opp_number or None,
                 scraper_source=self.SOURCE_NAME,
+                # SS-003: hash the raw opportunity JSON for diff detection
+                source_hash=compute_source_hash(str(opp)),
             )
+            # SS-003: infer confidence after all fields are set
+            confidence, notes = infer_parse_confidence(incentive)
+            incentive.parse_confidence = confidence
+            incentive.parse_notes = notes
+            return incentive
         except Exception as e:
             self._log.warning("Failed to parse opportunity", error=str(e))
             return None

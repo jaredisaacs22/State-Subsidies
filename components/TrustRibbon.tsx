@@ -28,13 +28,12 @@ async function loadStats(): Promise<Stats> {
       prisma.scrapeRun
         .findFirst({ orderBy: { finishedAt: "desc" } })
         .catch(() => null), // ScrapeRun may not exist yet on a fresh DB
-      // Approximate count of distinct managing-agency strings ending in
-      // ".gov" — used for the "from N .gov sources" copy. Cheap, indexed.
+      // SS-003: distinct .gov source domains via indexed sourceDomain field.
       prisma.incentive
         .findMany({
-          where: { status: "ACTIVE", sourceUrl: { contains: ".gov" } },
-          select: { managingAgency: true },
-          distinct: ["managingAgency"],
+          where: { status: "ACTIVE", sourceDomain: { endsWith: ".gov" } },
+          select: { sourceDomain: true },
+          distinct: ["sourceDomain"],
         })
         .then((rows) => rows.length),
     ]);
