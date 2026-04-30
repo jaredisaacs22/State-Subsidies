@@ -41,8 +41,7 @@ You serve everyone — farmers, small business owners, nonprofits, startups, res
 ━━━ SAFETY RULES — NON-NEGOTIABLE ━━━
 1. Never use the words "guaranteed," "you will get," "approved," "pre-approved," or "qualify for" as an absolute. Always use hedged language: "may qualify," "plausibly eligible," "likely meets the criteria."
 2. Never provide legal, tax, or financial advice. If the user asks a legal or tax question (e.g. "can I deduct this," "what's my tax liability," "can I sue"), respond with this canned message: "That sounds like a legal or tax question — I'm not a lawyer or accountant and can't answer it responsibly. I can help you find public funding programs; just describe your project and I'll search. For what I can and can't do, see [our methodology page](/methodology#ai-advisor)."
-3. Never fabricate a program. Only surface programs returned by the search_incentives tool.
-4. Every program you name must have come from a search_incentives call in this session.
+3. Never fabricate a program. Only surface programs returned by the search_incentives tool. Every program you name must have come from a search_incentives call in this session — each tool result includes a stable \`id\` field that lets us audit your citations after the fact.
 
 ━━━ SEARCH STRATEGY ━━━
 - Call search_incentives 2–3 times with varied parameters to maximize coverage
@@ -101,6 +100,28 @@ export async function POST(req: NextRequest) {
     const { messages, mode } = await req.json();
     const system = mode === "quick" ? SYSTEM_QUICK : SYSTEM_TAILORED;
     const matchedIncentives: ReturnType<typeof parseIncentive>[] = [];
+
+    // SS-008 row-ID citation log. One JSON line per AI turn captures the
+    // row IDs the model cited, the search params it ran, and the final
+    // response text. Vercel log search ('event:ai_chat_turn') gives us an
+    // auditable trail without a new DB table — when SS-012 evals or abuse
+    // review need replay data, they query the structured logs.
+    const turnStart = Date.now();
+    const lastUserMessage =
+      Array.isArray(messages) && messages.length > 0
+        ? String(messages[messages.length - 1]?.content ?? "").slice(0, 500)
+        : "";
+    const turnLog = {
+      event: "ai_chat_turn",
+      ts: new Date().toISOString(),
+      mode: mode === "quick" ? "quick" : "tailored",
+      ip: req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anon",
+      lastUserMessage,
+      searchCalls: [] as Array<{ params: Record<string, unknown>; matchedIds: string[] }>,
+      matchedIds: [] as string[],
+      responseChars: 0,
+      durationMs: 0,
+    };
 
     const result = streamText({
       model: anthropic("claude-sonnet-4-6"),
@@ -178,7 +199,14 @@ export async function POST(req: NextRequest) {
             const parsed = rows.map((r) => parseIncentive(r as unknown as Record<string, unknown>));
             matchedIncentives.push(...parsed);
 
+            // SS-008: capture the search params + row IDs this call surfaced.
+            turnLog.searchCalls.push({
+              params: input as Record<string, unknown>,
+              matchedIds: parsed.map((p) => p.id),
+            });
+
             return parsed.map((r) => ({
+              id: r.id,
               title: r.title,
               slug: r.slug,
               type: r.incentiveType,
@@ -202,6 +230,7 @@ export async function POST(req: NextRequest) {
         try {
           for await (const chunk of result.fullStream) {
             if (chunk.type === "text-delta") {
+              turnLog.responseChars += chunk.text.length;
               controller.enqueue(
                 encoder.encode(`data: ${JSON.stringify({ text: chunk.text })}\n\n`)
               );
@@ -211,6 +240,11 @@ export async function POST(req: NextRequest) {
               const unique = matchedIncentives.filter((i) =>
                 seen.has(i.slug) ? false : (seen.add(i.slug), true)
               );
+              turnLog.matchedIds = unique.map((u) => u.id);
+              turnLog.durationMs = Date.now() - turnStart;
+              // Single structured log line — Vercel log search 'event:ai_chat_turn'
+              // returns the full citation receipt for any past turn.
+              console.info(JSON.stringify(turnLog));
               controller.enqueue(
                 encoder.encode(`data: ${JSON.stringify({ done: true, matched: unique })}\n\n`)
               );

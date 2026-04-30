@@ -2,6 +2,13 @@
 
 Major revisions only. Per-commit history lives in `git log docs/scope/**`.
 
+## 1.4.1 — 2026-04-30 (CEO) — SS-008 row-ID citations
+
+- **Tool result includes `id`.** `search_incentives` now returns the database `id` for each row alongside title/slug/etc., so the model has access to a stable, auditable handle for every program it cites.
+- **System prompt updated.** Combined safety rules 3 + 4 into one rule that explicitly notes the audit trail: "every program you name must have come from a search_incentives call — each tool result includes a stable `id` field that lets us audit your citations after the fact."
+- **Per-turn audit log.** `app/api/chat/route.ts` emits one structured `console.info({event:"ai_chat_turn", ...})` line per chat request capturing: mode, IP, last user message (truncated 500 chars), all `search_incentives` calls (params + matched IDs), final unique matched IDs, response character count, duration. Vercel log search filter `event:ai_chat_turn` returns the full citation receipt for any past turn — no new DB table, no new dependencies.
+- **Why structured logs over a DB table.** Lets us defer the audit-table schema decision until SS-012 eval gate concretizes its replay needs. Logs are queryable, exportable, and survive code rollbacks. When/if eval needs persistent storage, the JSON shape is already stable and easy to backfill from logs.
+
 ## 1.4.0 — 2026-04-30 (CEO) — connection scoping + tsx migration
 
 Root-causes the recurring "Initialize Database fails with exit code 1" loop and unblocks the workflow plan.
