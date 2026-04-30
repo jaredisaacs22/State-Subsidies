@@ -2,6 +2,17 @@
 
 Major revisions only. Per-commit history lives in `git log docs/scope/**`.
 
+## 1.4.0 — 2026-04-30 (CEO) — connection scoping + tsx migration
+
+Root-causes the recurring "Initialize Database fails with exit code 1" loop and unblocks the workflow plan.
+
+- **CI Node toolchain — permanent fix.** Replaced `ts-node@10.9` (broken on Node 22+) with `tsx@4` (esbuild-based). Moved all 6 workflows from Node 20 → Node 22 (current LTS). Dropped the `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24` band-aid. The Node-20 pin was only ever a workaround for ts-node; once GitHub deprecated Node 20, jobs were forced onto Node 24 → ts-node crashed again. tsx removes the dependency entirely. On branch `claude/consulting-framework-setup-ibuHt` (commit `4f3a535`); needs new PR — PR #51 was merged before this commit landed.
+- **Connection scoping.** `.env.example` now documents `DATABASE_URL_UNPOOLED`, `ANTHROPIC_API_KEY`, `DASHBOARD_SECRET`, `UPSTASH_REDIS_REST_URL/TOKEN` with provenance for each. Previously undocumented → silent misconfiguration on first deploy. (PR #51)
+- **`prisma/seed.ts` import bug fix.** `caPrograms` (16) and `otherPrograms` (16) were imported but never spread into the `incentives` array — seed silently dropped 32 curated state programs. (PR #51)
+- **`scrapers/scheduler.py` fail/ok overwrite bug fix.** Inside the `except` block, success-path code overwrote `status: "fail"` with `status: "ok"`, making scraper failures appear successful in logs. (PR #51)
+- **`DEPLOY.md` rewrite.** Old version told you to use `db push` and only documented `DATABASE_URL`. New version covers required Vercel env vars (Production + Preview), GitHub Actions secrets list, the Migrate Baseline one-time step, and a sanity checklist for diagnosing first-deploy failures. (PR #51)
+- **Default branch repointed.** Repo default was `claude/subsidies-discovery-platform-oAFoU` (a stale intermediate branch) — flipped to `main`. Five stale `claude/*` branches identified for deletion via GitHub UI.
+
 ## 1.3.0 — 2026-04-28 (CEO) — continued session
 
 SS-003 and SS-008 non-gated pieces.
