@@ -1,37 +1,33 @@
--- SS-003 phase 2: Convert JSON-string columns to native PostgreSQL TEXT[] arrays.
+-- SS-003 phase 2: Convert keyRequirements and industryCategories from TEXT (JSON string)
+-- to native TEXT[] (PostgreSQL array).
 --
--- keyRequirements and industryCategories were stored as JSON-serialised strings
--- (e.g. '["Agriculture","Fleet"]'). This migration converts them to first-class
--- PostgreSQL TEXT[] columns so Prisma can use native array filters (has / hasSome)
--- instead of substring-contains workarounds.
+-- Uses ADD+UPDATE+DROP+RENAME rather than ALTER TYPE ... USING so the migration is safe on
+-- both the empty shadow database (drift CI) and on a production table with existing rows.
+-- json_array_elements_text (not json_array_elements) strips JSON string quotes, giving clean
+-- values like 'Agriculture' rather than '"Agriculture"'.
 
--- Step 1: Add temporary columns for the new arrays
+-- 1. Add new NOT NULL TEXT[] columns. Temporary DEFAULT lets this succeed on non-empty tables.
 ALTER TABLE "Incentive"
-  ADD COLUMN "keyRequirements_temp" TEXT[],
-  ADD COLUMN "industryCategories_temp" TEXT[];
+  ADD COLUMN "keyRequirements_new"    TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[],
+  ADD COLUMN "industryCategories_new" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[];
 
--- Step 2: Populate temp columns by converting from JSON strings
-UPDATE "Incentive" SET
-  "keyRequirements_temp" = CASE
-    WHEN "keyRequirements" = '' OR "keyRequirements" IS NULL
-      THEN ARRAY[]::TEXT[]
-    ELSE (
-      SELECT ARRAY_AGG(value::text)
-      FROM json_array_elements("keyRequirements"::json) AS t(value)
-    )
-  END,
-  "industryCategories_temp" = CASE
-    WHEN "industryCategories" = '' OR "industryCategories" IS NULL
-      THEN ARRAY[]::TEXT[]
-    ELSE (
-      SELECT ARRAY_AGG(value::text)
-      FROM json_array_elements("industryCategories"::json) AS t(value)
-    )
-  END;
+-- 2. Populate from existing JSON strings. Zero rows updated on empty CI shadow DB.
+UPDATE "Incentive"
+SET
+  "keyRequirements_new"    = ARRAY(SELECT json_array_elements_text("keyRequirements"::json)),
+  "industryCategories_new" = ARRAY(SELECT json_array_elements_text("industryCategories"::json));
 
--- Step 3: Drop old columns and rename temp columns
+-- 3. Drop the old TEXT columns.
 ALTER TABLE "Incentive"
   DROP COLUMN "keyRequirements",
-  DROP COLUMN "industryCategories",
-  RENAME COLUMN "keyRequirements_temp" TO "keyRequirements",
-  RENAME COLUMN "industryCategories_temp" TO "industryCategories";
+  DROP COLUMN "industryCategories";
+
+-- 4. Rename new columns. PostgreSQL requires RENAME COLUMN in its own ALTER TABLE statement.
+ALTER TABLE "Incentive" RENAME COLUMN "keyRequirements_new"    TO "keyRequirements";
+ALTER TABLE "Incentive" RENAME COLUMN "industryCategories_new" TO "industryCategories";
+
+-- 5. Drop temporary DEFAULT so final state matches schema.prisma String[] (no @default):
+--    TEXT[] NOT NULL with no default value.
+ALTER TABLE "Incentive"
+  ALTER COLUMN "keyRequirements"    DROP DEFAULT,
+  ALTER COLUMN "industryCategories" DROP DEFAULT;
