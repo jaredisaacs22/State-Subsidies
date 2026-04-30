@@ -10,19 +10,17 @@ on:
 jobs:
   init:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Node.js
-        # Pinned to 20 to match ci.yml. ts-node 10.9.x has known stability
-        # issues with Node 22 (transpile-only seed jobs intermittently fail).
+        # Node 22 is current LTS. We dropped ts-node (incompatible with
+        # Node 22+) in favor of tsx, so the seed step works cleanly.
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
 
       - name: Install dependencies
@@ -93,9 +91,8 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
 
       - name: Seed database
-        # Direct ts-node invocation — npm run db:seed had path issues on
-        # some runners. Use --transpile-only to skip type-checking (seed
-        # has thousands of records; type-check adds 30s+ for no gain).
-        run: npx ts-node --transpile-only --compiler-options "{\"module\":\"CommonJS\"}" prisma/seed.ts
+        # tsx loads TypeScript directly via esbuild — no separate transpile
+        # step, no ts-node version pinning, no Node version dance.
+        run: npx tsx prisma/seed.ts
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
