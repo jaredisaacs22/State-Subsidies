@@ -6885,6 +6885,10 @@ const incentives = [
     industryCategories: JSON.stringify(["Manufacturing","Technology","Energy","Agriculture","Logistics"]),
     incentiveType: "GRANT", fundingAmount: 1500000, deadline: null,
     sourceUrl: "https://wyomingbusiness.org/programs/business-ready-community-grant-loan-program/", programCode: "WY-BRC2", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+
+  // CA-specific programs (split into separate files to keep seed.ts manageable)
+  ...caPrograms,
+  ...otherPrograms,
 ];
 
 async function main() {
