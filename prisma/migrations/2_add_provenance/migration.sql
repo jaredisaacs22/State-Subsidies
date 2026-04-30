@@ -10,15 +10,16 @@
 --   firstSeenAt     — when the row was first observed (backfilled from createdAt)
 --   lastSeenAt      — when the row was most recently observed (backfilled from scrapedAt/createdAt)
 --
--- This migration is atomic: it adds the columns, indexes the new fields, AND
--- backfills existing rows in a single transaction. No separate script needed.
+-- The backfill script (prisma/backfill-provenance.ts) must be run immediately after
+-- this migration to populate sourceDomain, firstSeenAt, and lastSeenAt on existing rows.
 
 -- 1. Create the ParseConfidence enum type
 CREATE TYPE "ParseConfidence" AS ENUM ('HIGH', 'MEDIUM', 'LOW');
 
 -- 2. Add columns to Incentive
---    Defaults are placeholders — the backfill UPDATE below replaces them with
---    real values for existing rows in the same migration transaction.
+--    sourceDomain defaults to '' — backfill populates real hostnames for all existing rows.
+--    parseConfidence defaults to MEDIUM — conservative for all pre-provenance rows.
+--    firstSeenAt / lastSeenAt default to CURRENT_TIMESTAMP — backfill corrects to createdAt/scrapedAt.
 ALTER TABLE "Incentive"
   ADD COLUMN "sourceDomain"    VARCHAR(253)       NOT NULL DEFAULT '',
   ADD COLUMN "sourceHash"      CHAR(64),
@@ -29,25 +30,6 @@ ALTER TABLE "Incentive"
   ADD COLUMN "firstSeenAt"     TIMESTAMP(3)       NOT NULL DEFAULT CURRENT_TIMESTAMP,
   ADD COLUMN "lastSeenAt"      TIMESTAMP(3)       NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
--- 3. Indexes (sourceDomain powers Trust Ribbon .gov count; parseConfidence gates AI advisor)
+-- 3. Indexes
 CREATE INDEX "Incentive_sourceDomain_idx"    ON "Incentive"("sourceDomain");
 CREATE INDEX "Incentive_parseConfidence_idx" ON "Incentive"("parseConfidence");
-
--- 4. Backfill — populate sourceDomain, firstSeenAt, lastSeenAt for existing rows.
---    sourceDomain: extract hostname from sourceUrl (strip protocol + port + path).
---      Regex breakdown:
---        ^(?:https?://)?  — optional scheme
---        ([^/:?#\s]+)     — hostname (capture group 1)
---        .*$              — discard rest
---      Lowercased to match the convention scrapers use.
---    firstSeenAt: best-known first-observation date is the row's createdAt.
---    lastSeenAt:  best-known most-recent observation is scrapedAt, falling
---                 back to createdAt for rows that pre-date scrapedAt tracking.
-UPDATE "Incentive"
-SET
-  "sourceDomain" = LOWER(
-    regexp_replace("sourceUrl", '^(?:https?://)?([^/:?#\s]+).*$', '\1')
-  ),
-  "firstSeenAt"  = "createdAt",
-  "lastSeenAt"   = COALESCE("scrapedAt", "createdAt")
-WHERE "sourceUrl" IS NOT NULL AND "sourceUrl" <> '';
