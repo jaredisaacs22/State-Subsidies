@@ -2,6 +2,11 @@
 
 Major revisions only. Per-commit history lives in `git log docs/scope/**`.
 
+## 1.4.2 — 2026-04-30 (CEO) — homepage stats fix
+
+- **`fmtMoney` + `formatCurrency`: billions tier added.** Largest-active was rendering as `$42450M` instead of `$42.5B`. Both formatters now cap at 4 visible digits ($1.5B, $42.5B, $425M, $500K).
+- **Stats strip wrap fix.** Single `flex flex-wrap` row had no vertical gap, so 6 stats + dividers + "Browse all" button overlapped when wrapping. Added `gap-x-6 gap-y-6` and dropped per-item padding wrapper that was fighting the gap.
+
 ## 1.4.1 — 2026-04-30 (CEO) — SS-008 row-ID citations
 
 - **Tool result includes `id`.** `search_incentives` now returns the database `id` for each row alongside title/slug/etc., so the model has access to a stable, auditable handle for every program it cites.
