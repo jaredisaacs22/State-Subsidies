@@ -16,9 +16,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Node.js
+        # Pinned to 20 for parity with ci.yml + db-init.yml.
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "20"
           cache: "npm"
 
       - name: Install dependencies
