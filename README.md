@@ -9,7 +9,7 @@ A B2B web application for discovering, filtering, and understanding government g
 | Frontend | Next.js 14 (App Router) + TypeScript |
 | Styling | Tailwind CSS |
 | ORM | Prisma |
-| Database | SQLite (dev) → PostgreSQL (prod) |
+| Database | PostgreSQL (Vercel Postgres / Neon) |
 | Scrapers | Python 3 + BeautifulSoup4 + Playwright |
 | Icons | Lucide React |
 
@@ -27,15 +27,22 @@ npm install
 cp .env.example .env
 ```
 
-### 3. Initialize database and seed mock data
+### 3. Configure environment
+
+Edit `.env` and set:
+- `DATABASE_URL` — your PostgreSQL connection string (pooled)
+- `DATABASE_URL_UNPOOLED` — direct (non-pooled) connection (required for migrations)
+- `ANTHROPIC_API_KEY` — enables the AI advisor chat feature
+
+### 4. Initialize database and seed
 
 ```bash
 npm run db:generate   # generate Prisma client
-npm run db:push       # push schema to SQLite
-npm run db:seed       # seed 4 realistic incentive records
+npm run db:migrate    # apply migrations (requires DATABASE_URL_UNPOOLED)
+npm run db:seed       # seed example incentive records
 ```
 
-### 4. Run the dev server
+### 5. Run the dev server
 
 ```bash
 npm run dev
@@ -63,7 +70,7 @@ The core `Incentive` model captures:
 | `sourceUrl` | String | Official .gov URL |
 | `status` | Enum | ACTIVE / CLOSED / UPCOMING / SUSPENDED |
 
-**To migrate to PostgreSQL:** Change `provider = "sqlite"` to `"postgresql"` in `prisma/schema.prisma`, then remove `mode: "insensitive"` from the search query (it's native to PostgreSQL).
+SS-003 provenance fields: `sourceDomain`, `parseConfidence` (HIGH/MEDIUM/LOW), `sourceHash`, `firstSeenAt`, `lastSeenAt`, `lastVerifiedAt/By`.
 
 ---
 
