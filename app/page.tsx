@@ -269,7 +269,7 @@ export default function HomePage() {
 
           <p className="text-white/50 text-lg mb-9 max-w-xl mx-auto leading-relaxed">
             Grants, tax credits, loans &amp; rebates across every state and federal agency.<br className="hidden sm:block" />
-            Tell us about your business and we'll find what you qualify for.
+            Tell us about your business and we&apos;ll find what you qualify for.
           </p>
 
           {/* Inline AI intake + search */}

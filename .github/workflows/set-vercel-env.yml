@@ -30,11 +30,12 @@ jobs:
           echo "${{ secrets.UPSTASH_REDIS_REST_TOKEN }}" | vercel env add UPSTASH_REDIS_REST_TOKEN production $SCOPE_FLAG --token=${{ secrets.VERCEL_TOKEN }} --yes
 
       - name: Set DASHBOARD_SECRET
+        # Requires DASHBOARD_SECRET in GitHub Actions secrets (Settings → Secrets → Actions).
         run: |
           SCOPE="${{ secrets.VERCEL_SCOPE }}"
           SCOPE_FLAG="${SCOPE:+--scope=$SCOPE}"
           vercel env rm DASHBOARD_SECRET production $SCOPE_FLAG --token=${{ secrets.VERCEL_TOKEN }} --yes 2>/dev/null || true
-          echo "51432" | vercel env add DASHBOARD_SECRET production $SCOPE_FLAG --token=${{ secrets.VERCEL_TOKEN }} --yes
+          echo "${{ secrets.DASHBOARD_SECRET }}" | vercel env add DASHBOARD_SECRET production $SCOPE_FLAG --token=${{ secrets.VERCEL_TOKEN }} --yes
 
       - name: Done
         run: echo "✅ Vercel env vars set. Trigger a redeploy on Vercel for changes to take effect."

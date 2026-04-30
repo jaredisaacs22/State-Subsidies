@@ -146,7 +146,7 @@ export default async function MethodologyPage() {
           We will <strong>not</strong> hide a program from you because of
           commercial interest; we do not take commercial interest. We will
           <strong> not</strong> guarantee you get the money — no responsible
-          source can. We <strong>do</strong> guarantee we won't hide a program
+          source can. We <strong>do</strong> guarantee we won&apos;t hide a program
           from you.
         </p>
       </Section>
