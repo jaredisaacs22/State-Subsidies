@@ -2,6 +2,24 @@
 
 Major revisions only. Per-commit history lives in `git log docs/scope/**`.
 
+## 1.4.1 — 2026-04-30 (CEO) — SS-008 row-ID citations
+
+- **Tool result includes `id`.** `search_incentives` now returns the database `id` for each row alongside title/slug/etc., so the model has access to a stable, auditable handle for every program it cites.
+- **System prompt updated.** Combined safety rules 3 + 4 into one rule that explicitly notes the audit trail: "every program you name must have come from a search_incentives call — each tool result includes a stable `id` field that lets us audit your citations after the fact."
+- **Per-turn audit log.** `app/api/chat/route.ts` emits one structured `console.info({event:"ai_chat_turn", ...})` line per chat request capturing: mode, IP, last user message (truncated 500 chars), all `search_incentives` calls (params + matched IDs), final unique matched IDs, response character count, duration. Vercel log search filter `event:ai_chat_turn` returns the full citation receipt for any past turn — no new DB table, no new dependencies.
+- **Why structured logs over a DB table.** Lets us defer the audit-table schema decision until SS-012 eval gate concretizes its replay needs. Logs are queryable, exportable, and survive code rollbacks. When/if eval needs persistent storage, the JSON shape is already stable and easy to backfill from logs.
+
+## 1.4.0 — 2026-04-30 (CEO) — connection scoping + tsx migration
+
+Root-causes the recurring "Initialize Database fails with exit code 1" loop and unblocks the workflow plan.
+
+- **CI Node toolchain — permanent fix.** Replaced `ts-node@10.9` (broken on Node 22+) with `tsx@4` (esbuild-based). Moved all 6 workflows from Node 20 → Node 22 (current LTS). Dropped the `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24` band-aid. The Node-20 pin was only ever a workaround for ts-node; once GitHub deprecated Node 20, jobs were forced onto Node 24 → ts-node crashed again. tsx removes the dependency entirely. On branch `claude/consulting-framework-setup-ibuHt` (commit `4f3a535`); needs new PR — PR #51 was merged before this commit landed.
+- **Connection scoping.** `.env.example` now documents `DATABASE_URL_UNPOOLED`, `ANTHROPIC_API_KEY`, `DASHBOARD_SECRET`, `UPSTASH_REDIS_REST_URL/TOKEN` with provenance for each. Previously undocumented → silent misconfiguration on first deploy. (PR #51)
+- **`prisma/seed.ts` import bug fix.** `caPrograms` (16) and `otherPrograms` (16) were imported but never spread into the `incentives` array — seed silently dropped 32 curated state programs. (PR #51)
+- **`scrapers/scheduler.py` fail/ok overwrite bug fix.** Inside the `except` block, success-path code overwrote `status: "fail"` with `status: "ok"`, making scraper failures appear successful in logs. (PR #51)
+- **`DEPLOY.md` rewrite.** Old version told you to use `db push` and only documented `DATABASE_URL`. New version covers required Vercel env vars (Production + Preview), GitHub Actions secrets list, the Migrate Baseline one-time step, and a sanity checklist for diagnosing first-deploy failures. (PR #51)
+- **Default branch repointed.** Repo default was `claude/subsidies-discovery-platform-oAFoU` (a stale intermediate branch) — flipped to `main`. Five stale `claude/*` branches identified for deletion via GitHub UI.
+
 ## 1.3.0 — 2026-04-28 (CEO) — continued session
 
 SS-003 and SS-008 non-gated pieces.
