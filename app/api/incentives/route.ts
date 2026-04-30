@@ -59,18 +59,16 @@ export async function GET(request: NextRequest) {
         { managingAgency: { contains: filters.search, mode: "insensitive" } },
         { agencyAcronym: { contains: filters.search, mode: "insensitive" } },
         { jurisdictionName: { contains: filters.search, mode: "insensitive" } },
-        { industryCategories: { contains: filters.search, mode: "insensitive" } },
+        { industryCategories: { hasSome: [filters.search] } },
       ];
     }
 
-    // Industry category is stored as JSON array string — use contains
     if (filters.industryCategory) {
-      where.industryCategories = { contains: filters.industryCategory, mode: "insensitive" };
+      where.industryCategories = { has: filters.industryCategory };
     }
 
-    // Exclude records that contain the given industry category
     if (filters.excludeIndustryCategory) {
-      where.NOT = { industryCategories: { contains: filters.excludeIndustryCategory, mode: "insensitive" } };
+      where.NOT = { industryCategories: { has: filters.excludeIndustryCategory } };
     }
 
     if (filters.verified) where.isVerified = true;

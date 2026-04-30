@@ -179,7 +179,7 @@ export async function POST(req: NextRequest) {
 
             const orClauses: Array<Record<string, unknown>> = [];
             if (input.industryCategory) {
-              orClauses.push({ industryCategories: { contains: input.industryCategory, mode: "insensitive" } });
+              orClauses.push({ industryCategories: { has: input.industryCategory } });
             }
             if (input.keyword) {
               orClauses.push(
