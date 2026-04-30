@@ -7,14 +7,21 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatCurrency(amount: number | null): string {
   if (amount === null) return "Varies";
+  if (amount >= 1_000_000_000) return `$${(amount / 1_000_000_000).toFixed(1)}B`;
   if (amount >= 1_000_000) return `$${(amount / 1_000_000).toFixed(1)}M`;
   if (amount >= 1_000) return `$${(amount / 1_000).toFixed(0)}K`;
   return `$${amount.toLocaleString()}`;
 }
 
-/** Compact money formatter for headline stat figures (e.g. $25M, $152K). */
+/** Compact money formatter for headline stat figures. Caps at 4 visible
+ *  digits: $1.5B, $42.5B, $425M, $25M, $500K. Anything >= $1B uses the
+ *  billions tier so we never print things like "$42450M". */
 export function fmtMoney(amount: number | null | undefined): string {
   if (amount == null) return "—";
+  if (amount >= 1_000_000_000) {
+    const b = amount / 1_000_000_000;
+    return `$${b % 1 === 0 ? b.toFixed(0) : b.toFixed(1)}B`;
+  }
   if (amount >= 1_000_000) {
     const m = amount / 1_000_000;
     return `$${m % 1 === 0 ? m.toFixed(0) : m.toFixed(1)}M`;
