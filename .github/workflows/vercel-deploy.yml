@@ -1,0 +1,60 @@
+name: Deploy to Vercel (manual)
+
+# Bypass for the broken Vercel↔GitHub auto-deploy webhook on this repo.
+# Builds and deploys to production using VERCEL_TOKEN — same secret already
+# used by set-vercel-env.yml, so no new secrets are required.
+#
+# Trigger: GitHub → Actions → "Deploy to Vercel (manual)" → Run workflow
+#
+# Required (already set):
+#   VERCEL_TOKEN  — Vercel personal access token
+#   VERCEL_SCOPE  — Vercel team / username slug (or empty for personal)
+#
+# Optional override:
+#   VERCEL_PROJECT_NAME — defaults to "state-subsidies"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Link, build, and deploy to production
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_SCOPE: ${{ secrets.VERCEL_SCOPE }}
+          VERCEL_PROJECT_NAME: state-subsidies
+        run: |
+          set -euo pipefail
+          SCOPE_FLAG=""
+          if [ -n "${VERCEL_SCOPE}" ]; then SCOPE_FLAG="--scope=${VERCEL_SCOPE}"; fi
+
+          echo "→ vercel link"
+          vercel link --yes --project="${VERCEL_PROJECT_NAME}" \
+            $SCOPE_FLAG --token="${VERCEL_TOKEN}"
+
+          echo "→ vercel pull (production env)"
+          vercel pull --yes --environment=production \
+            $SCOPE_FLAG --token="${VERCEL_TOKEN}"
+
+          echo "→ vercel build --prod"
+          vercel build --prod $SCOPE_FLAG --token="${VERCEL_TOKEN}"
+
+          echo "→ vercel deploy --prebuilt --prod"
+          DEPLOY_URL=$(vercel deploy --prebuilt --prod \
+            $SCOPE_FLAG --token="${VERCEL_TOKEN}")
+          echo ""
+          echo "Deployed → $DEPLOY_URL"
+          echo "Custom domain (statesubsidies.com) should now reflect the new build."
