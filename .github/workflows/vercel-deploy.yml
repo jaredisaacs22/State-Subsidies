@@ -34,12 +34,16 @@ jobs:
       - name: Link, build, and deploy to production
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_SCOPE: ${{ secrets.VERCEL_SCOPE }}
+          # Falls back to the team slug visible in branch-deploy URLs
+          # (state-subsidies-git-main-jaredisaacs22s-projects.vercel.app)
+          # if VERCEL_SCOPE is not set as a repo secret.
+          VERCEL_SCOPE: ${{ secrets.VERCEL_SCOPE || 'jaredisaacs22s-projects' }}
           VERCEL_PROJECT_NAME: state-subsidies
         run: |
           set -euo pipefail
           SCOPE_FLAG=""
           if [ -n "${VERCEL_SCOPE}" ]; then SCOPE_FLAG="--scope=${VERCEL_SCOPE}"; fi
+          echo "Using scope: ${VERCEL_SCOPE:-<personal>}"
 
           echo "→ vercel link"
           vercel link --yes --project="${VERCEL_PROJECT_NAME}" \
