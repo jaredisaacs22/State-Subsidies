@@ -187,7 +187,7 @@ function EligibilityChecker({ incentive, onClose }: { incentive: Incentive; onCl
           )}
           {confidence === "MEDIUM" && (
             <p className="text-[11px] text-amber-700">
-              You likely meet most requirements. Check the ones you marked "No" or "Not sure" — those are your eligibility risks.
+              You likely meet most requirements. Check the ones you marked &ldquo;No&rdquo; or &ldquo;Not sure&rdquo; &mdash; those are your eligibility risks.
             </p>
           )}
           {confidence === "LOW" && (

@@ -58,7 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   </span>
                 </div>
                 <p className="text-sm text-slate-500 leading-relaxed">
-                  There's a lot of government money out there for businesses. Most of it goes unclaimed because nobody knows it exists. We fixed that.
+                  There&apos;s a lot of government money out there for businesses. Most of it goes unclaimed because nobody knows it exists. We fixed that.
                 </p>
                 <p className="text-xs text-slate-400 mt-2">
                   All 50 states · sourced from official .gov and agency sites.
