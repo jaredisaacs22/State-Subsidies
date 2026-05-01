@@ -75,14 +75,17 @@ export function LogoMark({ height, size, className }: LogoMarkProps) {
       aria-hidden="true"
     >
       <defs>
+        {/* Federal navy gradient — navy-700 → navy-900
+         *  per StateSubsidies Design System (assets/logo-mark.svg) */}
         <linearGradient id="us-bg" x1="0" y1="0" x2="0.15" y2="1">
-          <stop offset="0%"   stopColor="#3730a3" />
-          <stop offset="100%" stopColor="#0f0d3d" />
+          <stop offset="0%"   stopColor="#1f3257" />
+          <stop offset="100%" stopColor="#060c22" />
         </linearGradient>
-        {/* Amber glow for activity dots */}
+        {/* Federal-red glow for activity dots (CA / TX / IL / NY) —
+         *  ICONOGRAPHY §Logomark: changed from amber to red */}
         <radialGradient id="dot-glow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%"   stopColor="#fbbf24" stopOpacity="0.45" />
-          <stop offset="100%" stopColor="#fbbf24" stopOpacity="0" />
+          <stop offset="0%"   stopColor="#a8312a" stopOpacity="0.50" />
+          <stop offset="100%" stopColor="#a8312a" stopOpacity="0" />
         </radialGradient>
       </defs>
 
@@ -106,15 +109,15 @@ export function LogoMark({ height, size, className }: LogoMarkProps) {
         strokeWidth="0.75"
       />
 
-      {/* Activity indicators */}
+      {/* Activity indicators — federal red, per design ICONOGRAPHY §Logomark */}
       {DOTS.map(({ x, y, label }) => (
         <g key={label}>
           {/* Glow halo */}
-          <circle cx={x} cy={y} r={5} fill="#fbbf24" opacity={0.22} />
+          <circle cx={x} cy={y} r={5} fill="#a8312a" opacity={0.25} />
           {/* Solid dot */}
-          <circle cx={x} cy={y} r={2.5} fill="#fbbf24" />
+          <circle cx={x} cy={y} r={2.5} fill="#a8312a" />
           {/* Bright highlight */}
-          <circle cx={x - 0.5} cy={y - 0.5} r={0.8} fill="rgba(255,255,255,0.75)" />
+          <circle cx={x - 0.5} cy={y - 0.5} r={0.8} fill="rgba(255,255,255,0.78)" />
         </g>
       ))}
     </svg>

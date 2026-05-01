@@ -10,10 +10,23 @@
 
   html {
     scroll-behavior: smooth;
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   }
 
   body {
     @apply bg-slate-50 text-slate-900 antialiased;
+  }
+
+  /* Display family for headlines — civic-document gravitas
+   * (StateSubsidies Design System §Visual Foundations / Type) */
+  h1, h2, h3, .font-display {
+    font-family: var(--font-serif), Charter, Georgia, serif;
+    letter-spacing: -0.01em;
+  }
+
+  /* Tabular figures for stats and currency throughout */
+  .stat-number, [data-tabular] {
+    font-variant-numeric: tabular-nums lining-nums;
   }
 
   * {
@@ -25,8 +38,8 @@
   .card {
     @apply bg-white rounded-xl border border-slate-200 shadow-sm transition-all duration-200 hover:-translate-y-0.5;
     &:hover {
-      box-shadow: 0 8px 28px -4px rgba(79, 70, 229, 0.12), 0 2px 8px -2px rgba(15, 23, 42, 0.06);
-      @apply border-forest-200/70;
+      box-shadow: 0 12px 28px -6px rgba(12, 23, 56, 0.14), 0 4px 8px -4px rgba(12, 23, 56, 0.06);
+      @apply border-navy-200/70;
     }
   }
 
@@ -48,8 +61,11 @@
 
   .btn-primary {
     @apply btn text-white px-4 py-2 text-sm shadow-sm;
-    background: linear-gradient(160deg, #3730a3 0%, #1e1b6b 100%);
-    &:hover { background: linear-gradient(160deg, #312e81 0%, #13104a 100%); }
+    background: linear-gradient(160deg, #2c4467 0%, #15244a 100%);
+    &:hover {
+      background: linear-gradient(160deg, #1f3257 0%, #0c1738 100%);
+      box-shadow: 0 8px 28px -4px rgba(44, 68, 103, 0.18), 0 2px 8px -2px rgba(12, 23, 56, 0.06);
+    }
     &:active { transform: translateY(1px); }
   }
 
@@ -88,24 +104,27 @@
     html { scroll-behavior: auto; }
   }
 
-  /* ── Hero section ─────────────────────────────────────────────────── */
+  /* ── Hero section — federal navy + faint red glow + grid ───────────
+   *  Per StateSubsidies Design System (visual foundations §Backgrounds):
+   *  --navy-900 base, faint red radial-glow, 48px grid overlay.
+   *  No teal, no indigo. */
   .hero-section {
     background:
-      radial-gradient(ellipse 65% 55% at 5% 0%,    rgba(79, 70, 229, 0.82)  0%, transparent 55%),
-      radial-gradient(ellipse 50% 55% at 95% 15%,  rgba(20, 184, 166, 0.28) 0%, transparent 55%),
-      radial-gradient(ellipse 80% 80% at 50% 50%,  rgba(8, 6, 40, 0.65)     0%, transparent 85%),
-      #060b1e;
+      radial-gradient(ellipse 70% 55% at 12% 0%,   rgba(44, 68, 103, 0.55) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 88% 18%,  rgba(168, 49, 42, 0.18) 0%, transparent 65%),
+      radial-gradient(ellipse 80% 80% at 50% 50%,  rgba(6, 12, 34, 0.55)   0%, transparent 85%),
+      #0c1738;
   }
 
   .hero-grid {
     background-image:
-      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
     background-size: 48px 48px;
   }
 
   .hero-glow {
-    background: radial-gradient(ellipse 60% 40% at 50% 30%, rgba(99, 102, 241, 0.10) 0%, transparent 70%);
+    background: radial-gradient(ellipse 60% 40% at 50% 30%, rgba(168, 49, 42, 0.10) 0%, transparent 70%);
   }
 
   /* ── Skeleton shimmer (left-to-right sweep, not pulse) ────────────── */

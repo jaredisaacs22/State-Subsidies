@@ -1,10 +1,32 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { Source_Sans_3, Source_Serif_4, JetBrains_Mono } from "next/font/google";
 import { LogoMark } from "@/components/Logo";
 import { Analytics } from "@/components/Analytics";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
+
+// StateSubsidies Design System fonts: Source Serif 4 (display),
+// Source Sans 3 (UI), JetBrains Mono (provenance/code).
+const sourceSans = Source_Sans_3({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-sans",
+  display: "swap",
+});
+const sourceSerif = Source_Serif_4({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-serif",
+  display: "swap",
+});
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://statesubsidies.com"),
@@ -17,9 +39,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body>
-        <div className="h-[3px] bg-gradient-to-r from-[#1e1b6b] via-[#0d9488] to-[#1e1b6b] sticky top-0 z-50" />
+    <html lang="en" className={`${sourceSans.variable} ${sourceSerif.variable} ${jetbrainsMono.variable}`}>
+      <body className="font-sans">
+        {/* Federal flag bar — navy → red → navy. Per design §Layout rules. */}
+        <div className="h-[3px] bg-gradient-to-r from-navy-900 via-red-600 to-navy-900 sticky top-0 z-50" />
         <header className="bg-white/95 backdrop-blur-sm border-b border-slate-200/80 sticky top-[3px] z-50 shadow-[0_1px_12px_rgba(0,0,0,0.05)]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-15 flex items-center justify-between" style={{ height: "3.75rem" }}>
             <a href="/" className="flex items-center gap-2.5 group">
