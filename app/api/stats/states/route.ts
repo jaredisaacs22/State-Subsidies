@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
-export const dynamic = "force-dynamic";
 export const revalidate = 300;
 
 // Map sub-state jurisdiction names (AGENCY/CITY) to their parent US state name

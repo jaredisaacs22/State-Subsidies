@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { USStateMap } from "@/components/USStateMap";
 import { X, DollarSign, Clock, Filter, MapPin } from "lucide-react";
 import Link from "next/link";
@@ -24,12 +24,12 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 const TYPE_COLORS: Record<string, string> = {
-  GRANT: "bg-emerald-500",
-  TAX_CREDIT: "bg-violet-500",
-  LOAN: "bg-yellow-500",
-  POINT_OF_SALE_REBATE: "bg-orange-500",
-  VOUCHER: "bg-pink-500",
-  SUBSIDY: "bg-sky-500",
+  GRANT: "bg-navy-600",
+  TAX_CREDIT: "bg-navy-400",
+  LOAN: "bg-gold-500",
+  POINT_OF_SALE_REBATE: "bg-red-600",
+  VOUCHER: "bg-navy-300",
+  SUBSIDY: "bg-gold-700",
 };
 
 export default function MapPage() {
@@ -38,6 +38,7 @@ export default function MapPage() {
   const [selected, setSelected] = useState<string | null>(null);
   const [summary, setSummary] = useState<StateSummary | null>(null);
   const [loading, setLoading] = useState(false);
+  const summaryCache = useRef<Map<string, StateSummary>>(new Map());
 
   // Fetch per-state counts (includes AGENCY/CITY attributed to parent state)
   useEffect(() => {
@@ -55,9 +56,11 @@ export default function MapPage() {
       .catch(() => {});
   }, []);
 
-  // Fetch detailed data when state/federal selected
+  // Fetch detailed data when state/federal selected — cached to avoid re-fetching on revisit
   useEffect(() => {
     if (!selected) { setSummary(null); return; }
+    const cached = summaryCache.current.get(selected);
+    if (cached) { setSummary(cached); return; }
     setLoading(true);
     const isFederal = selected === "United States";
     const url = isFederal
@@ -73,7 +76,7 @@ export default function MapPage() {
         }
         const now = Date.now();
         const thirtyDays = 30 * 24 * 60 * 60 * 1000;
-        setSummary({
+        const result: StateSummary = {
           total: data.total,
           byType,
           topFunded: [...all]
@@ -84,7 +87,9 @@ export default function MapPage() {
             .filter((i) => i.deadline && new Date(i.deadline).getTime() - now < thirtyDays && new Date(i.deadline).getTime() > now)
             .sort((a, b) => new Date(a.deadline!).getTime() - new Date(b.deadline!).getTime())
             .slice(0, 3),
-        });
+        };
+        summaryCache.current.set(selected, result);
+        setSummary(result);
       })
       .catch(() => setSummary(null))
       .finally(() => setLoading(false));
