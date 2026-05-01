@@ -67,12 +67,12 @@ interface USStateMapProps {
 }
 
 function getFill(count: number, isSelected: boolean): string {
-  if (isSelected) return "#0d2e1c"; // forest-900
-  if (count === 0) return "#f0fdf4"; // forest-50
-  if (count <= 2)  return "#bbf7d0"; // forest-200
-  if (count <= 5)  return "#4ade80"; // forest-400
-  if (count <= 10) return "#1a7a42"; // forest-600
-  return "#14432a";                  // forest-800
+  if (isSelected) return "#0c1738"; // navy-900
+  if (count === 0) return "#f1f4f9"; // navy-50
+  if (count <= 2)  return "#b6c5db"; // navy-200
+  if (count <= 5)  return "#5d7ba3"; // navy-400
+  if (count <= 10) return "#2c4467"; // navy-600
+  return "#15244a";                  // navy-800
 }
 
 export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USStateMapProps) {
@@ -125,19 +125,19 @@ export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USS
                       style={{
                         default: {
                           fill: getFill(count, isSelected),
-                          stroke: isSelected ? "#052e16" : "#cbd5e1",
+                          stroke: isSelected ? "#060c22" : "#cbd5e1",
                           strokeWidth: isSelected ? 1.5 : 0.5,
                           outline: "none",
                           cursor: "pointer",
                         },
                         hover: {
-                          fill: isSelected ? "#083324" : count > 0 ? "#22c55e" : "#e2e8f0",
+                          fill: isSelected ? "#060c22" : count > 0 ? "#3d5a85" : "#e2e8f0",
                           stroke: "#475569",
                           strokeWidth: 1,
                           outline: "none",
                           cursor: "pointer",
                         },
-                        pressed: { fill: "#052e16", outline: "none" },
+                        pressed: { fill: "#060c22", outline: "none" },
                       }}
                     >
                       <title>{`${name}: ${count} program${count !== 1 ? "s" : ""}`}</title>
@@ -167,7 +167,7 @@ export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USS
                           style={{
                             fontSize: "7px",
                             fontWeight: 700,
-                            fill: isSelected ? "#d1fae5" : "#1e293b",
+                            fill: isSelected ? "#dbe2ee" : "#1e293b",
                             pointerEvents: "none",
                             userSelect: "none",
                             fontFamily: "system-ui, sans-serif",
@@ -208,7 +208,7 @@ export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USS
                           style={{
                             fontSize: "6.5px",
                             fontWeight: 700,
-                            fill: isSelected ? "#052e16" : "#334155",
+                            fill: isSelected ? "#dbe2ee" : "#334155",
                             cursor: "pointer",
                             userSelect: "none",
                             fontFamily: "system-ui, sans-serif",
