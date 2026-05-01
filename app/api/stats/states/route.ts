@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 // Map sub-state jurisdiction names (AGENCY/CITY) to their parent US state name
 const JURISDICTION_TO_STATE: Record<string, string> = {
@@ -86,7 +86,9 @@ export async function GET() {
       }
     }
 
-    return NextResponse.json({ counts });
+    const response = NextResponse.json({ counts });
+    response.headers.set("Cache-Control", "public, s-maxage=300, stale-while-revalidate=900");
+    return response;
   } catch (error) {
     console.error('[GET /api/stats/states]', error);
     return NextResponse.json({ counts: {} });
