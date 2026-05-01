@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://statesubsidies.com"),
   title: "StateSubsidies — National Directory of Government Incentives",
   description:
-    "A free public directory of 200+ federal, state, city, and agency grants, tax credits, loans, and rebates for U.S. businesses. " +
+    "A free public directory of 500+ federal, state, city, and agency grants, tax credits, loans, and rebates for U.S. businesses. " +
     "Filter by industry, state, and incentive type across all 50 states.",
   keywords: ["government grants", "business incentives", "tax credits", "rebates", "state incentives", "IRA", "clean energy", "small business grants"],
 };
