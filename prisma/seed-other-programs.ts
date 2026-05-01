@@ -31,7 +31,7 @@ export const otherPrograms = [
     keyRequirements: ["Massachusetts-based manufacturing or industrial business","Facility must have annual energy spend of at least $100,000","Program covers: free audits, $20K feasibility grants, implementation grants (20–50% of project cost)","Eligible: compressed air, motor upgrades, process heat recovery, electrification","Must implement recommendations within 24 months of audit"],
     industryCategories: ["Manufacturing","Energy Management","Building Electrification","Clean Technology"],
     incentiveType: "GRANT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://www.masscec.com/program/advanced-efficiency-services", programCode: "MA-AES", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    sourceUrl: "https://www.masscec.com/", programCode: "MA-AES", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
     title: "Oregon Business Energy Tax Credit (BETC) — Pass-Through Option",
@@ -42,7 +42,7 @@ export const otherPrograms = [
     keyRequirements: ["Oregon business with qualifying clean energy or efficiency investment","Eligible: solar, wind, geothermal, biomass, EV charging, anaerobic digestion, CHP","Tax credit: 35% of eligible costs (50% for Rural Enterprise Zone projects)","Pass-through: sell credit to third-party investor for ~85–90 cents on the dollar","Apply through Oregon Department of Energy before project completion"],
     industryCategories: ["Clean Technology","Energy Storage","Agriculture","Manufacturing"],
     incentiveType: "TAX_CREDIT", fundingAmount: 10000000, deadline: null,
-    sourceUrl: "https://www.oregon.gov/energy/Incentives/Pages/RETC.aspx", programCode: "OR-BETC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    sourceUrl: "https://www.oregon.gov/energy/Incentives", programCode: "OR-BETC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
     title: "Hawaii GEMS Green Energy Market Securitization Loan",
@@ -75,7 +75,7 @@ export const otherPrograms = [
     keyRequirements: ["Business must be a New Mexico taxpayer with qualifying solar or storage installation","Solar PV: 10% of eligible costs (no cap for commercial since 2020)","Battery storage: 5% of eligible costs as separate credit","System must be installed and operational in the tax year claimed","Credits are non-refundable but carry forward 5 years"],
     industryCategories: ["Clean Technology","Energy Storage","Building Electrification","Agriculture"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.tax.newmexico.gov/businesses/credits/", programCode: "NM-CE-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    sourceUrl: "https://www.tax.newmexico.gov/businesses", programCode: "NM-CE-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
     title: "Utah REDI — Rural Economic Development Initiative",
@@ -108,7 +108,7 @@ export const otherPrograms = [
     keyRequirements: ["Business, nonprofit, or local government in Maryland","Eligible: solar PV, small wind, geothermal, CHP, anaerobic digestion, battery storage","Grant: up to 25% of eligible project costs, max $75,000","Priority for Opportunity Zones, brownfields, or LMI communities","Annual competitive solicitation through MEA"],
     industryCategories: ["Clean Technology","Energy Storage","Building Electrification","Manufacturing"],
     incentiveType: "GRANT", fundingAmount: 75000, deadline: null,
-    sourceUrl: "https://energy.maryland.gov/business/Pages/incentives/cleangrant.aspx", programCode: "MD-MEA-CE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    sourceUrl: "https://energy.maryland.gov/business", programCode: "MD-MEA-CE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
     title: "Connecticut Green Bank C-PACE Commercial Property Financing",
@@ -130,7 +130,7 @@ export const otherPrograms = [
     keyRequirements: ["Construction or off-road equipment operated in Maricopa County, AZ","Existing equipment must be Tier 0–2 diesel engine","Replacement must be Tier 4 Final diesel or zero/near-zero emission","Old equipment must be permanently retired and destroyed","Business must have owned equipment for at least 2 years"],
     industryCategories: ["Construction","Fleet","Agriculture"],
     incentiveType: "GRANT", fundingAmount: 250000, deadline: null,
-    sourceUrl: "https://www.maricopa.gov/5504/Air-Quality", programCode: "MCAQD-CACP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    sourceUrl: "https://www.maricopa.gov/", programCode: "MCAQD-CACP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
     title: "Puget Sound Clean Air Agency Diesel Reduction Grants",

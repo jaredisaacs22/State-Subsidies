@@ -157,7 +157,7 @@ const incentives = [
     incentiveType: "POINT_OF_SALE_REBATE",
     fundingAmount: 14000,
     deadline: null,
-    sourceUrl: "https://www.energy.gov/scep/home-energy-rebate-program",
+    sourceUrl: "https://www.energy.gov/scep",
     programCode: "IRA-HEEHRA",
     status: "ACTIVE",
     isVerified: true,
@@ -221,7 +221,7 @@ const incentives = [
     incentiveType: "TAX_CREDIT",
     fundingAmount: null,
     deadline: null,
-    sourceUrl: "https://austinenergy.com/ae/green-power/solar-programs",
+    sourceUrl: "https://austinenergy.com/ae/green-power",
     programCode: "AE-VOS",
     status: "ACTIVE",
     isVerified: true,
@@ -322,7 +322,7 @@ const incentives = [
     ],
     industryCategories: ["EV Charging", "Infrastructure", "Fleet", "Automotive"],
     incentiveType: "GRANT", fundingAmount: 4000000, deadline: null,
-    sourceUrl: "https://www.fhwa.dot.gov/environment/alternative_fuel_corridors/nevi/",
+    sourceUrl: "https://www.fhwa.dot.gov/environment/alternative_fuel_corridors",
     programCode: "NEVI-2022", status: "ACTIVE", isVerified: true, scraperSource: "federal_fhwa_scraper",
   },
 
@@ -697,7 +697,7 @@ const incentives = [
     ],
     industryCategories: ["Construction", "Logistics", "Agriculture", "Fleet"],
     incentiveType: "GRANT", fundingAmount: 400000, deadline: null,
-    sourceUrl: "https://www.baaqmd.gov/funding-and-incentives/businesses-and-fleets/off-road-equipment",
+    sourceUrl: "https://www.baaqmd.gov/funding-and-incentives/businesses-and-fleets",
     programCode: "BAAQMD-ORE", status: "ACTIVE", isVerified: true, scraperSource: "carb_scraper",
   },
 
@@ -716,7 +716,7 @@ const incentives = [
     ],
     industryCategories: ["Fleet", "Construction", "Public Transit", "Logistics"],
     incentiveType: "VOUCHER", fundingAmount: 200000, deadline: null,
-    sourceUrl: "https://www.aqmd.gov/home/programs/business/MSIF",
+    sourceUrl: "https://www.aqmd.gov/home/programs/business",
     programCode: "SCAQMD-MSIF", status: "ACTIVE", isVerified: true, scraperSource: "carb_scraper",
   },
 
@@ -793,7 +793,7 @@ const incentives = [
     ],
     industryCategories: ["Real Estate", "Infrastructure", "Public Transit", "Government & Nonprofit"],
     incentiveType: "GRANT", fundingAmount: 10000000, deadline: null,
-    sourceUrl: "https://sgc.ca.gov/programs/",
+    sourceUrl: "https://sgc.ca.gov/",
     programCode: "CA-P40", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -869,7 +869,7 @@ const incentives = [
     ],
     industryCategories: ["Energy Management", "Manufacturing", "Retail", "Hospitality", "Food & Beverage"],
     incentiveType: "POINT_OF_SALE_REBATE", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://www.pge.com/en/business/save-energy-and-money/rebates-and-incentives.html",
+    sourceUrl: "https://www.pge.com/",
     programCode: "PGE-BEE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -909,7 +909,7 @@ const incentives = [
     ],
     industryCategories: ["Energy Storage", "Real Estate", "Energy Management"],
     incentiveType: "SUBSIDY", fundingAmount: 150000, deadline: null,
-    sourceUrl: "https://www.coned.com/en/save-money/rebates-incentives-tax-credits/rebates-incentives-tax-credits-for-commercial-industrial-buildings-customers/battery-storage",
+    sourceUrl: "https://www.coned.com/en/save-money/rebates-incentives-tax-credits/rebates-incentives-tax-credits-for-commercial-industrial-buildings-customers",
     programCode: "CONED-BTM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -947,7 +947,7 @@ const incentives = [
     ],
     industryCategories: ["Real Estate", "Construction", "Manufacturing"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.dec.ny.gov/chemical/cleanp.html",
+    sourceUrl: "https://www.dec.ny.gov/",
     programCode: "NY-BCP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1046,7 +1046,7 @@ const incentives = [
     ],
     industryCategories: ["Technology", "Research & Development", "Healthcare", "Clean Technology", "Manufacturing"],
     incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://gov.texas.gov/business/page/emerging-technology-fund",
+    sourceUrl: "https://gov.texas.gov/business",
     programCode: "TETF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1200,7 +1200,7 @@ const incentives = [
     ],
     industryCategories: ["Clean Technology", "Energy Management", "Agriculture", "Manufacturing"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.ncdor.gov/taxes-forms/individual-income-tax/credits/renewable-energy-property-tax-credit",
+    sourceUrl: "https://www.ncdor.gov/taxes-forms/individual-income-tax",
     programCode: "NC-RETC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1219,7 +1219,7 @@ const incentives = [
     ],
     industryCategories: ["Manufacturing", "Technology", "Logistics", "Healthcare"],
     incentiveType: "GRANT", fundingAmount: 2000000, deadline: null,
-    sourceUrl: "https://www.tn.gov/transparenttn/state-financial-overview/open-ecd/openecd/fasttrack-project-database.html",
+    sourceUrl: "https://www.tn.gov/transparenttn/state-financial-overview/open-ecd",
     programCode: "TN-FT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1238,7 +1238,7 @@ const incentives = [
     ],
     industryCategories: ["Energy Management", "Clean Technology", "Manufacturing", "Agriculture"],
     incentiveType: "LOAN", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://mn.gov/commerce/businesses/energy/businesses/financing/",
+    sourceUrl: "https://mn.gov/commerce/businesses/energy/businesses",
     programCode: "MN-CERL", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1316,7 +1316,7 @@ const incentives = [
     ],
     industryCategories: ["Energy Storage", "Clean Technology", "Manufacturing", "Agriculture"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.oregon.gov/energy/Incentives/Pages/BETC.aspx",
+    sourceUrl: "https://www.oregon.gov/energy/Incentives",
     programCode: "OR-BETC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1392,7 +1392,7 @@ const incentives = [
     ],
     industryCategories: ["Clean Technology", "Manufacturing", "Energy Storage"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.azcommerce.com/incentives/renewable-energy-tax-incentive-program/",
+    sourceUrl: "https://www.azcommerce.com/incentives",
     programCode: "AZ-RETC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1468,7 +1468,7 @@ const incentives = [
     ],
     industryCategories: ["Agriculture", "Energy Management", "Clean Technology"],
     incentiveType: "GRANT", fundingAmount: 20000, deadline: null,
-    sourceUrl: "https://oemr.idaho.gov/energy-efficiency-renewable-energy/",
+    sourceUrl: "https://oemr.idaho.gov/",
     programCode: "ID-REG", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1527,7 +1527,7 @@ const incentives = [
     ],
     industryCategories: ["Energy Storage", "Clean Technology", "Real Estate"],
     incentiveType: "SUBSIDY", fundingAmount: 200000, deadline: null,
-    sourceUrl: "https://www.njcleanenergy.com/renewable-energy/programs",
+    sourceUrl: "https://www.njcleanenergy.com/renewable-energy",
     programCode: "NJ-CESI", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1565,7 +1565,7 @@ const incentives = [
     ],
     industryCategories: ["Energy Management", "Government & Nonprofit", "Real Estate", "Education"],
     incentiveType: "LOAN", fundingAmount: 10000000, deadline: null,
-    sourceUrl: "https://www.energy.virginia.gov/efficiency/loans.shtml",
+    sourceUrl: "https://www.energy.virginia.gov/",
     programCode: "VA-EERF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1603,7 +1603,7 @@ const incentives = [
     ],
     industryCategories: ["Clean Technology", "Energy Storage", "Energy Management"],
     incentiveType: "GRANT", fundingAmount: 150000, deadline: null,
-    sourceUrl: "https://energy.ri.gov/programs/renewable-energy-fund",
+    sourceUrl: "https://energy.ri.gov/",
     programCode: "RI-CEG", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1641,7 +1641,7 @@ const incentives = [
     ],
     industryCategories: ["Real Estate", "Building Electrification", "Energy Management"],
     incentiveType: "LOAN", fundingAmount: 1000000, deadline: null,
-    sourceUrl: "https://www.efficiencymaine.com/commercial/commercial-pace/",
+    sourceUrl: "https://www.efficiencymaine.com/commercial",
     programCode: "ME-PACE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -1662,7 +1662,7 @@ const incentives = [
     ],
     industryCategories: ["EV Charging", "Real Estate", "Fleet", "Hospitality"],
     incentiveType: "POINT_OF_SALE_REBATE", fundingAmount: 5000, deadline: null,
-    sourceUrl: "https://www.ladwp.com/ladwp/faces/ladwp/commercial/c-gogreen/c-gg-electricvehicles",
+    sourceUrl: "https://www.ladwp.com/ladwp/faces/ladwp/commercial",
     programCode: "LADWP-EV", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
 
@@ -1681,7 +1681,7 @@ const incentives = [
     ],
     industryCategories: ["Real Estate", "Energy Management", "Construction", "Government & Nonprofit"],
     incentiveType: "SUBSIDY", fundingAmount: 50000, deadline: null,
-    sourceUrl: "https://www.chicago.gov/city/en/depts/doe/supp_info/retrofit_chicago.html",
+    sourceUrl: "https://www.chicago.gov/",
     programCode: "CHI-RRC", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
 
@@ -1700,7 +1700,7 @@ const incentives = [
     ],
     industryCategories: ["Energy Management", "Retail", "Hospitality", "Manufacturing", "Real Estate"],
     incentiveType: "POINT_OF_SALE_REBATE", fundingAmount: 200000, deadline: null,
-    sourceUrl: "https://www.seattle.gov/city-light/business-solutions/save-energy-and-money",
+    sourceUrl: "https://www.seattle.gov/city-light/business-solutions",
     programCode: "SCL-EER", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
 
@@ -1738,7 +1738,7 @@ const incentives = [
     ],
     industryCategories: ["Energy Management", "Manufacturing", "Retail", "Water & Utilities"],
     incentiveType: "SUBSIDY", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.aps.com/en/business/save-money/rates-and-rate-programs/demand-response-programs",
+    sourceUrl: "https://www.aps.com/en/business",
     programCode: "APS-DR", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
 
@@ -2022,7 +2022,7 @@ const incentives = [
     ],
     industryCategories: ["Film & Media", "Technology"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.georgia.org/competitive-advantages/incentives/film-tv-and-digital-entertainment-tax-credit",
+    sourceUrl: "https://www.georgia.org/competitive-advantages/incentives",
     programCode: "GA-FILM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -2041,7 +2041,7 @@ const incentives = [
     ],
     industryCategories: ["Maritime", "Logistics", "Fleet", "Clean Technology"],
     incentiveType: "GRANT", fundingAmount: 1000000, deadline: null,
-    sourceUrl: "https://www.portoflosangeles.org/environment/air-quality/clean-air-action-plan",
+    sourceUrl: "https://www.portoflosangeles.org/environment/air-quality",
     programCode: "POLA-CAAP", status: "ACTIVE", isVerified: true, scraperSource: "carb_scraper",
   },
 
@@ -2079,7 +2079,7 @@ const incentives = [
     ],
     industryCategories: ["Clean Technology", "Energy Storage", "Government & Nonprofit"],
     incentiveType: "GRANT", fundingAmount: 2000000, deadline: null,
-    sourceUrl: "https://www.akenergyauthority.org/Programs/REFund",
+    sourceUrl: "https://www.akenergyauthority.org/",
     programCode: "AK-REG", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   // ── Alabama ──────────────────────────────────────────────────────────────
@@ -2196,7 +2196,7 @@ const incentives = [
     keyRequirements: ["Business must be incorporated and operating in New Hampshire","Training must lead to demonstrably higher-paying positions","50% match required from employer; grant covers remaining training costs","Maximum grant: $100,000 per business per year","Training can be conducted by community college, university, or approved provider"],
     industryCategories: ["Manufacturing", "Healthcare", "Technology"],
     incentiveType: "GRANT", fundingAmount: 100000, deadline: null,
-    sourceUrl: "https://www.nheconomy.com/grants-incentives",
+    sourceUrl: "https://www.nheconomy.com/",
     programCode: "NH-JTF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   // ── North Dakota ─────────────────────────────────────────────────────────
@@ -2274,7 +2274,7 @@ const incentives = [
     keyRequirements: ["Applicant must be a Wyoming municipality, county, or joint powers board","Project must support documented job creation by a specific employer","Eligible: water/sewer infrastructure, roads, broadband, building rehab for business","Matching funds required from local government (15–25% depending on project type)","Business commitment letter required showing jobs to be created/retained"],
     industryCategories: ["Manufacturing", "Agriculture", "Energy Management", "Government & Nonprofit"],
     incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://www.wyomingbusiness.org/content/business-ready-community-grant-loan-program",
+    sourceUrl: "https://www.wyomingbusiness.org/",
     programCode: "WY-BRC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   // ── Deeper coverage: underrepresented states ──────────────────────────────
@@ -2287,7 +2287,7 @@ const incentives = [
     keyRequirements: ["Qualified research must meet IRS Section 41 definition","Credit: 24% of first $2.5M in qualified R&D expenses; 15% above $2.5M","Unused credits can be carried forward up to 15 years","Enhanced credit available for research conducted at Arizona universities","Must file AZ Form 308 with annual tax return"],
     industryCategories: ["Technology", "Healthcare", "Manufacturing", "Research & Development"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://azdor.gov/business/tax-credits",
+    sourceUrl: "https://azdor.gov/business",
     programCode: "AZ-RD-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2371,7 +2371,7 @@ const incentives = [
     keyRequirements: ["Must create at least 25 qualified new jobs (5 in rural areas) within 5 years","Jobs must pay at least 125% of regional average wage with benefits","Award: performance-based grant or loan up to $10M depending on project","Eligible: manufacturing, R&D, headquarters, back-office, agri-business","Must demonstrate the project would not occur in Michigan without the incentive"],
     industryCategories: ["Manufacturing", "Technology", "Automotive", "Clean Technology"],
     incentiveType: "GRANT", fundingAmount: 10000000, deadline: null,
-    sourceUrl: "https://www.michiganbusiness.org/grow/",
+    sourceUrl: "https://www.michiganbusiness.org/",
     programCode: "MI-BDP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2383,7 +2383,7 @@ const incentives = [
     keyRequirements: ["Must create at least 11 new full-time jobs (6 in greater Minnesota) within 2 years","Jobs must pay at least $15.53/hour with employer-sponsored benefits","Capital investment minimum: $500K (greater MN) or $1M (metro)","Grant: up to $1M based on jobs and investment; paid after milestones verified","Business must be in manufacturing, tech, warehouse/distribution, or HQ operations"],
     industryCategories: ["Manufacturing", "Technology", "Logistics", "Agriculture"],
     incentiveType: "GRANT", fundingAmount: 1000000, deadline: null,
-    sourceUrl: "https://mn.gov/deed/business/financing-business/tax-credits/jcf/",
+    sourceUrl: "https://mn.gov/deed/business/financing-business/tax-credits",
     programCode: "MN-JCF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2431,7 +2431,7 @@ const incentives = [
     keyRequirements: ["Municipality or county must apply on behalf of a qualifying employer","Employer must create primary jobs (bringing new money into NM economy)","Wages must be at or above median wage for the relevant occupation","Grant funds infrastructure only; employer cannot receive funds directly","Job creation commitments include clawback if targets not met within 3 years"],
     industryCategories: ["Manufacturing", "Technology", "Film & Media", "Government & Nonprofit"],
     incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://edd.newmexico.gov/business-development/leda/",
+    sourceUrl: "https://edd.newmexico.gov/business-development",
     programCode: "NM-LEDA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2515,7 +2515,7 @@ const incentives = [
     keyRequirements: ["Must create minimum 25 new full-time jobs (10 in rural/distressed counties)","Jobs must pay at least the county average wage with benefits","Training grant: up to $4,000 per new employee for eligible training costs","Eligible costs: pre-employment screening, on-the-job training, classroom training","Must apply to ECD before making hiring announcements"],
     industryCategories: ["Manufacturing", "Technology", "Automotive", "Logistics"],
     incentiveType: "GRANT", fundingAmount: 4000, deadline: null,
-    sourceUrl: "https://www.tn.gov/transparenttn/state-financial-overview/open-ecd/openecd/fasttrack-project-database.html",
+    sourceUrl: "https://www.tn.gov/transparenttn/state-financial-overview/open-ecd",
     programCode: "TN-FASTTRACK", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2539,7 +2539,7 @@ const incentives = [
     keyRequirements: ["Must create at least 50 new full-time jobs within first 12 months of operation","All jobs must be located at a single Virginia facility","Credit: $1,000 per qualifying job, taken equally over 2 years","Eligible: manufacturers, distributors, R&D, multi-state HQ operations","Minimum capital investment required varies by industry type"],
     industryCategories: ["Manufacturing", "Technology", "Financial Services", "Logistics"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.vedp.org/incentives-programs",
+    sourceUrl: "https://www.vedp.org/",
     programCode: "VA-MBF-JTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2716,7 +2716,7 @@ const incentives = [
     keyRequirements: ["Open to transitioning service members and their spouses (on-installation courses)","Veterans, National Guard, Reserve, and military spouses eligible for online courses","No cost to participants; all materials provided","Covers business concepts, federal contracting, SBA resources, and financing","Follow-on 8-week online course available through participating universities"],
     industryCategories: ["Government & Nonprofit"],
     incentiveType: "GRANT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.sba.gov/business-guide/grow-your-business/boots-business",
+    sourceUrl: "https://www.sba.gov/business-guide/grow-your-business",
     programCode: "SBA-B2B", status: "ACTIVE", isVerified: true, scraperSource: "federal_sba_scraper",
   },
 
@@ -2742,7 +2742,7 @@ const incentives = [
     keyRequirements: ["Developer must set aside 20%+ units for households at 50% AMI, OR 40%+ at 60% AMI","Rent restrictions: maximum 30% of qualifying income for set-aside units","Credits allocated by state housing finance agencies via Qualified Allocation Plan","9% credits for new construction; 4% credits for acquisition/rehab with tax-exempt bonds","30-year compliance period required; extended use agreements common"],
     industryCategories: ["Real Estate", "Construction", "Government & Nonprofit"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.irs.gov/credits-deductions/businesses/low-income-housing-tax-credit",
+    sourceUrl: "https://www.irs.gov/credits-deductions/businesses",
     programCode: "FED-LIHTC", status: "ACTIVE", isVerified: true, scraperSource: "federal_irs_scraper",
   },
   {
@@ -2840,7 +2840,7 @@ const incentives = [
     keyRequirements: ["Minimum in-state spend: $500,000 per production","Base credit: 20% of qualified Georgia expenditures","Additional 10% if production includes embedded Georgia promotional logo","Transferable and sellable credits — can be sold to Georgia taxpayers","No cap on credits; no sunset date currently"],
     industryCategories: ["Film & Media", "Technology"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.georgia.org/competitive-advantages/incentives/film-tv-and-digital-entertainment-tax-credit",
+    sourceUrl: "https://www.georgia.org/competitive-advantages/incentives",
     programCode: "GA-FILM-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2864,7 +2864,7 @@ const incentives = [
     keyRequirements: ["Minimum in-state spend: $300,000","Base credit: 25% of qualified Louisiana expenditures","Additional 15% on payroll for Louisiana residents employed on production","Transferable: credits may be sold to other Louisiana taxpayers","Annual program cap; applications processed through OEID before production"],
     industryCategories: ["Film & Media", "Hospitality"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.louisianaentertainment.gov/film/film-tax-credit",
+    sourceUrl: "https://www.louisianaentertainment.gov/film",
     programCode: "LA-FILM-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -2900,7 +2900,7 @@ const incentives = [
     keyRequirements: ["Minimum Texas spend: $250,000 for film/TV; $100,000 for commercials; $250,000 for video games","Grant: 5–22.5% of qualified Texas spend depending on project type and Texas content","Enhanced rates for productions spending in underutilized Texas regions","Must hire minimum percentage of Texas crew and cast","Applications submitted to Texas Film Commission before production"],
     industryCategories: ["Film & Media", "Technology"],
     incentiveType: "GRANT", fundingAmount: 3000000, deadline: null,
-    sourceUrl: "https://gov.texas.gov/film/page/moving_image_industry_incentive_program",
+    sourceUrl: "https://gov.texas.gov/film",
     programCode: "TX-FILM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -2964,7 +2964,7 @@ const incentives = [
     keyRequirements: ["Business must be formed on or after January 1, 2022","At least 51% owned by one or more honorably discharged veterans","Veteran owner(s) must be Texas residents","Exemption period: 5 years from formation date","Must file annual franchise tax return and claim the exemption; no separate application"],
     industryCategories: ["Manufacturing", "Technology"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://comptroller.texas.gov/taxes/franchise/veteran-owned.php",
+    sourceUrl: "https://comptroller.texas.gov/taxes/franchise",
     programCode: "TX-VET-EXEMPT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3002,7 +3002,7 @@ const incentives = [
     keyRequirements: ["Project must receive federal LIHTC allocation from CHFA","Units must be affordable to households at or below 60% Area Median Income","State credit: 9% or 4% of qualified basis depending on project type","Applied for in conjunction with federal LIHTC application through CHFA","30-year extended use agreement required"],
     industryCategories: ["Real Estate", "Construction", "Government & Nonprofit"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.chfainfo.com/rental-housing/tax-credits",
+    sourceUrl: "https://www.chfainfo.com/rental-housing",
     programCode: "CO-AHTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3028,7 +3028,7 @@ const incentives = [
     keyRequirements: ["Must create significant net new full-time jobs in Houston city limits","Minimum capital investment threshold set case-by-case by City Council","Eligible: major employers, headquarters relocations, manufacturing, corporate campuses","Rebate: portion of city sales tax and/or property tax generated by the project","10-year agreement term; performance verified annually; clawback if targets missed"],
     industryCategories: ["Manufacturing", "Technology", "Logistics", "Energy"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.houstontx.gov/economicdevelopment/incentives.html",
+    sourceUrl: "https://www.houstontx.gov/",
     programCode: "HOU-380", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
   {
@@ -3052,7 +3052,7 @@ const incentives = [
     keyRequirements: ["Business must be located in Miami-Dade County","Focus on food production, processing, distribution, or urban agriculture","Grant amounts: $10,000–$75,000 for qualifying food businesses","Priority for businesses in food desert areas or serving low-income communities","Must demonstrate job creation or community food access benefit"],
     industryCategories: ["Food & Beverage", "Agriculture"],
     incentiveType: "GRANT", fundingAmount: 75000, deadline: null,
-    sourceUrl: "https://www.miamidade.gov/economic-advocacy-trust/",
+    sourceUrl: "https://www.miamidade.gov/",
     programCode: "MIA-FOOD", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
   {
@@ -3076,7 +3076,7 @@ const incentives = [
     keyRequirements: ["Business must be located in Minneapolis","Priority for businesses owned by BIPOC entrepreneurs, women, and immigrants","Technical assistance: free business planning, marketing, and financial consulting","Micro-grants: up to $5,000 for qualifying small businesses","Loan fund: $25,000–$250,000 at below-market rates for eligible businesses"],
     industryCategories: ["Retail", "Food & Beverage", "Government & Nonprofit"],
     incentiveType: "GRANT", fundingAmount: 5000, deadline: null,
-    sourceUrl: "https://minneapolismn.gov/businesses/resources/",
+    sourceUrl: "https://minneapolismn.gov/",
     programCode: "MPLS-BTAP", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
   {
@@ -3112,7 +3112,7 @@ const incentives = [
     keyRequirements: ["Business must be located in or relocating to Baltimore City","Facade improvement grants: up to $15,000 for exterior commercial improvements","Small business loans: $10,000–$500,000 at competitive rates","Priority for businesses in designated commercial revitalization districts","Technical assistance: free business planning, permitting guidance, and market research"],
     industryCategories: ["Retail", "Food & Beverage", "Real Estate"],
     incentiveType: "GRANT", fundingAmount: 15000, deadline: null,
-    sourceUrl: "https://www.baltimoredevelopment.com/business-assistance/",
+    sourceUrl: "https://www.baltimoredevelopment.com/",
     programCode: "BAL-BDC", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
   {
@@ -3150,7 +3150,7 @@ const incentives = [
     keyRequirements: ["Business must be a manufacturing, agribusiness, or technology company","Must locate or expand in a rural Kentucky county (non-MSA)","Must create minimum 10 new full-time jobs paying above county average wage","Credit: 100% of Kentucky income tax liability for up to 15 years","Annual reporting required; credit amount based on salaries paid to new employees"],
     industryCategories: ["Manufacturing", "Agriculture", "Technology", "Food & Beverage"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://ced.ky.gov/Incentives/kreda",
+    sourceUrl: "https://ced.ky.gov/",
     programCode: "KY-KREDA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3186,7 +3186,7 @@ const incentives = [
     keyRequirements: ["Business must be a Louisiana small business (fewer than 100 employees)","Must be unable to obtain conventional financing at reasonable terms","Loan amounts: $5,000–$250,000 at below-market interest rates","Must create at least 1 new full-time job per $50,000 borrowed","Priority for businesses in rural parishes and economically distressed areas"],
     industryCategories: ["Manufacturing", "Food & Beverage", "Hospitality", "Financial Services"],
     incentiveType: "LOAN", fundingAmount: 250000, deadline: null,
-    sourceUrl: "https://www.opportunitylouisiana.gov/business-resources/financial-incentives",
+    sourceUrl: "https://www.opportunitylouisiana.gov/",
     programCode: "LA-SBL", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -3228,7 +3228,7 @@ const incentives = [
     keyRequirements: ["Minimum qualifying in-state spend: $500,000","Base incentive: 25% of qualified Alabama production costs","Additional 5% for hiring Alabama residents for 50%+ of crew positions","Additional 5% for productions in rural counties","Incentive can be taken as tax credit or cash rebate depending on production structure"],
     industryCategories: ["Film & Media", "Hospitality"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.madeinalabama.com/film/",
+    sourceUrl: "https://www.madeinalabama.com/",
     programCode: "AL-FILM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3254,7 +3254,7 @@ const incentives = [
     keyRequirements: ["Business must be for-profit and located in Alaska","Must demonstrate inability to obtain conventional financing at reasonable terms","Loan amounts: $10,000–$300,000 at below-market interest rates","Must create or retain Alaska jobs","Priority for rural Alaska communities and businesses owned by Alaska Natives"],
     industryCategories: ["Hospitality", "Agriculture", "Maritime", "Financial Services"],
     incentiveType: "LOAN", fundingAmount: 300000, deadline: null,
-    sourceUrl: "https://www.commerce.alaska.gov/web/ded/dev/smallbusiness.aspx",
+    sourceUrl: "https://www.commerce.alaska.gov/web",
     programCode: "AK-SBEDC-RLF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3266,7 +3266,7 @@ const incentives = [
     keyRequirements: ["Minimum qualified in-state expenditure: $100,000","Base credit: 30% of qualified Alaska production expenditures","Additional 2% for each Alaska resident hired in key crew positions (up to 14%)","Transferable credits — can be sold to other Alaska taxpayers","Must register with the Alaska Film Office before beginning production"],
     industryCategories: ["Film & Media", "Hospitality"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.commerce.alaska.gov/web/ded/dev/film.aspx",
+    sourceUrl: "https://www.commerce.alaska.gov/web",
     programCode: "AK-FILM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3392,7 +3392,7 @@ const incentives = [
     keyRequirements: ["Facility must generate electricity from wind, solar, biomass, or hydroelectric sources","Energy must be produced and sold in Iowa","Credit: 1.0¢ per kWh for wind; 1.5¢ per kWh for solar and other qualifying sources","Credit period: 10 years from date facility begins commercial operation","Must register facility with Iowa Department of Revenue before claiming credit"],
     industryCategories: ["Clean Technology", "Energy Storage", "Agriculture"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://tax.iowa.gov/renewable-energy-tax-credit",
+    sourceUrl: "https://tax.iowa.gov/",
     programCode: "IA-RETC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -3418,7 +3418,7 @@ const incentives = [
     keyRequirements: ["Company must be creating new jobs in Kansas (manufacturing, distribution, or service sector)","Training must be specific to the employer's new or expanded operations","Delivered through Kansas community colleges or technical colleges","No direct cost to employer for training design and delivery","Training must be completed within 2 years of start date"],
     industryCategories: ["Manufacturing", "Logistics", "Technology"],
     incentiveType: "GRANT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.kansascommerce.gov/program/job-training/",
+    sourceUrl: "https://www.kansascommerce.gov/program",
     programCode: "KS-KIT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3494,7 +3494,7 @@ const incentives = [
     keyRequirements: ["Building must be a certified historic structure in Missouri","Minimum qualified rehabilitation expenditure of $5,000","Credit: 25% of qualified rehabilitation costs","Transferable: credits can be sold to Missouri taxpayers","Project must be certified by Missouri SHPO and National Park Service"],
     industryCategories: ["Real Estate", "Construction", "Hospitality"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://mostateparks.com/page/55147/historic-preservation-tax-credit-program",
+    sourceUrl: "https://mostateparks.com/",
     programCode: "MO-HIST-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3506,7 +3506,7 @@ const incentives = [
     keyRequirements: ["Contributor must make a cash contribution to a qualified Missouri agribusiness or producer","Eligible recipients: value-added agricultural producers, farmer cooperatives, agribusiness startups","Credit: 50% of contribution, up to $50,000 per taxpayer per year","Transferable: credits may be sold to other Missouri taxpayers","Annual program cap; applications on first-come, first-served basis"],
     industryCategories: ["Agriculture", "Food & Beverage"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://mda.mo.gov/agriculture-business-development/",
+    sourceUrl: "https://mda.mo.gov/",
     programCode: "MO-AG-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -3582,7 +3582,7 @@ const incentives = [
     keyRequirements: ["Business must be located in a designated NH Economic Revitalization Zone","Must create at least 1 net new full-time job in the ERZ","Credit: $750 per new employee per year for up to 5 years","Stackable with Job Training Fund and other NH incentives","Application through local municipality that sponsors the ERZ"],
     industryCategories: ["Manufacturing", "Technology", "Logistics"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.nheconomy.com/grants-incentives/erz",
+    sourceUrl: "https://www.nheconomy.com/",
     programCode: "NH-ERZ-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -3608,7 +3608,7 @@ const incentives = [
     keyRequirements: ["Project must be a biofuel production facility or value-added agricultural processor in ND","Eligible fuels: ethanol, biodiesel, bio-crude, and other bioenergy products","Loan amounts up to $3M at below-market interest rates; terms to 20 years","Must demonstrate viable business plan and feedstock supply agreements","Priority for rural areas and farmer-owned cooperatives"],
     industryCategories: ["Agriculture", "Clean Technology", "Energy Storage", "Food & Beverage"],
     incentiveType: "LOAN", fundingAmount: 3000000, deadline: null,
-    sourceUrl: "https://www.nd.gov/ndic/ic-permit/biofuel.htm",
+    sourceUrl: "https://www.nd.gov/ndic",
     programCode: "ND-BIOPACE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3620,7 +3620,7 @@ const incentives = [
     keyRequirements: ["Business must be located in a designated Renaissance Zone (downtown revitalization area)","Must be rehabilitating an existing building or constructing a new commercial facility","Income tax exemption: 100% for 5 years on business income from Renaissance Zone operations","Property tax exemption: 100% for 5 years on improvements","Must obtain certificate from local Renaissance Zone Authority"],
     industryCategories: ["Real Estate", "Retail", "Construction"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.commerce.nd.gov/economic-development",
+    sourceUrl: "https://www.commerce.nd.gov/",
     programCode: "ND-RENZONE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -3722,7 +3722,7 @@ const incentives = [
     keyRequirements: ["Project must be located in Vermont","Eligible technologies: solar PV, wind, biomass, biogas, microhydro, energy storage","Grant amounts: up to $500,000 for demonstration and deployment projects","Loans available at below-market rates for larger commercial projects","Priority for innovative projects, farms, and underserved communities"],
     industryCategories: ["Clean Technology", "Agriculture", "Energy Storage"],
     incentiveType: "GRANT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://publicservice.vermont.gov/content/clean-energy-development-fund",
+    sourceUrl: "https://publicservice.vermont.gov/",
     programCode: "VT-CEDF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3836,7 +3836,7 @@ const incentives = [
     keyRequirements: ["R&D activities must be conducted within Arizona","Qualifying expenses must meet IRS Section 41 definitions","Small businesses with under $1M in AZ gross receipts may qualify for accelerated credit","Credit is nonrefundable but may be carried forward 15 years","Claim on AZ Form 308"],
     industryCategories: ["Research & Development", "Technology", "Manufacturing", "Clean Technology"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://azdor.gov/business/tax-credits/research-and-development-credit",
+    sourceUrl: "https://azdor.gov/business",
     programCode: "AZ-RD-CREDIT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3938,7 +3938,7 @@ const incentives = [
     keyRequirements: ["Investment must be in a qualified Hawaii high-technology business","Qualified business must derive >50% of income from STEM activities","Credit: 20% of investment per year for 5 years","Maximum credit: $2 million per taxpayer","Business must be certified by the Hawaii Strategic Development Corporation"],
     industryCategories: ["Technology", "Research & Development", "Clean Technology"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://tax.hawaii.gov/forms/a1_b1_3_4pubs/a5_pubs/tax_credits_for_hi/",
+    sourceUrl: "https://tax.hawaii.gov/forms",
     programCode: "HI-HTECH", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3950,7 +3950,7 @@ const incentives = [
     keyRequirements: ["System must be installed at Hawaii property","Eligible: solar thermal, solar PV, wind, hydro, biomass","Credit: 35% of system cost (commercial properties cap at $500,000)","Credit claimed over 5 years","Must be new installation (not replacement of existing system)"],
     industryCategories: ["Clean Technology", "Energy Storage", "Building Electrification"],
     incentiveType: "TAX_CREDIT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://tax.hawaii.gov/forms/a1_b1_3_4pubs/a5_pubs/tax_credits_for_hi/",
+    sourceUrl: "https://tax.hawaii.gov/forms",
     programCode: "HI-RE-TAX", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -3988,7 +3988,7 @@ const incentives = [
     keyRequirements: ["Idaho-registered employer with UI account","Training must be job-specific and lead to sustainable employment","New hire or incumbent worker training eligible","Grant: up to 75% of direct training costs","Apply through Idaho Department of Labor before training begins"],
     industryCategories: ["Manufacturing", "Healthcare", "Technology", "Agriculture"],
     incentiveType: "GRANT", fundingAmount: 100000, deadline: null,
-    sourceUrl: "https://labor.idaho.gov/businesses/workforce-training/",
+    sourceUrl: "https://labor.idaho.gov/businesses",
     programCode: "ID-WDTF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4076,7 +4076,7 @@ const incentives = [
     keyRequirements: ["Project must be in a Maine Opportunity Zone","Loan amounts: $100,000–$2 million","Interest rate: below-market (typically prime minus 1%)","Must create or retain jobs for low-income Maine residents","Personal or corporate guarantee required"],
     industryCategories: ["Real Estate", "Manufacturing"],
     incentiveType: "LOAN", fundingAmount: 2000000, deadline: null,
-    sourceUrl: "https://www.famemaine.com/business/loans/",
+    sourceUrl: "https://www.famemaine.com/business",
     programCode: "ME-OZ-LOAN", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4166,7 +4166,7 @@ const incentives = [
     keyRequirements: ["Minimum 250 new jobs at 125% of regional avg wage OR 500 jobs at 100% avg wage","Company captures up to 100% of state income taxes withheld from new hires","10-year program window","Capital investment commitment required","Project approval by Michigan Strategic Fund board required"],
     industryCategories: ["Manufacturing", "Technology", "Automotive"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.michiganbusiness.org/grow/good-jobs-for-michigan/",
+    sourceUrl: "https://www.michiganbusiness.org/",
     programCode: "MI-GJFM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4178,7 +4178,7 @@ const incentives = [
     keyRequirements: ["Project must represent a competitive business location decision","Minimum job creation or capital investment commitment","Grant or loan: $1,000–$20,000 per created/retained job","Disbursement tied to employment and investment milestones","Available to businesses of all sizes and industries"],
     industryCategories: ["Manufacturing", "Technology", "Automotive", "Healthcare"],
     incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://www.michiganbusiness.org/grow/",
+    sourceUrl: "https://www.michiganbusiness.org/",
     programCode: "MI-BDP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4190,7 +4190,7 @@ const incentives = [
     keyRequirements: ["Michigan-based business, municipality, or non-profit","Eligible: solar, wind, energy storage, EV charging, efficiency retrofits","Grants up to $1 million for commercial projects","25%–50% match typically required","Applications reviewed in competitive rounds"],
     industryCategories: ["Clean Technology", "Energy Storage", "EV Charging", "Building Electrification"],
     incentiveType: "GRANT", fundingAmount: 1000000, deadline: null,
-    sourceUrl: "https://www.michigan.gov/egle/about/grants",
+    sourceUrl: "https://www.michigan.gov/egle/about",
     programCode: "MI-EGLE-CE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4204,7 +4204,7 @@ const incentives = [
     keyRequirements: ["Minimum 11 new FTE jobs in metro area (5 in Greater MN)","Minimum wage: $14.45/hour + benefits","Minimum capital investment: $500,000 ($200,000 in Greater MN)","Grant: up to $1 million based on job/investment scale","Businesses must demonstrate financial viability"],
     industryCategories: ["Manufacturing", "Technology", "Healthcare", "Agriculture"],
     incentiveType: "GRANT", fundingAmount: 1000000, deadline: null,
-    sourceUrl: "https://mn.gov/deed/business/financing-business/deed-programs/job-creation/",
+    sourceUrl: "https://mn.gov/deed/business/financing-business/deed-programs",
     programCode: "MN-JCF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4216,7 +4216,7 @@ const incentives = [
     keyRequirements: ["Investor must be a MN-certified angel investor or fund","Investment in a certified MN early-stage company","Credit: 25% of qualifying investment","Max credit per investor: $125,000/year ($250,000 for investments in Greater MN companies)","Statewide annual cap: $17 million — credits allocated first-come"],
     industryCategories: ["Technology", "Research & Development", "Clean Technology"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://mn.gov/deed/business/financing-business/deed-programs/angel/",
+    sourceUrl: "https://mn.gov/deed/business/financing-business/deed-programs",
     programCode: "MN-ANGEL", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4228,7 +4228,7 @@ const incentives = [
     keyRequirements: ["50 or fewer full-time equivalent employees","Loan size: $10,000–$250,000","State guarantees up to 80% of loan","Must have been denied conventional credit","Apply through a participating Minnesota lender"],
     industryCategories: ["Manufacturing", "Retail", "Food & Beverage"],
     incentiveType: "LOAN", fundingAmount: 250000, deadline: null,
-    sourceUrl: "https://mn.gov/deed/business/financing-business/deed-programs/small-business-loan-guarantee/",
+    sourceUrl: "https://mn.gov/deed/business/financing-business/deed-programs",
     programCode: "MN-SBLG", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4380,7 +4380,7 @@ const incentives = [
     keyRequirements: ["System must be installed at a North Carolina property","Eligible: solar PV, solar thermal, wind, geothermal, CHP","Credit: 35% of installed cost","Nonrefundable; carry forward up to 5 years","Commercial solar cap: $2.5 million per installation"],
     industryCategories: ["Clean Technology", "Energy Storage", "Agriculture"],
     incentiveType: "TAX_CREDIT", fundingAmount: 2500000, deadline: null,
-    sourceUrl: "https://www.ncdor.gov/taxes-forms/individual-income-tax/tax-credits/renewable-energy-tax-credits",
+    sourceUrl: "https://www.ncdor.gov/taxes-forms/individual-income-tax",
     programCode: "NC-RE-TAX", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4418,7 +4418,7 @@ const incentives = [
     keyRequirements: ["Project must represent a competitive location decision (Ohio vs. another state)","Minimum 10 new or retained full-time jobs","Jobs must pay county-competitive wages","Grant: $1,000–$5,000 per job (negotiated)","Available for manufacturing, corporate HQ, R&D, distribution, and back-office operations"],
     industryCategories: ["Manufacturing", "Technology", "Logistics", "Healthcare"],
     incentiveType: "GRANT", fundingAmount: 2000000, deadline: null,
-    sourceUrl: "https://jobsohio.com/our-grants/economic-development-grant",
+    sourceUrl: "https://jobsohio.com/",
     programCode: "OH-JOBS-EDG", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4470,7 +4470,7 @@ const incentives = [
     keyRequirements: ["Business must locate in a designated KOZ, KOEZ, or KSDZ parcel","Exemptions available: corporate net income tax, personal income tax, sales/use tax, county/local taxes","Exemption duration: up to 12 years","No minimum job or investment requirement to enter zone","Business must file annual renewal with PA DCED"],
     industryCategories: ["Manufacturing", "Technology", "Real Estate", "Logistics"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://dced.pa.gov/business-assistance/keystone-opportunity-zone-koz/",
+    sourceUrl: "https://dced.pa.gov/business-assistance",
     programCode: "PA-KOZ", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4546,7 +4546,7 @@ const incentives = [
     keyRequirements: ["Minimum 2 new full-time jobs in a qualifying industry","Qualifying industries: manufacturing, processing, warehousing, R&D, agribusiness, HQ","Wages must meet or exceed county average","Credit: $1,500–$8,000 per new job per year (5 years)","Credit increases in higher unemployment counties"],
     industryCategories: ["Manufacturing", "Logistics", "Agriculture", "Research & Development"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://dor.sc.gov/business",
+    sourceUrl: "https://dor.sc.gov/",
     programCode: "SC-JTC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4584,7 +4584,7 @@ const incentives = [
     keyRequirements: ["Local government must apply on behalf of the business","Minimum private investment: typically $10M+","Minimum job creation commitment","Grant covers public infrastructure: roads, water, sewer, rail","Projects evaluated on return on investment to state"],
     industryCategories: ["Manufacturing", "Logistics", "Technology"],
     incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://www.tn.gov/transparenttn/state-financial-overview/open-ecd/openecd/fasttrack-project-database.html",
+    sourceUrl: "https://www.tn.gov/transparenttn/state-financial-overview/open-ecd",
     programCode: "TN-FASTTRACK-INFRA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4608,7 +4608,7 @@ const incentives = [
     keyRequirements: ["New or expanding Tennessee business creating new jobs","Training delivered through TCAT system or approved vendor","No direct cost to employer — state funds training","Minimum job commitment tied to training grant","Training must be customized to company's specific skill needs"],
     industryCategories: ["Manufacturing", "Automotive", "Technology", "Healthcare"],
     incentiveType: "GRANT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://www.tn.gov/transparenttn/state-financial-overview/open-ecd/openecd/fasttrack-project-database.html",
+    sourceUrl: "https://www.tn.gov/transparenttn/state-financial-overview/open-ecd",
     programCode: "TN-FASTTRACK-JT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4646,7 +4646,7 @@ const incentives = [
     keyRequirements: ["Investment must be in a qualified Utah Opportunity Zone fund or business","Credit: 5% of qualifying investment","Held for at least 10 years to maximize federal OZ benefits","Stacks with federal OZ capital gains deferral/exclusion","Claim on Utah TC-40 form"],
     industryCategories: ["Real Estate", "Technology"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://business.utah.gov/incentives/",
+    sourceUrl: "https://business.utah.gov/",
     programCode: "UT-OZ-TAX", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -4938,7 +4938,7 @@ const incentives = [
     keyRequirements: ["Alaska-registered employer with payroll account","New hire must be an eligible WIOA participant (unemployed, underemployed, or low-income)","OJT reimbursement: up to 50% of new hire wages during training period","Training period: typically 3–6 months","Apply through Alaska Job Center Network"],
     industryCategories: ["Manufacturing", "Healthcare", "Construction", "Agriculture"],
     incentiveType: "GRANT", fundingAmount: 50000, deadline: null,
-    sourceUrl: "https://jobs.alaska.gov/WIOA/business_services.htm",
+    sourceUrl: "https://jobs.alaska.gov/",
     programCode: "AK-WIOA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -4950,7 +4950,7 @@ const incentives = [
     keyRequirements: ["Alaska-based small business or startup","Loan: $5,000–$35,000 at below-market rates","Must demonstrate viable business plan and repayment ability","Technical assistance required during loan period","Priority for rural Alaska businesses and minority-owned enterprises"],
     industryCategories: ["Retail", "Food & Beverage", "Agriculture"],
     incentiveType: "LOAN", fundingAmount: 35000, deadline: null,
-    sourceUrl: "https://www.commerce.alaska.gov/web/ded/",
+    sourceUrl: "https://www.commerce.alaska.gov/web",
     programCode: "AK-MICRO", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -5140,7 +5140,7 @@ const incentives = [
     keyRequirements: ["System must be installed in Iowa","Eligible: solar, wind, biomass, biogas, geothermal","Small systems (residential/commercial <500 kW): 30% credit on eligible costs","Larger commercial systems: production-based credit","Unused credit may be carried forward 10 years"],
     industryCategories: ["Clean Technology", "Energy Storage", "Agriculture"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://tax.iowa.gov/renewable-energy-tax-credit",
+    sourceUrl: "https://tax.iowa.gov/",
     programCode: "IA-RE-TAX", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -5166,7 +5166,7 @@ const incentives = [
     keyRequirements: ["New Kansas business or established business creating new positions","Training delivered through Kansas technical colleges or universities","State pays 100% of eligible training costs for new employees","Training must be for new positions (not replacements or upgrades)","Minimum job creation: typically 10+ new full-time positions"],
     industryCategories: ["Manufacturing", "Healthcare", "Technology", "Agriculture"],
     incentiveType: "GRANT", fundingAmount: 250000, deadline: null,
-    sourceUrl: "https://www.kansascommerce.gov/business-resources/workforce/training-programs/",
+    sourceUrl: "https://www.kansascommerce.gov/business-resources/workforce",
     programCode: "KS-KIT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5242,7 +5242,7 @@ const incentives = [
     keyRequirements: ["Missouri-based agricultural business or farm operation","Loan: $50,000–$750,000 at 3–5% interest","Eligible uses: land, equipment, livestock, storage, processing","Beginning farmers receive priority rates","Must work through a participating Missouri lender"],
     industryCategories: ["Agriculture", "Food & Beverage"],
     incentiveType: "LOAN", fundingAmount: 750000, deadline: null,
-    sourceUrl: "https://agriculture.mo.gov/masbda/",
+    sourceUrl: "https://agriculture.mo.gov/",
     programCode: "MO-AGDEV-LOAN", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5344,7 +5344,7 @@ const incentives = [
     keyRequirements: ["North Dakota small business (under 50 employees)","Minimum 1:1 match from private sources","Grant: $5,000–$50,000","Eligible uses: equipment, facility expansion, working capital","Job creation or retention required"],
     industryCategories: ["Manufacturing", "Agriculture", "Retail"],
     incentiveType: "GRANT", fundingAmount: 50000, deadline: null,
-    sourceUrl: "https://www.commerce.nd.gov/economic-development",
+    sourceUrl: "https://www.commerce.nd.gov/",
     programCode: "ND-MBD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5356,7 +5356,7 @@ const incentives = [
     keyRequirements: ["Investment in an ND-certified seed capital company","Company: ND-based, fewer than 50 employees, innovative technology or product","Credit: 45% of qualifying investment","Minimum investment: $10,000","Annual statewide cap: $3.5 million — apply early"],
     industryCategories: ["Technology", "Agriculture", "Research & Development"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.commerce.nd.gov/economic-development",
+    sourceUrl: "https://www.commerce.nd.gov/",
     programCode: "ND-SCITC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5368,7 +5368,7 @@ const incentives = [
     keyRequirements: ["North Dakota-based business, municipality, or non-profit","Eligible: wind, solar, biomass, geothermal, energy efficiency","Grants up to $75,000; loans up to $500,000 at 3–5%","Priority for projects demonstrating energy cost savings","Applications accepted year-round through ND Commerce"],
     industryCategories: ["Clean Technology", "Agriculture", "Energy Storage"],
     incentiveType: "GRANT", fundingAmount: 75000, deadline: null,
-    sourceUrl: "https://www.commerce.nd.gov/energy",
+    sourceUrl: "https://www.commerce.nd.gov/",
     programCode: "ND-REP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -5406,7 +5406,7 @@ const incentives = [
     keyRequirements: ["Manufacturer or processor in Oklahoma","Minimum $40,000 investment in qualifying property","Minimum 1 new full-time job at $10+/hour","Credit: $500–$2,000 per new job per year for 5 years","Claim on Oklahoma Form 506"],
     industryCategories: ["Manufacturing", "Food & Beverage", "Oil & Gas Transition"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://oklahoma.gov/tax/businesses/credits/investment-new-jobs-tax-credit.html",
+    sourceUrl: "https://oklahoma.gov/tax/businesses",
     programCode: "OK-INJ-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -5470,7 +5470,7 @@ const incentives = [
     keyRequirements: ["Vermont-based small business or startup","Loan: $5,000–$35,000 at below-market rates","Must have been denied conventional bank credit","Business plan and cash flow projections required","Technical assistance participation required"],
     industryCategories: ["Food & Beverage", "Agriculture", "Retail"],
     incentiveType: "LOAN", fundingAmount: 35000, deadline: null,
-    sourceUrl: "https://www.veda.org/financial-products/",
+    sourceUrl: "https://www.veda.org/",
     programCode: "VT-MICRO", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5482,7 +5482,7 @@ const incentives = [
     keyRequirements: ["Vermont-based business, municipality, or non-profit","Eligible: solar, wind, biomass, storage, innovative clean energy","Grants: $50,000–$500,000","Priority for innovative or first-of-kind projects in Vermont","25% match from non-state sources required"],
     industryCategories: ["Clean Technology", "Energy Storage", "Agriculture"],
     incentiveType: "GRANT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://publicservice.vermont.gov/content/clean-energy-development-fund",
+    sourceUrl: "https://publicservice.vermont.gov/",
     programCode: "VT-CEDF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -5520,7 +5520,7 @@ const incentives = [
     keyRequirements: ["R&D must be conducted in West Virginia","Qualifying expenses: same as federal IRC Section 41","Credit: 10% of QREs (additional 5% for collaboration with WV universities)","Nonrefundable; 10-year carryforward","Claim on WV Schedule B"],
     industryCategories: ["Research & Development", "Technology", "Manufacturing", "Clean Technology"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://tax.wv.gov/Business/Pages/TaxCredits.aspx",
+    sourceUrl: "https://tax.wv.gov/Business",
     programCode: "WV-RD-CREDIT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -5534,7 +5534,7 @@ const incentives = [
     keyRequirements: ["Local Wyoming government (city, county, or special district) must apply","Project must be tied to a specific business relocation or expansion","Grant funds public infrastructure: water, sewer, roads, buildings","Private company must commit to job creation","Competitive application through Wyoming Business Council"],
     industryCategories: ["Manufacturing", "Logistics"],
     incentiveType: "GRANT", fundingAmount: 1000000, deadline: null,
-    sourceUrl: "https://www.wyomingbusiness.org/content/business-ready-community-grant-loan-program",
+    sourceUrl: "https://www.wyomingbusiness.org/",
     programCode: "WY-BRC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
@@ -5558,7 +5558,7 @@ const incentives = [
     keyRequirements: ["Business must be a manufacturer in Wyoming","Exemption applies to: manufacturing machinery, equipment, repair parts, raw materials","100% exemption from Wyoming state and local sales/use tax","Equipment must be used directly in production process","No application required — claim exemption at point of purchase with exemption certificate"],
     industryCategories: ["Manufacturing", "Food & Beverage", "Energy Storage"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://revenue.wyo.gov/tax-compliance-division/sales-use-tax/manufacturers-and-processing",
+    sourceUrl: "https://revenue.wyo.gov/",
     programCode: "WY-MFG-EXEMPT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
@@ -5650,7 +5650,7 @@ const incentives = [
     keyRequirements: ["Equipment must be Tier 0, 1, or 2 diesel","Operating in a Texas nonattainment or near-nonattainment area","Equipment must be scrapped and replaced","Reimbursement paid as a percentage of eligible costs (typically 25–75%)","Contractors and construction companies eligible"],
     industryCategories: ["Construction","Fleet","Logistics"],
     incentiveType: "POINT_OF_SALE_REBATE", fundingAmount: 750000, deadline: null,
-    sourceUrl: "https://www.tceq.texas.gov/airquality/terp/vw.html", programCode: "TX-VW-OFF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.tceq.texas.gov/airquality/terp", programCode: "TX-VW-OFF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Florida Commercial EV Charging Rebate (FLFPUC)", slug: "fl-ev-charging-rebate",
     jurisdictionLevel: "STATE", jurisdictionName: "Florida", managingAgency: "Florida Public Service Commission / Duke Energy Florida", agencyAcronym: "FL PSC",
@@ -5658,7 +5658,7 @@ const incentives = [
     keyRequirements: ["Must be a Duke Energy, FPL, or Tampa Electric commercial customer","Rebate paid upon verified installation","Level 2 charger: up to $5,000 per unit","DCFC: up to $20,000 per unit","Equipment must be ENERGY STAR or equivalent certified"],
     industryCategories: ["EV Charging","Real Estate","Retail"],
     incentiveType: "POINT_OF_SALE_REBATE", fundingAmount: 20000, deadline: null,
-    sourceUrl: "https://www.duke-energy.com/home/products/ev", programCode: "FL-EV-CHARGE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.duke-energy.com/home/products", programCode: "FL-EV-CHARGE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Pennsylvania AQIP — Diesel Retrofit & Replacement Rebates", slug: "pa-aqip-diesel-rebate",
     jurisdictionLevel: "STATE", jurisdictionName: "Pennsylvania", managingAgency: "Pennsylvania Department of Environmental Protection", agencyAcronym: "PA DEP",
@@ -5674,7 +5674,7 @@ const incentives = [
     keyRequirements: ["Commercial Georgia Power account required","Property must be zoned commercial or industrial","Must use qualified EVSE equipment","Rebate issued within 90 days of installation","Application submitted within 60 days of installation"],
     industryCategories: ["EV Charging","Real Estate","Retail"],
     incentiveType: "POINT_OF_SALE_REBATE", fundingAmount: 25000, deadline: null,
-    sourceUrl: "https://www.georgiapower.com/business/products-and-services/electric-vehicles.html", programCode: "GA-EV-REBATE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.georgiapower.com/business", programCode: "GA-EV-REBATE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Minnesota BEAM EV Rebate — Commercial Fleet", slug: "mn-beam-ev-fleet",
     jurisdictionLevel: "STATE", jurisdictionName: "Minnesota", managingAgency: "Minnesota Pollution Control Agency", agencyAcronym: "MPCA",
@@ -5690,7 +5690,7 @@ const incentives = [
     keyRequirements: ["Diesel vehicle or equipment in NOx nonattainment area","Minimum scrappage of old unit required","Incremental cost reimbursed (25–75% depending on category)","Electric replacements receive highest funding tier","Businesses, municipalities, school districts eligible"],
     industryCategories: ["Fleet","Construction","Public Transit","Logistics"],
     incentiveType: "POINT_OF_SALE_REBATE", fundingAmount: 200000, deadline: null,
-    sourceUrl: "https://www.michigan.gov/egle/about/organization/air-quality/mobile-sources/vw", programCode: "MI-EGLE-VW", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.michigan.gov/egle/about/organization/air-quality", programCode: "MI-EGLE-VW", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── VOUCHER PROGRAMS ──────────────────────────────────────────────────────
 
@@ -5724,7 +5724,7 @@ const incentives = [
     keyRequirements: ["Class 4–8 battery electric or fuel cell vehicle","Purchased from an NJ-enrolled commercial vehicle dealer","Vehicle must be based in New Jersey","Businesses with NJ commercial operations eligible","Voucher applied at point of purchase"],
     industryCategories: ["Fleet","Logistics","Construction"],
     incentiveType: "VOUCHER", fundingAmount: 300000, deadline: null,
-    sourceUrl: "https://www.njcleanenergy.com/commercial-industrial/programs", programCode: "NJ-ZIP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.njcleanenergy.com/", programCode: "NJ-ZIP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Texas TERP — Diesel Equipment Replacement Voucher", slug: "tx-terp-diesel-voucher",
     jurisdictionLevel: "STATE", jurisdictionName: "Texas", managingAgency: "Texas Commission on Environmental Quality", agencyAcronym: "TCEQ",
@@ -5782,7 +5782,7 @@ const incentives = [
     keyRequirements: ["Commercial building must achieve LEED Gold, Platinum, or equivalent","Located in New York State","Tax credit applied against NY corporate franchise or income tax","Buildings must meet specific energy reduction thresholds","Credits claimed over a multi-year period"],
     industryCategories: ["Real Estate","Building Electrification","Construction","Energy Management"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.tax.ny.gov/bus/credits/", programCode: "NY-GREEN-BLD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.tax.ny.gov/bus", programCode: "NY-GREEN-BLD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Florida Corporate Income Tax Credit — Rural Job Creation", slug: "fl-rural-job-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Florida", managingAgency: "Florida Department of Economic Opportunity", agencyAcronym: "FL DEO",
@@ -5806,7 +5806,7 @@ const incentives = [
     keyRequirements: ["Minimum $2 million capital investment in qualifying facility","Business must be in manufacturing, R&D, or data center sector","Must create new jobs paying ≥150% of state average wage","Credit: 10% of qualifying capital investment","Refundable credit — paid out even if no AZ tax liability"],
     industryCategories: ["Manufacturing","Technology","Research & Development","Clean Technology"],
     incentiveType: "TAX_CREDIT", fundingAmount: 30000000, deadline: null,
-    sourceUrl: "https://azdor.gov/business/tax-credits", programCode: "AZ-QFC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://azdor.gov/business", programCode: "AZ-QFC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "North Carolina Mill Renovation Tax Credit", slug: "nc-mill-renovation-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "North Carolina", managingAgency: "North Carolina Department of Revenue", agencyAcronym: "NC DOR",
@@ -5814,7 +5814,7 @@ const incentives = [
     keyRequirements: ["Business facility located in NC Tier 1 or Tier 2 county","Minimum $1 million in qualifying renovation expenses","Energy efficiency or sustainability improvements required","Credit: 40% of eligible costs in Tier 1, 30% in Tier 2","5-year recapture period if property is sold"],
     industryCategories: ["Manufacturing","Real Estate","Building Electrification","Construction"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.ncdor.gov/taxes-forms/corporate-income-franchise-tax/tax-credits", programCode: "NC-MILL-RENO", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.ncdor.gov/taxes-forms", programCode: "NC-MILL-RENO", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Ohio Technology Investment Tax Credit", slug: "oh-tech-investment-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Ohio", managingAgency: "Ohio Department of Development", agencyAcronym: "ODOD",
@@ -5862,7 +5862,7 @@ const incentives = [
     keyRequirements: ["Must establish a bona fide corporate headquarters in SC","Minimum $50,000 in qualifying expenditures","At least 75% of total employment in SC","Credit: 20% of investment capped at SC tax liability","Carry forward unused credits for 5 years"],
     industryCategories: ["Technology","Financial Services","Manufacturing","Logistics"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://dor.sc.gov/business", programCode: "SC-CORPHEADQ", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://dor.sc.gov/", programCode: "SC-CORPHEADQ", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Wisconsin Enterprise Zone Tax Credits", slug: "wi-enterprise-zone-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Wisconsin", managingAgency: "Wisconsin Economic Development Corporation", agencyAcronym: "WEDC",
@@ -5910,7 +5910,7 @@ const incentives = [
     keyRequirements: ["Investor must be an accredited investor","Investment in MN-based small business ≤$2M in annual revenue","Business must be in qualifying sector (technology, manufacturing, medical device)","Credit: 25% of qualifying investment up to $125,000 per investor","Business must register with MN DEED and be certified"],
     industryCategories: ["Technology","Healthcare","Manufacturing","Research & Development"],
     incentiveType: "TAX_CREDIT", fundingAmount: 125000, deadline: null,
-    sourceUrl: "https://mn.gov/deed/business/financing-business/tax-credits/angel/", programCode: "MN-ANGEL-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://mn.gov/deed/business/financing-business/tax-credits", programCode: "MN-ANGEL-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Indiana Industrial Recovery Tax Credit (DINO)", slug: "in-dino-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Indiana", managingAgency: "Indiana Economic Development Corporation", agencyAcronym: "IEDC",
@@ -5968,7 +5968,7 @@ const incentives = [
     keyRequirements: ["New construction or substantial reconstruction","Unit must meet Energy Star or Zero Energy Ready Home standards","Multifamily: $2,500/unit (Energy Star) or $5,000/unit (Zero Energy Ready)","Prevailing wage compliance required for higher credit","Claimed by contractor or manufacturer who constructed the unit"],
     industryCategories: ["Real Estate","Construction","Building Electrification"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.irs.gov/credits-deductions/businesses/new-energy-efficient-home-credit", programCode: "FED-45L", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.irs.gov/credits-deductions/businesses", programCode: "FED-45L", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Federal 48E Clean Electricity Investment Tax Credit", slug: "federal-48e-clean-electricity",
     jurisdictionLevel: "FEDERAL", jurisdictionName: "United States", managingAgency: "Internal Revenue Service / Department of Energy", agencyAcronym: "IRS / DOE",
@@ -6017,7 +6017,7 @@ const incentives = [
     keyRequirements: ["Applicant must be a Montana-based agricultural producer, business, or nonprofit","Project must benefit Montana agriculture and create economic activity","Matching funds of at least 1:1 required","Application window typically opens in fall","Reportable milestones and deliverables required"],
     industryCategories: ["Agriculture","Food & Beverage","Research & Development"],
     incentiveType: "GRANT", fundingAmount: 150000, deadline: new Date("2025-11-01"),
-    sourceUrl: "https://agr.mt.gov/GrowthThroughAgriculture", programCode: "MT-GTA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://agr.mt.gov/", programCode: "MT-GTA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Montana Board of Investments Big Sky Business Loan", slug: "montana-mboi-business-loan",
     jurisdictionLevel: "STATE", jurisdictionName: "Montana", managingAgency: "Montana Board of Investments", agencyAcronym: "MBOI",
@@ -6059,7 +6059,7 @@ const incentives = [
     keyRequirements: ["Business must be incorporated and headquartered in Hawaii","Technology must have commercialization potential in priority sectors","SBIR/STTR Phase I or II awardees receive preference","Matching funds from private investors strongly encouraged","Annual application cycle; review by DBEDT and industry panel"],
     industryCategories: ["Technology","Clean Technology","Agriculture","Research & Development"],
     incentiveType: "GRANT", fundingAmount: 100000, deadline: new Date("2025-09-30"),
-    sourceUrl: "https://invest.hawaii.gov/innovation/", programCode: "HI-DBEDT-INNOV", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://invest.hawaii.gov/", programCode: "HI-DBEDT-INNOV", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── KENTUCKY ─────────────────────────────────────────────────────────────────
   { title: "Kentucky Business Investment (KBI) Program Tax Credit", slug: "kentucky-kbi-tax-credit",
@@ -6117,7 +6117,7 @@ const incentives = [
     keyRequirements: ["Business must be located in Idaho and in good standing","Training must result in new hires or retention of at-risk employees","Reimbursement up to 75% of eligible training costs","Maximum award typically $100,000 per project","Application submitted before training begins"],
     industryCategories: ["Manufacturing","Technology","Healthcare","Logistics"],
     incentiveType: "GRANT", fundingAmount: 100000, deadline: null,
-    sourceUrl: "https://labor.idaho.gov/dnn/Businesses/Workforce-Training", programCode: "ID-WDF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://labor.idaho.gov/dnn/Businesses", programCode: "ID-WDF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Idaho Broadband — Digital Infrastructure Grant", slug: "idaho-broadband-digital-infrastructure",
     jurisdictionLevel: "STATE", jurisdictionName: "Idaho", managingAgency: "Idaho Office of Science & Technology / Broadband Office", agencyAcronym: "IOST",
@@ -6134,7 +6134,7 @@ const incentives = [
     keyRequirements: ["Minimum capital investment: $2 million (manufacturing) or $500,000 (services)","New jobs must pay at least 110% of county average wage","10-year credit period at up to 4% of annual investment","Project must be approved by Commerce and Governor's office before commitment","Annual jobs and wage reporting required"],
     industryCategories: ["Manufacturing","Technology","Financial Services","Healthcare"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.madeinalabama.com/incentives/jobs-act/", programCode: "AL-JOBS-ACT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.madeinalabama.com/incentives", programCode: "AL-JOBS-ACT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Alabama Growing Alabama Tax Credit", slug: "alabama-growing-alabama-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "Alabama", managingAgency: "Alabama Department of Agriculture & Industries", agencyAcronym: "ADAI",
@@ -6158,7 +6158,7 @@ const incentives = [
     keyRequirements: ["Business must be an Alabama Power small commercial customer (< 300 kW demand)","Upgrade must be to qualifying high-efficiency equipment","Rebates vary: $20–$200 per fixture (lighting), $50–$300/ton (HVAC)","Pre-approval recommended but not required for most measures","Installed by a licensed contractor"],
     industryCategories: ["Energy Management","Building Electrification","Retail","Hospitality"],
     incentiveType: "POINT_OF_SALE_REBATE", fundingAmount: 5000, deadline: null,
-    sourceUrl: "https://www.alabamapower.com/business/products-and-services/energy-efficiency.html", programCode: "AL-APCO-EE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.alabamapower.com/", programCode: "AL-APCO-EE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── DELAWARE ─────────────────────────────────────────────────────────────────
   { title: "Delaware Strategic Fund Grant", slug: "delaware-strategic-fund-grant",
@@ -6235,7 +6235,7 @@ const incentives = [
     keyRequirements: ["Investment in a qualifying Maine business (manufacturing, R&D, technology, fishing/agriculture)","Credit: 50% of investment, up to $500,000 per investor","Business must have fewer than 200 employees and operations in Maine","Certificate issued by FAME before investment is made","Minimum investment: $25,000 per round"],
     industryCategories: ["Technology","Manufacturing","Agriculture","Research & Development"],
     incentiveType: "TAX_CREDIT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://www.famemaine.com/business/seed-capital/", programCode: "ME-SEED", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.famemaine.com/business", programCode: "ME-SEED", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Maine Manufacturing Modernization (M2M) Grant", slug: "maine-manufacturing-modernization-grant",
     jurisdictionLevel: "STATE", jurisdictionName: "Maine", managingAgency: "Maine Technology Institute", agencyAcronym: "MTI",
@@ -6345,7 +6345,7 @@ const incentives = [
     keyRequirements: ["Project must be a qualifying renewable energy or efficiency investment in Oregon","Credit: 35% of eligible project cost (50% for small projects)","Credits are fully transferable — can be sold to tax liability-bearing pass-through entities","Preliminary certification from ODOE required before project completion","Minimum project cost: $20,000"],
     industryCategories: ["Clean Technology","Energy Management","Building Electrification","Manufacturing"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.oregon.gov/energy/Incentives/Pages/BETC.aspx", programCode: "OR-BETC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.oregon.gov/energy/Incentives", programCode: "OR-BETC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Oregon Renewable Energy Development Grant", slug: "oregon-renewable-development-grant",
     jurisdictionLevel: "STATE", jurisdictionName: "Oregon", managingAgency: "Oregon Department of Energy", agencyAcronym: "ODOE",
@@ -6353,7 +6353,7 @@ const incentives = [
     keyRequirements: ["Project must produce renewable energy in Oregon","Eligible: wind, solar, geothermal, wave/tidal, small hydro, biomass","Grants cover pre-development costs: studies, permitting, engineering","Competitive application; priority for underserved communities","Minimum match of 25% from applicant"],
     industryCategories: ["Clean Technology","Energy Management","Agriculture","Government & Nonprofit"],
     incentiveType: "GRANT", fundingAmount: 250000, deadline: new Date("2025-08-15"),
-    sourceUrl: "https://www.oregon.gov/energy/Incentives/Pages/index.aspx", programCode: "OR-RED", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.oregon.gov/energy/Incentives", programCode: "OR-RED", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Oregon Rural Renewable Energy Development (RRED) Zone", slug: "oregon-rred-zone",
     jurisdictionLevel: "STATE", jurisdictionName: "Oregon", managingAgency: "Business Oregon", agencyAcronym: "Business Oregon",
@@ -6370,7 +6370,7 @@ const incentives = [
     keyRequirements: ["Minimum investment: $2.5 million in manufacturing or $1 million in other sectors","Jobs created: 25+ for manufacturing; varies for other sectors","FILOT term: 20–30 years","County council approval and negotiated agreement required","Clawback provisions for failure to meet investment/job benchmarks"],
     industryCategories: ["Manufacturing","Logistics","Technology","Real Estate"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.sccommerce.com/why-sc/incentives-taxesfilot", programCode: "SC-FILOT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.sccommerce.com/", programCode: "SC-FILOT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "South Carolina Innovation Centers Tax Credit", slug: "south-carolina-innovation-centers-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "South Carolina", managingAgency: "SC Department of Commerce", agencyAcronym: "SC Commerce",
@@ -6479,7 +6479,7 @@ const incentives = [
     keyRequirements: ["R&D must be conducted in Arizona","Credit: 24% on first $2.5M of AZ QREs; 15% above $2.5M","Follows federal IRC Section 41 definition of qualified research","Credits may be carried forward 15 years","Available to corporations and pass-through entities"],
     industryCategories: ["Research & Development","Technology","Healthcare","Manufacturing"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://azdor.gov/business/tax-credits", programCode: "AZ-RD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://azdor.gov/business", programCode: "AZ-RD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── NEW MEXICO ────────────────────────────────────────────────────────────────
   { title: "New Mexico Local Economic Development Act (LEDA) Grant", slug: "new-mexico-leda-grant",
@@ -6488,7 +6488,7 @@ const incentives = [
     keyRequirements: ["Project must create primary jobs (goods/services sold outside NM or regionally)","Minimum wages must meet county median","Grant flows to municipality or county, which enters agreement with business","Infrastructure, building improvements, and land acquisition eligible","Clawback provisions if job commitments not met within 5 years"],
     industryCategories: ["Manufacturing","Technology","Film & Media","Healthcare","Logistics"],
     incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://edd.newmexico.gov/business-development/leda/", programCode: "NM-LEDA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://edd.newmexico.gov/business-development", programCode: "NM-LEDA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "New Mexico Film Production Tax Credit", slug: "new-mexico-film-production-tax-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "New Mexico", managingAgency: "New Mexico Film Office", agencyAcronym: "NMFO",
@@ -6496,7 +6496,7 @@ const incentives = [
     keyRequirements: ["Minimum NM spend: $500,000","Credit: 25–40% based on NM resident crew percentage and post-production spend","15% bonus for rural locations; 5% bonus for NM post-production","Fully refundable — cash payment available even without NM tax liability","Pre-production application to NM Film Office required"],
     industryCategories: ["Film & Media","Real Estate","Hospitality"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://nmfilm.com/tax-credit/", programCode: "NM-FILM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://nmfilm.com/", programCode: "NM-FILM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "New Mexico Manufacturers' Investment Tax Credit", slug: "new-mexico-manufacturers-investment-credit",
     jurisdictionLevel: "STATE", jurisdictionName: "New Mexico", managingAgency: "New Mexico Taxation and Revenue Department", agencyAcronym: "NMTRD",
@@ -6513,7 +6513,7 @@ const incentives = [
     keyRequirements: ["Project must create new primary sector jobs in Utah","New jobs must pay at or above the county average wage","Application submitted before business announces location decision","Award structured as a grant to the local government or entity","Multi-year clawback if employment targets not maintained"],
     industryCategories: ["Manufacturing","Technology","Financial Services","Healthcare"],
     incentiveType: "GRANT", fundingAmount: 2000000, deadline: null,
-    sourceUrl: "https://business.utah.gov/incentives/", programCode: "UT-IAF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://business.utah.gov/", programCode: "UT-IAF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Utah STEM Action Center Business Grant", slug: "utah-stem-action-center-grant",
     jurisdictionLevel: "STATE", jurisdictionName: "Utah", managingAgency: "Utah STEM Action Center", agencyAcronym: "UT-STEM",
@@ -6521,7 +6521,7 @@ const incentives = [
     keyRequirements: ["Business must be located and operating in Utah","Program must demonstrate clear STEM workforce development outcomes","Matching contribution from business or community partners encouraged","Priority: manufacturing, technology, healthcare, engineering sectors","Annual competitive application; reports on student/trainee outcomes"],
     industryCategories: ["Technology","Manufacturing","Healthcare","Education"],
     incentiveType: "GRANT", fundingAmount: 150000, deadline: new Date("2025-10-01"),
-    sourceUrl: "https://business.utah.gov/incentives/", programCode: "UT-STEM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://business.utah.gov/", programCode: "UT-STEM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Utah Motion Picture Incentive Program", slug: "utah-motion-picture-incentive",
     jurisdictionLevel: "STATE", jurisdictionName: "Utah", managingAgency: "Utah Governor's Office of Economic Opportunity", agencyAcronym: "GOEO",
@@ -6529,7 +6529,7 @@ const incentives = [
     keyRequirements: ["Minimum Utah spend: $500,000","Credit: 20–25% of qualifying Utah expenditures","5% rural bonus for productions spending 50%+ outside Salt Lake/Utah counties","Transferable and refundable","GOEO pre-approval required before production begins"],
     industryCategories: ["Film & Media","Hospitality","Real Estate"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://business.utah.gov/incentives/", programCode: "UT-FILM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://business.utah.gov/", programCode: "UT-FILM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // ── NEW CITY-LEVEL PROGRAMS ───────────────────────────────────────────────────
   { title: "Chicago Small Business Improvement Fund (SBIF)", slug: "chicago-small-business-improvement-fund",
@@ -6538,7 +6538,7 @@ const incentives = [
     keyRequirements: ["Property must be in a Chicago TIF district","Property must be used for commercial or industrial purposes","Reimbursement: up to 90% of eligible costs (smaller businesses) or 70% (larger)","Maximum grant: $150,000 for commercial properties","Improvements must be completed before reimbursement is paid"],
     industryCategories: ["Real Estate","Retail","Manufacturing","Food & Beverage","Healthcare"],
     incentiveType: "GRANT", fundingAmount: 150000, deadline: null,
-    sourceUrl: "https://www.chicago.gov/city/en/depts/dcd/supp_info/small_business_improvementfund.html", programCode: "CHI-SBIF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.chicago.gov/", programCode: "CHI-SBIF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Houston Small Business Development Grant", slug: "houston-small-business-development-grant",
     jurisdictionLevel: "CITY", jurisdictionName: "Houston, TX", managingAgency: "Houston Economic Development / HBD", agencyAcronym: "HED",
@@ -6546,7 +6546,7 @@ const incentives = [
     keyRequirements: ["Business must be located within Houston city limits","50 or fewer full-time employees","Business must have operated for at least 1 year","Grant for technical assistance, training, or planning costs","Priority: minority-owned, women-owned, and underserved businesses"],
     industryCategories: ["Retail","Food & Beverage","Healthcare","Technology","Manufacturing"],
     incentiveType: "GRANT", fundingAmount: 15000, deadline: null,
-    sourceUrl: "https://www.houstontx.gov/econdev/", programCode: "HOU-SBDG", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.houstontx.gov/", programCode: "HOU-SBDG", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Phoenix Economic Development Forgivable Loan Program", slug: "phoenix-economic-development-forgivable-loan",
     jurisdictionLevel: "CITY", jurisdictionName: "Phoenix, AZ", managingAgency: "City of Phoenix Office of Economic Development", agencyAcronym: "PHX-OED",
@@ -6554,7 +6554,7 @@ const incentives = [
     keyRequirements: ["Business must be a new-to-Phoenix operation or major expansion","Minimum 25 new full-time jobs paying at least 100% of Phoenix MSA median wage","Capital investment commitment required","Loan forgiven 20% per year over 5 years if jobs maintained","Application before public announcement of location decision"],
     industryCategories: ["Technology","Financial Services","Manufacturing","Healthcare","Logistics"],
     incentiveType: "LOAN", fundingAmount: 2000000, deadline: null,
-    sourceUrl: "https://www.phoenix.gov/pdd/business-assistance", programCode: "PHX-FORGIVABLE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.phoenix.gov/pdd", programCode: "PHX-FORGIVABLE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Denver Economic Development & Opportunity (DEDO) Small Business Grant", slug: "denver-dedo-small-business-grant",
     jurisdictionLevel: "CITY", jurisdictionName: "Denver, CO", managingAgency: "Denver Economic Development & Opportunity", agencyAcronym: "DEDO",
@@ -6570,7 +6570,7 @@ const incentives = [
     keyRequirements: ["Property must be in a designated Philadelphia commercial corridor","Owner or tenant must be operating a business at the location","Grant: up to $10,000 (50% match required from business)","Improvements must comply with Philadelphia zoning and building codes","Application before work begins; reimbursement after completion"],
     industryCategories: ["Retail","Food & Beverage","Real Estate","Hospitality"],
     incentiveType: "GRANT", fundingAmount: 10000, deadline: null,
-    sourceUrl: "https://www.phila.gov/services/business-self-employment/commercial-corridor-programs/storefront-improvement-program/", programCode: "PHI-SIP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.phila.gov/services/business-self-employment", programCode: "PHI-SIP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Seattle Green Business Program Incentive", slug: "seattle-green-business-incentive",
     jurisdictionLevel: "CITY", jurisdictionName: "Seattle, WA", managingAgency: "City of Seattle Office of Sustainability & Environment", agencyAcronym: "OSE",
@@ -6578,7 +6578,7 @@ const incentives = [
     keyRequirements: ["Business must be located in Seattle city limits","Must achieve certification in waste reduction, energy, water, and green purchasing","Annual recertification required","Open to businesses of any size in any sector","Benefits include Seattle City Light and Seattle Public Utilities rate incentives"],
     industryCategories: ["Retail","Food & Beverage","Hospitality","Healthcare","Technology"],
     incentiveType: "SUBSIDY", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.seattle.gov/environment/sustainable-business", programCode: "SEA-GREEN", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.seattle.gov/environment", programCode: "SEA-GREEN", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Minneapolis Commercial Property Assessed Clean Energy (C-PACE)", slug: "minneapolis-cpace-program",
     jurisdictionLevel: "CITY", jurisdictionName: "Minneapolis, MN", managingAgency: "City of Minneapolis Community Planning & Economic Development", agencyAcronym: "CPED",
@@ -6586,7 +6586,7 @@ const incentives = [
     keyRequirements: ["Property must be a commercial or multifamily property in Minneapolis","Project must include qualifying clean energy or efficiency improvements","Assessment repaid through property taxes — passes to new owner on sale","No FICO score requirement; collateral is the property","100% financing available — no upfront cost to property owner"],
     industryCategories: ["Real Estate","Building Electrification","Energy Management","Construction"],
     incentiveType: "LOAN", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://minneapolismn.gov/businesses/resources/", programCode: "MPLS-CPACE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://minneapolismn.gov/", programCode: "MPLS-CPACE", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Baltimore Business Loan Fund (BBLF)", slug: "baltimore-business-loan-fund",
     jurisdictionLevel: "CITY", jurisdictionName: "Baltimore, MD", managingAgency: "Baltimore Development Corporation", agencyAcronym: "BDC",
@@ -6594,7 +6594,7 @@ const incentives = [
     keyRequirements: ["Business must be located in or relocating to Baltimore City","Must create or retain at least 2 full-time jobs per $25,000 borrowed","Loan size: $25,000–$500,000","Priority: minority-owned, women-owned, and veteran-owned businesses","Personal guarantee and collateral required"],
     industryCategories: ["Manufacturing","Retail","Healthcare","Food & Beverage","Technology"],
     incentiveType: "LOAN", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://www.baltimoredevelopment.com/lending-programs/", programCode: "BAL-BBLF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://www.baltimoredevelopment.com/", programCode: "BAL-BBLF", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Atlanta BeltLine Affordable Commercial Space Grant", slug: "atlanta-beltline-commercial-space-grant",
     jurisdictionLevel: "CITY", jurisdictionName: "Atlanta, GA", managingAgency: "Atlanta BeltLine Partnership / Invest Atlanta", agencyAcronym: "BeltLine",
@@ -6636,7 +6636,7 @@ const incentives = [
     keyRequirements: ["Applicant must be an accelerator, incubator, or entrepreneurship hub","Must support STEM-focused or underserved startup founders","Grant: $50,000–$100,000 per accelerator","Competitive selection by SBA; annual application cycle","Funds used to expand program capacity, not given directly to startups"],
     industryCategories: ["Technology", "Research & Development", "Clean Technology", "Government & Nonprofit"],
     incentiveType: "GRANT", fundingAmount: 100000, deadline: null,
-    sourceUrl: "https://www.sba.gov/funding-programs/grants/growth-accelerator-fund-competition", programCode: "SBA-GAFC", status: "ACTIVE", isVerified: true, scraperSource: "federal_scraper",
+    sourceUrl: "https://www.sba.gov/funding-programs/grants", programCode: "SBA-GAFC", status: "ACTIVE", isVerified: true, scraperSource: "federal_scraper",
   },
 
   // ── ADDITIONAL STATE PROGRAMS ──────────────────────────────────────────────
@@ -6660,7 +6660,7 @@ const incentives = [
     keyRequirements: ["Project must be in a designated Texas Enterprise Zone","Minimum new jobs created (thresholds vary by designation tier)","Capital investment commitment required","Refund: up to $2,500 per qualifying job (triple jumbo: up to $3,750)","Application through local municipality; approved by Texas Governor's Office"],
     industryCategories: ["Manufacturing", "Technology", "Logistics", "Financial Services"],
     incentiveType: "TAX_CREDIT", fundingAmount: 2500000, deadline: null,
-    sourceUrl: "https://gov.texas.gov/business/page/enterprise-zone-program", programCode: "TX-EZP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    sourceUrl: "https://gov.texas.gov/business", programCode: "TX-EZP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
     title: "New York START-UP NY Tax-Free Program",
@@ -6682,7 +6682,7 @@ const incentives = [
     keyRequirements: ["Qualified defense contractor or space flight business in Florida","Must create minimum 100 new jobs paying above $44,200/year","Refund per new job: up to $3,000/year for 5 years","Application to DEO prior to project commencement","Annual reporting of employment levels required"],
     industryCategories: ["Aviation", "Manufacturing", "Technology", "Research & Development"],
     incentiveType: "TAX_CREDIT", fundingAmount: 1500000, deadline: null,
-    sourceUrl: "https://floridajobs.org/business-growth-and-partnerships/incentives/tax-refund-programs", programCode: "FL-DEFENSE-SR", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    sourceUrl: "https://floridajobs.org/business-growth-and-partnerships", programCode: "FL-DEFENSE-SR", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
     title: "Washington State Clean Energy Fund",
@@ -6715,7 +6715,7 @@ const incentives = [
     keyRequirements: ["Contribution must be to a pre-approved Georgia qualifying rural hospital","Credit equals 100% of contribution up to $10,000 (individual) or $10,000 per $1M revenue (business)","Preapproval required through Georgia DOR prior to contribution","Hospital must be designated as a qualifying rural hospital by DOR","Statewide annual cap; first-come, first-served"],
     industryCategories: ["Healthcare", "Government & Nonprofit"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://dor.georgia.gov/taxes/business-taxes/tax-credits/quality-jobs-qualified-rural-hospital-credit", programCode: "GA-RHO-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    sourceUrl: "https://dor.georgia.gov/taxes/business-taxes", programCode: "GA-RHO-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
     title: "Virginia Growth and Opportunity Act (GO Virginia) Grants",
@@ -6737,7 +6737,7 @@ const incentives = [
     keyRequirements: ["Company must be based in Minnesota","Must have developed a novel product, process, or service with commercialization potential","Grants: $25,000 (seed) to $100,000 (development) — competitive","Technology or innovation focus required","Must demonstrate market traction, team quality, and scalable business model"],
     industryCategories: ["Technology", "Research & Development", "Clean Technology", "Healthcare"],
     incentiveType: "GRANT", fundingAmount: 100000, deadline: null,
-    sourceUrl: "https://mn.gov/deed/business/financing-business/launch-mn/", programCode: "MN-LAUNCH", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    sourceUrl: "https://mn.gov/deed/business/financing-business", programCode: "MN-LAUNCH", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
     title: "Indiana Headquarters Relocation Tax Credit",
@@ -6748,7 +6748,7 @@ const incentives = [
     keyRequirements: ["Company must relocate a corporate or divisional HQ to Indiana","Minimum 75 new qualifying HQ jobs within 3 years","Qualifying wages: at least 125% of county median wage","Credit: 50% of relocation costs, up to $5M","Must apply to IEDC before the relocation commences"],
     industryCategories: ["Financial Services", "Technology", "Manufacturing", "Healthcare"],
     incentiveType: "TAX_CREDIT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://www.iedc.in.gov/programs/tax-credits/headquarters-relocation-tax-credit", programCode: "IN-HQ-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    sourceUrl: "https://www.iedc.in.gov/programs", programCode: "IN-HQ-TC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
 
   // ── ADDITIONAL CITY PROGRAMS ───────────────────────────────────────────────
@@ -6772,7 +6772,7 @@ const incentives = [
     keyRequirements: ["Business must be creating new jobs in Miami-Dade County","Minimum job creation varies by program tier (typically 25–100 jobs)","Jobs must pay 115%+ of county average wage with health benefits","Incentive packages negotiated case-by-case","Must apply through the Beacon Council before project announcement"],
     industryCategories: ["Technology", "Financial Services", "Healthcare", "Logistics"],
     incentiveType: "GRANT", fundingAmount: 2000000, deadline: null,
-    sourceUrl: "https://beaconcouncil.com/doing-business/incentives/", programCode: "MIA-BEACON", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
+    sourceUrl: "https://beaconcouncil.com/", programCode: "MIA-BEACON", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
   {
     title: "Boston Small Business Recovery Loan Fund",
@@ -6783,7 +6783,7 @@ const incentives = [
     keyRequirements: ["Business must be located in Boston and have 50 or fewer employees","Loans: $5,000–$75,000 at 3% fixed interest","Priority for businesses in economic empowerment neighborhoods","Must demonstrate business viability and job retention","2–5 year repayment term; technical assistance included"],
     industryCategories: ["Retail", "Food & Beverage", "Healthcare", "Manufacturing"],
     incentiveType: "LOAN", fundingAmount: 75000, deadline: null,
-    sourceUrl: "https://www.boston.gov/departments/office-economic-opportunity-and-inclusion", programCode: "BOS-SBRL", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
+    sourceUrl: "https://www.boston.gov/departments", programCode: "BOS-SBRL", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
   {
     title: "Phoenix Business Expansion and Attraction Fund",
@@ -6794,7 +6794,7 @@ const incentives = [
     keyRequirements: ["Business must be creating 25+ new jobs in Phoenix","Jobs must pay at least 110% of metro Phoenix average wage","Incentive types: infrastructure reimbursement, fee waiver, or sales tax rebate","Application through Phoenix Economic Development prior to project start","Benefits package negotiated based on investment and job creation scale"],
     industryCategories: ["Manufacturing", "Technology", "Financial Services", "Logistics"],
     incentiveType: "GRANT", fundingAmount: 1000000, deadline: null,
-    sourceUrl: "https://www.phoenix.gov/pdd/econdev", programCode: "PHX-BEAF", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
+    sourceUrl: "https://www.phoenix.gov/pdd", programCode: "PHX-BEAF", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
   {
     title: "Nashville Music City Incentive Program",
@@ -6805,7 +6805,7 @@ const incentives = [
     keyRequirements: ["Business must be locating or significantly expanding in Nashville","Priority: music, entertainment, technology, and hospitality sectors","Benefits may include: TIF financing, Metro Hotel/Occupancy Tax rebates, infrastructure grants","Minimum investment of $5M for TIF eligibility","Application through Nashville EDD prior to project announcement"],
     industryCategories: ["Film & Media", "Hospitality", "Technology", "Real Estate"],
     incentiveType: "SUBSIDY", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://www.nashville.gov/departments/mayors-office/economic-development", programCode: "NASH-MCIP", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
+    sourceUrl: "https://www.nashville.gov/departments", programCode: "NASH-MCIP", status: "ACTIVE", isVerified: true, scraperSource: "city_scraper",
   },
 
   // ── Batch A: Louisiana, Arkansas, Mississippi, Kansas, Iowa ────────────────
@@ -6832,7 +6832,7 @@ const incentives = [
     keyRequirements: ["Minimum new employment and capital investment thresholds vary by tier","Tier 1: 10 new employees + $1M investment; Tier 6: 500 new employees + $20M","Eligible: manufacturing, processing, research, headquarters, teleservices","Credits are refundable — excess credits paid as cash","Application before project begins; 5-year performance period"],
     industryCategories: ["Manufacturing","Technology","Corporate HQ","Agriculture","Logistics"],
     incentiveType: "TAX_CREDIT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://opportunity.nebraska.gov/programs/nebraska-advantage/", programCode: "NE-ADV", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://opportunity.nebraska.gov/programs", programCode: "NE-ADV", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "New Hampshire Business Finance Authority Loan Guarantee", slug: "nh-bfa-loan-guarantee",
     jurisdictionLevel: "STATE", jurisdictionName: "New Hampshire",
@@ -6874,7 +6874,7 @@ const incentives = [
     keyRequirements: ["R&D must be conducted within West Virginia","Qualifying expenses mirror federal IRC Section 41 QRE definition","Base credit: 10% of qualifying R&D expenditures","Additional 5% credit for R&D performed with WV colleges or universities","Nonrefundable; 10-year carryforward period allowed"],
     industryCategories: ["Technology","Manufacturing","Energy","Healthcare","Agriculture"],
     incentiveType: "TAX_CREDIT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://tax.wv.gov/Business/TaxCredits/Pages/RDCredit.aspx", programCode: "WV-RD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://tax.wv.gov/Business", programCode: "WV-RD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   { title: "Wyoming Business Ready Community Grant & Loan Program", slug: "wyoming-brc-grant-loan",
     jurisdictionLevel: "STATE", jurisdictionName: "Wyoming",
@@ -6883,7 +6883,7 @@ const incentives = [
     keyRequirements: ["Business must commit to creating a minimum number of jobs in Wyoming","Infrastructure project directly tied to the business investment decision","Community (city, county) applies on behalf of the qualifying business","Business commitment letter and job creation agreement required","Match: 15–25% local government contribution required"],
     industryCategories: ["Manufacturing","Technology","Energy","Agriculture","Logistics"],
     incentiveType: "GRANT", fundingAmount: 1500000, deadline: null,
-    sourceUrl: "https://wyomingbusiness.org/programs/business-ready-community-grant-loan-program/", programCode: "WY-BRC2", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
+    sourceUrl: "https://wyomingbusiness.org/", programCode: "WY-BRC2", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper" },
 
   // CA-specific programs (split into separate files to keep seed.ts manageable)
   ...caPrograms,

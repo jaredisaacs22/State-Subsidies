@@ -9,7 +9,7 @@ export const caPrograms = [
     keyRequirements: ["Equipment must operate primarily in the Sacramento Metropolitan Air Basin","Old engine must be Tier 0, Tier 1, or Tier 2 diesel","Business must have owned equipment for at least 2 years prior to application","Equipment must remain in the Sacramento district for 5 years post-grant","Agricultural, construction, fleet businesses and government agencies qualify"],
     industryCategories: ["Agriculture","Construction","Fleet","Logistics"],
     incentiveType: "GRANT", fundingAmount: 250000, deadline: null,
-    sourceUrl: "https://www.airquality.org/businesses/grants-incentives/carl-moyer-program", programCode: "SMAQMD-CM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    sourceUrl: "https://www.airquality.org/businesses", programCode: "SMAQMD-CM", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
     title: "SJVAPCD FARMER — Funding Agricultural Replacement Measures for Emission Reductions",
@@ -31,7 +31,7 @@ export const caPrograms = [
     keyRequirements: ["Equipment must be primarily operated in San Diego County","Old vehicle/equipment must be diesel-powered and meet minimum age criteria","Replacement must be Tier 4 Final or zero-emission certified","Applicant must be a San Diego County business, nonprofit, or government agency","Equipment must remain in San Diego County for at least 5 years post-purchase"],
     industryCategories: ["Fleet","Construction","Logistics","Agriculture"],
     incentiveType: "GRANT", fundingAmount: 200000, deadline: null,
-    sourceUrl: "https://www.sdapcd.org/content/sdc/apcd/en/mobile-sources/incentive-programs.html", programCode: "SDAPCD-MSIP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    sourceUrl: "https://www.sdapcd.org/content/sdc/apcd/en", programCode: "SDAPCD-MSIP", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
     title: "BAAQMD TFCA Regional Fund — Clean Vehicles & Infrastructure",
@@ -42,7 +42,7 @@ export const caPrograms = [
     keyRequirements: ["Project must be in the Bay Area Air Basin (9-county region)","Eligible: ZEV purchases, EV charging infrastructure, trip-reduction programs","Public agency, nonprofit, or Bay Area business must apply","Must meet minimum emission reduction per dollar cost-effectiveness threshold","Annual solicitation; minimum project cost typically $50,000"],
     industryCategories: ["Fleet","EV Charging","Public Transit","Clean Technology"],
     incentiveType: "GRANT", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://www.baaqmd.gov/funding-and-incentives/businesses-and-fleets/tfca-regional-fund", programCode: "BAAQMD-TFCA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    sourceUrl: "https://www.baaqmd.gov/funding-and-incentives/businesses-and-fleets", programCode: "BAAQMD-TFCA", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
     title: "Ventura County APCD Agricultural Equipment Replacement Program",
@@ -53,7 +53,7 @@ export const caPrograms = [
     keyRequirements: ["Equipment must be primarily operated in Ventura County","Existing engine must be Tier 0 or Tier 1 diesel agricultural equipment","Business must have owned the equipment for at least 2 years","Replacement must be Tier 4 Final diesel, electric, or hydrogen-powered","Grant covers incremental cost above Tier 2 baseline"],
     industryCategories: ["Agriculture","Construction"],
     incentiveType: "GRANT", fundingAmount: 150000, deadline: null,
-    sourceUrl: "https://www.vcapcd.org/programs/MobileSource.htm", programCode: "VCAPCD-AGR", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    sourceUrl: "https://www.vcapcd.org/programs", programCode: "VCAPCD-AGR", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
     title: "CEC Industrial Decarbonization Program",
@@ -64,7 +64,7 @@ export const caPrograms = [
     keyRequirements: ["Industrial facility or manufacturer located in California","Project must directly reduce or eliminate fossil fuel combustion in industrial process","Priority for facilities in Disadvantaged Communities (CalEnviroScreen top quartile)","Eligible: electric process heat, hydrogen furnaces, heat pumps, electrolysis","Grant range: $500K–$5M; cost-share of 20–50% required"],
     industryCategories: ["Manufacturing","Clean Technology","Energy Management","Building Electrification"],
     incentiveType: "GRANT", fundingAmount: 5000000, deadline: null,
-    sourceUrl: "https://www.energy.ca.gov/programs-and-topics/programs/industrial-decarbonization", programCode: "CEC-INDEC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    sourceUrl: "https://www.energy.ca.gov/programs-and-topics/programs", programCode: "CEC-INDEC", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
     title: "CEC Clean Transportation Program — Hydrogen Fueling Infrastructure",
@@ -141,7 +141,7 @@ export const caPrograms = [
     keyRequirements: ["Building must be a low-income or affordable housing property","Must complete a minimum all-electric scope (heat pump HVAC, heat pump water heater, electric cooktop, insulation)","Property owner or qualified nonprofit housing organization applies","Priority for buildings in highest-need Disadvantaged Communities","CEC-approved contractors required"],
     industryCategories: ["Building Electrification","Real Estate","Government & Nonprofit"],
     incentiveType: "GRANT", fundingAmount: 40000, deadline: null,
-    sourceUrl: "https://www.energy.ca.gov/programs-and-topics/programs/equitable-building-decarbonization", programCode: "CA-EBD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    sourceUrl: "https://www.energy.ca.gov/programs-and-topics/programs", programCode: "CA-EBD", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
     title: "CAEATFA Sales & Use Tax Exemption — Clean Manufacturing Equipment",
@@ -152,7 +152,7 @@ export const caPrograms = [
     keyRequirements: ["Manufacturer must be in California in a qualifying industry: solar, wind, batteries, EVs, fuel cells, green building","Exemption applies to manufacturing equipment, machinery, and tools used in qualifying production","Application to CAEATFA board required before purchasing equipment","Certificate of Exemption presented to equipment vendor at purchase","No minimum investment required, though minimum $1M recommended for cost-effectiveness"],
     industryCategories: ["Manufacturing","Clean Technology","Energy Storage","Automotive"],
     incentiveType: "TAX_CREDIT", fundingAmount: null, deadline: null,
-    sourceUrl: "https://www.treasurer.ca.gov/caeatfa/suTaxExemption/", programCode: "CA-CAEATFA-SUT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
+    sourceUrl: "https://www.treasurer.ca.gov/caeatfa", programCode: "CA-CAEATFA-SUT", status: "ACTIVE", isVerified: true, scraperSource: "state_scraper",
   },
   {
     title: "PG&E EV Fleet Charging for Business",
@@ -163,7 +163,7 @@ export const caPrograms = [
     keyRequirements: ["Business must be a PG&E commercial customer in Northern/Central CA","Fleet electrification project of 10+ vehicles planned or underway","Make-ready rebate: up to $500/Level 2 port, $10,000/DCFC","Must enroll in PG&E EV Fleet rate tariff (BEV or EV-B tariff)","Managed charging agreement required for full program benefits"],
     industryCategories: ["EV Charging","Fleet","Logistics","Real Estate"],
     incentiveType: "SUBSIDY", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://www.pge.com/en/business/save-energy-money/ev-fleet.html", programCode: "PGE-EVFLEET", status: "ACTIVE", isVerified: true, scraperSource: "utility_scraper",
+    sourceUrl: "https://www.pge.com/", programCode: "PGE-EVFLEET", status: "ACTIVE", isVerified: true, scraperSource: "utility_scraper",
   },
   {
     title: "SCE Charge Ready Program — Commercial EV Charging Infrastructure",
@@ -174,6 +174,6 @@ export const caPrograms = [
     keyRequirements: ["Business or property owner in SCE service territory (Southern CA, excluding LADWP)","Eligible sites: workplaces, multi-unit dwellings, public parking, fleet depots","SCE owns and maintains make-ready electrical infrastructure at no charge","Customer provides EV charging stations (EVSE) and may receive equipment rebate","Minimum 4 EV charging spaces required to qualify"],
     industryCategories: ["EV Charging","Real Estate","Fleet","Logistics"],
     incentiveType: "SUBSIDY", fundingAmount: 500000, deadline: null,
-    sourceUrl: "https://www.sce.com/business/electric-vehicles/charge-ready", programCode: "SCE-CR", status: "ACTIVE", isVerified: true, scraperSource: "utility_scraper",
+    sourceUrl: "https://www.sce.com/business", programCode: "SCE-CR", status: "ACTIVE", isVerified: true, scraperSource: "utility_scraper",
   },
 ];
