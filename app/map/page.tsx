@@ -110,11 +110,11 @@ export default function MapPage() {
           <div className="flex items-center gap-3 flex-wrap">
             <span className="text-[11px] text-white/40 font-medium uppercase tracking-widest">Programs:</span>
             {[
-              { label: "None",  bg: "bg-forest-50",  border: "border-forest-200" },
-              { label: "1–2",   bg: "bg-forest-200", border: "border-forest-300" },
-              { label: "3–5",   bg: "bg-forest-400", border: "border-forest-500" },
-              { label: "6–10",  bg: "bg-forest-600", border: "border-forest-700" },
-              { label: "11+",   bg: "bg-forest-800", border: "border-forest-900" },
+              { label: "None",  bg: "bg-navy-50",  border: "border-navy-200" },
+              { label: "1–2",   bg: "bg-navy-200", border: "border-navy-300" },
+              { label: "3–5",   bg: "bg-navy-400", border: "border-navy-500" },
+              { label: "6–10",  bg: "bg-navy-600", border: "border-navy-700" },
+              { label: "11+",   bg: "bg-navy-800", border: "border-navy-900" },
             ].map(({ label, bg, border }) => (
               <div key={label} className="flex items-center gap-1.5">
                 <span className={`w-3.5 h-3.5 rounded-sm border ${bg} ${border} inline-block`} />
@@ -210,14 +210,14 @@ export default function MapPage() {
               {summary.topFunded.length > 0 && (
                 <div className="bg-white rounded-2xl border border-forest-100 shadow-sm p-5">
                   <div className="flex items-center gap-2 mb-3">
-                    <DollarSign size={13} className="text-emerald-600" />
+                    <DollarSign size={13} className="text-gold-600" />
                     <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-400">Highest Funding</p>
                   </div>
                   <div className="space-y-2.5">
                     {summary.topFunded.map((inc) => (
                       <Link key={inc.slug} href={`/incentives/${inc.slug}`} className="block group">
-                        <p className="text-sm font-medium text-slate-800 group-hover:text-forest-700 transition-colors leading-tight line-clamp-1">{inc.title}</p>
-                        <p className="text-xs text-emerald-700 font-semibold mt-0.5">{formatCurrency(inc.fundingAmount)}</p>
+                        <p className="text-sm font-medium text-slate-800 group-hover:text-navy-700 transition-colors leading-tight line-clamp-1">{inc.title}</p>
+                        <p className="text-xs text-gold-700 font-semibold mt-0.5">{formatCurrency(inc.fundingAmount)}</p>
                       </Link>
                     ))}
                   </div>
