@@ -37,10 +37,10 @@ model Incentive {
 
   // Content
   shortSummary    String
-  keyRequirements String // JSON array of requirement strings
+  keyRequirements String[]
 
   // Classification
-  industryCategories String // JSON array of industry strings
+  industryCategories String[]
   // Values: GRANT | TAX_CREDIT | POINT_OF_SALE_REBATE | SUBSIDY | LOAN | VOUCHER
   incentiveType      String
 

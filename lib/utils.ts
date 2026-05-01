@@ -48,19 +48,9 @@ export function formatDeadline(deadline: string | null): string {
   return formatted;
 }
 
-/** Parse raw DB row's JSON strings into typed arrays */
+/** Cast a raw Prisma row to the typed Incentive shape. */
 export function parseIncentive(raw: Record<string, unknown>): Incentive {
-  return {
-    ...(raw as unknown as Incentive),
-    keyRequirements:
-      typeof raw.keyRequirements === "string"
-        ? JSON.parse(raw.keyRequirements)
-        : (raw.keyRequirements as string[]),
-    industryCategories:
-      typeof raw.industryCategories === "string"
-        ? JSON.parse(raw.industryCategories)
-        : (raw.industryCategories as string[]),
-  };
+  return raw as unknown as Incentive;
 }
 
 /** Build a /api/redirect proxy URL that live-checks the source and falls back to Google */

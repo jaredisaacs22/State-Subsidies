@@ -35,7 +35,7 @@ async function getRelated(incentive: Incentive): Promise<Incentive[]> {
         status: "ACTIVE",
         OR: [
           { jurisdictionName: incentive.jurisdictionName },
-          ...(firstIndustry ? [{ industryCategories: { contains: firstIndustry } }] : []),
+          ...(firstIndustry ? [{ industryCategories: { has: firstIndustry } }] : []),
         ],
       },
       take: 3,

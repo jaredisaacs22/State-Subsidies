@@ -7,7 +7,6 @@ Requires: psycopg2-binary (listed in requirements.txt)
 
 from __future__ import annotations
 
-import json
 import os
 import re
 import uuid
@@ -118,8 +117,8 @@ def upsert_incentive(incentive: ScrapedIncentive) -> str:
                         incentive.managing_agency,
                         incentive.agency_acronym,
                         incentive.short_summary,
-                        json.dumps(incentive.key_requirements),
-                        json.dumps(incentive.industry_categories),
+                        list(incentive.key_requirements),
+                        list(incentive.industry_categories),
                         incentive.incentive_type.value,
                         incentive.funding_amount,
                         incentive.deadline,

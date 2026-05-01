@@ -43,8 +43,7 @@ export async function GET(request: NextRequest) {
     const jurisdictionNameFilter = searchParams.get("jurisdictionName") ?? undefined;
 
     // Build Prisma where clause
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const where: Record<string, any> = {};
+    const where: Record<string, unknown> = {};
 
     if (filters.status) where.status = filters.status;
     if (filters.jurisdictionLevel) where.jurisdictionLevel = filters.jurisdictionLevel;
@@ -59,18 +58,16 @@ export async function GET(request: NextRequest) {
         { managingAgency: { contains: filters.search, mode: "insensitive" } },
         { agencyAcronym: { contains: filters.search, mode: "insensitive" } },
         { jurisdictionName: { contains: filters.search, mode: "insensitive" } },
-        { industryCategories: { contains: filters.search, mode: "insensitive" } },
+        { industryCategories: { hasSome: [filters.search] } },
       ];
     }
 
-    // Industry category is stored as JSON array string — use contains
     if (filters.industryCategory) {
-      where.industryCategories = { contains: filters.industryCategory, mode: "insensitive" };
+      where.industryCategories = { has: filters.industryCategory };
     }
 
-    // Exclude records that contain the given industry category
     if (filters.excludeIndustryCategory) {
-      where.NOT = { industryCategories: { contains: filters.excludeIndustryCategory, mode: "insensitive" } };
+      where.NOT = { industryCategories: { has: filters.excludeIndustryCategory } };
     }
 
     if (filters.verified) where.isVerified = true;
@@ -80,9 +77,10 @@ export async function GET(request: NextRequest) {
       where.deadline = { gte: now, lte: thirtyDays };
     }
     if (filters.minFunding !== undefined || filters.maxFunding !== undefined) {
-      where.fundingAmount = {};
-      if (filters.minFunding !== undefined) where.fundingAmount.gte = filters.minFunding;
-      if (filters.maxFunding !== undefined) where.fundingAmount.lte = filters.maxFunding;
+      const fundingFilter: Record<string, number> = {};
+      if (filters.minFunding !== undefined) fundingFilter.gte = filters.minFunding;
+      if (filters.maxFunding !== undefined) fundingFilter.lte = filters.maxFunding;
+      where.fundingAmount = fundingFilter;
     }
 
     const orderBy =
