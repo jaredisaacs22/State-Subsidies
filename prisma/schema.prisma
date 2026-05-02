@@ -80,6 +80,14 @@ model Incentive {
   @@index([deadline])
   @@index([sourceDomain])
   @@index([parseConfidence])
+  // Audit findings: filters/sorts that previously did sequential scans
+  @@index([jurisdictionName])
+  @@index([isVerified])
+  @@index([fundingAmount])
+  @@index([status, jurisdictionLevel])
+  @@index([status, parseConfidence])
+  // Note: industryCategories (TEXT[]) needs a GIN index for has/hasSome.
+  // Prisma cannot express GIN; created manually in a raw migration.
 }
 
 model PageView {
