@@ -2,7 +2,10 @@
 // PostgreSQL for production (Vercel Postgres / Supabase / etc.)
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  // Vercel migrated functions from Debian to Amazon Linux 2 (RHEL-based).
+  // Both targets are bundled so deploys work regardless of runtime.
+  binaryTargets = ["native", "rhel-openssl-3.0.x", "debian-openssl-3.0.x"]
 }
 
 datasource db {
