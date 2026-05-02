@@ -10,8 +10,34 @@ const SOFT_404_PATTERNS = [
   /\/not-found/i,
   /\/error/i,
   /[?&]error=404/i,
-  /grants\.gov\/page-not-found/i,
 ];
+
+// Block private IPs, link-local, and IMDS (169.254.169.254) to prevent SSRF
+// to internal cloud metadata or internal services. Hostnames are checked
+// after URL parsing, before any outbound fetch is made.
+const BLOCKED_HOST_RE =
+  /^(127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|169\.254\.|0\.0\.0\.0|localhost$|::1$|\[::1\])/i;
+
+function isHostBlocked(hostname: string): boolean {
+  const h = hostname.toLowerCase();
+  if (BLOCKED_HOST_RE.test(h)) return true;
+  // Also reject anything that doesn't look like a public DNS name
+  if (!h.includes(".") && h !== "localhost") return true;
+  return false;
+}
+
+// Validate a user-supplied URL before we either fetch it or redirect a
+// browser to it. Returns the parsed URL if safe, throws if not.
+function assertSafeUrl(raw: string): URL {
+  const parsed = new URL(raw);
+  if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+    throw new Error("scheme not allowed");
+  }
+  if (isHostBlocked(parsed.hostname)) {
+    throw new Error("host not allowed");
+  }
+  return parsed;
+}
 
 function isAlive(status: number, finalUrl?: string): boolean {
   if (status < 200 || status >= 400) return false;
@@ -33,23 +59,39 @@ async function checkUrl(url: string, timeoutMs = 4500): Promise<boolean> {
     Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
   };
 
+  // Manual redirect handling — we follow up to 3 hops, validating each
+  // destination against the SSRF block list. A trusted public host could
+  // otherwise 302 to 169.254.169.254 and exfiltrate cloud metadata.
+  const MAX_HOPS = 3;
+  let current = url;
+
   try {
-    let res = await fetch(url, {
-      method: "HEAD",
-      signal: controller.signal,
-      redirect: "follow",
-      headers,
-    });
-    // Some hosts block HEAD (405 / 403) but serve GET; retry once.
-    if (res.status === 405 || res.status === 403 || res.status === 501) {
-      res = await fetch(url, {
-        method: "GET",
+    for (let hop = 0; hop < MAX_HOPS; hop++) {
+      try { assertSafeUrl(current); } catch { return false; }
+      let res = await fetch(current, {
+        method: "HEAD",
         signal: controller.signal,
-        redirect: "follow",
+        redirect: "manual",
         headers,
       });
+      if (res.status === 405 || res.status === 403 || res.status === 501) {
+        res = await fetch(current, {
+          method: "GET",
+          signal: controller.signal,
+          redirect: "manual",
+          headers,
+        });
+      }
+      if (res.status >= 300 && res.status < 400) {
+        const loc = res.headers.get("location");
+        if (!loc) return false;
+        // Resolve relative redirects against the current URL
+        current = new URL(loc, current).toString();
+        continue;
+      }
+      return isAlive(res.status, current);
     }
-    return isAlive(res.status, res.url);
+    return false; // too many redirects
   } catch {
     return false;
   } finally {
@@ -59,24 +101,33 @@ async function checkUrl(url: string, timeoutMs = 4500): Promise<boolean> {
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  const url = searchParams.get("url") ?? "";
-  const title = searchParams.get("title") ?? "";
-  const agency = searchParams.get("agency") ?? "";
+  const rawUrl = (searchParams.get("url") ?? "").slice(0, 2048);
+  const title = (searchParams.get("title") ?? "").slice(0, 300);
+  const agency = (searchParams.get("agency") ?? "").slice(0, 300);
 
-  if (!url) return new Response("Missing url", { status: 400 });
+  if (!rawUrl) return new Response("Missing url", { status: 400 });
 
-  const alive = await checkUrl(url);
-  const target = alive ? url : googleFallback(title || url, agency);
+  // Validate URL up front — unsafe URLs go straight to Google fallback
+  // without ever being fetched server-side or returned in a Location header.
+  let alive = false;
+  let safeUrl: string | null = null;
+  try {
+    const parsed = assertSafeUrl(rawUrl);
+    safeUrl = parsed.toString();
+    alive = await checkUrl(safeUrl);
+  } catch {
+    safeUrl = null;
+  }
+
+  const target = alive && safeUrl ? safeUrl : googleFallback(title || rawUrl, agency);
 
   const r = NextResponse.redirect(target, 302);
-  // Cache "alive" for an hour, "dead" only briefly so a fix re-checks soon.
+  // Private cache only — the response is keyed on a user-supplied parameter
+  // and would be a cache-poisoning vector if shared across users.
   r.headers.set(
     "Cache-Control",
-    alive
-      ? "public, max-age=3600, stale-while-revalidate=86400"
-      : "public, max-age=300, stale-while-revalidate=900",
+    alive ? "private, max-age=3600" : "private, max-age=300",
   );
-  // Surface the decision so the front-end can show a notice if it wants to.
   r.headers.set("X-Source-Status", alive ? "alive" : "dead-fallback-google");
   return r;
 }
