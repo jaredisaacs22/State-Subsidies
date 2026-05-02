@@ -14,7 +14,7 @@ import type { Incentive, IncentiveFilters, PaginatedResponse } from "@/lib/types
 const DEFAULT_FILTERS: IncentiveFilters = {
   search: "",
   status: "ACTIVE",
-  sortBy: "createdAt",
+  sortBy: "relevance",
   sortOrder: "desc",
   page: 1,
   pageSize: 24,
@@ -57,6 +57,7 @@ function SortSelect({
         onChange={(e) => onChange(e.target.value)}
         className="appearance-none text-xs text-slate-600 bg-white border border-slate-200 rounded-lg px-3 py-1.5 pr-7 hover:border-slate-300 focus:outline-none focus:ring-1 focus:ring-forest-700 cursor-pointer"
       >
+        <option value="relevance_desc">Featured</option>
         <option value="createdAt_desc">Newest</option>
         <option value="createdAt_asc">Oldest</option>
         <option value="fundingAmount_desc">Highest $</option>
@@ -229,7 +230,7 @@ export default function HomePage() {
     handleFilterChange({ industryCategory: undefined, excludeIndustryCategory: undefined, jurisdictionLevel: undefined, incentiveType: undefined });
   }, [handleFilterChange]);
 
-  const sortValue = `${filters.sortBy ?? "createdAt"}_${filters.sortOrder ?? "desc"}`;
+  const sortValue = `${filters.sortBy ?? "relevance"}_${filters.sortOrder ?? "desc"}`;
   const handleSortChange = (v: string) => {
     const [sortBy, sortOrder] = v.split("_");
     handleFilterChange({

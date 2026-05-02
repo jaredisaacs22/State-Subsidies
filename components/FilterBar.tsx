@@ -120,7 +120,7 @@ export function FilterBar({ filters, onChange, totalResults, className }: Filter
         {/* Sort */}
         <div className="relative">
           <select
-            value={`${filters.sortBy ?? "createdAt"}_${filters.sortOrder ?? "desc"}`}
+            value={`${filters.sortBy ?? "relevance"}_${filters.sortOrder ?? "desc"}`}
             onChange={(e) => {
               const [sortBy, sortOrder] = e.target.value.split("_");
               onChange({
@@ -130,6 +130,7 @@ export function FilterBar({ filters, onChange, totalResults, className }: Filter
             }}
             className="appearance-none text-xs text-slate-600 bg-transparent border border-slate-200 rounded-full px-3 py-1.5 pr-7 hover:border-slate-300 focus:outline-none focus:ring-1 focus:ring-brand-400 cursor-pointer"
           >
+            <option value="relevance_desc">Featured</option>
             <option value="createdAt_desc">Newest</option>
             <option value="createdAt_asc">Oldest</option>
             <option value="fundingAmount_desc">Highest $</option>
