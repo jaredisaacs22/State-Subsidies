@@ -30,11 +30,25 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://statesubsidies.com"),
-  title: "StateSubsidies — National Directory of Government Incentives",
+  title: {
+    default: "StateSubsidies — National Directory of Government Incentives",
+    template: "%s | StateSubsidies",
+  },
   description:
     "A free public directory of 500+ federal, state, city, and agency grants, tax credits, loans, and rebates for U.S. businesses. " +
     "Filter by industry, state, and incentive type across all 50 states.",
   keywords: ["government grants", "business incentives", "tax credits", "rebates", "state incentives", "IRA", "clean energy", "small business grants"],
+  openGraph: {
+    siteName: "StateSubsidies",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

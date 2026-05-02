@@ -7,13 +7,16 @@ import { BookmarkButton } from "@/components/BookmarkButton";
 import { ShareButtons } from "@/components/ShareButtons";
 import { ProvenancePanel } from "@/components/ProvenancePanel";
 import { formatCurrency, formatDeadline, parseIncentive, sourceRedirectUrl } from "@/lib/utils";
-import { INDUSTRY_COLORS } from "@/lib/types";
+import { INDUSTRY_COLORS, INCENTIVE_TYPE_LABELS } from "@/lib/types";
 import { prisma } from "@/lib/db";
 import type { Incentive } from "@/lib/types";
 import type { Metadata } from "next";
 
-// Always server-render at request time — never try to pre-render at build
-export const dynamic = "force-dynamic";
+// ISR — regenerate at most every hour. Government incentive data changes
+// at most daily; pre-rendering helps Core Web Vitals + Google crawl budget.
+export const revalidate = 3600;
+
+const SITE_URL = "https://statesubsidies.com";
 
 async function getIncentive(slug: string): Promise<Incentive | null> {
   try {
@@ -53,10 +56,34 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata> {
   const incentive = await getIncentive(params.slug);
-  if (!incentive) return { title: "Incentive Not Found" };
+  if (!incentive) {
+    return { title: "Incentive Not Found", robots: { index: false } };
+  }
+  const typeLabel = INCENTIVE_TYPE_LABELS[incentive.incentiveType] ?? incentive.incentiveType;
+  const title = `${incentive.title} (${incentive.jurisdictionName})`;
+  const description =
+    `${typeLabel} from ${incentive.managingAgency}` +
+    (incentive.agencyAcronym ? ` (${incentive.agencyAcronym})` : "") +
+    `. ${incentive.shortSummary}`.slice(0, 155);
+  const canonicalUrl = `${SITE_URL}/incentives/${incentive.slug}`;
+
   return {
-    title: `${incentive.title} | StateSubsidies`,
-    description: incentive.shortSummary,
+    title,
+    description,
+    alternates: { canonical: canonicalUrl },
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      siteName: "StateSubsidies",
+      type: "article",
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
   };
 }
 
@@ -70,20 +97,54 @@ export default async function IncentiveDetailPage({
 
   const related = await getRelated(incentive);
 
+  const canonicalUrl = `${SITE_URL}/incentives/${incentive.slug}`;
+  const typeLabel = INCENTIVE_TYPE_LABELS[incentive.incentiveType] ?? incentive.incentiveType;
+
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "GovernmentService",
+    "@type": ["GovernmentService", "Grant"],
+    "@id": canonicalUrl,
     "name": incentive.title,
     "description": incentive.shortSummary,
+    "url": canonicalUrl,
     "provider": {
       "@type": "GovernmentOrganization",
       "name": incentive.managingAgency,
+      ...(incentive.agencyAcronym ? { "alternateName": incentive.agencyAcronym } : {}),
     },
-    "serviceType": incentive.incentiveType.replace(/_/g, " ").toLowerCase(),
-    "areaServed": incentive.jurisdictionName,
-    "url": incentive.sourceUrl,
-    ...(incentive.fundingAmount ? { "offers": { "@type": "Offer", "price": incentive.fundingAmount, "priceCurrency": "USD" } } : {}),
-    ...(incentive.deadline ? { "validThrough": incentive.deadline } : {}),
+    "serviceType": typeLabel,
+    "areaServed": {
+      "@type": "AdministrativeArea",
+      "name": incentive.jurisdictionName,
+    },
+    ...(incentive.fundingAmount
+      ? {
+          "offers": {
+            "@type": "Offer",
+            "price": incentive.fundingAmount.toFixed(2),
+            "priceCurrency": "USD",
+          },
+        }
+      : {}),
+    ...(incentive.deadline ? { "applicationDeadline": incentive.deadline } : {}),
+    ...(incentive.applicationOpenDate ? { "availabilityStarts": incentive.applicationOpenDate } : {}),
+    ...(incentive.programCode ? { "identifier": incentive.programCode } : {}),
+    "sameAs": incentive.sourceUrl,
+  };
+
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": SITE_URL },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": incentive.jurisdictionName,
+        "item": `${SITE_URL}/?jurisdictionName=${encodeURIComponent(incentive.jurisdictionName)}`,
+      },
+      { "@type": "ListItem", "position": 3, "name": incentive.title, "item": canonicalUrl },
+    ],
   };
 
   return (
@@ -91,6 +152,10 @@ export default async function IncentiveDetailPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Back */}
