@@ -10,10 +10,25 @@
  */
 
 import Link from "next/link";
+import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 300; // 5 min cache — matches #how-we-count copy
+
+export const metadata: Metadata = {
+  title: "Methodology — How We Source & Verify Programs",
+  description:
+    "How StateSubsidies finds, verifies, and publishes U.S. government incentive programs. " +
+    "Sources, verification process, correction policy, and AI advisor disclosure.",
+  alternates: { canonical: "https://statesubsidies.com/methodology" },
+  openGraph: {
+    title: "Methodology — How We Source & Verify Programs | StateSubsidies",
+    description: "How we find, verify, and publish government incentive programs.",
+    url: "https://statesubsidies.com/methodology",
+    type: "article",
+  },
+};
 
 // TODO(legal): Jared / Okonkwo to set these before public ship.
 const LEGAL = {
