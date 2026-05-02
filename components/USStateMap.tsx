@@ -167,7 +167,10 @@ export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USS
                           style={{
                             fontSize: "7px",
                             fontWeight: 700,
-                            fill: isSelected ? "#dbe2ee" : "#1e293b",
+                            fill: "#ffffff",
+                            stroke: "#0c1738",
+                            strokeWidth: 0.6,
+                            paintOrder: "stroke fill",
                             pointerEvents: "none",
                             userSelect: "none",
                             fontFamily: "system-ui, sans-serif",
