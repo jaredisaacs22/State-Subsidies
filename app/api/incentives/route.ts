@@ -114,7 +114,18 @@ export async function GET(request: NextRequest) {
       totalPages: Math.ceil(total / pageSize),
     });
   } catch (error) {
-    console.error("[GET /api/incentives]", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    const err = error as { message?: string; code?: string };
+    console.error("[GET /api/incentives]", err.code, err.message);
+    // Return an empty page instead of 500 so the site renders a clean
+    // "no programs" state during DB outages rather than crashing the UI.
+    return NextResponse.json({
+      data: [],
+      total: 0,
+      page: 1,
+      pageSize: 0,
+      totalPages: 0,
+      degraded: true,
+      reason: err.code ?? "DB_ERROR",
+    });
   }
 }
