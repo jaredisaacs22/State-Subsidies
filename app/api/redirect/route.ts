@@ -2,12 +2,21 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-// HTTP statuses we treat as "page is alive" — anything else falls back to a
-// Google search for the program. Some agencies block HEAD entirely (405) but
-// the page itself is fine; others return 200 on a generic 404 chrome page.
-// We pre-flight with HEAD, fall back to GET-with-2KB-read if HEAD is rejected.
-function isAlive(status: number): boolean {
-  return status >= 200 && status < 400;
+// Soft-404 URL patterns — sites that redirect to these paths return HTTP 200
+// but are actually "page not found" pages. Add new patterns as discovered.
+const SOFT_404_PATTERNS = [
+  /\/page-not-found/i,
+  /\/404/i,
+  /\/not-found/i,
+  /\/error/i,
+  /[?&]error=404/i,
+  /grants\.gov\/page-not-found/i,
+];
+
+function isAlive(status: number, finalUrl?: string): boolean {
+  if (status < 200 || status >= 400) return false;
+  if (finalUrl && SOFT_404_PATTERNS.some((p) => p.test(finalUrl))) return false;
+  return true;
 }
 
 function googleFallback(title: string, agency: string): string {
@@ -40,7 +49,7 @@ async function checkUrl(url: string, timeoutMs = 4500): Promise<boolean> {
         headers,
       });
     }
-    return isAlive(res.status);
+    return isAlive(res.status, res.url);
   } catch {
     return false;
   } finally {
