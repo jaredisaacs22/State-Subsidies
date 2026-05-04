@@ -7,6 +7,9 @@ node_modules/
 .next/
 out/
 
+# Pre-computed stats (regenerated at build time by scripts/precompute-stats.ts)
+public/data/*.json
+
 # Environment
 .env
 .env.local

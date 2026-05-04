@@ -112,7 +112,12 @@ export default function HomePage() {
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    fetch("/api/stats").then(r => r.json()).then(setStats).catch(() => {});
+    // Pre-computed at build time; fall back to live API on miss.
+    fetch("/data/stats.json")
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error("static miss"))))
+      .catch(() => fetch("/api/stats").then((r) => r.json()))
+      .then(setStats)
+      .catch(() => {});
   }, []);
 
   const fetchIncentives = useCallback(async (f: IncentiveFilters) => {

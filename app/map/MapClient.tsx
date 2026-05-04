@@ -39,11 +39,12 @@ export default function MapClient() {
   const [summary, setSummary] = useState<StateSummary | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Fetch per-state counts (includes AGENCY/CITY attributed to parent state)
+  // Per-state counts: pre-computed at build time, fall back to live API on miss.
   useEffect(() => {
-    fetch("/api/stats/states")
-      .then((r) => r.json())
-      .then((data: { counts: Record<string, number> }) => setCounts(data.counts))
+    fetch("/data/stats-states.json")
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error("static miss"))))
+      .catch(() => fetch("/api/stats/states").then((r) => r.json()))
+      .then((data: { counts: Record<string, number> }) => setCounts(data.counts ?? {}))
       .catch(() => {});
   }, []);
 
