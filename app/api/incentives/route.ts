@@ -41,11 +41,18 @@ export async function GET(request: NextRequest) {
       excludeIndustryCategory: searchParams.get("excludeIndustryCategory") ?? undefined,
     };
     const jurisdictionNameFilter = searchParams.get("jurisdictionName") ?? undefined;
+    const slugsParam = searchParams.get("slugs");
+    const slugsFilter = slugsParam ? slugsParam.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 500) : [];
 
     // Build Prisma where clause
     const where: Record<string, unknown> = {};
 
-    if (filters.status) where.status = filters.status;
+    // When fetching by slug list (saved page), skip status filter so closed programs still show
+    if (slugsFilter.length > 0) {
+      where.slug = { in: slugsFilter };
+    } else if (filters.status) {
+      where.status = filters.status;
+    }
     if (filters.jurisdictionLevel) where.jurisdictionLevel = filters.jurisdictionLevel;
     if (filters.incentiveType) where.incentiveType = filters.incentiveType;
     if (jurisdictionNameFilter) where.jurisdictionName = { equals: jurisdictionNameFilter, mode: "insensitive" };

@@ -30,10 +30,8 @@ export const metadata: Metadata = {
   },
 };
 
-// TODO(legal): Jared / Okonkwo to set these before public ship.
 const LEGAL = {
-  entity: "StateSubsidies.com (operating entity TBD)",
-  address: "Mailing address pending — see contact email",
+  entity: "StateSubsidies.com",
   contactEmail: "corrections@statesubsidies.com",
   repoUrl: "https://github.com/jaredisaacs22/state-subsidies",
 };
@@ -140,7 +138,7 @@ export default async function MethodologyPage() {
           compensated by any program we list.
         </p>
         <p>
-          The directory is operated by {LEGAL.entity}, {LEGAL.address}. Questions,
+          The directory is operated by {LEGAL.entity}. Questions,
           corrections, and press: <code>{LEGAL.contactEmail}</code>. Our
           methodology is public and versioned at{" "}
           <a className="text-indigo-600 underline" href={LEGAL.repoUrl}>
@@ -301,7 +299,7 @@ export default async function MethodologyPage() {
           <strong>not</strong> tie usage to user identity. There is no login.
         </p>
         <p>
-          Funding for this site comes from <em>{`{funding_source — TBD; Jared/Okonkwo to fill}`}</em>.
+          This site is independently operated and self-funded.
           We take no money from any program we list. We take no government
           sponsorship. We have no affiliate revenue. If that changes, we will
           say so here, dated.
@@ -310,9 +308,8 @@ export default async function MethodologyPage() {
 
       <footer className="mt-12 pt-6 border-t border-slate-200 text-xs text-slate-500">
         <p>
-          Spec: <code>docs/scope/items/SS-004-methodology-page.md</code> ·
-          Source: <Link href="/" className="text-indigo-600 underline">home</Link> ·
-          Repo: <a className="text-indigo-600 underline" href={LEGAL.repoUrl}>{LEGAL.repoUrl}</a>
+          <Link href="/" className="text-indigo-600 underline">← Back to home</Link> ·
+          Source: <a className="text-indigo-600 underline" href={LEGAL.repoUrl}>{LEGAL.repoUrl}</a>
         </p>
       </footer>
     </main>

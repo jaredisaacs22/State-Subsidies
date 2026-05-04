@@ -1,5 +1,3 @@
-"use client";
-
 import { IncentiveCard } from "./IncentiveCard";
 import type { Incentive } from "@/lib/types";
 

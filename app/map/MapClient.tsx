@@ -58,12 +58,13 @@ export default function MapClient() {
   // Fetch detailed data when state/federal selected
   useEffect(() => {
     if (!selected) { setSummary(null); return; }
+    const ctrl = new AbortController();
     setLoading(true);
     const isFederal = selected === "United States";
     const url = isFederal
       ? `/api/incentives?pageSize=200&status=ACTIVE&jurisdictionLevel=FEDERAL`
       : `/api/incentives?pageSize=200&status=ACTIVE&jurisdictionName=${encodeURIComponent(selected)}`;
-    fetch(url)
+    fetch(url, { signal: ctrl.signal })
       .then((r) => r.json())
       .then((data: PaginatedResponse<Incentive>) => {
         const all = data.data;
@@ -86,8 +87,9 @@ export default function MapClient() {
             .slice(0, 3),
         });
       })
-      .catch(() => setSummary(null))
-      .finally(() => setLoading(false));
+      .catch((err) => { if (err?.name !== "AbortError") setSummary(null); })
+      .finally(() => { if (!ctrl.signal.aborted) setLoading(false); });
+    return () => ctrl.abort();
   }, [selected]);
 
   const totalPrograms = Object.values(counts).reduce((a, b) => a + b, 0) + federalCount;

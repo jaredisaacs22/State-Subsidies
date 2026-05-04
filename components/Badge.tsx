@@ -1,5 +1,3 @@
-"use client";
-
 import { cn } from "@/lib/utils";
 import { INCENTIVE_TYPE_LABELS, JURISDICTION_LABELS, INCENTIVE_TYPE_COLORS, JURISDICTION_COLORS } from "@/lib/types";
 import type { IncentiveType, JurisdictionLevel } from "@/lib/types";

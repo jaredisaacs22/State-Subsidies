@@ -1,5 +1,3 @@
-"use client";
-
 import { Zap, Truck, Building2, Wheat, FlaskConical, Banknote, HardHat, Sun } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";

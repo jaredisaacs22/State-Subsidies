@@ -2,10 +2,15 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ChevronDown, SlidersHorizontal, X, Link2, Check } from "lucide-react";
+import dynamic from "next/dynamic";
 import { FilterSidebar } from "@/components/FilterSidebar";
 import { ResultsGrid } from "@/components/ResultsGrid";
-import { BusinessIntakeChat } from "@/components/BusinessIntakeChat";
 import { AudienceSelector, AUDIENCES } from "@/components/AudienceSelector";
+
+const BusinessIntakeChat = dynamic(
+  () => import("@/components/BusinessIntakeChat").then((m) => m.BusinessIntakeChat),
+  { ssr: false }
+);
 import type { AudienceId } from "@/components/AudienceSelector";
 import { cn, fmtMoney } from "@/lib/utils";
 import { Stat } from "@/components/Stat";
