@@ -21,6 +21,7 @@ import pytest
 
 from scrapers.carb_scraper import CARBScraper
 from scrapers.caltrans_core_scraper import CalTransCOREScraper
+from scrapers.dsire_scraper import DSIREScraper
 from scrapers.wazip_scraper import WazipScraper
 from scrapers.models import IncentiveType, JurisdictionLevel, ScrapedIncentive
 
@@ -28,9 +29,11 @@ from scrapers.models import IncentiveType, JurisdictionLevel, ScrapedIncentive
 SCRAPERS = [
     # CARB and WAZIP are both California agencies (AGENCY jurisdiction).
     # CalTrans CORE is California state-level (STATE jurisdiction).
+    # DSIRE returns multi-state STATE-level rows in mock mode.
     ("CARB",          CARBScraper,          JurisdictionLevel.AGENCY),
     ("CalTrans CORE", CalTransCOREScraper,  JurisdictionLevel.STATE),
     ("WAZIP",         WazipScraper,         JurisdictionLevel.AGENCY),
+    ("DSIRE",         DSIREScraper,         JurisdictionLevel.STATE),
 ]
 
 

@@ -43,6 +43,7 @@ load_dotenv(Path(__file__).parent.parent / ".env")
 from .carb_scraper import CARBScraper
 from .caltrans_core_scraper import CalTransCOREScraper
 from .db_writer import insert_new_only, record_scrape_run, refresh_expired_statuses
+from .dsire_scraper import DSIREScraper
 from .enricher import enrich
 from .grants_gov_scraper import GrantsGovScraper
 from .wazip_scraper import WazipScraper
@@ -92,6 +93,7 @@ def _run_scrapers(mock: bool) -> tuple[list, dict]:
         ("CalTrans CORE", CalTransCOREScraper(mock=mock)),
         ("CARB",          CARBScraper(mock=mock)),
         ("Grants.gov",    GrantsGovScraper(mock=mock)),
+        ("DSIRE",         DSIREScraper(mock=mock)),
     ]
     for name, scraper in scrapers:
         try:
