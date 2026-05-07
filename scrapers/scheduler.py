@@ -45,6 +45,7 @@ from .caltrans_core_scraper import CalTransCOREScraper
 from .ct_green_bank_scraper import CTGreenBankScraper
 from .db_writer import insert_new_only, record_scrape_run, refresh_expired_statuses
 from .dsire_scraper import DSIREScraper
+from .ira_credits_scraper import IRACreditsScraper
 from .enricher import enrich
 from .grants_gov_scraper import GrantsGovScraper
 from .masscec_scraper import MassCECScraper
@@ -102,6 +103,7 @@ def _run_scrapers(mock: bool) -> tuple[list, dict]:
         ("NYSERDA",       NYSERDAScraper(mock=mock)),
         ("MassCEC",       MassCECScraper(mock=mock)),
         ("CT Green Bank", CTGreenBankScraper(mock=mock)),
+        ("IRA Credits",   IRACreditsScraper(mock=mock)),
     ]
     for name, scraper in scrapers:
         try:

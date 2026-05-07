@@ -23,6 +23,7 @@ from scrapers.carb_scraper import CARBScraper
 from scrapers.caltrans_core_scraper import CalTransCOREScraper
 from scrapers.ct_green_bank_scraper import CTGreenBankScraper
 from scrapers.dsire_scraper import DSIREScraper
+from scrapers.ira_credits_scraper import IRACreditsScraper
 from scrapers.masscec_scraper import MassCECScraper
 from scrapers.nyserda_scraper import NYSERDAScraper
 from scrapers.usda_rural_development_scraper import USDAFuralDevelopmentScraper
@@ -39,6 +40,7 @@ SCRAPERS = [
     ("USDA RD",       USDAFuralDevelopmentScraper,    JurisdictionLevel.FEDERAL),
     ("MassCEC",       MassCECScraper,                 JurisdictionLevel.STATE),
     ("CT Green Bank", CTGreenBankScraper,             JurisdictionLevel.STATE),
+    ("IRA Credits",   IRACreditsScraper,              JurisdictionLevel.FEDERAL),
 ]
 
 
