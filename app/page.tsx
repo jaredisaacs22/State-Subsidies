@@ -142,6 +142,15 @@ export default function HomePage() {
       params.set("page", String(f.page ?? 1));
       params.set("pageSize", String(f.pageSize ?? 24));
 
+      // Sync filters + page to browser URL so the back button and shared
+      // links work. Omit internal-only params (status, pageSize).
+      const urlParams = new URLSearchParams(params);
+      urlParams.delete("status");
+      urlParams.delete("pageSize");
+      if (urlParams.get("page") === "1") urlParams.delete("page");
+      const qs = urlParams.toString();
+      history.replaceState(null, "", qs ? `?${qs}` : "/");
+
       const res = await fetch(`/api/incentives?${params.toString()}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();

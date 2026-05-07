@@ -46,6 +46,8 @@ from .db_writer import insert_new_only, record_scrape_run, refresh_expired_statu
 from .dsire_scraper import DSIREScraper
 from .enricher import enrich
 from .grants_gov_scraper import GrantsGovScraper
+from .nyserda_scraper import NYSERDAScraper
+from .usda_rural_development_scraper import USDAFuralDevelopmentScraper
 from .wazip_scraper import WazipScraper
 
 logger = structlog.get_logger()
@@ -94,6 +96,8 @@ def _run_scrapers(mock: bool) -> tuple[list, dict]:
         ("CARB",          CARBScraper(mock=mock)),
         ("Grants.gov",    GrantsGovScraper(mock=mock)),
         ("DSIRE",         DSIREScraper(mock=mock)),
+        ("USDA RD",       USDAFuralDevelopmentScraper(mock=mock)),
+        ("NYSERDA",       NYSERDAScraper(mock=mock)),
     ]
     for name, scraper in scrapers:
         try:

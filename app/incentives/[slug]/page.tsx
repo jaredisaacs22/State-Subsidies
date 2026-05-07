@@ -237,16 +237,22 @@ export default async function IncentiveDetailPage({
             <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-4">
               Key Requirements & Eligibility
             </h2>
-            <ul className="space-y-3">
-              {incentive.keyRequirements.map((req, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <span className="mt-1 w-5 h-5 rounded-full bg-forest-50 text-forest-700 text-xs flex items-center justify-center flex-shrink-0 font-semibold">
-                    {i + 1}
-                  </span>
-                  <span className="text-slate-700 text-sm leading-relaxed">{req}</span>
-                </li>
-              ))}
-            </ul>
+            {incentive.keyRequirements.length > 0 ? (
+              <ul className="space-y-3">
+                {incentive.keyRequirements.map((req, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <span className="mt-1 w-5 h-5 rounded-full bg-forest-50 text-forest-700 text-xs flex items-center justify-center flex-shrink-0 font-semibold">
+                      {i + 1}
+                    </span>
+                    <span className="text-slate-700 text-sm leading-relaxed">{req}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-slate-400">
+                See the <a href={incentive.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-forest-700 underline underline-offset-2">program website</a> for full eligibility details.
+              </p>
+            )}
           </div>
 
           {/* Related Programs */}
