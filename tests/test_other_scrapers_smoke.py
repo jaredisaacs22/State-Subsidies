@@ -21,6 +21,7 @@ import pytest
 
 from scrapers.carb_scraper import CARBScraper
 from scrapers.caltrans_core_scraper import CalTransCOREScraper
+from scrapers.ct_green_bank_scraper import CTGreenBankScraper
 from scrapers.dsire_scraper import DSIREScraper
 from scrapers.masscec_scraper import MassCECScraper
 from scrapers.nyserda_scraper import NYSERDAScraper
@@ -37,6 +38,7 @@ SCRAPERS = [
     ("NYSERDA",       NYSERDAScraper,                 JurisdictionLevel.STATE),
     ("USDA RD",       USDAFuralDevelopmentScraper,    JurisdictionLevel.FEDERAL),
     ("MassCEC",       MassCECScraper,                 JurisdictionLevel.STATE),
+    ("CT Green Bank", CTGreenBankScraper,             JurisdictionLevel.STATE),
 ]
 
 

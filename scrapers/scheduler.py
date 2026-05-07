@@ -42,6 +42,7 @@ load_dotenv(Path(__file__).parent.parent / ".env")
 
 from .carb_scraper import CARBScraper
 from .caltrans_core_scraper import CalTransCOREScraper
+from .ct_green_bank_scraper import CTGreenBankScraper
 from .db_writer import insert_new_only, record_scrape_run, refresh_expired_statuses
 from .dsire_scraper import DSIREScraper
 from .enricher import enrich
@@ -100,6 +101,7 @@ def _run_scrapers(mock: bool) -> tuple[list, dict]:
         ("USDA RD",       USDAFuralDevelopmentScraper(mock=mock)),
         ("NYSERDA",       NYSERDAScraper(mock=mock)),
         ("MassCEC",       MassCECScraper(mock=mock)),
+        ("CT Green Bank", CTGreenBankScraper(mock=mock)),
     ]
     for name, scraper in scrapers:
         try:
