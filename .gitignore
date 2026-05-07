@@ -52,6 +52,9 @@ yarn-error.log*
 *.swp
 *.swo
 
+# Generated at build time — do not commit
+public/data/*.json
+
 # Type checking
 *.tsbuildinfo
 next-env.d.ts
