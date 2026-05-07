@@ -45,6 +45,13 @@ from .caltrans_core_scraper import CalTransCOREScraper
 from .db_writer import insert_new_only, record_scrape_run, refresh_expired_statuses
 from .enricher import enrich
 from .grants_gov_scraper import GrantsGovScraper
+from .ct_green_bank_scraper import CTGreenBankScraper
+from .dsire_scraper import DSIREScraper
+from .ira_credits_scraper import IRACreditsScraper
+from .masscec_scraper import MassCECScraper
+from .nj_clean_energy_scraper import NJCleanEnergyScraper
+from .nyserda_scraper import NYSERDAScraper
+from .usda_rural_development_scraper import USDAFuralDevelopmentScraper
 from .wazip_scraper import WazipScraper
 
 logger = structlog.get_logger()
@@ -92,6 +99,13 @@ def _run_scrapers(mock: bool) -> tuple[list, dict]:
         ("CalTrans CORE", CalTransCOREScraper(mock=mock)),
         ("CARB",          CARBScraper(mock=mock)),
         ("Grants.gov",    GrantsGovScraper(mock=mock)),
+        ("DSIRE",         DSIREScraper(mock=mock)),
+        ("USDA RD",       USDAFuralDevelopmentScraper(mock=mock)),
+        ("NYSERDA",       NYSERDAScraper(mock=mock)),
+        ("MassCEC",       MassCECScraper(mock=mock)),
+        ("CT Green Bank", CTGreenBankScraper(mock=mock)),
+        ("IRA Credits",   IRACreditsScraper(mock=mock)),
+        ("NJ Clean Energy", NJCleanEnergyScraper(mock=mock)),
     ]
     for name, scraper in scrapers:
         try:

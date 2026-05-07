@@ -21,16 +21,28 @@ import pytest
 
 from scrapers.carb_scraper import CARBScraper
 from scrapers.caltrans_core_scraper import CalTransCOREScraper
+from scrapers.ct_green_bank_scraper import CTGreenBankScraper
+from scrapers.dsire_scraper import DSIREScraper
+from scrapers.ira_credits_scraper import IRACreditsScraper
+from scrapers.masscec_scraper import MassCECScraper
+from scrapers.nj_clean_energy_scraper import NJCleanEnergyScraper
+from scrapers.nyserda_scraper import NYSERDAScraper
+from scrapers.usda_rural_development_scraper import USDAFuralDevelopmentScraper
 from scrapers.wazip_scraper import WazipScraper
 from scrapers.models import IncentiveType, JurisdictionLevel, ScrapedIncentive
 
 
 SCRAPERS = [
-    # CARB and WAZIP are both California agencies (AGENCY jurisdiction).
-    # CalTrans CORE is California state-level (STATE jurisdiction).
-    ("CARB",          CARBScraper,          JurisdictionLevel.AGENCY),
-    ("CalTrans CORE", CalTransCOREScraper,  JurisdictionLevel.STATE),
-    ("WAZIP",         WazipScraper,         JurisdictionLevel.AGENCY),
+    ("CARB",          CARBScraper,                    JurisdictionLevel.AGENCY),
+    ("CalTrans CORE", CalTransCOREScraper,             JurisdictionLevel.STATE),
+    ("WAZIP",         WazipScraper,                   JurisdictionLevel.AGENCY),
+    ("DSIRE",         DSIREScraper,                   JurisdictionLevel.STATE),
+    ("NYSERDA",       NYSERDAScraper,                 JurisdictionLevel.STATE),
+    ("USDA RD",       USDAFuralDevelopmentScraper,    JurisdictionLevel.FEDERAL),
+    ("MassCEC",       MassCECScraper,                 JurisdictionLevel.STATE),
+    ("CT Green Bank", CTGreenBankScraper,             JurisdictionLevel.STATE),
+    ("IRA Credits",   IRACreditsScraper,              JurisdictionLevel.FEDERAL),
+    ("NJ Clean Energy", NJCleanEnergyScraper,         JurisdictionLevel.STATE),
 ]
 
 
