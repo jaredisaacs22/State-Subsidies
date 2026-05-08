@@ -159,12 +159,22 @@ export default async function IncentiveDetailPage({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left / Main Content */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Summary */}
+          {/* Summary — prefer detailedSummary when present, otherwise fall back to short. */}
           <div className="card p-6">
             <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-3">
               About This Program
             </h2>
             <p className="text-slate-700 leading-relaxed">{incentive.shortSummary}</p>
+            {incentive.detailedSummary && incentive.detailedSummary !== incentive.shortSummary && (
+              <div className="mt-4 pt-4 border-t border-slate-100">
+                <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
+                  Program Details
+                </h3>
+                <div className="text-slate-700 leading-relaxed text-[15px] whitespace-pre-line">
+                  {incentive.detailedSummary}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Key Requirements */}

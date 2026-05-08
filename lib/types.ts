@@ -23,6 +23,7 @@ export interface Incentive {
   agencyAcronym: string | null;
 
   shortSummary: string;
+  detailedSummary: string | null;
   keyRequirements: string[]; // parsed from JSON
   industryCategories: string[]; // parsed from JSON
 

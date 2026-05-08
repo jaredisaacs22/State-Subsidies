@@ -37,6 +37,7 @@ model Incentive {
 
   // Content
   shortSummary    String
+  detailedSummary String?  // optional long-form description shown on detail pages
   keyRequirements String[]
 
   // Classification
