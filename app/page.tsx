@@ -290,10 +290,10 @@ export default function HomePage() {
           </div>
 
           {/* Stats strip — SS-005: all figures live from DB, no hardcoded numbers.
-              flex-wrap with gap-y-6 prevents wrapped rows from overlapping; each
-              item is fixed-width so the row breaks cleanly instead of mid-Stat. */}
+              Mobile: 3-col grid with even spacing so numbers line up cleanly.
+              sm+: single row with vertical dividers between stats. */}
           <div className="mt-10 -mx-4 sm:-mx-6 lg:-mx-8 bg-black/25 border-t border-white/[0.07] px-4 sm:px-6 lg:px-8 py-5 backdrop-blur-sm">
-            <div className="flex items-center justify-center flex-wrap gap-x-6 gap-y-6">
+            <div className="grid grid-cols-3 gap-y-5 sm:flex sm:items-center sm:justify-center sm:flex-wrap sm:gap-x-6 sm:gap-y-6">
               {(() => {
                 const asOf = stats?.asOf ? new Date(stats.asOf) : null;
                 const items = [
@@ -305,7 +305,7 @@ export default function HomePage() {
                   { value: fmtMoney(stats?.medianAward), label: "Median award" },
                 ];
                 return items.map(({ value, label }, i) => (
-                  <div key={label} className="flex items-center gap-x-6">
+                  <div key={label} className="flex items-center justify-center sm:gap-x-6">
                     <Stat
                       value={value}
                       label={label}
@@ -313,7 +313,7 @@ export default function HomePage() {
                       methodologyAnchor="how-we-count"
                       dark
                     />
-                    {i < items.length - 1 && <div className="w-px h-8 bg-white/[0.08] flex-shrink-0" />}
+                    {i < items.length - 1 && <div className="hidden sm:block w-px h-8 bg-white/[0.08] flex-shrink-0" />}
                   </div>
                 ));
               })()}

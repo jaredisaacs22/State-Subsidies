@@ -25,11 +25,11 @@ export function Stat({
 
   if (dark) {
     return (
-      <div className="flex flex-col items-center text-center">
-        <span className="stat-number text-xl font-bold text-white leading-tight">{displayValue}</span>
-        <span className="text-white/35 text-[10px] font-medium uppercase tracking-widest mt-0.5">{label}</span>
+      <div className="flex flex-col items-center text-center min-w-0">
+        <span className="stat-number text-xl font-bold text-white leading-tight tabular-nums">{displayValue}</span>
+        <span className="text-white/35 text-[10px] font-medium uppercase tracking-widest mt-0.5 whitespace-nowrap">{label}</span>
         {asOf && (
-          <span className="text-white/20 text-[9px] mt-0.5">
+          <span className="hidden sm:inline-block text-white/20 text-[9px] mt-0.5">
             <time dateTime={asOf.toISOString()}>{formatShort(asOf)}</time>
             {" · "}
             <a href={`/methodology#${methodologyAnchor}`} className="underline hover:text-white/40 transition-colors">

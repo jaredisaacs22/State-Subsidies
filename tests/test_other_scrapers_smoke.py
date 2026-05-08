@@ -23,10 +23,13 @@ from scrapers.carb_scraper import CARBScraper
 from scrapers.caltrans_core_scraper import CalTransCOREScraper
 from scrapers.ct_green_bank_scraper import CTGreenBankScraper
 from scrapers.dsire_scraper import DSIREScraper
+from scrapers.illinois_energy_scraper import IllinoisEnergyScraper
 from scrapers.ira_credits_scraper import IRACreditsScraper
+from scrapers.maryland_energy_scraper import MarylandEnergyScraper
 from scrapers.masscec_scraper import MassCECScraper
 from scrapers.nj_clean_energy_scraper import NJCleanEnergyScraper
 from scrapers.nyserda_scraper import NYSERDAScraper
+from scrapers.oregon_energy_trust_scraper import OregonEnergyTrustScraper
 from scrapers.usda_rural_development_scraper import USDAFuralDevelopmentScraper
 from scrapers.wazip_scraper import WazipScraper
 from scrapers.models import IncentiveType, JurisdictionLevel, ScrapedIncentive
@@ -43,6 +46,9 @@ SCRAPERS = [
     ("CT Green Bank", CTGreenBankScraper,             JurisdictionLevel.STATE),
     ("IRA Credits",   IRACreditsScraper,              JurisdictionLevel.FEDERAL),
     ("NJ Clean Energy", NJCleanEnergyScraper,         JurisdictionLevel.STATE),
+    ("Oregon Energy Trust", OregonEnergyTrustScraper, JurisdictionLevel.STATE),
+    ("Maryland Energy", MarylandEnergyScraper,         JurisdictionLevel.STATE),
+    ("Illinois Energy", IllinoisEnergyScraper,         JurisdictionLevel.STATE),
 ]
 
 
