@@ -22,6 +22,7 @@ import pytest
 from scrapers.carb_scraper import CARBScraper
 from scrapers.caltrans_core_scraper import CalTransCOREScraper
 from scrapers.ct_green_bank_scraper import CTGreenBankScraper
+from scrapers.colorado_energy_scraper import ColoradoEnergyScraper
 from scrapers.dsire_scraper import DSIREScraper
 from scrapers.efficiency_vermont_scraper import EfficiencyVermontScraper
 from scrapers.illinois_energy_scraper import IllinoisEnergyScraper
@@ -31,6 +32,7 @@ from scrapers.masscec_scraper import MassCECScraper
 from scrapers.nj_clean_energy_scraper import NJCleanEnergyScraper
 from scrapers.nyserda_scraper import NYSERDAScraper
 from scrapers.oregon_energy_trust_scraper import OregonEnergyTrustScraper
+from scrapers.texas_seco_scraper import TexasSECOScraper
 from scrapers.usda_rural_development_scraper import USDAFuralDevelopmentScraper
 from scrapers.wazip_scraper import WazipScraper
 from scrapers.wisconsin_focus_scraper import WisconsinFocusScraper
@@ -53,6 +55,8 @@ SCRAPERS = [
     ("Illinois Energy", IllinoisEnergyScraper,         JurisdictionLevel.STATE),
     ("Wisconsin Focus", WisconsinFocusScraper,         JurisdictionLevel.STATE),
     ("Efficiency Vermont", EfficiencyVermontScraper,   JurisdictionLevel.STATE),
+    ("Texas SECO",     TexasSECOScraper,                JurisdictionLevel.STATE),
+    ("Colorado Energy", ColoradoEnergyScraper,          JurisdictionLevel.STATE),
 ]
 
 

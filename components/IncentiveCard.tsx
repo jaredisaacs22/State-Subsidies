@@ -229,16 +229,25 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
   return (
     <article
       className={cn(
-        "card group flex flex-col animate-fade-in border-l-4",
-        "hover:shadow-[0_4px_20px_rgba(26,92,56,0.12)]",
+        "card group flex flex-col animate-fade-in border-l-4 relative",
+        "hover:shadow-[0_4px_20px_rgba(26,92,56,0.12)] focus-within:shadow-[0_4px_20px_rgba(26,92,56,0.12)]",
         INCENTIVE_TYPE_BORDER[incentive.incentiveType],
         incentive.status === "CLOSED" && "opacity-50",
         className
       )}
     >
-      <div className="px-5 pt-4 pb-3">
+      {/* Stretched link — entire card is clickable; interactive children sit on z-10. */}
+      <Link
+        href={`/incentives/${incentive.slug}`}
+        aria-label={`View full details for ${incentive.title}`}
+        className="absolute inset-0 z-0 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
+      >
+        <span className="sr-only">View full details for {incentive.title}</span>
+      </Link>
+
+      <div className="px-5 pt-4 pb-3 relative z-10 pointer-events-none">
         {/* Badges + external link */}
-        <div className="flex items-start justify-between gap-2 mb-3">
+        <div className="flex items-start justify-between gap-2 mb-3 pointer-events-auto">
           <div className="flex flex-wrap gap-1.5">
             <IncentiveTypeBadge type={incentive.incentiveType} />
             <JurisdictionBadge level={incentive.jurisdictionLevel} />
@@ -268,19 +277,19 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="flex-shrink-0 p-1.5 rounded-md text-slate-300 hover:text-forest-700 hover:bg-forest-50 transition-colors focus:outline-none focus:ring-2 focus:ring-forest-500"
+            className="relative z-10 flex-shrink-0 p-1.5 rounded-md text-slate-300 hover:text-forest-700 hover:bg-forest-50 transition-colors focus:outline-none focus:ring-2 focus:ring-forest-500"
             aria-label={`View official source for ${incentive.title} (opens in new tab)`}
           >
             <ExternalLink size={14} aria-hidden />
           </a>
         </div>
 
-        {/* Title */}
-        <Link href={`/incentives/${incentive.slug}`} className="block mb-1.5">
+        {/* Title — no longer needs its own Link; the stretched link handles navigation. */}
+        <div className="mb-1.5">
           <h2 className="font-semibold text-slate-900 text-[15px] leading-snug group-hover:text-forest-700 transition-colors line-clamp-2">
             <Highlight text={incentive.title} query={searchQuery} />
           </h2>
-        </Link>
+        </div>
 
         {/* Agency · Location */}
         <p className="text-xs text-slate-400 flex items-center gap-1 mb-3 truncate">
@@ -301,7 +310,7 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
       </div>
 
       {/* Industry tags */}
-      <div className="px-5 pb-3 flex flex-wrap gap-1">
+      <div className="px-5 pb-3 flex flex-wrap gap-1 relative z-10 pointer-events-none">
         {incentive.industryCategories.slice(0, 3).map((cat) => (
           <span
             key={cat}
@@ -317,16 +326,18 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
         )}
       </div>
 
-      {/* Eligibility checker panel */}
+      {/* Eligibility checker panel — fully interactive */}
       {showEligibility && (
-        <EligibilityChecker
-          incentive={incentive}
-          onClose={() => setShowEligibility(false)}
-        />
+        <div className="relative z-10 pointer-events-auto">
+          <EligibilityChecker
+            incentive={incentive}
+            onClose={() => setShowEligibility(false)}
+          />
+        </div>
       )}
 
       {/* Footer */}
-      <div className="mt-auto border-t border-slate-100">
+      <div className="mt-auto border-t border-slate-100 relative z-10 pointer-events-none">
         {/* Meta row: funding + deadline + bookmark */}
         <div className="px-5 pt-3 pb-2 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 min-w-0 flex-wrap">
@@ -349,7 +360,7 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
           <button
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(incentive.slug); }}
             className={cn(
-              "p-1.5 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-forest-500 flex-shrink-0",
+              "relative z-10 pointer-events-auto p-1.5 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-forest-500 flex-shrink-0",
               bookmarked
                 ? "text-forest-700 bg-forest-50"
                 : "text-slate-300 hover:text-forest-700 hover:bg-forest-50"
@@ -388,7 +399,7 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
             aria-expanded={showEligibility}
             aria-label={showEligibility ? "Close eligibility checker" : "Check if you qualify for this program"}
             className={cn(
-              "flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg border transition-all",
+              "relative z-10 pointer-events-auto flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg border transition-all",
               showEligibility
                 ? "bg-forest-700 text-white border-forest-700"
                 : "bg-white text-forest-700 border-forest-300 hover:bg-forest-50 hover:border-forest-500"
@@ -397,13 +408,12 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
             <ClipboardCheck size={11} aria-hidden />
             {showEligibility ? "Hide checker" : "Do I qualify?"}
           </button>
-          <Link
-            href={`/incentives/${incentive.slug}`}
-            className="flex items-center gap-1 text-[11px] text-slate-400 hover:text-forest-700 font-medium transition-colors ml-auto"
-            aria-label={`View full details for ${incentive.title}`}
+          <span
+            className="flex items-center gap-1 text-[11px] text-slate-400 group-hover:text-forest-700 font-medium transition-colors ml-auto"
+            aria-hidden
           >
-            Details <ArrowRight size={11} aria-hidden />
-          </Link>
+            Details <ArrowRight size={11} />
+          </span>
         </div>
       </div>
     </article>
