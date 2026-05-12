@@ -8,7 +8,9 @@ import { ShareButtons } from "@/components/ShareButtons";
 import { ProvenancePanel } from "@/components/ProvenancePanel";
 import { AtAGlance } from "@/components/AtAGlance";
 import { DetailedSummary } from "@/components/DetailedSummary";
+import { FreshnessBadge } from "@/components/FreshnessBadge";
 import { NextSteps } from "@/components/NextSteps";
+import { TableOfContents } from "@/components/TableOfContents";
 import { parseIncentive, sourceRedirectUrl } from "@/lib/utils";
 import { INDUSTRY_COLORS } from "@/lib/types";
 import { prisma } from "@/lib/db";
@@ -123,17 +125,18 @@ export default async function IncentiveDetailPage({
           {incentive.title}
         </h1>
 
-        <div className="flex items-center gap-2 text-slate-500 mb-5">
+        <div className="flex items-center gap-2 text-slate-500 mb-5 flex-wrap">
           <Building2 size={15} />
           <span className="text-sm">
             {incentive.managingAgency}
             {incentive.agencyAcronym && ` (${incentive.agencyAcronym})`}
           </span>
           {incentive.programCode && (
-            <span className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded">
+            <span className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded font-mono">
               {incentive.programCode}
             </span>
           )}
+          <FreshnessBadge updatedAt={incentive.updatedAt} lastVerifiedAt={incentive.lastVerifiedAt} />
         </div>
 
         {/* At-a-glance — 5 quick-scan facts */}
@@ -144,13 +147,13 @@ export default async function IncentiveDetailPage({
         {/* Left / Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* Summary — short blurb is the lede; detailedSummary renders as structured sections. */}
-          <div className="card p-6">
+          <div className="card p-6 sm:p-7">
             <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-3">
               About This Program
             </h2>
-            <p className="text-slate-700 leading-relaxed">{incentive.shortSummary}</p>
+            <p className="text-[15px] text-slate-700 leading-relaxed">{incentive.shortSummary}</p>
             {incentive.detailedSummary && incentive.detailedSummary !== incentive.shortSummary && (
-              <div className="mt-5 pt-5 border-t border-slate-100">
+              <div className="mt-6 pt-6 border-t border-slate-100">
                 <DetailedSummary text={incentive.detailedSummary} />
               </div>
             )}
@@ -188,10 +191,15 @@ export default async function IncentiveDetailPage({
           )}
         </div>
 
-        {/* Right Sidebar */}
-        <div className="space-y-4">
+        {/* Right Sidebar — sticky on desktop so Apply CTA stays in view while scrolling. */}
+        <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto pr-1 -mr-1">
           {/* Concrete next-steps with type-specific guidance */}
           <NextSteps incentive={incentive} />
+
+          {/* In-page TOC — auto-hides if fewer than 3 sections */}
+          {incentive.detailedSummary && (
+            <TableOfContents text={incentive.detailedSummary} />
+          )}
 
           {/* Save / share row */}
           <div className="card p-4 flex items-center gap-2">
@@ -247,7 +255,7 @@ export default async function IncentiveDetailPage({
 
           {/* SS-003: provenance panel */}
           <ProvenancePanel incentive={incentive} />
-        </div>
+        </aside>
       </div>
       {/* Mobile sticky apply bar */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 px-4 py-3 flex items-center gap-2 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]">

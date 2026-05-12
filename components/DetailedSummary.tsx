@@ -1,4 +1,4 @@
-import { parseDetailedSummary } from "@/lib/parseDetailedSummary";
+import { parseDetailedSummary, sectionAnchor } from "@/lib/parseDetailedSummary";
 
 const BULLET_RE = /^[\s]*[•·*\-–—]\s+/;
 
@@ -14,11 +14,11 @@ export function DetailedSummary({ text }: { text: string }) {
   const sections = parseDetailedSummary(text);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       {sections.map((section, idx) => (
-        <section key={idx}>
+        <section key={idx} id={section.heading ? sectionAnchor(section.heading) : undefined} className="scroll-mt-24">
           {section.heading && (
-            <h3 className="text-[15px] font-semibold text-slate-900 mb-2">
+            <h3 className="text-[15px] font-semibold text-slate-900 mb-2 leading-snug">
               {section.heading}
             </h3>
           )}

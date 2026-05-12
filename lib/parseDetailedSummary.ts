@@ -16,6 +16,21 @@ export type DetailSection = {
   body: string;
 };
 
+/**
+ * Convert a section heading to a stable, URL-safe anchor id for in-page TOC links.
+ */
+export function sectionAnchor(heading: string): string {
+  return (
+    "s-" +
+    heading
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-")
+      .slice(0, 60)
+  );
+}
+
 const BULLET_PREFIXES = ["•", "-", "*", "·", "—", "–"];
 
 function looksLikeHeading(line: string): boolean {
