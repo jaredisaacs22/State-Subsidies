@@ -124,13 +124,15 @@ export async function GET(request: NextRequest) {
 
     const data = rawItems.map((item) => parseIncentive(item as unknown as Record<string, unknown>));
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       data,
       total,
       page,
       pageSize,
       totalPages: Math.ceil(total / pageSize),
     });
+    response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
+    return response;
   } catch (error) {
     const err = error as { message?: string; code?: string };
     console.error("[GET /api/incentives]", err.code, err.message);

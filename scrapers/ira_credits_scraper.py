@@ -53,52 +53,19 @@ _PROGRAMS: list[dict] = [
             "(point-of-sale). MSRP caps apply: $80,000 for vans, SUVs, and trucks; "
             "$55,000 for all other vehicles. Income limits apply."
         ),
-        "reqs": [
-            "Vehicle must be a new qualifying EV assembled in North America",
-            "MSRP cap: $80,000 (trucks/vans/SUVs) or $55,000 (all others)",
-            "Income limits: $300,000 MFJ / $225,000 HOH / $150,000 single (MAGI)",
-            "Purchaser may transfer credit to the dealer as a point-of-sale discount",
-            "Buyer may not have already claimed this credit for another vehicle that year",
-        ],
-        "type": IncentiveType.TAX_CREDIT,
-        "amount": 7500,
-        "categories": ["EV Charging", "Clean Technology"],
-        "url": "https://www.irs.gov/credits-deductions/credits-for-new-clean-vehicles-purchased-in-2023-or-after",
-        "code": "IRA-30D",
-    },
-    {
-        "title": "Used Clean Vehicle Tax Credit (IRA §25E)",
-        "summary": (
-            "A federal tax credit of up to $4,000 (or 30% of sale price, whichever "
-            "is less) for purchasing a used qualifying battery electric, fuel cell, "
-            "or plug-in hybrid vehicle from a licensed dealer. The vehicle must be "
-            "at least 2 model years old and priced at $25,000 or less. Lower income "
-            "limits than the new vehicle credit. Beginning in 2024, buyers may "
-            "transfer the credit to the dealer for an immediate discount at purchase."
-        ),
-        "reqs": [
-            "Vehicle must be at least 2 model years old and priced at $25,000 or less",
-            "Must be purchased from a licensed dealer (not private party)",
-            "Income limits: $150,000 MFJ / $112,500 HOH / $75,000 single (MAGI)",
-            "Buyer must not have claimed this credit in the prior 3 years",
-            "Credit is 30% of sale price up to $4,000 maximum",
-        ],
-        "type": IncentiveType.TAX_CREDIT,
-        "amount": 4000,
-        "categories": ["EV Charging", "Clean Technology"],
-        "url": "https://www.irs.gov/credits-deductions/used-clean-vehicle-credit",
-        "code": "IRA-25E",
-    },
-    {
-        "title": "Residential Clean Energy Credit — Solar, Storage, Geothermal (IRA §25D)",
-        "summary": (
-            "A 30% federal tax credit on the cost of qualifying residential clean "
-            "energy equipment. Covers solar photovoltaic panels, solar hot water "
-            "heaters, battery storage (≥3 kWh), small wind turbines, geothermal "
-            "heat pumps, and fuel cells. No annual dollar cap — the credit is 30% "
-            "of total installed cost. Unused credit carries forward to future tax "
-            "years. Applies to primary and secondary residences. Step-down begins "
-            "in 2033 (26%) and 2034 (22%)."
+        "detailed_summary": (
+            "How the §30D credit is structured\n"
+            "The Clean Vehicle Credit is composed of two equal $3,750 components, each with separate sourcing requirements:\n"
+            "• Critical Minerals: A percentage of battery critical minerals must be extracted, processed, or recycled in the U.S. or a free-trade-agreement country. The threshold rises annually (40% in 2024, 50% in 2025, 60% in 2026, eventually 80%).\n"
+            "• Battery Components: A percentage of battery components must be manufactured or assembled in North America (60% in 2024-2025, rising to 100% by 2029).\n\n"
+            "MSRP caps and final assembly\n"
+            "Vans, SUVs, and pickup trucks are capped at $80,000; sedans and all other vehicles at $55,000. Final assembly must occur in North America. The IRS publishes an updated list of qualifying vehicles at fueleconomy.gov.\n\n"
+            "Income limits (Modified Adjusted Gross Income)\n"
+            "$300,000 for joint filers / $225,000 for head of household / $150,000 for single filers. Buyers may use either the current year's MAGI or the prior year's, whichever is lower.\n\n"
+            "Point-of-sale transfer (effective 2024)\n"
+            "Buyers may transfer the credit to a registered dealer for an immediate cash discount at purchase. The dealer is reimbursed by the IRS within 72 hours, effectively converting the tax credit to a cash rebate even for buyers with limited tax liability.\n\n"
+            "Excluded vehicles\n"
+            "Vehicles with battery components from Foreign Entities of Concern (FEOC) — companies controlled by China, Russia, Iran, or North Korea — are excluded starting 2024 for battery components and 2025 for critical minerals."
         ),
         "reqs": [
             "Equipment must be installed in a qualifying U.S. residence (primary or secondary)",
@@ -234,6 +201,7 @@ class IRACreditsScraper:
                     managing_agency="U.S. Internal Revenue Service",
                     agency_acronym="IRS",
                     short_summary=summary,
+                    detailed_summary=p.get("detailed_summary"),
                     key_requirements=p["reqs"],
                     industry_categories=p["categories"],
                     incentive_type=p["type"],

@@ -48,10 +48,20 @@ from .dsire_scraper import DSIREScraper
 from .ira_credits_scraper import IRACreditsScraper
 from .enricher import enrich
 from .grants_gov_scraper import GrantsGovScraper
+from .colorado_energy_scraper import ColoradoEnergyScraper
+from .efficiency_vermont_scraper import EfficiencyVermontScraper
+from .illinois_energy_scraper import IllinoisEnergyScraper
+from .maryland_energy_scraper import MarylandEnergyScraper
 from .masscec_scraper import MassCECScraper
+from .michigan_energy_scraper import MichiganEnergyScraper
+from .nj_clean_energy_scraper import NJCleanEnergyScraper
 from .nyserda_scraper import NYSERDAScraper
+from .oregon_energy_trust_scraper import OregonEnergyTrustScraper
+from .texas_seco_scraper import TexasSECOScraper
 from .usda_rural_development_scraper import USDAFuralDevelopmentScraper
+from .washington_state_scraper import WashingtonStateScraper
 from .wazip_scraper import WazipScraper
+from .wisconsin_focus_scraper import WisconsinFocusScraper
 
 logger = structlog.get_logger()
 
@@ -104,6 +114,16 @@ def _run_scrapers(mock: bool) -> tuple[list, dict]:
         ("MassCEC",       MassCECScraper(mock=mock)),
         ("CT Green Bank", CTGreenBankScraper(mock=mock)),
         ("IRA Credits",   IRACreditsScraper(mock=mock)),
+        ("NJ Clean Energy", NJCleanEnergyScraper(mock=mock)),
+        ("Oregon Energy Trust", OregonEnergyTrustScraper(mock=mock)),
+        ("Maryland Energy", MarylandEnergyScraper(mock=mock)),
+        ("Illinois Energy", IllinoisEnergyScraper(mock=mock)),
+        ("Wisconsin Focus on Energy", WisconsinFocusScraper(mock=mock)),
+        ("Efficiency Vermont", EfficiencyVermontScraper(mock=mock)),
+        ("Texas SECO",     TexasSECOScraper(mock=mock)),
+        ("Colorado Energy", ColoradoEnergyScraper(mock=mock)),
+        ("Michigan Energy", MichiganEnergyScraper(mock=mock)),
+        ("Washington State", WashingtonStateScraper(mock=mock)),
     ]
     for name, scraper in scrapers:
         try:

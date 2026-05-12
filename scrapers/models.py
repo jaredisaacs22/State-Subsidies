@@ -56,6 +56,7 @@ class ScrapedIncentive(BaseModel):
     agency_acronym: Optional[str] = None
 
     short_summary: str
+    detailed_summary: Optional[str] = None  # optional long-form description for detail pages
     key_requirements: list[str]
     industry_categories: list[str]
 

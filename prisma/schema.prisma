@@ -40,6 +40,7 @@ model Incentive {
 
   // Content
   shortSummary    String
+  detailedSummary String?  // optional long-form description shown on detail pages
   keyRequirements String[]
 
   // Classification
@@ -86,8 +87,8 @@ model Incentive {
   @@index([fundingAmount])
   @@index([status, jurisdictionLevel])
   @@index([status, parseConfidence])
-  // Note: industryCategories (TEXT[]) needs a GIN index for has/hasSome.
-  // Prisma cannot express GIN; created manually in a raw migration.
+  // GIN index on TEXT[] for has/hasSome (@>, &&). Required for industryCategory filters.
+  @@index([industryCategories(ops: ArrayOps)], type: Gin, map: "Incentive_industryCategories_gin")
 }
 
 model PageView {

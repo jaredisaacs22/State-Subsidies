@@ -192,3 +192,43 @@
   scrollbar-width: thin;
   scrollbar-color: #cbd5e1 transparent;
 }
+
+/* ── Print styles ────────────────────────────────────────────────────────
+ * Strip site chrome (nav, sidebars, sticky bars, share/save controls) so
+ * users can save a clean program-info PDF from any detail page.
+ */
+@media print {
+  html, body {
+    background: white !important;
+    color: #0f172a !important;
+  }
+  header,
+  footer,
+  aside,
+  nav,
+  .no-print,
+  [data-hide-print] {
+    display: none !important;
+  }
+  /* Two-column → single-column for print */
+  .lg\:col-span-2 { grid-column: span 1 / span 1 !important; }
+  /* Cards: keep readable, remove drop-shadow */
+  .card {
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+  /* Avoid awkward page breaks inside critical blocks */
+  h1, h2, h3 { break-after: avoid; }
+  section, ul, ol { break-inside: avoid; }
+  /* Make all links print with their target URL inline for traceability */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 10px;
+    color: #64748b;
+    word-break: break-all;
+  }
+  /* But don't append URL to internal navigation links */
+  a[href^="/"]::after,
+  a[href^="#"]::after { content: ""; }
+}

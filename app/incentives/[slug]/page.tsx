@@ -1,12 +1,18 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink, ArrowLeft, Building2, Calendar, DollarSign, CheckCircle2, Globe } from "lucide-react";
+import { ExternalLink, ArrowLeft, Building2, CheckCircle2 } from "lucide-react";
 import { IncentiveTypeBadge, JurisdictionBadge, StatusBadge } from "@/components/Badge";
 import { IncentiveCard } from "@/components/IncentiveCard";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { ShareButtons } from "@/components/ShareButtons";
 import { ProvenancePanel } from "@/components/ProvenancePanel";
-import { formatCurrency, formatDeadline, parseIncentive, sourceRedirectUrl } from "@/lib/utils";
+import { AtAGlance } from "@/components/AtAGlance";
+import { DetailedSummary } from "@/components/DetailedSummary";
+import { EligibilityChecker } from "@/components/EligibilityChecker";
+import { FreshnessBadge } from "@/components/FreshnessBadge";
+import { NextSteps } from "@/components/NextSteps";
+import { TableOfContents } from "@/components/TableOfContents";
+import { parseIncentive, sourceRedirectUrl } from "@/lib/utils";
 import { INDUSTRY_COLORS, INCENTIVE_TYPE_LABELS } from "@/lib/types";
 import { prisma } from "@/lib/db";
 import type { Incentive } from "@/lib/types";
@@ -185,51 +191,38 @@ export default async function IncentiveDetailPage({
           {incentive.title}
         </h1>
 
-        <div className="flex items-center gap-2 text-slate-500 mb-5">
+        <div className="flex items-center gap-2 text-slate-500 mb-5 flex-wrap">
           <Building2 size={15} />
           <span className="text-sm">
             {incentive.managingAgency}
             {incentive.agencyAcronym && ` (${incentive.agencyAcronym})`}
           </span>
           {incentive.programCode && (
-            <span className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded">
+            <span className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded font-mono">
               {incentive.programCode}
             </span>
           )}
+          <FreshnessBadge updatedAt={incentive.updatedAt} lastVerifiedAt={incentive.lastVerifiedAt} />
         </div>
 
-        {/* Key Stats Row */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 bg-slate-50 rounded-lg">
-          <div>
-            <div className="flex items-center gap-1.5 mb-1">
-              <DollarSign size={16} className="text-emerald-600" />
-              <span className="text-xs text-slate-500 font-medium">Max per Applicant</span>
-            </div>
-            <p className="text-sm font-semibold text-slate-800">{formatCurrency(incentive.fundingAmount)}</p>
-            <p className="text-[10px] text-slate-400 mt-0.5">Maximum a single org can receive</p>
-          </div>
-          <Stat
-            icon={<Calendar size={16} className="text-amber-600" />}
-            label="Deadline"
-            value={formatDeadline(incentive.deadline)}
-          />
-          <Stat
-            icon={<Globe size={16} className="text-forest-700" />}
-            label="Jurisdiction"
-            value={incentive.jurisdictionName}
-          />
-        </div>
+        {/* At-a-glance — 5 quick-scan facts */}
+        <AtAGlance incentive={incentive} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left / Main Content */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Summary */}
-          <div className="card p-6">
+          {/* Summary — short blurb is the lede; detailedSummary renders as structured sections. */}
+          <div className="card p-6 sm:p-7">
             <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-3">
               About This Program
             </h2>
-            <p className="text-slate-700 leading-relaxed">{incentive.shortSummary}</p>
+            <p className="text-[15px] text-slate-700 leading-relaxed">{incentive.shortSummary}</p>
+            {incentive.detailedSummary && incentive.detailedSummary !== incentive.shortSummary && (
+              <div className="mt-6 pt-6 border-t border-slate-100">
+                <DetailedSummary text={incentive.detailedSummary} />
+              </div>
+            )}
           </div>
 
           {/* Key Requirements */}
@@ -255,6 +248,13 @@ export default async function IncentiveDetailPage({
             )}
           </div>
 
+          {/* Eligibility Checker — interactive self-assessment against the
+              key requirements above. Renders as a full card under Requirements
+              so the question "am I eligible?" gets a concrete answer. */}
+          <div id="eligibility-checker" className="scroll-mt-24">
+            <EligibilityChecker incentive={incentive} variant="expanded" />
+          </div>
+
           {/* Related Programs */}
           {related.length > 0 && (
             <div>
@@ -270,32 +270,23 @@ export default async function IncentiveDetailPage({
           )}
         </div>
 
-        {/* Right Sidebar */}
-        <div className="space-y-4">
-          {/* Apply CTA */}
-          <div className="card p-5 bg-forest-50 border-forest-100">
-            <p className="text-sm font-semibold text-forest-900 mb-1">Apply or Learn More</p>
-            <p className="text-xs text-forest-700/70 mb-3 leading-relaxed">
-              Visit the official agency page to view requirements and apply.
-            </p>
-            <a
-              href={sourceRedirectUrl(incentive)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary w-full justify-center gap-2 mb-3"
-            >
-              Official Source
-              <ExternalLink size={14} />
-            </a>
-            <BookmarkButton slug={incentive.slug} />
-            <p className="text-[10px] text-slate-400 mt-2 text-center leading-snug">
-              via {(() => { try { return new URL(incentive.sourceUrl).hostname.replace("www.", ""); } catch { return incentive.sourceUrl; } })()}
-            </p>
-          </div>
+        {/* Right Sidebar — sticky on desktop so Apply CTA stays in view while scrolling. */}
+        <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto pr-1 -mr-1">
+          {/* Concrete next-steps with type-specific guidance */}
+          <NextSteps incentive={incentive} />
 
-          {/* Share */}
-          <div className="card p-4">
-            <ShareButtons title={incentive.title} />
+          {/* In-page TOC — auto-hides if fewer than 3 sections */}
+          {incentive.detailedSummary && (
+            <TableOfContents text={incentive.detailedSummary} />
+          )}
+
+          {/* Save / share row */}
+          <div className="card p-4 flex items-center gap-2">
+            <BookmarkButton slug={incentive.slug} />
+            <div className="h-6 w-px bg-slate-200" />
+            <div className="flex-1 min-w-0">
+              <ShareButtons title={incentive.title} />
+            </div>
           </div>
 
           {/* Industries */}
@@ -343,7 +334,7 @@ export default async function IncentiveDetailPage({
 
           {/* SS-003: provenance panel */}
           <ProvenancePanel incentive={incentive} />
-        </div>
+        </aside>
       </div>
       {/* Mobile sticky apply bar */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 px-4 py-3 flex items-center gap-2 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]">
@@ -365,14 +356,3 @@ export default async function IncentiveDetailPage({
   );
 }
 
-function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
-  return (
-    <div>
-      <div className="flex items-center gap-1.5 mb-1">
-        {icon}
-        <span className="text-xs text-slate-500 font-medium">{label}</span>
-      </div>
-      <p className="text-sm font-semibold text-slate-800">{value}</p>
-    </div>
-  );
-}

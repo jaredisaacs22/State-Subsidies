@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ExternalLink, Calendar, MapPin, ArrowRight, Bookmark, CheckCircle2, ClipboardCheck, X, CheckCircle, XCircle, HelpCircle, Users, Building2, Landmark } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ExternalLink, Calendar, MapPin, ArrowRight, Bookmark, CheckCircle2, ClipboardCheck, Users, Building2, Landmark } from "lucide-react";
 import { IncentiveTypeBadge, JurisdictionBadge, StatusBadge } from "./Badge";
+import { EligibilityChecker } from "./EligibilityChecker";
 import { formatCurrency, formatDeadline, cn, sourceRedirectUrl } from "@/lib/utils";
 import { INCENTIVE_TYPE_BORDER, INDUSTRY_COLORS } from "@/lib/types";
 import { useBookmarks } from "@/lib/useBookmarks";
@@ -74,140 +76,7 @@ function getEligibilityTag(categories: string[]): {
   };
 }
 
-// ── Eligibility Checker ────────────────────────────────────────────────────────
-type Answer = "yes" | "no" | "unsure" | null;
-
-function EligibilityChecker({ incentive, onClose }: { incentive: Incentive; onClose: () => void }) {
-  const questions = incentive.keyRequirements.slice(0, 5);
-  const [answers, setAnswers] = useState<Answer[]>(questions.map(() => null));
-
-  const answeredCount = answers.filter(a => a !== null).length;
-  const yesCount = answers.filter(a => a === "yes").length;
-  const noCount = answers.filter(a => a === "no").length;
-  const allAnswered = answeredCount === questions.length;
-
-  const score = allAnswered ? Math.round((yesCount / questions.length) * 100) : null;
-  const confidence: "HIGH" | "MEDIUM" | "LOW" | null =
-    score === null ? null :
-    noCount >= 2 ? "LOW" :
-    score >= 75 ? "HIGH" :
-    score >= 40 ? "MEDIUM" : "LOW";
-
-  const confidenceStyle = {
-    HIGH: { bar: "bg-emerald-500", text: "text-emerald-700", bg: "bg-emerald-50 border-emerald-200", label: "Strong match" },
-    MEDIUM: { bar: "bg-amber-400", text: "text-amber-700", bg: "bg-amber-50 border-amber-200", label: "Possible match — verify a few things" },
-    LOW: { bar: "bg-red-400", text: "text-red-700", bg: "bg-red-50 border-red-200", label: "May not qualify — review requirements carefully" },
-  };
-
-  return (
-    <div className="border-t border-slate-100 bg-slate-50 px-5 py-4">
-      <div className="flex items-center justify-between mb-3">
-        <p className="text-[12px] font-semibold text-slate-700 flex items-center gap-1.5">
-          <ClipboardCheck size={13} className="text-forest-600" aria-hidden />
-          Eligibility Check
-        </p>
-        <button
-          onClick={onClose}
-          aria-label="Close eligibility checker"
-          className="p-1 rounded text-slate-400 hover:text-slate-600 transition-colors">
-          <X size={13} aria-hidden />
-        </button>
-      </div>
-
-      <p className="text-[11px] text-slate-500 mb-3">
-        Answer each question to estimate your fit. Can you meet this requirement?
-      </p>
-
-      <div className="space-y-3">
-        {questions.map((req, i) => (
-          <div key={i} className="bg-white rounded-lg border border-slate-200 px-3 py-2.5">
-            <p className="text-[12px] text-slate-700 leading-snug mb-1.5">{req}</p>
-            <p className="text-[10px] text-slate-400 mb-2">Do you meet this requirement?</p>
-            <div className="flex gap-2" role="group" aria-label={`Requirement ${i + 1} of ${questions.length}`}>
-              {(["yes", "no", "unsure"] as const).map((val) => (
-                <button
-                  key={val}
-                  onClick={() => {
-                    const updated = [...answers];
-                    updated[i] = answers[i] === val ? null : val;
-                    setAnswers(updated);
-                  }}
-                  aria-pressed={answers[i] === val}
-                  className={cn(
-                    "flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-md border font-medium transition-all",
-                    answers[i] === val
-                      ? val === "yes" ? "bg-emerald-600 text-white border-emerald-600"
-                        : val === "no" ? "bg-red-500 text-white border-red-500"
-                        : "bg-slate-400 text-white border-slate-400"
-                      : "bg-white text-slate-500 border-slate-200 hover:border-slate-400"
-                  )}>
-                  {val === "yes" ? <CheckCircle size={10} aria-hidden /> : val === "no" ? <XCircle size={10} aria-hidden /> : <HelpCircle size={10} aria-hidden />}
-                  {val === "yes" ? "Yes" : val === "no" ? "No" : "Not sure"}
-                </button>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Progress */}
-      {!allAnswered && answeredCount > 0 && (
-        <p className="text-[11px] text-slate-400 mt-3 text-center">
-          {answeredCount} of {questions.length} answered
-        </p>
-      )}
-
-      {/* Result */}
-      {confidence && (
-        <div className={cn("mt-4 rounded-lg border px-4 py-3", confidenceStyle[confidence].bg)}>
-          <div className="flex items-center justify-between mb-2">
-            <span className={cn("text-[12px] font-bold", confidenceStyle[confidence].text)}>
-              {confidence} confidence — {confidenceStyle[confidence].label}
-            </span>
-            <span className={cn("text-[12px] font-bold tabular-nums", confidenceStyle[confidence].text)}>
-              {score}%
-            </span>
-          </div>
-          {/* Bar */}
-          <div className="h-1.5 bg-white/60 rounded-full overflow-hidden mb-3">
-            <div
-              className={cn("h-full rounded-full transition-all duration-500", confidenceStyle[confidence].bar)}
-              style={{ width: `${score}%` }}
-              role="progressbar"
-              aria-valuenow={score ?? 0}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-label={`Eligibility score: ${score}%`}
-            />
-          </div>
-          {confidence === "HIGH" && (
-            <p className="text-[11px] text-emerald-700">
-              You appear to meet the key requirements. Review the full program details and apply directly through the agency.
-            </p>
-          )}
-          {confidence === "MEDIUM" && (
-            <p className="text-[11px] text-amber-700">
-              You likely meet most requirements. Check the ones you marked &ldquo;No&rdquo; or &ldquo;Not sure&rdquo; &mdash; those are your eligibility risks.
-            </p>
-          )}
-          {confidence === "LOW" && (
-            <p className="text-[11px] text-red-700">
-              You may not meet enough requirements. Read the full program details carefully or use the AI advisor to find better-fit alternatives.
-            </p>
-          )}
-          <a
-            href={`/incentives/${incentive.slug}`}
-            className="mt-2 inline-flex items-center gap-1 text-[11px] font-semibold text-forest-700 hover:text-forest-800 transition-colors">
-            View full requirements <ArrowRight size={10} aria-hidden />
-          </a>
-          <p className="mt-2 text-[9px] text-slate-400 leading-snug italic">
-            This is an informal self-assessment only — not a guarantee of eligibility. Final determinations are made by the administering agency. Always verify requirements directly with the program before applying.
-          </p>
-        </div>
-      )}
-    </div>
-  );
-}
+// EligibilityChecker is now a standalone component in components/EligibilityChecker.tsx
 
 // ── Card ───────────────────────────────────────────────────────────────────────
 interface IncentiveCardProps {
@@ -217,6 +86,7 @@ interface IncentiveCardProps {
 }
 
 export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCardProps) {
+  const router = useRouter();
   const { isBookmarked, toggle } = useBookmarks();
   const bookmarked = isBookmarked(incentive.slug);
   const isNew = isNewProgram(incentive.createdAt);
@@ -226,11 +96,37 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
     new Date(incentive.deadline).getTime() - Date.now() < 30 * 24 * 60 * 60 * 1000;
   const [showEligibility, setShowEligibility] = useState(false);
 
+  const detailsHref = `/incentives/${incentive.slug}`;
+
+  // Card-level click handler: navigate to detail page UNLESS the click target
+  // is an interactive child (link, button, etc.). Cmd/Ctrl-click opens in a new tab.
+  function handleCardClick(e: React.MouseEvent<HTMLElement>) {
+    const target = e.target as HTMLElement;
+    if (target.closest("a, button, [role='button'], input, label")) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey) {
+      window.open(detailsHref, "_blank", "noopener,noreferrer");
+      return;
+    }
+    router.push(detailsHref);
+  }
+
+  function handleCardKey(e: React.KeyboardEvent<HTMLElement>) {
+    // Enter/Space on the card (when focused) navigates. Interactive children
+    // handle their own keys natively because the card has no role override.
+    if (e.target !== e.currentTarget) return;
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      router.push(detailsHref);
+    }
+  }
+
   return (
     <article
+      onClick={handleCardClick}
+      onKeyDown={handleCardKey}
       className={cn(
-        "card group flex flex-col animate-fade-in border-l-4",
-        "hover:shadow-[0_4px_20px_rgba(26,92,56,0.12)]",
+        "card group flex flex-col animate-fade-in border-l-4 cursor-pointer",
+        "hover:shadow-[0_4px_20px_rgba(26,92,56,0.12)] focus-within:shadow-[0_4px_20px_rgba(26,92,56,0.12)]",
         INCENTIVE_TYPE_BORDER[incentive.incentiveType],
         incentive.status === "CLOSED" && "opacity-50",
         className
@@ -267,7 +163,6 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
             href={sourceRedirectUrl(incentive)}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
             className="flex-shrink-0 p-1.5 rounded-md text-slate-300 hover:text-forest-700 hover:bg-forest-50 transition-colors focus:outline-none focus:ring-2 focus:ring-forest-500"
             aria-label={`View official source for ${incentive.title} (opens in new tab)`}
           >
@@ -275,8 +170,8 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
           </a>
         </div>
 
-        {/* Title */}
-        <Link href={`/incentives/${incentive.slug}`} className="block mb-1.5">
+        {/* Title — Link kept for accessibility/SEO. Card-level click handler navigates from non-interactive areas. */}
+        <Link href={detailsHref} className="block mb-1.5">
           <h2 className="font-semibold text-slate-900 text-[15px] leading-snug group-hover:text-forest-700 transition-colors line-clamp-2">
             <Highlight text={incentive.title} query={searchQuery} />
           </h2>
@@ -347,7 +242,7 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
             )}
           </div>
           <button
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(incentive.slug); }}
+            onClick={(e) => { e.stopPropagation(); toggle(incentive.slug); }}
             className={cn(
               "p-1.5 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-forest-500 flex-shrink-0",
               bookmarked
@@ -384,7 +279,7 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
         {/* Action row: Do I qualify + Details */}
         <div className="px-5 pb-3 flex items-center gap-2">
           <button
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowEligibility((v) => !v); }}
+            onClick={(e) => { e.stopPropagation(); setShowEligibility((v) => !v); }}
             aria-expanded={showEligibility}
             aria-label={showEligibility ? "Close eligibility checker" : "Check if you qualify for this program"}
             className={cn(
@@ -398,7 +293,7 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
             {showEligibility ? "Hide checker" : "Do I qualify?"}
           </button>
           <Link
-            href={`/incentives/${incentive.slug}`}
+            href={detailsHref}
             className="flex items-center gap-1 text-[11px] text-slate-400 hover:text-forest-700 font-medium transition-colors ml-auto"
             aria-label={`View full details for ${incentive.title}`}
           >

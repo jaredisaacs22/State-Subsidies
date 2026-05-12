@@ -1,9 +1,11 @@
 "use client";
 
+import { memo } from "react";
 import { ComposableMap, Geographies, Geography, Marker, Annotation } from "react-simple-maps";
 import { geoCentroid } from "d3-geo";
 import { Flag } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { navy } from "@/lib/colors";
 
 const GEO_URL = "/us-states.json";
 
@@ -59,6 +61,34 @@ const NUDGE: Record<string, [number, number]> = {
   "26": [0, -1.0],    // MI — pull south away from UP
 };
 
+interface GeoStyleSet {
+  default: { fill: string; stroke: string; strokeWidth: number; outline: string; cursor: string };
+  hover:   { fill: string; stroke: string; strokeWidth: number; outline: string; cursor: string };
+  pressed: { fill: string; outline: string };
+}
+
+// Pre-allocated style objects so Geography never gets a new reference each render.
+const STYLE_SELECTED: GeoStyleSet = {
+  default: { fill: navy[900], stroke: navy[950], strokeWidth: 1.5, outline: "none", cursor: "pointer" },
+  hover:   { fill: navy[950], stroke: "#475569", strokeWidth: 1,   outline: "none", cursor: "pointer" },
+  pressed: { fill: navy[950], outline: "none" },
+};
+const STYLE_EMPTY: GeoStyleSet = {
+  default: { fill: navy[50],  stroke: "#cbd5e1", strokeWidth: 0.5, outline: "none", cursor: "pointer" },
+  hover:   { fill: "#e2e8f0", stroke: "#475569", strokeWidth: 1,   outline: "none", cursor: "pointer" },
+  pressed: { fill: navy[950], outline: "none" },
+};
+const STYLE_ACTIVE_HOVER: GeoStyleSet["hover"]   = { fill: navy[500], stroke: "#475569", strokeWidth: 1, outline: "none", cursor: "pointer" };
+const STYLE_ACTIVE_PRESSED: GeoStyleSet["pressed"] = { fill: navy[950], outline: "none" };
+
+function getChoroplethFill(count: number): string {
+  if (count === 0) return navy[50];
+  if (count <= 2)  return navy[200];
+  if (count <= 5)  return navy[400];
+  if (count <= 10) return navy[600];
+  return navy[800];
+}
+
 interface USStateMapProps {
   counts: Record<string, number>;
   selected: string | null;
@@ -66,16 +96,7 @@ interface USStateMapProps {
   federalCount?: number;
 }
 
-function getFill(count: number, isSelected: boolean): string {
-  if (isSelected) return "#0c1738"; // navy-900
-  if (count === 0) return "#f1f4f9"; // navy-50
-  if (count <= 2)  return "#b6c5db"; // navy-200
-  if (count <= 5)  return "#5d7ba3"; // navy-400
-  if (count <= 10) return "#2c4467"; // navy-600
-  return "#15244a";                  // navy-800
-}
-
-export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USStateMapProps) {
+export const USStateMap = memo(function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USStateMapProps) {
   const isFederal = selected === "United States";
 
   return (
@@ -86,15 +107,15 @@ export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USS
         className={cn(
           "mb-3 px-4 py-1.5 rounded-lg border text-xs font-semibold transition-all flex items-center gap-2",
           isFederal
-            ? "bg-forest-800 text-white border-forest-900 shadow-md"
-            : "bg-forest-50 text-forest-700 border-forest-200 hover:bg-forest-100"
+            ? "bg-navy-800 text-white border-navy-900 shadow-md"
+            : "bg-navy-50 text-navy-700 border-navy-200 hover:bg-navy-100"
         )}
       >
         <Flag size={12} aria-hidden /> Federal Programs
         {federalCount > 0 && (
           <span className={cn(
             "text-[10px] px-1.5 py-0.5 rounded-full font-bold",
-            isFederal ? "bg-white/20 text-white" : "bg-forest-100 text-forest-800"
+            isFederal ? "bg-white/20 text-white" : "bg-navy-100 text-navy-800"
           )}>
             {federalCount}
           </span>
@@ -117,28 +138,26 @@ export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USS
                   const name = FIPS[geo.id];
                   const count = counts[name] ?? 0;
                   const isSelected = selected === name;
+
+                  let style: GeoStyleSet;
+                  if (isSelected) {
+                    style = STYLE_SELECTED;
+                  } else if (count > 0) {
+                    style = {
+                      default: { fill: getChoroplethFill(count), stroke: "#cbd5e1", strokeWidth: 0.5, outline: "none", cursor: "pointer" },
+                      hover:   STYLE_ACTIVE_HOVER,
+                      pressed: STYLE_ACTIVE_PRESSED,
+                    };
+                  } else {
+                    style = STYLE_EMPTY;
+                  }
+
                   return (
                     <Geography
                       key={geo.rsmKey}
                       geography={geo}
                       onClick={() => onSelect(name)}
-                      style={{
-                        default: {
-                          fill: getFill(count, isSelected),
-                          stroke: isSelected ? "#060c22" : "#cbd5e1",
-                          strokeWidth: isSelected ? 1.5 : 0.5,
-                          outline: "none",
-                          cursor: "pointer",
-                        },
-                        hover: {
-                          fill: isSelected ? "#060c22" : count > 0 ? "#3d5a85" : "#e2e8f0",
-                          stroke: "#475569",
-                          strokeWidth: 1,
-                          outline: "none",
-                          cursor: "pointer",
-                        },
-                        pressed: { fill: "#060c22", outline: "none" },
-                      }}
+                      style={style}
                     >
                       <title>{`${name}: ${count} program${count !== 1 ? "s" : ""}`}</title>
                     </Geography>
@@ -211,7 +230,7 @@ export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USS
                           style={{
                             fontSize: "6.5px",
                             fontWeight: 700,
-                            fill: isSelected ? "#dbe2ee" : "#334155",
+                            fill: isSelected ? navy[100] : "#334155",
                             cursor: "pointer",
                             userSelect: "none",
                             fontFamily: "system-ui, sans-serif",
@@ -229,4 +248,4 @@ export function USStateMap({ counts, selected, onSelect, federalCount = 0 }: USS
       </ComposableMap>
     </div>
   );
-}
+});
