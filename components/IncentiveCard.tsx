@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ExternalLink, Calendar, MapPin, ArrowRight, Bookmark, CheckCircle2, ClipboardCheck, X, CheckCircle, XCircle, HelpCircle, Users, Building2, Landmark } from "lucide-react";
 import { IncentiveTypeBadge, JurisdictionBadge, StatusBadge } from "./Badge";
 import { formatCurrency, formatDeadline, cn, sourceRedirectUrl } from "@/lib/utils";
@@ -217,6 +218,7 @@ interface IncentiveCardProps {
 }
 
 export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCardProps) {
+  const router = useRouter();
   const { isBookmarked, toggle } = useBookmarks();
   const bookmarked = isBookmarked(incentive.slug);
   const isNew = isNewProgram(incentive.createdAt);
@@ -226,28 +228,45 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
     new Date(incentive.deadline).getTime() - Date.now() < 30 * 24 * 60 * 60 * 1000;
   const [showEligibility, setShowEligibility] = useState(false);
 
+  const detailsHref = `/incentives/${incentive.slug}`;
+
+  // Card-level click handler: navigate to detail page UNLESS the click target
+  // is an interactive child (link, button, etc.). Cmd/Ctrl-click opens in a new tab.
+  function handleCardClick(e: React.MouseEvent<HTMLElement>) {
+    const target = e.target as HTMLElement;
+    if (target.closest("a, button, [role='button'], input, label")) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey) {
+      window.open(detailsHref, "_blank", "noopener,noreferrer");
+      return;
+    }
+    router.push(detailsHref);
+  }
+
+  function handleCardKey(e: React.KeyboardEvent<HTMLElement>) {
+    // Enter/Space on the card (when focused) navigates. Interactive children
+    // handle their own keys natively because the card has no role override.
+    if (e.target !== e.currentTarget) return;
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      router.push(detailsHref);
+    }
+  }
+
   return (
     <article
+      onClick={handleCardClick}
+      onKeyDown={handleCardKey}
       className={cn(
-        "card group flex flex-col animate-fade-in border-l-4 relative",
+        "card group flex flex-col animate-fade-in border-l-4 cursor-pointer",
         "hover:shadow-[0_4px_20px_rgba(26,92,56,0.12)] focus-within:shadow-[0_4px_20px_rgba(26,92,56,0.12)]",
         INCENTIVE_TYPE_BORDER[incentive.incentiveType],
         incentive.status === "CLOSED" && "opacity-50",
         className
       )}
     >
-      {/* Stretched link — entire card is clickable; interactive children sit on z-10. */}
-      <Link
-        href={`/incentives/${incentive.slug}`}
-        aria-label={`View full details for ${incentive.title}`}
-        className="absolute inset-0 z-0 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
-      >
-        <span className="sr-only">View full details for {incentive.title}</span>
-      </Link>
-
-      <div className="px-5 pt-4 pb-3 relative z-10 pointer-events-none">
+      <div className="px-5 pt-4 pb-3">
         {/* Badges + external link */}
-        <div className="flex items-start justify-between gap-2 mb-3 pointer-events-auto">
+        <div className="flex items-start justify-between gap-2 mb-3">
           <div className="flex flex-wrap gap-1.5">
             <IncentiveTypeBadge type={incentive.incentiveType} />
             <JurisdictionBadge level={incentive.jurisdictionLevel} />
@@ -276,20 +295,19 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
             href={sourceRedirectUrl(incentive)}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            className="relative z-10 flex-shrink-0 p-1.5 rounded-md text-slate-300 hover:text-forest-700 hover:bg-forest-50 transition-colors focus:outline-none focus:ring-2 focus:ring-forest-500"
+            className="flex-shrink-0 p-1.5 rounded-md text-slate-300 hover:text-forest-700 hover:bg-forest-50 transition-colors focus:outline-none focus:ring-2 focus:ring-forest-500"
             aria-label={`View official source for ${incentive.title} (opens in new tab)`}
           >
             <ExternalLink size={14} aria-hidden />
           </a>
         </div>
 
-        {/* Title — no longer needs its own Link; the stretched link handles navigation. */}
-        <div className="mb-1.5">
+        {/* Title — Link kept for accessibility/SEO. Card-level click handler navigates from non-interactive areas. */}
+        <Link href={detailsHref} className="block mb-1.5">
           <h2 className="font-semibold text-slate-900 text-[15px] leading-snug group-hover:text-forest-700 transition-colors line-clamp-2">
             <Highlight text={incentive.title} query={searchQuery} />
           </h2>
-        </div>
+        </Link>
 
         {/* Agency · Location */}
         <p className="text-xs text-slate-400 flex items-center gap-1 mb-3 truncate">
@@ -310,7 +328,7 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
       </div>
 
       {/* Industry tags */}
-      <div className="px-5 pb-3 flex flex-wrap gap-1 relative z-10 pointer-events-none">
+      <div className="px-5 pb-3 flex flex-wrap gap-1">
         {incentive.industryCategories.slice(0, 3).map((cat) => (
           <span
             key={cat}
@@ -326,18 +344,16 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
         )}
       </div>
 
-      {/* Eligibility checker panel — fully interactive */}
+      {/* Eligibility checker panel */}
       {showEligibility && (
-        <div className="relative z-10 pointer-events-auto">
-          <EligibilityChecker
-            incentive={incentive}
-            onClose={() => setShowEligibility(false)}
-          />
-        </div>
+        <EligibilityChecker
+          incentive={incentive}
+          onClose={() => setShowEligibility(false)}
+        />
       )}
 
       {/* Footer */}
-      <div className="mt-auto border-t border-slate-100 relative z-10 pointer-events-none">
+      <div className="mt-auto border-t border-slate-100">
         {/* Meta row: funding + deadline + bookmark */}
         <div className="px-5 pt-3 pb-2 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 min-w-0 flex-wrap">
@@ -358,9 +374,9 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
             )}
           </div>
           <button
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(incentive.slug); }}
+            onClick={(e) => { e.stopPropagation(); toggle(incentive.slug); }}
             className={cn(
-              "relative z-10 pointer-events-auto p-1.5 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-forest-500 flex-shrink-0",
+              "p-1.5 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-forest-500 flex-shrink-0",
               bookmarked
                 ? "text-forest-700 bg-forest-50"
                 : "text-slate-300 hover:text-forest-700 hover:bg-forest-50"
@@ -395,11 +411,11 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
         {/* Action row: Do I qualify + Details */}
         <div className="px-5 pb-3 flex items-center gap-2">
           <button
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowEligibility((v) => !v); }}
+            onClick={(e) => { e.stopPropagation(); setShowEligibility((v) => !v); }}
             aria-expanded={showEligibility}
             aria-label={showEligibility ? "Close eligibility checker" : "Check if you qualify for this program"}
             className={cn(
-              "relative z-10 pointer-events-auto flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg border transition-all",
+              "flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg border transition-all",
               showEligibility
                 ? "bg-forest-700 text-white border-forest-700"
                 : "bg-white text-forest-700 border-forest-300 hover:bg-forest-50 hover:border-forest-500"
@@ -408,12 +424,13 @@ export function IncentiveCard({ incentive, className, searchQuery }: IncentiveCa
             <ClipboardCheck size={11} aria-hidden />
             {showEligibility ? "Hide checker" : "Do I qualify?"}
           </button>
-          <span
-            className="flex items-center gap-1 text-[11px] text-slate-400 group-hover:text-forest-700 font-medium transition-colors ml-auto"
-            aria-hidden
+          <Link
+            href={detailsHref}
+            className="flex items-center gap-1 text-[11px] text-slate-400 hover:text-forest-700 font-medium transition-colors ml-auto"
+            aria-label={`View full details for ${incentive.title}`}
           >
-            Details <ArrowRight size={11} />
-          </span>
+            Details <ArrowRight size={11} aria-hidden />
+          </Link>
         </div>
       </div>
     </article>
