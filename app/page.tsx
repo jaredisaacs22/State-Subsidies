@@ -2,10 +2,15 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ChevronDown, SlidersHorizontal, X, Link2, Check } from "lucide-react";
+import dynamic from "next/dynamic";
 import { FilterSidebar } from "@/components/FilterSidebar";
 import { ResultsGrid } from "@/components/ResultsGrid";
-import { BusinessIntakeChat } from "@/components/BusinessIntakeChat";
 import { AudienceSelector, AUDIENCES } from "@/components/AudienceSelector";
+
+const BusinessIntakeChat = dynamic(
+  () => import("@/components/BusinessIntakeChat").then((m) => m.BusinessIntakeChat),
+  { ssr: false }
+);
 import type { AudienceId } from "@/components/AudienceSelector";
 import { cn, fmtMoney } from "@/lib/utils";
 import { Stat } from "@/components/Stat";
@@ -14,7 +19,7 @@ import type { Incentive, IncentiveFilters, PaginatedResponse } from "@/lib/types
 const DEFAULT_FILTERS: IncentiveFilters = {
   search: "",
   status: "ACTIVE",
-  sortBy: "createdAt",
+  sortBy: "relevance",
   sortOrder: "desc",
   page: 1,
   pageSize: 24,
@@ -57,6 +62,7 @@ function SortSelect({
         onChange={(e) => onChange(e.target.value)}
         className="appearance-none text-xs text-slate-600 bg-white border border-slate-200 rounded-lg px-3 py-1.5 pr-7 hover:border-slate-300 focus:outline-none focus:ring-1 focus:ring-forest-700 cursor-pointer"
       >
+        <option value="relevance_desc">Featured</option>
         <option value="createdAt_desc">Newest</option>
         <option value="createdAt_asc">Oldest</option>
         <option value="fundingAmount_desc">Highest $</option>
@@ -106,7 +112,12 @@ export default function HomePage() {
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    fetch("/api/stats").then(r => r.json()).then(setStats).catch(() => {});
+    // Pre-computed at build time; fall back to live API on miss.
+    fetch("/data/stats.json")
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error("static miss"))))
+      .catch(() => fetch("/api/stats").then((r) => r.json()))
+      .then(setStats)
+      .catch(() => {});
   }, []);
 
   const fetchIncentives = useCallback(async (f: IncentiveFilters) => {
@@ -130,6 +141,15 @@ export default function HomePage() {
       if (f.applicantType) params.set("applicantType", f.applicantType);
       params.set("page", String(f.page ?? 1));
       params.set("pageSize", String(f.pageSize ?? 24));
+
+      // Sync filters + page to browser URL so the back button and shared
+      // links work. Omit internal-only params (status, pageSize).
+      const urlParams = new URLSearchParams(params);
+      urlParams.delete("status");
+      urlParams.delete("pageSize");
+      if (urlParams.get("page") === "1") urlParams.delete("page");
+      const qs = urlParams.toString();
+      history.replaceState(null, "", qs ? `?${qs}` : "/");
 
       const res = await fetch(`/api/incentives?${params.toString()}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -229,7 +249,7 @@ export default function HomePage() {
     handleFilterChange({ industryCategory: undefined, excludeIndustryCategory: undefined, jurisdictionLevel: undefined, incentiveType: undefined });
   }, [handleFilterChange]);
 
-  const sortValue = `${filters.sortBy ?? "createdAt"}_${filters.sortOrder ?? "desc"}`;
+  const sortValue = `${filters.sortBy ?? "relevance"}_${filters.sortOrder ?? "desc"}`;
   const handleSortChange = (v: string) => {
     const [sortBy, sortOrder] = v.split("_");
     handleFilterChange({

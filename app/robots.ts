@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/_next/"],
+        disallow: ["/api/", "/_next/", "/saved", "/dashboard", "/preview/"],
       },
     ],
     sitemap: "https://statesubsidies.com/sitemap.xml",

@@ -68,7 +68,7 @@ export interface IncentiveFilters {
   closingSoon?: boolean;
   excludeIndustryCategory?: string;
   applicantType?: "ANY" | "PRIVATE_BUSINESS" | "NONPROFIT" | "GOVERNMENT";
-  sortBy?: "deadline" | "fundingAmount" | "createdAt";
+  sortBy?: "relevance" | "deadline" | "fundingAmount" | "createdAt";
   sortOrder?: "asc" | "desc";
   page?: number;
   pageSize?: number;

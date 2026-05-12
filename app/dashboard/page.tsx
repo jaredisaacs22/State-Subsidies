@@ -222,6 +222,18 @@ export default function DashboardPage() {
         </div>
       </header>
 
+      {loading && !stats && (
+        <main className="max-w-6xl mx-auto px-6 py-8 space-y-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[1,2,3,4].map((i) => <div key={i} className="h-24 bg-slate-100 rounded-xl animate-pulse" />)}
+          </div>
+          <div className="h-48 bg-slate-100 rounded-xl animate-pulse" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[1,2,3].map((i) => <div key={i} className="h-40 bg-slate-100 rounded-xl animate-pulse" />)}
+          </div>
+        </main>
+      )}
+
       {stats && (
         <main className="max-w-6xl mx-auto px-6 py-8 space-y-8">
           {/* Stat cards */}

@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 const VALID_JURISDICTION = ["FEDERAL", "STATE", "CITY", "AGENCY"] as const;
 const VALID_TYPE = ["GRANT", "TAX_CREDIT", "POINT_OF_SALE_REBATE", "SUBSIDY", "LOAN", "VOUCHER"] as const;
 const VALID_STATUS = ["ACTIVE", "CLOSED", "UPCOMING", "SUSPENDED"] as const;
-const VALID_SORT = ["createdAt", "fundingAmount", "deadline"] as const;
+const VALID_SORT = ["relevance", "createdAt", "fundingAmount", "deadline"] as const;
 
 function pickValid<T extends string>(value: string | null, allowed: readonly T[]): T | undefined {
   return allowed.includes(value as T) ? (value as T) : undefined;
@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
       incentiveType: pickValid(searchParams.get("incentiveType"), VALID_TYPE),
       industryCategory: searchParams.get("industryCategory") ?? undefined,
       status: pickValid(searchParams.get("status"), VALID_STATUS) ?? "ACTIVE",
-      sortBy: pickValid(searchParams.get("sortBy"), VALID_SORT) ?? "createdAt",
+      sortBy: pickValid(searchParams.get("sortBy"), VALID_SORT) ?? "relevance",
       sortOrder: pickValid(searchParams.get("sortOrder"), ["asc", "desc"] as const) ?? "desc",
       page: safeInt(searchParams.get("page"), 1),
       pageSize: safeInt(searchParams.get("pageSize"), 12),
@@ -41,11 +41,18 @@ export async function GET(request: NextRequest) {
       excludeIndustryCategory: searchParams.get("excludeIndustryCategory") ?? undefined,
     };
     const jurisdictionNameFilter = searchParams.get("jurisdictionName") ?? undefined;
+    const slugsParam = searchParams.get("slugs");
+    const slugsFilter = slugsParam ? slugsParam.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 500) : [];
 
     // Build Prisma where clause
     const where: Record<string, unknown> = {};
 
-    if (filters.status) where.status = filters.status;
+    // When fetching by slug list (saved page), skip status filter so closed programs still show
+    if (slugsFilter.length > 0) {
+      where.slug = { in: slugsFilter };
+    } else if (filters.status) {
+      where.status = filters.status;
+    }
     if (filters.jurisdictionLevel) where.jurisdictionLevel = filters.jurisdictionLevel;
     if (filters.incentiveType) where.incentiveType = filters.incentiveType;
     if (jurisdictionNameFilter) where.jurisdictionName = { equals: jurisdictionNameFilter, mode: "insensitive" };
@@ -83,12 +90,23 @@ export async function GET(request: NextRequest) {
       where.fundingAmount = fundingFilter;
     }
 
+    // "relevance" is the default — surface broad, trustworthy, well-funded
+    // programs first. jurisdictionLevel sorted desc gives lexicographic order
+    // STATE > FEDERAL > CITY > AGENCY, which happens to be the broad-to-niche
+    // ranking we want (any state resident vs. niche federal program vs. local).
     const orderBy =
       filters.sortBy === "fundingAmount"
-        ? { fundingAmount: filters.sortOrder }
+        ? [{ fundingAmount: filters.sortOrder }]
         : filters.sortBy === "deadline"
-        ? { deadline: filters.sortOrder }
-        : { createdAt: filters.sortOrder };
+        ? [{ deadline: filters.sortOrder }]
+        : filters.sortBy === "createdAt"
+        ? [{ createdAt: filters.sortOrder }]
+        : [
+            { isVerified: "desc" as const },
+            { jurisdictionLevel: "desc" as const },
+            { fundingAmount: { sort: "desc" as const, nulls: "last" as const } },
+            { createdAt: "desc" as const },
+          ];
 
     const page = Math.max(1, filters.page ?? 1);
     const pageSize = Math.min(200, Math.max(1, filters.pageSize ?? 12));
@@ -116,7 +134,18 @@ export async function GET(request: NextRequest) {
     response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
     return response;
   } catch (error) {
-    console.error("[GET /api/incentives]", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    const err = error as { message?: string; code?: string };
+    console.error("[GET /api/incentives]", err.code, err.message);
+    // Return an empty page instead of 500 so the site renders a clean
+    // "no programs" state during DB outages rather than crashing the UI.
+    return NextResponse.json({
+      data: [],
+      total: 0,
+      page: 1,
+      pageSize: 0,
+      totalPages: 0,
+      degraded: true,
+      reason: err.code ?? "DB_ERROR",
+    });
   }
 }

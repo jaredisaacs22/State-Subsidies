@@ -42,15 +42,15 @@ load_dotenv(Path(__file__).parent.parent / ".env")
 
 from .carb_scraper import CARBScraper
 from .caltrans_core_scraper import CalTransCOREScraper
+from .ct_green_bank_scraper import CTGreenBankScraper
 from .db_writer import insert_new_only, record_scrape_run, refresh_expired_statuses
+from .dsire_scraper import DSIREScraper
+from .ira_credits_scraper import IRACreditsScraper
 from .enricher import enrich
 from .grants_gov_scraper import GrantsGovScraper
-from .ct_green_bank_scraper import CTGreenBankScraper
 from .colorado_energy_scraper import ColoradoEnergyScraper
-from .dsire_scraper import DSIREScraper
 from .efficiency_vermont_scraper import EfficiencyVermontScraper
 from .illinois_energy_scraper import IllinoisEnergyScraper
-from .ira_credits_scraper import IRACreditsScraper
 from .maryland_energy_scraper import MarylandEnergyScraper
 from .masscec_scraper import MassCECScraper
 from .michigan_energy_scraper import MichiganEnergyScraper

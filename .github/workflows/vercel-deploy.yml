@@ -1,12 +1,9 @@
-name: Deploy to Vercel (manual)
+name: Deploy to Vercel
 
-# Bypass for the broken Vercel↔GitHub auto-deploy webhook on this repo.
-# Builds and deploys to production using VERCEL_TOKEN — same secret already
-# used by set-vercel-env.yml, so no new secrets are required.
+# Auto-deploys main to production using VERCEL_TOKEN. Bypasses the broken
+# Vercel↔GitHub auto-deploy webhook on this repo. Also runnable manually.
 #
-# Trigger: GitHub → Actions → "Deploy to Vercel (manual)" → Run workflow
-#
-# Required (already set):
+# Required secrets (already set):
 #   VERCEL_TOKEN  — Vercel personal access token
 #   VERCEL_SCOPE  — Vercel team / username slug (or empty for personal)
 #
@@ -14,6 +11,8 @@ name: Deploy to Vercel (manual)
 #   VERCEL_PROJECT_NAME — defaults to "state-subsidies"
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -27,6 +26,22 @@ jobs:
         with:
           node-version: "22"
           cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Apply pending Prisma migrations
+        # Runs idempotent CREATE INDEX IF NOT EXISTS / etc. New migrations
+        # ship with each deploy. Uses the unpooled URL (direct connection
+        # required for DDL).
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
+        run: |
+          if [ -z "${DATABASE_URL:-}" ]; then
+            echo "::warning::DATABASE_URL_UNPOOLED secret not set — skipping migrations"
+            exit 0
+          fi
+          npx prisma migrate deploy
 
       - name: Install Vercel CLI
         run: npm install -g vercel@latest

@@ -9,9 +9,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
-    { url: base, lastModified: new Date(), changeFrequency: "daily", priority: 1.0 },
-    { url: `${base}/map`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
-    { url: `${base}/saved`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.3 },
+    { url: base,                  lastModified: new Date(), changeFrequency: "daily",   priority: 1.0 },
+    { url: `${base}/map`,         lastModified: new Date(), changeFrequency: "weekly",  priority: 0.8 },
+    { url: `${base}/methodology`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
+    // /saved and /dashboard intentionally omitted — no crawlable content
   ];
 
   // Incentive detail pages

@@ -2,8 +2,9 @@ name: Scraper — Pull Live Incentive Data
 
 on:
   schedule:
-    # Run every 6 hours
-    - cron: "0 */6 * * *"
+    # Twice daily — 6h cadence was over-trafficking sources for marginal
+    # freshness. 12h still beats every source's update cadence.
+    - cron: "0 7,19 * * *"
   workflow_dispatch:
     inputs:
       mode:
@@ -16,6 +17,7 @@ on:
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 
@@ -58,3 +60,22 @@ jobs:
           path: /tmp/scrape-report.json
           if-no-files-found: ignore
           retention-days: 14
+
+      - name: Trigger production redeploy
+        # Refreshes /data/stats.json (precomputed at build time) so home +
+        # map pages reflect newly-scraped programs. Skipped if no hook URL
+        # is configured — set VERCEL_DEPLOY_HOOK_URL in repo secrets.
+        # Create at https://vercel.com/[team]/[project]/settings/git
+        if: success()
+        env:
+          DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "${DEPLOY_HOOK}" ]; then
+            echo "::warning::VERCEL_DEPLOY_HOOK_URL not set — skipping redeploy. Static stats won't refresh until next push to main."
+            exit 0
+          fi
+          echo "→ Triggering Vercel redeploy"
+          curl -fsS -X POST "$DEPLOY_HOOK" -o /tmp/deploy-trigger.json
+          cat /tmp/deploy-trigger.json
+          echo ""
+          echo "Deploy queued. /data/stats.json will refresh once the build completes."

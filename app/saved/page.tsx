@@ -9,20 +9,23 @@ import type { Incentive } from "@/lib/types";
 
 export default function SavedPage() {
   const { bookmarks } = useBookmarks();
-  const [all, setAll] = useState<Incentive[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [saved, setSaved] = useState<Incentive[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetch("/api/incentives?pageSize=200&status=ACTIVE")
+    if (bookmarks.length === 0) {
+      setSaved([]);
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    const slugList = bookmarks.join(",");
+    fetch(`/api/incentives?slugs=${encodeURIComponent(slugList)}&pageSize=500`)
       .then((r) => r.json())
-      .then((d) => {
-        setAll(d.data ?? []);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
-
-  const saved = all.filter((i) => bookmarks.includes(i.slug));
+      .then((d) => setSaved(d.data ?? []))
+      .catch(() => setSaved([]))
+      .finally(() => setLoading(false));
+  }, [bookmarks]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -58,6 +61,19 @@ export default function SavedPage() {
           </p>
           <p className="text-slate-400 text-sm mb-6">
             Click the bookmark icon on any program card to save it here.
+          </p>
+          <Link href="/" className="btn-primary">
+            Browse Programs
+          </Link>
+        </div>
+      ) : saved.length === 0 ? (
+        <div className="text-center py-20">
+          <Bookmark size={40} className="mx-auto text-slate-300 mb-4" />
+          <p className="text-slate-500 text-lg font-medium mb-2">
+            Your saved programs are no longer available
+          </p>
+          <p className="text-slate-400 text-sm mb-6">
+            These programs may have closed or been removed from our directory.
           </p>
           <Link href="/" className="btn-primary">
             Browse Programs

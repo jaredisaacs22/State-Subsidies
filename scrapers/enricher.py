@@ -58,7 +58,11 @@ def _claude_enrich(incentive: ScrapedIncentive, raw_text: str, api_key: str) -> 
 Given the following content from a government incentive program page, extract:
 1. A clean 2-3 sentence summary (shortSummary)
 2. A list of 4-8 ultra-concise eligibility requirements as bullet points (keyRequirements)
-3. The most relevant industry categories from this list: Agriculture, Clean Technology, Construction, Energy Management, Fleet, Infrastructure, Logistics, Manufacturing, Public Transit
+3. The most relevant industry categories (1-3) from this exact list:
+   Agriculture, Clean Technology, Construction, EV Charging, Energy Management,
+   Energy Storage, Fleet, Government & Nonprofit, Healthcare, Infrastructure,
+   Logistics, Manufacturing, Public Transit, Real Estate, Research & Development,
+   Telecommunications, Technology, Water & Utilities
 4. The incentive type: GRANT, TAX_CREDIT, POINT_OF_SALE_REBATE, SUBSIDY, LOAN, or VOUCHER
 
 Return ONLY valid JSON in this exact format:

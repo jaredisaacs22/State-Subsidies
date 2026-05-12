@@ -29,8 +29,9 @@ const MAX_STORE_SIZE = 10_000;
 const store = new Map<string, Entry>();
 
 const LIMITS: Record<string, { max: number; windowMs: number }> = {
-  "/api/chat":  { max: 10,  windowMs: 60_000 },
-  "/api/track": { max: 100, windowMs: 60_000 },
+  "/api/chat":     { max: 10,  windowMs: 60_000 },
+  "/api/track":    { max: 100, windowMs: 60_000 },
+  "/api/redirect": { max: 30,  windowMs: 60_000 },
 };
 
 function clientIp(req: NextRequest): string {
@@ -45,9 +46,9 @@ export function middleware(req: NextRequest): NextResponse | undefined {
   const { pathname } = req.nextUrl;
   const limit = LIMITS[pathname];
 
-  // Only rate-limit POST on configured routes — GET endpoints (health, stats)
-  // are cheap and must remain observable through partial outages.
-  if (!limit || req.method !== "POST") return undefined;
+  // Limit configured routes; allow other methods (e.g. OPTIONS) through.
+  if (!limit) return undefined;
+  if (req.method !== "POST" && req.method !== "GET") return undefined;
 
   const ip = clientIp(req);
   const key = `${pathname}:${ip}`;
@@ -96,5 +97,5 @@ export function middleware(req: NextRequest): NextResponse | undefined {
 }
 
 export const config = {
-  matcher: ["/api/chat", "/api/track"],
+  matcher: ["/api/chat", "/api/track", "/api/redirect"],
 };
