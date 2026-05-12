@@ -53,11 +53,13 @@ from .illinois_energy_scraper import IllinoisEnergyScraper
 from .ira_credits_scraper import IRACreditsScraper
 from .maryland_energy_scraper import MarylandEnergyScraper
 from .masscec_scraper import MassCECScraper
+from .michigan_energy_scraper import MichiganEnergyScraper
 from .nj_clean_energy_scraper import NJCleanEnergyScraper
 from .nyserda_scraper import NYSERDAScraper
 from .oregon_energy_trust_scraper import OregonEnergyTrustScraper
 from .texas_seco_scraper import TexasSECOScraper
 from .usda_rural_development_scraper import USDAFuralDevelopmentScraper
+from .washington_state_scraper import WashingtonStateScraper
 from .wazip_scraper import WazipScraper
 from .wisconsin_focus_scraper import WisconsinFocusScraper
 
@@ -120,6 +122,8 @@ def _run_scrapers(mock: bool) -> tuple[list, dict]:
         ("Efficiency Vermont", EfficiencyVermontScraper(mock=mock)),
         ("Texas SECO",     TexasSECOScraper(mock=mock)),
         ("Colorado Energy", ColoradoEnergyScraper(mock=mock)),
+        ("Michigan Energy", MichiganEnergyScraper(mock=mock)),
+        ("Washington State", WashingtonStateScraper(mock=mock)),
     ]
     for name, scraper in scrapers:
         try:

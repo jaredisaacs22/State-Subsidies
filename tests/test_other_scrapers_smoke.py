@@ -29,11 +29,13 @@ from scrapers.illinois_energy_scraper import IllinoisEnergyScraper
 from scrapers.ira_credits_scraper import IRACreditsScraper
 from scrapers.maryland_energy_scraper import MarylandEnergyScraper
 from scrapers.masscec_scraper import MassCECScraper
+from scrapers.michigan_energy_scraper import MichiganEnergyScraper
 from scrapers.nj_clean_energy_scraper import NJCleanEnergyScraper
 from scrapers.nyserda_scraper import NYSERDAScraper
 from scrapers.oregon_energy_trust_scraper import OregonEnergyTrustScraper
 from scrapers.texas_seco_scraper import TexasSECOScraper
 from scrapers.usda_rural_development_scraper import USDAFuralDevelopmentScraper
+from scrapers.washington_state_scraper import WashingtonStateScraper
 from scrapers.wazip_scraper import WazipScraper
 from scrapers.wisconsin_focus_scraper import WisconsinFocusScraper
 from scrapers.models import IncentiveType, JurisdictionLevel, ScrapedIncentive
@@ -57,6 +59,8 @@ SCRAPERS = [
     ("Efficiency Vermont", EfficiencyVermontScraper,   JurisdictionLevel.STATE),
     ("Texas SECO",     TexasSECOScraper,                JurisdictionLevel.STATE),
     ("Colorado Energy", ColoradoEnergyScraper,          JurisdictionLevel.STATE),
+    ("Michigan Energy", MichiganEnergyScraper,          JurisdictionLevel.STATE),
+    ("Washington State", WashingtonStateScraper,        JurisdictionLevel.STATE),
 ]
 
 
