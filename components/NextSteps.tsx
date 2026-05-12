@@ -1,4 +1,4 @@
-import { ExternalLink, FileCheck, ListChecks, ArrowRight } from "lucide-react";
+import { ExternalLink, ListChecks, Sparkles } from "lucide-react";
 import { sourceRedirectUrl } from "@/lib/utils";
 import type { Incentive } from "@/lib/types";
 
@@ -41,9 +41,17 @@ export function NextSteps({ incentive }: { incentive: Incentive }) {
         Go to official source
         <ExternalLink size={14} aria-hidden />
       </a>
-      <p className="text-[10px] text-slate-400 mt-2 text-center leading-snug">
+      <p className="text-[10px] text-slate-400 mt-2 mb-3 text-center leading-snug">
         Opens {(() => { try { return new URL(incentive.sourceUrl).hostname.replace("www.", ""); } catch { return incentive.sourceUrl; } })()} in a new tab
       </p>
+      {/* Secondary CTA — jumps to the interactive Eligibility Checker on the same page */}
+      <a
+        href="#eligibility-checker"
+        className="flex items-center justify-center gap-1.5 text-[12px] font-semibold text-forest-700 hover:text-forest-800 border border-forest-200 hover:border-forest-400 hover:bg-forest-50 rounded-lg px-3 py-2 transition-colors w-full"
+      >
+        <Sparkles size={12} aria-hidden />
+        Am I eligible?
+      </a>
     </div>
   );
 }

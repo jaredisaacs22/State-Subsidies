@@ -8,6 +8,7 @@ import { ShareButtons } from "@/components/ShareButtons";
 import { ProvenancePanel } from "@/components/ProvenancePanel";
 import { AtAGlance } from "@/components/AtAGlance";
 import { DetailedSummary } from "@/components/DetailedSummary";
+import { EligibilityChecker } from "@/components/EligibilityChecker";
 import { FreshnessBadge } from "@/components/FreshnessBadge";
 import { NextSteps } from "@/components/NextSteps";
 import { TableOfContents } from "@/components/TableOfContents";
@@ -174,6 +175,13 @@ export default async function IncentiveDetailPage({
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* Eligibility Checker — interactive self-assessment against the
+              key requirements above. Renders as a full card under Requirements
+              so the question "am I eligible?" gets a concrete answer. */}
+          <div id="eligibility-checker" className="scroll-mt-24">
+            <EligibilityChecker incentive={incentive} variant="expanded" />
           </div>
 
           {/* Related Programs */}
