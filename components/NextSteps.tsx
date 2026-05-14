@@ -50,7 +50,7 @@ export function NextSteps({ incentive }: { incentive: Incentive }) {
         className="flex items-center justify-center gap-1.5 text-[12px] font-semibold text-forest-700 hover:text-forest-800 border border-forest-200 hover:border-forest-400 hover:bg-forest-50 rounded-lg px-3 py-2 transition-colors w-full"
       >
         <Sparkles size={12} aria-hidden />
-        Am I eligible?
+        Do I qualify?
       </a>
     </div>
   );

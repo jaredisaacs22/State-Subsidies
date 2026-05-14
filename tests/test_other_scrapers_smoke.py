@@ -22,6 +22,7 @@ import pytest
 from scrapers.carb_scraper import CARBScraper
 from scrapers.caltrans_core_scraper import CalTransCOREScraper
 from scrapers.ct_green_bank_scraper import CTGreenBankScraper
+from scrapers.arizona_energy_scraper import ArizonaEnergyScraper
 from scrapers.colorado_energy_scraper import ColoradoEnergyScraper
 from scrapers.dsire_scraper import DSIREScraper
 from scrapers.efficiency_vermont_scraper import EfficiencyVermontScraper
@@ -30,9 +31,11 @@ from scrapers.ira_credits_scraper import IRACreditsScraper
 from scrapers.maryland_energy_scraper import MarylandEnergyScraper
 from scrapers.masscec_scraper import MassCECScraper
 from scrapers.michigan_energy_scraper import MichiganEnergyScraper
+from scrapers.minnesota_cip_scraper import MinnesotaCIPScraper
 from scrapers.nj_clean_energy_scraper import NJCleanEnergyScraper
 from scrapers.nyserda_scraper import NYSERDAScraper
 from scrapers.oregon_energy_trust_scraper import OregonEnergyTrustScraper
+from scrapers.pennsylvania_energy_scraper import PennsylvaniaEnergyScraper
 from scrapers.texas_seco_scraper import TexasSECOScraper
 from scrapers.usda_rural_development_scraper import USDAFuralDevelopmentScraper
 from scrapers.washington_state_scraper import WashingtonStateScraper
@@ -61,6 +64,9 @@ SCRAPERS = [
     ("Colorado Energy", ColoradoEnergyScraper,          JurisdictionLevel.STATE),
     ("Michigan Energy", MichiganEnergyScraper,          JurisdictionLevel.STATE),
     ("Washington State", WashingtonStateScraper,        JurisdictionLevel.STATE),
+    ("Pennsylvania",   PennsylvaniaEnergyScraper,        JurisdictionLevel.STATE),
+    ("Minnesota CIP",  MinnesotaCIPScraper,              JurisdictionLevel.STATE),
+    ("Arizona",        ArizonaEnergyScraper,             JurisdictionLevel.STATE),
 ]
 
 
