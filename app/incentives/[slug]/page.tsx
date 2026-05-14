@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink, ArrowLeft, Building2, CheckCircle2 } from "lucide-react";
+import { ExternalLink, ArrowLeft, Building2, CheckCircle2, ClipboardCheck } from "lucide-react";
 import { IncentiveTypeBadge, JurisdictionBadge, StatusBadge } from "@/components/Badge";
 import { IncentiveCard } from "@/components/IncentiveCard";
 import { BookmarkButton } from "@/components/BookmarkButton";
@@ -191,7 +191,7 @@ export default async function IncentiveDetailPage({
           {incentive.title}
         </h1>
 
-        <div className="flex items-center gap-2 text-slate-500 mb-5 flex-wrap">
+        <div className="flex items-center gap-2 text-slate-500 mb-4 flex-wrap">
           <Building2 size={15} />
           <span className="text-sm">
             {incentive.managingAgency}
@@ -204,6 +204,17 @@ export default async function IncentiveDetailPage({
           )}
           <FreshnessBadge updatedAt={incentive.updatedAt} lastVerifiedAt={incentive.lastVerifiedAt} />
         </div>
+
+        {/* Inline "Do I qualify?" CTA — jumps to the interactive checker further
+            down the page. Mirrors the same affordance that appears on every
+            home-screen card so the entry point is consistent. */}
+        <a
+          href="#eligibility-checker"
+          className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-forest-700 bg-forest-50 hover:bg-forest-100 border border-forest-200 hover:border-forest-300 rounded-full px-3.5 py-1.5 mb-5 transition-colors"
+        >
+          <ClipboardCheck size={12} aria-hidden />
+          Do I qualify?
+        </a>
 
         {/* At-a-glance — 5 quick-scan facts */}
         <AtAGlance incentive={incentive} />

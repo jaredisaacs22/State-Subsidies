@@ -72,7 +72,7 @@ export function EligibilityChecker({
             )}
           >
             <Sparkles size={isExpanded ? 16 : 13} className="text-forest-600" aria-hidden />
-            Am I eligible?
+            Do I qualify?
           </p>
           {isExpanded && (
             <p className="text-[13px] text-slate-500 mt-1 leading-snug">

@@ -48,15 +48,18 @@ from .dsire_scraper import DSIREScraper
 from .ira_credits_scraper import IRACreditsScraper
 from .enricher import enrich
 from .grants_gov_scraper import GrantsGovScraper
+from .arizona_energy_scraper import ArizonaEnergyScraper
 from .colorado_energy_scraper import ColoradoEnergyScraper
 from .efficiency_vermont_scraper import EfficiencyVermontScraper
 from .illinois_energy_scraper import IllinoisEnergyScraper
 from .maryland_energy_scraper import MarylandEnergyScraper
 from .masscec_scraper import MassCECScraper
 from .michigan_energy_scraper import MichiganEnergyScraper
+from .minnesota_cip_scraper import MinnesotaCIPScraper
 from .nj_clean_energy_scraper import NJCleanEnergyScraper
 from .nyserda_scraper import NYSERDAScraper
 from .oregon_energy_trust_scraper import OregonEnergyTrustScraper
+from .pennsylvania_energy_scraper import PennsylvaniaEnergyScraper
 from .texas_seco_scraper import TexasSECOScraper
 from .usda_rural_development_scraper import USDAFuralDevelopmentScraper
 from .washington_state_scraper import WashingtonStateScraper
@@ -124,6 +127,9 @@ def _run_scrapers(mock: bool) -> tuple[list, dict]:
         ("Colorado Energy", ColoradoEnergyScraper(mock=mock)),
         ("Michigan Energy", MichiganEnergyScraper(mock=mock)),
         ("Washington State", WashingtonStateScraper(mock=mock)),
+        ("Pennsylvania",   PennsylvaniaEnergyScraper(mock=mock)),
+        ("Minnesota CIP",  MinnesotaCIPScraper(mock=mock)),
+        ("Arizona",        ArizonaEnergyScraper(mock=mock)),
     ]
     for name, scraper in scrapers:
         try:
