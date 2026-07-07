@@ -151,7 +151,10 @@ export default function HomePage() {
       urlParams.delete("pageSize");
       if (urlParams.get("page") === "1") urlParams.delete("page");
       const qs = urlParams.toString();
-      history.replaceState(null, "", qs ? `?${qs}` : "/");
+      // Must pass the CURRENT history state, never null — the App Router
+      // stores __PRIVATE_NEXTJS_INTERNALS_TREE in history.state, and wiping
+      // it crashes the router on the next navigation.
+      history.replaceState(window.history.state, "", qs ? `?${qs}` : "/");
 
       const res = await fetch(`/api/incentives?${params.toString()}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);

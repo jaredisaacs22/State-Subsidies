@@ -6903,12 +6903,14 @@ const incentives = Array.from(new Map(enriched.map((i) => [i.slug, i])).values()
 async function main() {
   console.log("🌱 Seeding database...");
 
-  // Remove low-quality Grants.gov scraped records before upserting curated data
+  // Remove ALL auto-scraped Grants.gov records before upserting curated data.
+  // They are uncurated NOFO dumps (raw HTML entities in titles, no quality
+  // review) — the catalog is curated-only until the scraper meets that bar.
   const purged = await prisma.incentive.deleteMany({
     where: {
       OR: [
         { shortSummary: { startsWith: "Federal grant opportunity:" } },
-        { scraperSource: "grants_gov_api", industryCategories: { equals: ["General Business"] } },
+        { scraperSource: "grants_gov_api" },
       ],
     },
   });
