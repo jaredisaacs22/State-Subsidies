@@ -35,12 +35,24 @@ export async function register() {
 
     console.log(`[seed] Catalog incomplete ("${sentinel.slug}" missing) — upserting ${INCENTIVES.length} programs...`);
 
-    for (const inc of INCENTIVES) {
-      await prisma.incentive.upsert({
-        where: { slug: inc.slug },
-        update: inc,
-        create: inc,
-      });
+    // Chunked parallel upserts: 583 sequential round-trips (~30-60s) would
+    // blow past serverless init limits; chunks of 15 finish in a few seconds.
+    // Individual failures are logged, not fatal — the sentinel stays missing
+    // if the tail chunk fails, so the next cold start retries.
+    const CHUNK = 15;
+    for (let i = 0; i < INCENTIVES.length; i += CHUNK) {
+      const results = await Promise.allSettled(
+        INCENTIVES.slice(i, i + CHUNK).map((inc) =>
+          prisma.incentive.upsert({
+            where: { slug: inc.slug },
+            update: inc,
+            create: inc,
+          })
+        )
+      );
+      for (const r of results) {
+        if (r.status === "rejected") console.error("[seed] Upsert failed:", r.reason);
+      }
     }
 
     const newCount = await prisma.incentive.count();
