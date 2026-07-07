@@ -1,7 +1,15 @@
-import { DollarSign, Calendar, Clock, Layers, ClipboardList } from "lucide-react";
+import { DollarSign, Calendar, Clock, Layers, ClipboardList, Users } from "lucide-react";
 import { formatCurrency, formatDeadline } from "@/lib/utils";
-import { INCENTIVE_TYPE_LABELS } from "@/lib/types";
-import type { Incentive } from "@/lib/types";
+import { INCENTIVE_TYPE_LABELS, FUNDER_TYPE_LABELS } from "@/lib/types";
+import type { Incentive, EntityType } from "@/lib/types";
+
+const ENTITY_SHORT: Record<EntityType, string> = {
+  BUSINESS: "Businesses",
+  NONPROFIT: "Nonprofits",
+  GOVERNMENT: "Gov entities",
+  TRIBAL: "Tribes",
+  INDIVIDUAL: "Individuals",
+};
 
 /**
  * Five-cell quick-scan strip. Designed to answer the most-asked questions
@@ -15,8 +23,19 @@ import type { Incentive } from "@/lib/types";
 export function AtAGlance({ incentive }: { incentive: Incentive }) {
   const complexity = getComplexity(incentive);
   const timing = getTiming(incentive);
+  // Records seeded before the eligibility field existed default to businesses
+  const entityTypes = incentive.eligibleEntityTypes?.length
+    ? incentive.eligibleEntityTypes
+    : (["BUSINESS"] as EntityType[]);
+  const funderLabel = FUNDER_TYPE_LABELS[incentive.funderType] ?? "Government";
 
   const items = [
+    {
+      icon: <Users size={16} className="text-rose-600" />,
+      label: "Who can apply",
+      value: entityTypes.map((t) => ENTITY_SHORT[t] ?? t).join(", "),
+      sub: `${funderLabel}-funded`,
+    },
     {
       icon: <DollarSign size={16} className="text-emerald-600" />,
       label: "Max funding",
@@ -50,7 +69,7 @@ export function AtAGlance({ incentive }: { incentive: Incentive }) {
   ];
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-4 bg-slate-50 rounded-xl border border-slate-200 px-5 py-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-4 gap-y-4 bg-slate-50 rounded-xl border border-slate-200 px-5 py-4">
       {items.map((it) => (
         <div key={it.label} className="min-w-0">
           <div className="flex items-center gap-1.5 mb-1 text-[10px] font-semibold text-slate-500 uppercase tracking-wide">

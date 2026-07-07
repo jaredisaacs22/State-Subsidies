@@ -31,13 +31,13 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://statesubsidies.com"),
   title: {
-    default: "StateSubsidies — National Directory of Government Incentives",
+    default: "StateSubsidies — National Directory of Government & Foundation Funding",
     template: "%s | StateSubsidies",
   },
   description:
-    "A free public directory of 500+ federal, state, city, and agency grants, tax credits, loans, and rebates for U.S. businesses. " +
-    "Filter by industry, state, and incentive type across all 50 states.",
-  keywords: ["government grants", "business incentives", "tax credits", "rebates", "state incentives", "IRA", "clean energy", "small business grants"],
+    "A free public directory of 500+ federal, state, city, agency, and foundation grants, tax credits, loans, and rebates for U.S. businesses and nonprofits. " +
+    "Filter by industry, state, applicant type, and incentive type across all 50 states.",
+  keywords: ["government grants", "business incentives", "nonprofit grants", "foundation grants", "tax credits", "rebates", "state incentives", "IRA", "clean energy", "small business grants", "501c3 funding"],
   openGraph: {
     siteName: "StateSubsidies",
     locale: "en_US",
@@ -73,6 +73,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
             <nav className="flex items-center gap-1">
               <a href="/#browse" className="btn-ghost text-sm">Browse</a>
+              <a href="/nonprofits" className="btn-ghost text-sm hidden sm:flex">Nonprofits</a>
               <a href="/map" className="btn-ghost text-sm hidden sm:flex">Map</a>
               <a href="/saved" className="btn-ghost text-sm hidden sm:flex">Saved</a>
             </nav>
@@ -95,10 +96,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   </span>
                 </div>
                 <p className="text-sm text-slate-500 leading-relaxed">
-                  There&apos;s a lot of government money out there for businesses. Most of it goes unclaimed because nobody knows it exists. We fixed that.
+                  There&apos;s a lot of government and foundation money out there for businesses and nonprofits. Most of it goes unclaimed because nobody knows it exists. We fixed that.
                 </p>
                 <p className="text-xs text-slate-400 mt-2">
-                  All 50 states · sourced from official .gov and agency sites.
+                  All 50 states · sourced from official .gov, agency, and funder sites.
                 </p>
               </div>
               <div>
@@ -115,6 +116,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <p className="font-semibold text-slate-700 text-sm mb-3">Resources</p>
                 <ul className="space-y-1.5 text-sm text-slate-500">
                   <li><a href="/#browse" className="hover:text-forest-700 transition-colors">Browse All Programs</a></li>
+                  <li><a href="/nonprofits" className="hover:text-forest-700 transition-colors">Nonprofit &amp; NGO Funding</a></li>
                   <li><a href="/map" className="hover:text-forest-700 transition-colors">State Map</a></li>
                   <li><a href="https://www.grants.gov" target="_blank" rel="noopener noreferrer" className="hover:text-forest-700 transition-colors">Grants.gov ↗</a></li>
                   <li><a href="https://www.sba.gov" target="_blank" rel="noopener noreferrer" className="hover:text-forest-700 transition-colors">U.S. Small Business Administration ↗</a></li>

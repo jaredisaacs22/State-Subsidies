@@ -47,17 +47,17 @@ export const AUDIENCES: Audience[] = [
   },
   {
     id: "nonprofit",
-    label: "Nonprofit",
-    description: "501(c)(3) organizations and charities",
+    label: "Nonprofit / NGO",
+    description: "501(c)(3)s, charities, community orgs",
     icon: Heart,
-    filterPreset: { industryCategory: "Government & Nonprofit" },
+    filterPreset: { applicantType: "NONPROFIT" },
   },
   {
     id: "government",
     label: "Government",
     description: "Municipalities, agencies, public entities",
     icon: Landmark,
-    filterPreset: { industryCategory: "Government & Nonprofit" },
+    filterPreset: { applicantType: "GOVERNMENT" },
   },
   {
     id: "educator",

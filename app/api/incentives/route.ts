@@ -5,10 +5,20 @@ import type { IncentiveFilters } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-const VALID_JURISDICTION = ["FEDERAL", "STATE", "CITY", "AGENCY"] as const;
+const VALID_JURISDICTION = ["FEDERAL", "STATE", "CITY", "AGENCY", "FOUNDATION"] as const;
 const VALID_TYPE = ["GRANT", "TAX_CREDIT", "POINT_OF_SALE_REBATE", "SUBSIDY", "LOAN", "VOUCHER"] as const;
 const VALID_STATUS = ["ACTIVE", "CLOSED", "UPCOMING", "SUSPENDED"] as const;
 const VALID_SORT = ["relevance", "createdAt", "fundingAmount", "deadline"] as const;
+const VALID_FUNDER = ["GOVERNMENT", "FOUNDATION", "CORPORATE", "UTILITY"] as const;
+
+// UI applicantType values → stored eligibleEntityTypes values
+const APPLICANT_TO_ENTITY: Record<string, string> = {
+  PRIVATE_BUSINESS: "BUSINESS",
+  NONPROFIT: "NONPROFIT",
+  GOVERNMENT: "GOVERNMENT",
+  TRIBAL: "TRIBAL",
+  INDIVIDUAL: "INDIVIDUAL",
+};
 
 function pickValid<T extends string>(value: string | null, allowed: readonly T[]): T | undefined {
   return allowed.includes(value as T) ? (value as T) : undefined;
@@ -41,6 +51,8 @@ export async function GET(request: NextRequest) {
       excludeIndustryCategory: searchParams.get("excludeIndustryCategory") ?? undefined,
     };
     const jurisdictionNameFilter = searchParams.get("jurisdictionName") ?? undefined;
+    const applicantEntity = APPLICANT_TO_ENTITY[searchParams.get("applicantType") ?? ""];
+    const funderTypeFilter = pickValid(searchParams.get("funderType"), VALID_FUNDER);
     const slugsParam = searchParams.get("slugs");
     const slugsFilter = slugsParam ? slugsParam.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 500) : [];
 
@@ -56,6 +68,8 @@ export async function GET(request: NextRequest) {
     if (filters.jurisdictionLevel) where.jurisdictionLevel = filters.jurisdictionLevel;
     if (filters.incentiveType) where.incentiveType = filters.incentiveType;
     if (jurisdictionNameFilter) where.jurisdictionName = { equals: jurisdictionNameFilter, mode: "insensitive" };
+    if (applicantEntity) where.eligibleEntityTypes = { has: applicantEntity };
+    if (funderTypeFilter) where.funderType = funderTypeFilter;
 
     // Full-text search across title, summary, agency
     if (filters.search) {

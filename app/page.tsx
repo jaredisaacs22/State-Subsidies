@@ -42,6 +42,7 @@ function readFiltersFromURL(): Partial<IncentiveFilters> {
   if (p.get("closingSoon") === "true") out.closingSoon = true;
   if (p.get("page")) out.page = parseInt(p.get("page")!);
   if (p.get("applicantType")) out.applicantType = p.get("applicantType") as IncentiveFilters["applicantType"];
+  if (p.get("funderType")) out.funderType = p.get("funderType") as IncentiveFilters["funderType"];
   return out;
 }
 
@@ -106,7 +107,7 @@ export default function HomePage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedAudience, setSelectedAudience] = useState<AudienceId | null>(null);
   const [stats, setStats] = useState<{
-    federal: number; state: number; city: number; agency: number;
+    federal: number; state: number; city: number; agency: number; foundation?: number;
     medianAward: number | null; largestActive: number | null; asOf: string | null;
   } | null>(null);
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -139,6 +140,7 @@ export default function HomePage() {
       if (f.verified) params.set("verified", "true");
       if (f.closingSoon) params.set("closingSoon", "true");
       if (f.applicantType) params.set("applicantType", f.applicantType);
+      if (f.funderType) params.set("funderType", f.funderType);
       params.set("page", String(f.page ?? 1));
       params.set("pageSize", String(f.pageSize ?? 24));
 
@@ -191,6 +193,8 @@ export default function HomePage() {
       maxFunding: undefined,
       verified: undefined,
       closingSoon: undefined,
+      applicantType: undefined,
+      funderType: undefined,
     });
   }, [handleFilterChange]);
 
@@ -226,7 +230,7 @@ export default function HomePage() {
       if (selectedAudience === audienceId) {
         localStorage.removeItem("ss_audience_v1");
         setSelectedAudience(null);
-        handleFilterChange({ industryCategory: undefined, excludeIndustryCategory: undefined, jurisdictionLevel: undefined, incentiveType: undefined });
+        handleFilterChange({ industryCategory: undefined, excludeIndustryCategory: undefined, jurisdictionLevel: undefined, incentiveType: undefined, applicantType: undefined });
         return;
       }
       localStorage.setItem("ss_audience_v1", audienceId);
@@ -237,6 +241,7 @@ export default function HomePage() {
         excludeIndustryCategory: undefined,
         jurisdictionLevel: undefined,
         incentiveType: undefined,
+        applicantType: undefined,
         ...filterPreset,
       });
     },
@@ -246,7 +251,7 @@ export default function HomePage() {
   const handleAudienceClear = useCallback(() => {
     localStorage.removeItem("ss_audience_v1");
     setSelectedAudience(null);
-    handleFilterChange({ industryCategory: undefined, excludeIndustryCategory: undefined, jurisdictionLevel: undefined, incentiveType: undefined });
+    handleFilterChange({ industryCategory: undefined, excludeIndustryCategory: undefined, jurisdictionLevel: undefined, incentiveType: undefined, applicantType: undefined });
   }, [handleFilterChange]);
 
   const sortValue = `${filters.sortBy ?? "relevance"}_${filters.sortOrder ?? "desc"}`;
@@ -266,6 +271,8 @@ export default function HomePage() {
     filters.minFunding,
     filters.verified,
     filters.closingSoon,
+    filters.applicantType,
+    filters.funderType,
   ].filter(Boolean).length;
 
   const hasActiveFilters = activeFilterCount > 0 || !!filters.search;
@@ -284,12 +291,12 @@ export default function HomePage() {
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           {/* H1 */}
           <h1 className="text-4xl sm:text-5xl lg:text-[3.35rem] font-extrabold tracking-[-0.02em] leading-[1.06] mb-4 text-balance">
-            Find government money<br className="hidden sm:block" /> for your business
+            Find funding for your<br className="hidden sm:block" /> business or nonprofit
           </h1>
 
           <p className="text-white/50 text-lg mb-9 max-w-xl mx-auto leading-relaxed">
-            Grants, tax credits, loans &amp; rebates across every state and federal agency.<br className="hidden sm:block" />
-            Tell us about your business and we&apos;ll find what you qualify for.
+            Grants, tax credits, loans &amp; rebates from every state, federal agency, and major foundation.<br className="hidden sm:block" />
+            Tell us about your organization and we&apos;ll find what you qualify for.
           </p>
 
           {/* Inline AI intake + search */}
@@ -321,7 +328,7 @@ export default function HomePage() {
                   { value: stats?.federal ?? "—", label: "Federal" },
                   { value: stats?.state ?? "—", label: "State" },
                   { value: stats != null ? (stats.city + stats.agency) : "—", label: "Local & Agency" },
-                  { value: fmtMoney(stats?.largestActive), label: "Largest active" },
+                  { value: stats?.foundation ?? "—", label: "Foundation & Corporate" },
                   { value: fmtMoney(stats?.medianAward), label: "Median award" },
                 ];
                 return items.map(({ value, label }, i) => (

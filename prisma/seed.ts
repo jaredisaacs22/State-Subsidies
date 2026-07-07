@@ -1,10 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 import { caPrograms } from "./seed-ca-programs";
 import { otherPrograms } from "./seed-other-programs";
+import { nonprofitPrograms } from "./seed-nonprofit-programs";
+import { foundationPrograms } from "./seed-foundation-programs";
+import { enrichProgram } from "../lib/enrichEntityTypes";
 
 const prisma = new PrismaClient();
 
-const incentives = [
+const rawIncentives = [
   // ── 1. WAZIP Off-Road Equipment Grant ───────────────────────────────────
   {
     title: "WAZIP Off-Road Equipment Replacement Grant",
@@ -6888,7 +6891,14 @@ const incentives = [
   // CA-specific programs (split into separate files to keep seed.ts manageable)
   ...caPrograms,
   ...otherPrograms,
+  ...nonprofitPrograms,
+  ...foundationPrograms,
 ];
+
+// Derive eligibleEntityTypes + funderType for legacy records (new files set them explicitly),
+// then dedupe by slug (last wins) so counts match the DB after upserting.
+const enriched = rawIncentives.map(enrichProgram);
+const incentives = Array.from(new Map(enriched.map((i) => [i.slug, i])).values());
 
 async function main() {
   console.log("🌱 Seeding database...");

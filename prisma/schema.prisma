@@ -30,9 +30,14 @@ model Incentive {
   slug  String @unique
 
   // Jurisdiction
-  // Values: FEDERAL | STATE | CITY | AGENCY
+  // Values: FEDERAL | STATE | CITY | AGENCY | FOUNDATION
   jurisdictionLevel String
   jurisdictionName  String // e.g. "California", "United States", "Los Angeles"
+
+  // Who can apply: BUSINESS | NONPROFIT | GOVERNMENT | TRIBAL | INDIVIDUAL
+  eligibleEntityTypes String[] @default(["BUSINESS"])
+  // Who funds it: GOVERNMENT | FOUNDATION | CORPORATE | UTILITY
+  funderType String @default("GOVERNMENT")
 
   // Agency
   managingAgency String
@@ -89,6 +94,9 @@ model Incentive {
   @@index([status, parseConfidence])
   // GIN index on TEXT[] for has/hasSome (@>, &&). Required for industryCategory filters.
   @@index([industryCategories(ops: ArrayOps)], type: Gin, map: "Incentive_industryCategories_gin")
+  // Same pattern for the applicant-type ("Who Can Apply") filter.
+  @@index([eligibleEntityTypes(ops: ArrayOps)], type: Gin, map: "Incentive_eligibleEntityTypes_gin")
+  @@index([funderType])
 }
 
 model PageView {
