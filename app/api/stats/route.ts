@@ -6,12 +6,13 @@ export const revalidate = 300;
 
 export async function GET() {
   try {
-    const [total, federal, state, city, agency, awardStats] = await Promise.all([
+    const [total, federal, state, city, agency, foundation, awardStats] = await Promise.all([
       prisma.incentive.count({ where: { status: "ACTIVE" } }),
       prisma.incentive.count({ where: { status: "ACTIVE", jurisdictionLevel: "FEDERAL" } }),
       prisma.incentive.count({ where: { status: "ACTIVE", jurisdictionLevel: "STATE" } }),
       prisma.incentive.count({ where: { status: "ACTIVE", jurisdictionLevel: "CITY" } }),
       prisma.incentive.count({ where: { status: "ACTIVE", jurisdictionLevel: "AGENCY" } }),
+      prisma.incentive.count({ where: { status: "ACTIVE", jurisdictionLevel: "FOUNDATION" } }),
       // SS-005: median + largest from Postgres percentile function
       prisma.$queryRaw<[{ median: number | null; largest: number | null }]>`
         SELECT
@@ -30,6 +31,7 @@ export async function GET() {
       state,
       city,
       agency,
+      foundation,
       medianAward: median != null ? Number(median) : null,
       largestActive: largest != null ? Number(largest) : null,
       asOf: new Date().toISOString(),
@@ -37,7 +39,7 @@ export async function GET() {
   } catch (error) {
     console.error("[GET /api/stats]", error);
     return NextResponse.json({
-      total: 0, federal: 0, state: 0, city: 0, agency: 0,
+      total: 0, federal: 0, state: 0, city: 0, agency: 0, foundation: 0,
       medianAward: null, largestActive: null, asOf: new Date().toISOString(),
     });
   }

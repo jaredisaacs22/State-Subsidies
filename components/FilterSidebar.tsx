@@ -231,6 +231,7 @@ export function FilterSidebar({
     filters.verified,
     filters.closingSoon,
     filters.applicantType,
+    filters.funderType,
   ].filter(Boolean).length;
 
   const clearAll = () =>
@@ -244,6 +245,7 @@ export function FilterSidebar({
       verified: undefined,
       closingSoon: undefined,
       applicantType: undefined,
+      funderType: undefined,
     });
 
   const filteredStates = stateQuery.trim()
@@ -362,8 +364,10 @@ export function FilterSidebar({
           {([
             { label: "All applicants", value: undefined },
             { label: "Private businesses", value: "PRIVATE_BUSINESS" as const },
-            { label: "Nonprofits", value: "NONPROFIT" as const },
+            { label: "Nonprofits & NGOs", value: "NONPROFIT" as const },
             { label: "Government entities", value: "GOVERNMENT" as const },
+            { label: "Tribal governments", value: "TRIBAL" as const },
+            { label: "Individuals & households", value: "INDIVIDUAL" as const },
           ] as { label: string; value: IncentiveFilters["applicantType"] }[]).map(({ label, value }) => (
             <ListItem
               key={label}
@@ -371,6 +375,33 @@ export function FilterSidebar({
               active={filters.applicantType === value}
               onClick={() => onChange({ applicantType: value })}
             />
+          ))}
+        </div>
+      </Section>
+
+      {/* ── Funding Source ──────────────────────────────── */}
+      <Section title="Funding Source" defaultOpen={false}>
+        <div className="flex flex-wrap gap-1.5">
+          {([
+            { label: "Government", value: "GOVERNMENT" as const },
+            { label: "Foundation", value: "FOUNDATION" as const },
+            { label: "Corporate", value: "CORPORATE" as const },
+            { label: "Utility", value: "UTILITY" as const },
+          ] as { label: string; value: IncentiveFilters["funderType"] }[]).map(({ label, value }) => (
+            <button
+              key={label}
+              onClick={() =>
+                onChange({ funderType: filters.funderType === value ? undefined : value })
+              }
+              className={cn(
+                "text-xs px-2.5 py-1 rounded-full border transition-colors font-medium",
+                filters.funderType === value
+                  ? "bg-forest-700 text-white border-forest-700"
+                  : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100 hover:border-slate-300"
+              )}
+            >
+              {label}
+            </button>
           ))}
         </div>
       </Section>

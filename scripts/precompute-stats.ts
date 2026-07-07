@@ -58,7 +58,7 @@ function writeJSON(name: string, data: unknown): void {
 
 function writeEmpty(): void {
   writeJSON("stats.json", {
-    total: 0, federal: 0, state: 0, city: 0, agency: 0,
+    total: 0, federal: 0, state: 0, city: 0, agency: 0, foundation: 0,
     medianAward: null, largestActive: null,
     asOf: new Date().toISOString(),
   });
@@ -74,12 +74,13 @@ async function main(): Promise<void> {
 
   const prisma = new PrismaClient();
   try {
-    const [total, federal, state, city, agency, awardStats] = await Promise.all([
+    const [total, federal, state, city, agency, foundation, awardStats] = await Promise.all([
       prisma.incentive.count({ where: { status: "ACTIVE" } }),
       prisma.incentive.count({ where: { status: "ACTIVE", jurisdictionLevel: "FEDERAL" } }),
       prisma.incentive.count({ where: { status: "ACTIVE", jurisdictionLevel: "STATE" } }),
       prisma.incentive.count({ where: { status: "ACTIVE", jurisdictionLevel: "CITY" } }),
       prisma.incentive.count({ where: { status: "ACTIVE", jurisdictionLevel: "AGENCY" } }),
+      prisma.incentive.count({ where: { status: "ACTIVE", jurisdictionLevel: "FOUNDATION" } }),
       prisma.$queryRaw<[{ median: number | null; largest: number | null }]>`
         SELECT
           percentile_cont(0.5) WITHIN GROUP (ORDER BY "fundingAmount") AS median,
@@ -92,7 +93,7 @@ async function main(): Promise<void> {
     const { median, largest } = awardStats[0] ?? { median: null, largest: null };
 
     writeJSON("stats.json", {
-      total, federal, state, city, agency,
+      total, federal, state, city, agency, foundation,
       medianAward: median != null ? Number(median) : null,
       largestActive: largest != null ? Number(largest) : null,
       asOf: new Date().toISOString(),
@@ -104,7 +105,7 @@ async function main(): Promise<void> {
       _count: { _all: true },
     });
     const subStatePrograms = await prisma.incentive.findMany({
-      where: { status: "ACTIVE", jurisdictionLevel: { in: ["AGENCY", "CITY"] } },
+      where: { status: "ACTIVE", jurisdictionLevel: { in: ["AGENCY", "CITY", "FOUNDATION"] } },
       select: { jurisdictionName: true },
     });
 
@@ -113,8 +114,11 @@ async function main(): Promise<void> {
       counts[row.jurisdictionName] = (counts[row.jurisdictionName] ?? 0) + row._count._all;
     }
     for (const { jurisdictionName } of subStatePrograms) {
-      const parent = JURISDICTION_TO_STATE[jurisdictionName];
-      if (parent) counts[parent] = (counts[parent] ?? 0) + 1;
+      // Fall back to records whose jurisdictionName already IS a state
+      const parent =
+        JURISDICTION_TO_STATE[jurisdictionName] ??
+        (counts[jurisdictionName] !== undefined ? jurisdictionName : undefined);
+      if (parent && parent !== "United States") counts[parent] = (counts[parent] ?? 0) + 1;
     }
 
     writeJSON("stats-states.json", { counts });

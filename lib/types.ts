@@ -1,8 +1,12 @@
 // ─── Enums (mirror Prisma schema for client-side use) ───────────────────────
 
-export type JurisdictionLevel = "FEDERAL" | "STATE" | "CITY" | "AGENCY";
+export type JurisdictionLevel = "FEDERAL" | "STATE" | "CITY" | "AGENCY" | "FOUNDATION";
 export type IncentiveType = "GRANT" | "TAX_CREDIT" | "POINT_OF_SALE_REBATE" | "SUBSIDY" | "LOAN" | "VOUCHER";
 export type IncentiveStatus = "ACTIVE" | "CLOSED" | "UPCOMING" | "SUSPENDED";
+// Who can apply to a program
+export type EntityType = "BUSINESS" | "NONPROFIT" | "GOVERNMENT" | "TRIBAL" | "INDIVIDUAL";
+// Who funds a program
+export type FunderType = "GOVERNMENT" | "FOUNDATION" | "CORPORATE" | "UTILITY";
 // SS-003: parse quality signal. LOW rows filtered from AI advisor (SS-008).
 export type ParseConfidence = "HIGH" | "MEDIUM" | "LOW";
 
@@ -18,6 +22,9 @@ export interface Incentive {
 
   jurisdictionLevel: JurisdictionLevel;
   jurisdictionName: string;
+
+  eligibleEntityTypes: EntityType[];
+  funderType: FunderType;
 
   managingAgency: string;
   agencyAcronym: string | null;
@@ -67,7 +74,8 @@ export interface IncentiveFilters {
   verified?: boolean;
   closingSoon?: boolean;
   excludeIndustryCategory?: string;
-  applicantType?: "ANY" | "PRIVATE_BUSINESS" | "NONPROFIT" | "GOVERNMENT";
+  applicantType?: "ANY" | "PRIVATE_BUSINESS" | "NONPROFIT" | "GOVERNMENT" | "TRIBAL" | "INDIVIDUAL";
+  funderType?: FunderType;
   sortBy?: "relevance" | "deadline" | "fundingAmount" | "createdAt";
   sortOrder?: "asc" | "desc";
   page?: number;
@@ -91,6 +99,22 @@ export const JURISDICTION_LABELS: Record<JurisdictionLevel, string> = {
   STATE: "State",
   CITY: "City / Municipal",
   AGENCY: "Agency / District",
+  FOUNDATION: "Foundation / Corporate",
+};
+
+export const ENTITY_TYPE_LABELS: Record<EntityType, string> = {
+  BUSINESS: "Businesses",
+  NONPROFIT: "Nonprofits & NGOs",
+  GOVERNMENT: "Government entities",
+  TRIBAL: "Tribal governments",
+  INDIVIDUAL: "Individuals & households",
+};
+
+export const FUNDER_TYPE_LABELS: Record<FunderType, string> = {
+  GOVERNMENT: "Government",
+  FOUNDATION: "Foundation",
+  CORPORATE: "Corporate giving",
+  UTILITY: "Utility",
 };
 
 export const INCENTIVE_TYPE_LABELS: Record<IncentiveType, string> = {
@@ -103,11 +127,13 @@ export const INCENTIVE_TYPE_LABELS: Record<IncentiveType, string> = {
 };
 
 export const INDUSTRY_CATEGORIES = [
-  "Agriculture", "Automotive", "Aviation", "Building Electrification",
-  "Clean Technology", "Construction", "Education", "Energy Management",
-  "Energy Storage", "EV Charging", "Film & Media", "Financial Services",
-  "Fleet", "Food & Beverage", "Forestry", "Government & Nonprofit",
-  "Healthcare", "Hospitality", "Infrastructure", "Logistics",
+  "Agriculture", "Arts & Culture", "Automotive", "Aviation",
+  "Building Electrification", "Clean Technology", "Community Development",
+  "Construction", "Education", "Energy Management", "Energy Storage",
+  "Environment & Conservation", "EV Charging", "Film & Media",
+  "Financial Services", "Fleet", "Food & Beverage", "Forestry",
+  "Government & Nonprofit", "Healthcare", "Hospitality",
+  "Housing & Homelessness", "Human Services", "Infrastructure", "Logistics",
   "Manufacturing", "Maritime", "Mining & Extraction", "Oil & Gas Transition",
   "Public Transit", "Real Estate", "Research & Development", "Retail",
   "Technology", "Telecommunications", "Waste Management", "Water & Utilities",
@@ -138,8 +164,12 @@ export const INDUSTRY_CATEGORY_GROUPS: { label: string; options: string[] }[] = 
     options: ["Manufacturing", "Technology", "Research & Development", "Healthcare", "Education", "Food & Beverage", "Financial Services"],
   },
   {
+    label: "Community & Nonprofit",
+    options: ["Government & Nonprofit", "Human Services", "Community Development", "Housing & Homelessness", "Arts & Culture", "Environment & Conservation"],
+  },
+  {
     label: "Other",
-    options: ["Government & Nonprofit", "Retail", "Hospitality", "Telecommunications", "Film & Media"],
+    options: ["Retail", "Hospitality", "Telecommunications", "Film & Media"],
   },
 ];
 
@@ -196,8 +226,14 @@ export const INDUSTRY_COLORS: Record<string, string> = {
   "Education":               "bg-indigo-50 text-indigo-700",
   "Food & Beverage":         "bg-orange-50 text-orange-700",
   "Financial Services":      "bg-green-50 text-green-700",
-  // Other
+  // Community & Nonprofit
   "Government & Nonprofit":  "bg-slate-100 text-slate-600",
+  "Human Services":          "bg-rose-50 text-rose-700",
+  "Community Development":   "bg-amber-50 text-amber-700",
+  "Housing & Homelessness":  "bg-orange-50 text-orange-700",
+  "Arts & Culture":          "bg-fuchsia-50 text-fuchsia-700",
+  "Environment & Conservation": "bg-emerald-50 text-emerald-700",
+  // Other
   "Retail":                  "bg-pink-50 text-pink-700",
   "Hospitality":             "bg-pink-50 text-pink-700",
   "Telecommunications":      "bg-blue-50 text-blue-700",
@@ -209,4 +245,13 @@ export const JURISDICTION_COLORS: Record<JurisdictionLevel, string> = {
   STATE: "bg-indigo-100 text-indigo-800",
   CITY: "bg-teal-100 text-teal-800",
   AGENCY: "bg-rose-100 text-rose-800",
+  FOUNDATION: "bg-purple-100 text-purple-800",
+};
+
+export const ENTITY_TYPE_COLORS: Record<EntityType, string> = {
+  BUSINESS: "bg-sky-50 text-sky-700 border-sky-200",
+  NONPROFIT: "bg-rose-50 text-rose-700 border-rose-200",
+  GOVERNMENT: "bg-slate-100 text-slate-600 border-slate-200",
+  TRIBAL: "bg-amber-50 text-amber-700 border-amber-200",
+  INDIVIDUAL: "bg-emerald-50 text-emerald-700 border-emerald-200",
 };

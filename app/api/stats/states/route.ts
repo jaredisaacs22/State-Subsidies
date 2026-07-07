@@ -63,11 +63,11 @@ export async function GET() {
       _count: { _all: true },
     });
 
-    // Separate query for AGENCY + CITY — map to parent state
+    // Separate query for AGENCY + CITY + state-scoped foundations — map to parent state
     const subStatePrograms = await prisma.incentive.findMany({
       where: {
         status: "ACTIVE",
-        jurisdictionLevel: { in: ["AGENCY", "CITY"] },
+        jurisdictionLevel: { in: ["AGENCY", "CITY", "FOUNDATION"] },
       },
       select: { jurisdictionName: true },
     });
@@ -80,8 +80,13 @@ export async function GET() {
     }
 
     for (const { jurisdictionName } of subStatePrograms) {
-      const state = JURISDICTION_TO_STATE[jurisdictionName];
-      if (state) {
+      // Explicit mapping first; then fall back to records whose jurisdictionName
+      // already IS a state (e.g. CARB HVIP is AGENCY-level with name "California",
+      // The California Endowment is FOUNDATION-level with name "California").
+      const state =
+        JURISDICTION_TO_STATE[jurisdictionName] ??
+        (counts[jurisdictionName] !== undefined ? jurisdictionName : undefined);
+      if (state && state !== "United States") {
         counts[state] = (counts[state] ?? 0) + 1;
       }
     }

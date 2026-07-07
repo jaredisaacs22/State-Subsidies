@@ -2,8 +2,11 @@
 // To add programs, edit prisma/seed-ca-programs.ts or seed-other-programs.ts and re-deploy.
 import { caPrograms } from "../prisma/seed-ca-programs";
 import { otherPrograms } from "../prisma/seed-other-programs";
+import { nonprofitPrograms } from "../prisma/seed-nonprofit-programs";
+import { foundationPrograms } from "../prisma/seed-foundation-programs";
+import { enrichProgram } from "./enrichEntityTypes";
 
-export const INCENTIVES = [
+const RAW_INCENTIVES = [
   // ── 1. WAZIP Off-Road Equipment Grant ───────────────────────────────────
   {
     title: "WAZIP Off-Road Equipment Replacement Grant",
@@ -6876,4 +6879,14 @@ export const INCENTIVES = [
   },
   ...caPrograms,
   ...otherPrograms,
+  ...nonprofitPrograms,
+  ...foundationPrograms,
 ];
+
+// Derive eligibleEntityTypes + funderType for legacy records (new files set them explicitly)
+const enriched = RAW_INCENTIVES.map(enrichProgram);
+
+// Dedupe by slug, last entry wins — mirrors upsert semantics. Without this,
+// duplicate slugs make INCENTIVES.length exceed the DB row count forever and
+// instrumentation.ts re-upserts on every server start.
+export const INCENTIVES = Array.from(new Map(enriched.map((i) => [i.slug, i])).values());
