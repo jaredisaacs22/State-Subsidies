@@ -17,13 +17,14 @@ re-earns them. Seeded 2026-07-11 from full git/scope-doc archaeology (115 commit
 | 8 | 2026-04-30 | CI "Initialize Database" failed in a recurring loop | `ts-node@10.9` broken on Node 22+; the Node-20 pin was a band-aid that GitHub's Node-20 deprecation ripped off | tsx@4 migration, all workflows on Node 22 (scope CHANGELOG 1.4.0) |
 | 9 | 2026-04-xx | Pooled vs unpooled connection mis-scoping broke migrations/bulk writes | One `DATABASE_URL` used for jobs that need a direct connection | `DATABASE_URL_UNPOOLED` split, documented in `.env.example` + `DEPLOY.md`; `-pooler` guard in `db_writer.py` |
 | 10 | 2026-04-xx | Build command could destroy data | `prisma db push --accept-data-loss` ran on every Vercel build | `vercel-build` uses `migrate deploy`; CI drift gate; CLAUDE.md hard rule 3 |
-| 11 | 2026-07-10 | Startup purge/seed **never ran for weeks** while believed active | `instrumentation.ts` existed but `instrumentationHook` was never enabled in `next.config.mjs` — code present ≠ code executing | Enabled in #62; standing lesson: verify a hook *fires* (log line probed in prod), don't assume; long-term GAP-B6 moves mutation out of boot |
-| 12 | 2026-07-10 | Browse page crashed in production | Router crash surfaced by real traffic, not by any test — we have zero browser tests | Fixed in #61; real pin is Theme F (boot-probe CI + Playwright console gate) — **open until then** |
+| 11 | 2026-07-10 | Startup purge/seed **never ran for weeks** while believed active | `instrumentation.ts` existed but `instrumentationHook` was never enabled in `next.config.mjs` — code present ≠ code executing | Enabled in #62; **pinned 2026-07-11:** CI `boot-probe` job fails unless the self-seed actually populates the API on a scratch DB. GAP-B6 still moves mutation out of boot long-term |
+| 12 | 2026-07-10 | Browse page crashed in production | Router crash surfaced by real traffic, not by any test — we have zero browser tests | Fixed in #61; **half-pinned 2026-07-11:** `boot-probe` job catches boot/render crashes on `/`, detail, `/methodology`. Client-side console errors still unpinned until Theme F Playwright gate — **open** |
 | 13 | 2026-04-30 | Repo default branch pointed at a stale `claude/*` working branch | Default never re-pointed after early sessions; new PRs targeted stale history | Repointed to `main`; lesson: branch hygiene is release engineering |
 | 14 | 2026-04-25 | Eligibility ratio lies on compound requirements | `yesCount/length` scores a hard-requirement miss as "85% match" | **Not yet pinned — open defect** (SS-006 / GAP-F2 / Theme C). The checker still ships ratio math as of 2026-07-11 |
 | 15 | 2026-07-11 | README roadmap had drifted stale-to-wrong (listed shipped work as todo) | Genesis doc never pruned as practice diverged | README now points at `ROADMAP.md`; doctrine §6.4: fix stale docs on sight |
 
 ## Open scars (unpinned — close these, then move the row above)
 
-- **#12** — no browser/boot verification layer (Theme F).
+- **#12** — boot layer pinned (CI `boot-probe`, 2026-07-11); browser console-error layer still
+  open (Theme F step 2).
 - **#14** — ratio-based eligibility still live (Theme C).

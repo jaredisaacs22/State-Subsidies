@@ -22,16 +22,18 @@ fix drift before doing anything else. Update at every session close — no excep
 
 ## In flight
 
-- **This branch:** doctrine integration — CLAUDE.md, ROADMAP.md, `docs/doctrine/`
-  (ENGINEERING_DOCTRINE + GAP_ANALYSIS), `docs/memory/`, `docs/runbooks/`, `.claude/agents/`,
-  README refresh, scope CHANGELOG 1.5.0. Closes GAP-P1…P7.
+- **This branch (PR #63, draft, CI green on first commit):** doctrine integration — CLAUDE.md,
+  ROADMAP.md, `docs/doctrine/` (ENGINEERING_DOCTRINE + GAP_ANALYSIS), `docs/memory/`,
+  `docs/runbooks/`, `.claude/agents/`, README refresh, scope CHANGELOG 1.5.0. Closes GAP-P1…P7.
+- **Second commit on same branch:** `boot-probe` CI job (closes GAP-T1/B1) — scratch Postgres,
+  migrate, build, `next start`, probes: health+dbReachable, instrumentation self-seed
+  (pins LESSONS #11), relational list/detail, page 200s.
 
 ## Next steps (from ROADMAP "order of operations")
 
-1. **Boot-and-probe CI job** (GAP-T1) — `next start` + `/api/health` + one page probe after
-   build. Hours of work, biggest verification hole.
+1. ✅ Boot-and-probe CI job (GAP-T1) — shipped on this branch 2026-07-11.
 2. **Theme C — eligibility rules engine** (SS-006 / GAP-F2): the checker still ships ratio math
-   (`components/EligibilityChecker.tsx:41-44`). This is the open trust P0.
+   (`components/EligibilityChecker.tsx:41-44`). This is the open trust P0. **Next up.**
 3. **Theme B — data contracts for all sources** (GAP-D1/D2): stamp the Grants.gov
    fixture+contract pattern across the other ~25 sources; add shape-change alarms.
 4. Theme F Playwright harness with console-error gate; then Theme A alarm surfaces (freshness

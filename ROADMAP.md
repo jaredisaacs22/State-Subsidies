@@ -78,10 +78,12 @@ itself in H1/personas/empty states per SS-007.
 
 ## Theme F — Frontend verification harness (new — GAP-F1)
 
-**Status: 🔴 zero browser tests**
+**Status: 🟡 boot-probe shipped 2026-07-11 · browser suite still 🔴**
 Next increments, in order:
-1. **Boot-and-probe CI job** (GAP-T1/B1): `next start` + probe `/api/health` + one real page
-   after build. *The single highest-ROI gap in the repo — do this first.*
+1. ✅ **Boot-and-probe CI job** (GAP-T1/B1, shipped 2026-07-11): `ci.yml` `boot-probe` job —
+   migrates a scratch Postgres, builds, boots `next start`, asserts health + dbReachable,
+   proves the instrumentation self-seed fires (pins LESSONS #11), relational list/detail
+   probe, and 200s on `/`, a detail page, and `/methodology`.
 2. Playwright suite with **absolute console-error gate** (zero tolerated errors from test #1).
 3. UX contracts: empty-state text, deep links, banned-jargon grep, disclaimer presence,
    layout budget (GAP-F7/F8).
@@ -130,8 +132,8 @@ these stay decisions, not ambient guilt.
 
 ## The order of operations (if you only read one section)
 
-1. **F1 boot-and-probe CI** (hours, closes the biggest verification hole)
-2. **Theme C eligibility engine** (the open trust P0)
+1. ✅ **F1 boot-and-probe CI** (shipped 2026-07-11)
+2. **Theme C eligibility engine** (the open trust P0) — **you are here**
 3. **Theme B contracts for all sources** (prevents the next data incident)
 4. **Theme F browser harness** (makes UX regressions impossible to ship silently)
 5. **Theme A alarm surfaces** (freshness banner + change narratives + TrustRibbon mount)

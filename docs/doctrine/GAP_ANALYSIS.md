@@ -33,7 +33,7 @@ incidents. The gaps below are what separates this baseline from the A/A+ target 
 
 | ID | Pri | Gap | Doctrine |
 |---|---|---|---|
-| GAP-B1 | **P0** | **CI never boots the built artifact.** `next build` passes ≠ app serves. No `next start` + `/api/health` probe job. The highest-ROI missing test in the whole repo. | §4.1 |
+| GAP-B1 | ~~P0~~ | **CLOSED 2026-07-11** — `ci.yml` `boot-probe` job: scratch Postgres + migrate + build + `next start` + health/dbReachable/self-seed/relational/page probes. | §4.1 |
 | GAP-B2 | **P0** | **Zod validation is not systematic on API inputs.** zod is a dependency but route handlers validate ad-hoc (`safeInt` patches). Every route input gets a schema; validate before any DB call. | §2.4, §0.7 |
 | GAP-B3 | P1 | **No error observability.** `console.error` in catch blocks only; no error tracker, no alerting when prod routes 500. A silent-failure platform is a trust bomb. | §5.1 |
 | GAP-B4 | P1 | **SS-009 absent: no auth, no durable user state.** Bookmarks/alerts are localStorage-only. Fine *if labeled honestly* — verify the UI says "this device only"; build the durable store before promising more. | §2.2 |
@@ -74,7 +74,7 @@ incidents. The gaps below are what separates this baseline from the A/A+ target 
 
 | ID | Pri | Gap | Doctrine |
 |---|---|---|---|
-| GAP-T1 | **P0** | Boot-and-probe CI job (= GAP-B1, listed once as the headline). | §4.1 |
+| GAP-T1 | ~~P0~~ | **CLOSED 2026-07-11** (= GAP-B1) — `boot-probe` job in `ci.yml`. | §4.1 |
 | GAP-T2 | P1 | **Zero TS/JS unit tests** — all tests are Python. `lib/utils.ts` formatters, `parseDetailedSummary`, eligibility logic: untested. | §4.10 |
 | GAP-T3 | P1 | **SS-012 eval harness is not a gate** (manual dispatch, 10/200 personas, scaffold labels). The blocker is SME labeling hours — a human-gated ask that must be filed/scheduled now, per doctrine. | §6.5 |
 | GAP-T4 | P1 | **Deploy verification is manual and unwritten** — no post-deploy probe script/job asserting deployed commit + sane stats. | §5.1 |
