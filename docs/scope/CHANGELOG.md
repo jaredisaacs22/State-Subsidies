@@ -2,6 +2,20 @@
 
 Major revisions only. Per-commit history lives in `git log docs/scope/**`.
 
+## 1.5.1 — 2026-07-11 (CEO) — SS-006 eligibility rules engine ships (ratio model retired)
+
+- **`lib/eligibility.ts`** — deterministic MUST/SHOULD/PLUS `scoreEligibility` per SS-006 §8:
+  reasons + blocking arrays, MUST-No short-circuit, honest null verdict while incomplete,
+  `plusScore` tie-break. Pure function.
+- **`lib/eligibility.test.ts`** — 40 hand-derived worked-example fixtures (full 27-combination
+  tier table + the motivating scar case), run by vitest, gated in `ci.yml`.
+- **`EligibilityChecker.tsx`** — percentage/score UI removed; verdict + per-requirement reasons;
+  disclaimer above the verdict per §4. Requirements derive from `keyRequirements` as all-MUST
+  (§9 step 2 conservative default) until SME tiering lands.
+- Experiment log seeded: `experiments/SS-006-eligibility.md`. Remaining §10 gates (golden
+  program suite, usability, legal copy review, A/B) are human-gated — tracked in ROADMAP
+  Theme C and the blocked-on-owner list.
+
 ## 1.5.0 — 2026-07-11 (CEO) — Engineering Doctrine adoption + memory/agents/runbooks system
 
 Integrates the distilled lessons of five external production-platform retrospectives ("Scope

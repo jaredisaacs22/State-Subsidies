@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "test": "vitest run",
     "precompute": "tsx scripts/precompute-stats.ts",
     "build": "prisma generate && npm run precompute && next build",
     "vercel-build": "prisma generate && if [ -n \"$DATABASE_URL_UNPOOLED\" ]; then DATABASE_URL=\"$DATABASE_URL_UNPOOLED\" npx prisma migrate deploy; fi && DATABASE_URL=\"${DATABASE_URL_UNPOOLED:-$DATABASE_URL}\" npm run precompute && next build",
@@ -45,6 +46,7 @@
     "prisma": "^5.10.0",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.19.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^4.1.10"
   }
 }

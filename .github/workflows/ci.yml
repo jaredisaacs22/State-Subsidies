@@ -46,6 +46,10 @@ jobs:
         run: npx prisma generate
       - name: TypeScript type-check
         run: npx tsc --noEmit
+      # SS-006 §7.1 — eligibility engine worked-example fixtures (and any
+      # future TS unit tests). Zero-red is a precondition (doctrine §0.5).
+      - name: TS unit tests (vitest)
+        run: npx vitest run
       - name: ESLint
         # Permissive on warnings initially — failure on errors only.
         # Tighten with --max-warnings 0 once warnings are zero.
