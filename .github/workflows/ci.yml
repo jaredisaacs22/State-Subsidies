@@ -121,3 +121,95 @@ jobs:
         env:
           DATABASE_URL: postgresql://dummy:dummy@localhost:5432/dummy
         run: npx next build
+
+  # ── Boot + probe the built artifact (GAP-T1 / doctrine §4.1) ─────────────
+  # "next build passes" is not proof of life: elsewhere, hundreds of unit
+  # tests missed production crash-loops because nothing ever STARTED the
+  # artifact. This job migrates a real Postgres, builds, boots `next start`,
+  # and probes the running server — including proof that the
+  # instrumentation.ts self-seed hook actually fires (LESSONS #11: it once
+  # silently never ran for weeks).
+  boot-probe:
+    name: boot + probe built artifact
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: boot
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/boot
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+      - name: Install Node dependencies
+        run: npm ci
+      - name: Generate Prisma client
+        run: npx prisma generate
+      - name: Apply migrations to scratch DB
+        run: npx prisma migrate deploy
+      - name: Precompute stats (against live scratch DB)
+        run: npm run precompute
+      - name: Build
+        run: npx next build
+      - name: Boot and probe
+        run: |
+          set -euo pipefail
+          npx next start -p 3000 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+
+          # 1. Server answers within 60s (instrumentation seed may run first)
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:3000/api/health > /dev/null && break
+            if [ "$i" = "60" ]; then echo "::error::server never answered /api/health"; exit 1; fi
+            sleep 1
+          done
+
+          # 2. Health is honest: process up AND database reachable
+          HEALTH=$(curl -sf http://localhost:3000/api/health)
+          echo "health: $HEALTH"
+          test "$(echo "$HEALTH" | jq -r .ok)" = "true" || { echo "::error::health .ok != true"; exit 1; }
+          test "$(echo "$HEALTH" | jq -r .dbReachable)" = "true" || { echo "::error::health .dbReachable != true — app booted but cannot see its DB"; exit 1; }
+
+          # 3. The startup self-seed hook must actually fire (pins LESSONS #11):
+          #    poll until the API serves at least one program from the scratch DB.
+          TOTAL=0
+          for i in $(seq 1 45); do
+            TOTAL=$(curl -sf "http://localhost:3000/api/incentives?pageSize=1" | jq -r '.total // 0' || echo 0)
+            [ "${TOTAL:-0}" -ge 1 ] && break
+            sleep 2
+          done
+          if [ "${TOTAL:-0}" -lt 1 ]; then
+            echo "::error::no programs visible after 90s — instrumentation.ts self-seed did not run"
+            exit 1
+          fi
+          echo "self-seed verified: $TOTAL programs visible through the API"
+
+          # 4. Relational probe (doctrine §4.5): detail endpoint returns the
+          #    same program the list endpoint served — no literal pins.
+          LIST=$(curl -sf "http://localhost:3000/api/incentives?pageSize=1")
+          SLUG=$(echo "$LIST" | jq -r '.data[0].slug')
+          LIST_TITLE=$(echo "$LIST" | jq -r '.data[0].title')
+          DETAIL_TITLE=$(curl -sf "http://localhost:3000/api/incentives/$SLUG" | jq -r '.title')
+          test "$DETAIL_TITLE" = "$LIST_TITLE" || { echo "::error::list/detail disagree for $SLUG: '$LIST_TITLE' vs '$DETAIL_TITLE'"; exit 1; }
+
+          # 5. Real pages render (a crashing page returns non-200 in prod mode)
+          for P in "/" "/incentives/$SLUG" "/methodology"; do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000$P")
+            test "$CODE" = "200" || { echo "::error::GET $P returned $CODE"; exit 1; }
+            echo "GET $P -> 200"
+          done
+
+          echo "PASS: artifact boots, sees its DB, self-seeds, and serves real pages"
