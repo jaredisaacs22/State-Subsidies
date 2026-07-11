@@ -2,6 +2,32 @@
 
 Major revisions only. Per-commit history lives in `git log docs/scope/**`.
 
+## 1.5.0 — 2026-07-11 (CEO) — Engineering Doctrine adoption + memory/agents/runbooks system
+
+Integrates the distilled lessons of five external production-platform retrospectives ("Scope
+Docs 1–5", retired after distillation) into this repo's permanent backbone. The scope document
+(SS items) remains the *what*; the new doctrine is the *how*.
+
+- **`docs/doctrine/ENGINEERING_DOCTRINE.md`** — repo law for how we build: prime directives
+  (trust is the product, upstream sources are adversaries, root-cause→test→fix→pin→runbook,
+  visible increment per session, zero-red suites, mechanical gates, validate-before-mutate),
+  plus per-layer doctrine (data, backend, frontend, testing priority order, CI/CD, process).
+- **`docs/doctrine/GAP_ANALYSIS.md`** — dated, verified gap inventory with priorities:
+  headline P0s are boot-and-probe CI (GAP-T1), the still-ratio-based eligibility checker
+  (GAP-F2/SS-006), per-source data contracts (GAP-D1/D2), and worked-example tests on headline
+  stats (GAP-D3).
+- **`ROADMAP.md`** (root) — themed workstream board (A–K) with statuses verified against code
+  on 2026-07-11 (notably: TrustRibbon confirmed preview-only; SS-006 confirmed open).
+- **`CLAUDE.md`** (root) — session protocol, read-first order, hard rules.
+- **`docs/memory/`** — HANDOFF.md (current state, updated every close), LESSONS.md (losses
+  ledger seeded with 15 real scars from this repo's history), DECISIONS.md (decision log).
+- **`docs/runbooks/`** — deploy verification liturgy, scraper purge-and-contain (codifying the
+  April 20 response), database operations, rollback (+ quarterly drill requirement).
+- **`.claude/agents/`** — whole-branch-reviewer, data-integrity-auditor, ux-first-time-user,
+  docs-reality-checker.
+- **README refresh** — stale roadmap checklist replaced with docs map + `ROADMAP.md` pointer;
+  title/description aligned to the expanded audience mandate (00-overview §2).
+
 ## 1.4.2 — 2026-04-30 (CEO) — homepage stats fix
 
 - **`fmtMoney` + `formatCurrency`: billions tier added.** Largest-active was rendering as `$42450M` instead of `$42.5B`. Both formatters now cap at 4 visible digits ($1.5B, $42.5B, $425M, $500K).

@@ -1,6 +1,19 @@
-# SubsidyFinder — Business Incentives Discovery Platform
+# StateSubsidies.com — Public Funding Discovery Platform
 
-A B2B web application for discovering, filtering, and understanding government grants, tax credits, rebates, and vouchers at the Federal, State, City, and Agency levels.
+A web application for discovering, filtering, and understanding government grants, tax credits, rebates, vouchers, and loans — for **every U.S. person and entity** (individuals, students, farmers, nonprofits, public entities, and businesses) at the Federal, State, City, and Agency levels. Mission priority: **Trust → Accuracy → Delight** (see `docs/scope/00-overview.md`).
+
+## Start here (docs map)
+
+| Doc | What it is |
+|---|---|
+| [`CLAUDE.md`](CLAUDE.md) | Repo law — read-first order, hard rules, session protocol |
+| [`ROADMAP.md`](ROADMAP.md) | Every workstream: status, next increment, acceptance criteria |
+| [`docs/doctrine/`](docs/doctrine/) | Engineering doctrine + dated gap analysis |
+| [`docs/memory/`](docs/memory/) | HANDOFF (current state) · LESSONS (scars) · DECISIONS |
+| [`docs/runbooks/`](docs/runbooks/) | Deploy verification · scraper incident · DB ops · rollback |
+| [`docs/scope/`](docs/scope/) | Scope of record — SS-001…SS-012 specifications |
+| [`DEPLOY.md`](DEPLOY.md) | Environment variables, secrets, first-deploy checklist |
+| [`.claude/agents/`](.claude/agents/) | Review/audit agent definitions |
 
 ## Tech Stack
 
@@ -166,13 +179,9 @@ State-Subsidies/
 
 ---
 
-## Roadmap / Next Steps
+## Roadmap
 
-- [ ] Add authentication (Clerk or NextAuth) for saved searches
-- [ ] PostgreSQL + full-text search (tsvector)
-- [ ] Automated scraper scheduling (cron / GitHub Actions)
-- [ ] Email alerts for new matching incentives
-- [ ] AI-generated summary normalization (Claude API)
-- [ ] Scraper for DOE Funding Opportunities (eere.energy.gov)
-- [ ] Scraper for Grants.gov federal listings
-- [ ] Admin UI for manual data entry and verification
+The living roadmap is [`ROADMAP.md`](ROADMAP.md) — themed workstreams with verified statuses and
+acceptance criteria, updated in the same PR as any change to reality. (The checklist that used to
+live here had drifted stale — several items it listed as todo shipped months ago. Per doctrine
+§6.4, stale docs get fixed on sight; this pointer is the fix.)
