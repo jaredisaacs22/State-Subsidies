@@ -18,6 +18,10 @@ class JurisdictionLevel(str, Enum):
     STATE = "STATE"
     CITY = "CITY"
     AGENCY = "AGENCY"
+    # Parity with the Prisma enum (nonprofits expansion, PR #60). The Python
+    # vocabulary drifting behind the schema is exactly the GAP-D6 failure
+    # shape — keep all three vocabularies (Pydantic/Prisma/TS) in sync.
+    FOUNDATION = "FOUNDATION"
 
 
 class IncentiveType(str, Enum):

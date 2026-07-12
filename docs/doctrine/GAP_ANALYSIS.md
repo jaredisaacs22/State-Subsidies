@@ -61,9 +61,9 @@ incidents. The gaps below are what separates this baseline from the A/A+ target 
 | ID | Pri | Gap | Doctrine |
 |---|---|---|---|
 | GAP-D1 | **P0** | **~25 of ~27 sources have no golden fixture or per-source contract test** — only Grants.gov does (plus smoke tests for CARB/CalTrans/WAZIP). Every unwatched source is a future April-20 incident. | §1.1 |
-| GAP-D2 | **P0** | **No shape-change alarm:** a live scrape that parses 0 rows or nulls a required field across the batch does not hard-fail the run. | §1.1 |
+| GAP-D2 | ~~P0~~ | **CLOSED 2026-07-11** — `scrapers/batch_gate.py`: ok-with-zero-rows raises a per-source shape alarm (ScrapeRun marked FAIL); >50% batch quality-gate failure aborts ALL writes. Pytest-pinned. | §1.1 |
 | GAP-D3 | **P0** | **No worked-example regression test on headline-stat formulas** (`precompute-stats.ts`, `/api/stats`). The exact class that overstated another platform's flagship number by 70%. | §1.5 |
-| GAP-D4 | P1 | **Field tripwires missing at ingest:** past-deadline-but-ACTIVE, fundingAmount outliers, unresolvable sourceUrl. | §1.4 |
+| GAP-D4 | ~~P1~~ | **CLOSED 2026-07-11** — `batch_gate.row_tripwires`/`normalize_row`: non-positive or >$50B funding and non-https URLs quarantined; past-deadline-ACTIVE normalized to CLOSED (mirrors the daily rule). Pytest-pinned. | §1.4 |
 | GAP-D5 | P1 | **Enricher output is unaudited AI text.** Claude-Haiku-written fields carry no distinct provenance mark and no sampled human-verification loop. Derived claims must be distinguishable from scraped facts. | §1.2 |
 | GAP-D6 | P1 | **Cross-language contract untested:** `scrapers/models.py` (Pydantic) vs `prisma/schema.prisma` vs `lib/types.ts` are three hand-synced vocabularies with no parity test. A field added in one and missed in another renders blank in production (this exact failure shipped elsewhere). | §6.6 |
 | GAP-D7 | P1 | **Seed-vs-scraped separation unverified:** confirm every seed row is distinguishable via provenance and that headline stats are honest about synthetic rows. | §1.7 |
