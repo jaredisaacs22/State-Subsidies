@@ -46,7 +46,7 @@ incidents. The gaps below are what separates this baseline from the A/A+ target 
 | ID | Pri | Gap | Doctrine |
 |---|---|---|---|
 | GAP-F1 | **P0** | **Zero browser tests.** No Playwright, no console-error gate, no deep-link checks, no empty-state assertions. The entire experienced-UX layer is unverified on every merge. | §4.2–4.4 |
-| GAP-F2 | **P0** | **EligibilityChecker still ratio-based** (`yesCount/questions.length`, `components/EligibilityChecker.tsx:41-44`). It mathematically lies on compound requirements — a wrong "85% match" on a hard-requirement miss is a trust breach. SS-006 is open, not shipped. | §0.1 |
+| GAP-F2 | ~~P0~~ | **CORE CLOSED 2026-07-11** — ratio math replaced by the deterministic rules engine (`lib/eligibility.ts`, 40 CI-pinned fixtures); no percentage renders anywhere. Open remainder (SME tiering, golden suite, legal copy review) tracked as Theme C follow-ups. | §0.1 |
 | GAP-F3 | P1 | **TrustRibbon built but never mounted** — lives only at `/preview/trust-ribbon`. SS-001's visible half is undelivered; the trust surface the scope leads with isn't on the page. | §6.2 |
 | GAP-F4 | P1 | **No site-level freshness banner** ("data as of…", oldest-source age). FreshnessBadge exists per-card; the alarm-grade surface is missing. | §1.3 |
 | GAP-F5 | P1 | **No change narratives for headline numbers.** When a scrape/purge moves the stats strip materially, nothing tells the user why. | §3.2 |

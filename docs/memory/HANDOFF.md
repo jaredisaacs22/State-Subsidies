@@ -22,27 +22,27 @@ fix drift before doing anything else. Update at every session close — no excep
 
 ## In flight
 
-- **This branch (PR #63, draft, CI green on first commit):** doctrine integration — CLAUDE.md,
-  ROADMAP.md, `docs/doctrine/` (ENGINEERING_DOCTRINE + GAP_ANALYSIS), `docs/memory/`,
-  `docs/runbooks/`, `.claude/agents/`, README refresh, scope CHANGELOG 1.5.0. Closes GAP-P1…P7.
-- **Second commit on same branch:** `boot-probe` CI job (closes GAP-T1/B1) — scratch Postgres,
-  migrate, build, `next start`, probes: health+dbReachable, instrumentation self-seed
-  (pins LESSONS #11), relational list/detail, page 200s.
+- **PR #63 MERGED 2026-07-11** (`c0fa942` on main): doctrine + memory system + runbooks +
+  agents + `boot-probe` CI job (closed GAP-P1…P7, GAP-T1/B1). Owner approved full
+  commit-and-deploy authority this date.
+- **Current branch (restarted from main):** Theme C — eligibility rules engine (SS-006).
+  `lib/eligibility.ts` + 40 vitest fixtures (CI-gated) + `EligibilityChecker.tsx` rewritten to
+  verdicts; ratio/percentage rendering removed. All-MUST conservative default from
+  `keyRequirements` (DECISIONS.md). Details: `docs/scope/experiments/SS-006-eligibility.md`.
 
 ## Next steps (from ROADMAP "order of operations")
 
-1. ✅ Boot-and-probe CI job (GAP-T1) — shipped on this branch 2026-07-11.
-2. **Theme C — eligibility rules engine** (SS-006 / GAP-F2): the checker still ships ratio math
-   (`components/EligibilityChecker.tsx:41-44`). This is the open trust P0. **Next up.**
+1. ✅ Boot-and-probe CI job (GAP-T1) — merged 2026-07-11.
+2. ✅ Theme C engine core — this branch. Follow-ups are human-gated (SME tiering, golden
+   program suite, legal copy review) — see Theme C + blocked-on-owner.
 3. **Theme B — data contracts for all sources** (GAP-D1/D2): stamp the Grants.gov
-   fixture+contract pattern across the other ~25 sources; add shape-change alarms.
+   fixture+contract pattern across the other ~25 sources; add shape-change alarms. **Next up.**
 4. Theme F Playwright harness with console-error gate; then Theme A alarm surfaces (freshness
    banner, change narratives, TrustRibbon mount).
 
 ## Known open defects
 
-- Eligibility ratio math (LESSONS #14) — open until Theme C.
-- Zero browser/boot verification (LESSONS #12) — open until Theme F step 1–2.
+- Browser console-error verification still missing (LESSONS #12 second half) — Theme F step 2.
 - Root-level `scrape-report 4.json` / `scrape-report 6.json` litter (GAP-D8) — relocate/ignore
   in a housekeeping commit.
 
@@ -51,6 +51,8 @@ fix drift before doing anything else. Update at every session close — no excep
 1. GitHub Settings → Branches → main: mark CI checks **Required** (GAP-T6).
 2. Commit SME labeling hours for SS-012's 200-persona library (Theme D is ⏸ without this).
 3. Schedule the first rollback drill (`docs/runbooks/rollback.md`).
+4. SS-006 follow-ups needing humans: SME requirement-tiering (Theme C-1), golden program suite
+   tagging (C-2), legal review of verdict copy (C-3, binding per spec).
 
 ## Session close checklist (copy into every close)
 

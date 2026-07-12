@@ -20,11 +20,10 @@ re-earns them. Seeded 2026-07-11 from full git/scope-doc archaeology (115 commit
 | 11 | 2026-07-10 | Startup purge/seed **never ran for weeks** while believed active | `instrumentation.ts` existed but `instrumentationHook` was never enabled in `next.config.mjs` — code present ≠ code executing | Enabled in #62; **pinned 2026-07-11:** CI `boot-probe` job fails unless the self-seed actually populates the API on a scratch DB. GAP-B6 still moves mutation out of boot long-term |
 | 12 | 2026-07-10 | Browse page crashed in production | Router crash surfaced by real traffic, not by any test — we have zero browser tests | Fixed in #61; **half-pinned 2026-07-11:** `boot-probe` job catches boot/render crashes on `/`, detail, `/methodology`. Client-side console errors still unpinned until Theme F Playwright gate — **open** |
 | 13 | 2026-04-30 | Repo default branch pointed at a stale `claude/*` working branch | Default never re-pointed after early sessions; new PRs targeted stale history | Repointed to `main`; lesson: branch hygiene is release engineering |
-| 14 | 2026-04-25 | Eligibility ratio lies on compound requirements | `yesCount/length` scores a hard-requirement miss as "85% match" | **Not yet pinned — open defect** (SS-006 / GAP-F2 / Theme C). The checker still ships ratio math as of 2026-07-11 |
+| 14 | 2026-04-25 | Eligibility ratio lies on compound requirements | `yesCount/length` scores a hard-requirement miss as "85% match" | **Pinned 2026-07-11:** deterministic rules engine (`lib/eligibility.ts`) + 40 worked-example fixtures in CI, including the exact scar case (3 Yes + 1 No + 1 Unsure on mandatory requirements ⇒ LOW). No surface renders a percentage |
 | 15 | 2026-07-11 | README roadmap had drifted stale-to-wrong (listed shipped work as todo) | Genesis doc never pruned as practice diverged | README now points at `ROADMAP.md`; doctrine §6.4: fix stale docs on sight |
 
 ## Open scars (unpinned — close these, then move the row above)
 
 - **#12** — boot layer pinned (CI `boot-probe`, 2026-07-11); browser console-error layer still
   open (Theme F step 2).
-- **#14** — ratio-based eligibility still live (Theme C).

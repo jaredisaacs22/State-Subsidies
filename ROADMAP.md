@@ -48,18 +48,22 @@ Next increments:
    human-verification loop documented. *Accept:* a row can always answer "scraped fact or AI
    paraphrase?" per field.
 
-## Theme C — Eligibility rules engine (SS-006) — **the open P0**
+## Theme C — Eligibility rules engine (SS-006)
 
-**Status: 🔴 checker still ratio-based (`components/EligibilityChecker.tsx` — verified 2026-07-11)**
-The ratio score mathematically lies on compound requirements; this is the largest live gap
-between the brand promise and the product (GAP-F2).
+**Status: 🟡 engine + UI shipped 2026-07-11 · SME tiering + human gates remain**
+Shipped: `lib/eligibility.ts` (deterministic MUST/SHOULD/PLUS `scoreEligibility` per SS-006 §8,
+pure function, reasons + blocking arrays), 40 hand-derived worked-example fixtures
+(`lib/eligibility.test.ts`, vitest in CI), and the checker UI rewritten to verdicts — **no
+surface renders a ratio or percentage anymore**. A MUST-No short-circuits to an honest
+"you don't currently qualify because: X". Requirements derive from `keyRequirements` as
+all-MUST (the spec's conservative default) until SME tiering lands.
 
-Next increments:
-1. Rules schema per program (ALL-of / ANY-of / disqualifier), stored as data, not code.
-2. Deterministic evaluator with worked-example tests (given answers X ⇒ verdict Y, pinned).
-3. Three-state honest output: **Likely eligible / Not eligible (which rule failed) /
-   Can't tell (which answer is missing)** — never a percentage.
-*Accept:* SS-006 §10 gates; no surface renders a ratio; evaluator is reproducible and cited.
+Remaining (mostly human-gated, per SS-006 §9):
+1. `IncentiveRequirement` table + SME-tiered backfill (steps 1–2 — needs SME review days).
+2. Golden program suite n=20 tagged with ground-truth tiers (step 7 — needs Quiroz-role SME).
+3. Legal copy review of the verdict text (step 6 — binding, owner to arrange).
+4. Moderated usability + A/B (steps 8–9).
+*Accept:* SS-006 §10 gates; the MUST-No→LOW invariant is already CI-pinned.
 
 ## Theme D — AI advisor & eval gate (SS-008 ✅ core · SS-012 🟡 scaffold)
 
@@ -133,7 +137,8 @@ these stay decisions, not ambient guilt.
 ## The order of operations (if you only read one section)
 
 1. ✅ **F1 boot-and-probe CI** (shipped 2026-07-11)
-2. **Theme C eligibility engine** (the open trust P0) — **you are here**
+2. ✅ **Theme C eligibility engine core** (shipped 2026-07-11; SME/legal follow-ups tracked in
+   Theme C) — **next: Theme B data contracts**
 3. **Theme B contracts for all sources** (prevents the next data incident)
 4. **Theme F browser harness** (makes UX regressions impossible to ship silently)
 5. **Theme A alarm surfaces** (freshness banner + change narratives + TrustRibbon mount)

@@ -4,14 +4,36 @@ import { useState } from "react";
 import { ClipboardCheck, X, CheckCircle, XCircle, HelpCircle, ArrowRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Incentive } from "@/lib/types";
+import {
+  scoreEligibility,
+  requirementsFromKeyRequirements,
+  type EligibilityAnswer,
+  type EligibilityTier,
+} from "@/lib/eligibility";
 
-type Answer = "yes" | "no" | "unsure" | null;
-
-const CONFIDENCE_STYLE = {
-  HIGH:   { bar: "bg-emerald-500", text: "text-emerald-700", bg: "bg-emerald-50 border-emerald-200", label: "Strong match" },
-  MEDIUM: { bar: "bg-amber-400",   text: "text-amber-700",   bg: "bg-amber-50 border-amber-200",     label: "Possible match — verify a few things" },
-  LOW:    { bar: "bg-red-400",     text: "text-red-700",     bg: "bg-red-50 border-red-200",         label: "May not qualify — review requirements carefully" },
-} as const;
+// SS-006: rules-engine verdicts, never a percentage. A percentage on a
+// hard-requirement miss was the exact defect this component shipped with
+// (LESSONS.md #14) — do not reintroduce score math here.
+const TIER_STYLE: Record<
+  EligibilityTier,
+  { text: string; bg: string; heading: string }
+> = {
+  HIGH: {
+    text: "text-emerald-700",
+    bg: "bg-emerald-50 border-emerald-200",
+    heading: "Likely match",
+  },
+  MEDIUM: {
+    text: "text-amber-700",
+    bg: "bg-amber-50 border-amber-200",
+    heading: "Likely match — pending confirmation",
+  },
+  LOW: {
+    text: "text-red-700",
+    bg: "bg-red-50 border-red-200",
+    heading: "You don't currently qualify",
+  },
+};
 
 interface EligibilityCheckerProps {
   incentive: Incentive;
@@ -34,25 +56,21 @@ export function EligibilityChecker({
 }: EligibilityCheckerProps) {
   // Use up to 5 questions on compact, up to 8 on the detail page where there's more room.
   const limit = variant === "expanded" ? 8 : 5;
-  const questions = incentive.keyRequirements.slice(0, limit);
-  const [answers, setAnswers] = useState<Answer[]>(questions.map(() => null));
+  // SS-006 §9 step 2 conservative default: every requirement is MUST until
+  // per-requirement SME tiering lands (see lib/eligibility.ts).
+  const requirements = requirementsFromKeyRequirements(incentive.keyRequirements, limit);
+  const [answers, setAnswers] = useState<Record<string, EligibilityAnswer | null>>({});
 
-  const answeredCount = answers.filter((a) => a !== null).length;
-  const yesCount = answers.filter((a) => a === "yes").length;
-  const noCount = answers.filter((a) => a === "no").length;
-  const allAnswered = answeredCount === questions.length;
-  const score = allAnswered ? Math.round((yesCount / questions.length) * 100) : null;
-  const confidence: "HIGH" | "MEDIUM" | "LOW" | null =
-    score === null ? null :
-    noCount >= 2 ? "LOW" :
-    score >= 75 ? "HIGH" :
-    score >= 40 ? "MEDIUM" : "LOW";
+  const answeredCount = requirements.filter((r) => answers[r.id] != null).length;
+  const verdict = scoreEligibility(answers, requirements);
+  // A disqualifying MUST-No surfaces immediately; otherwise the verdict
+  // appears once every question is answered.
+  const showVerdict = verdict.tier !== null;
 
   const showLink = showDetailsLink ?? variant === "compact";
   const isExpanded = variant === "expanded";
 
-  // Reset all answers — only useful on the expanded variant
-  const resetAll = () => setAnswers(questions.map(() => null));
+  const resetAll = () => setAnswers({});
 
   return (
     <div
@@ -76,8 +94,9 @@ export function EligibilityChecker({
           </p>
           {isExpanded && (
             <p className="text-[13px] text-slate-500 mt-1 leading-snug">
-              Answer the questions below to get an instant self-assessment of your fit for this program.
-              This is informational — final determinations are made by the administering agency.
+              Answer the questions below for a rules-based self-assessment of your fit for this
+              program. This is informational — final determinations are made by the administering
+              agency.
             </p>
           )}
         </div>
@@ -104,29 +123,30 @@ export function EligibilityChecker({
 
       {!isExpanded && (
         <p className="text-[11px] text-slate-500 mb-3">
-          Answer each question to estimate your fit. Can you meet this requirement?
+          Answer each question: can you meet this requirement?
         </p>
       )}
 
-      {/* Progress bar (expanded only — gives a sense of completion) */}
+      {/* Progress bar (expanded only — completion progress, never a score) */}
       {isExpanded && (
         <div className="mb-4">
           <div className="flex items-center justify-between text-[11px] text-slate-500 mb-1.5">
             <span>
-              {answeredCount} of {questions.length} answered
+              {answeredCount} of {requirements.length} answered
             </span>
-            {allAnswered && (
+            {answeredCount === requirements.length && (
               <span className="text-forest-700 font-semibold">Complete</span>
             )}
           </div>
           <div className="h-1 bg-slate-100 rounded-full overflow-hidden">
             <div
               className="h-full bg-forest-600 transition-all duration-300 rounded-full"
-              style={{ width: `${(answeredCount / questions.length) * 100}%` }}
+              style={{ width: `${(answeredCount / Math.max(requirements.length, 1)) * 100}%` }}
               role="progressbar"
               aria-valuenow={answeredCount}
               aria-valuemin={0}
-              aria-valuemax={questions.length}
+              aria-valuemax={requirements.length}
+              aria-label={`${answeredCount} of ${requirements.length} questions answered`}
             />
           </div>
         </div>
@@ -134,9 +154,9 @@ export function EligibilityChecker({
 
       {/* Questions */}
       <div className={cn("space-y-3", isExpanded && "space-y-3.5")}>
-        {questions.map((req, i) => (
+        {requirements.map((req, i) => (
           <div
-            key={i}
+            key={req.id}
             className={cn(
               "rounded-lg border",
               isExpanded
@@ -151,38 +171,39 @@ export function EligibilityChecker({
               )}
             >
               <span className="text-slate-400 mr-1.5">{i + 1}.</span>
-              {req}
+              {req.text}
             </p>
             <div
               className="flex flex-wrap gap-2"
               role="group"
-              aria-label={`Requirement ${i + 1} of ${questions.length}`}
+              aria-label={`Requirement ${i + 1} of ${requirements.length}`}
             >
-              {(["yes", "no", "unsure"] as const).map((val) => (
+              {(["YES", "NO", "UNSURE"] as const).map((val) => (
                 <button
                   key={val}
-                  onClick={() => {
-                    const updated = [...answers];
-                    updated[i] = answers[i] === val ? null : val;
-                    setAnswers(updated);
-                  }}
-                  aria-pressed={answers[i] === val}
+                  onClick={() =>
+                    setAnswers((prev) => ({
+                      ...prev,
+                      [req.id]: prev[req.id] === val ? null : val,
+                    }))
+                  }
+                  aria-pressed={answers[req.id] === val}
                   className={cn(
                     "flex items-center gap-1.5 font-medium border rounded-md transition-all",
                     isExpanded ? "text-[12px] px-3 py-1.5" : "text-[11px] px-2.5 py-1",
-                    answers[i] === val
-                      ? val === "yes"
+                    answers[req.id] === val
+                      ? val === "YES"
                         ? "bg-emerald-600 text-white border-emerald-600"
-                        : val === "no"
+                        : val === "NO"
                         ? "bg-red-500 text-white border-red-500"
                         : "bg-slate-400 text-white border-slate-400"
                       : "bg-white text-slate-600 border-slate-200 hover:border-slate-400 hover:bg-slate-50"
                   )}
                 >
-                  {val === "yes" ? <CheckCircle size={isExpanded ? 12 : 10} aria-hidden /> :
-                   val === "no" ? <XCircle size={isExpanded ? 12 : 10} aria-hidden /> :
+                  {val === "YES" ? <CheckCircle size={isExpanded ? 12 : 10} aria-hidden /> :
+                   val === "NO" ? <XCircle size={isExpanded ? 12 : 10} aria-hidden /> :
                                   <HelpCircle size={isExpanded ? 12 : 10} aria-hidden />}
-                  {val === "yes" ? "Yes" : val === "no" ? "No" : "Not sure"}
+                  {val === "YES" ? "Yes" : val === "NO" ? "No" : "Not sure"}
                 </button>
               ))}
             </div>
@@ -191,70 +212,79 @@ export function EligibilityChecker({
       </div>
 
       {/* Progress (compact only — expanded shows it at the top) */}
-      {!isExpanded && !allAnswered && answeredCount > 0 && (
+      {!isExpanded && !showVerdict && answeredCount > 0 && (
         <p className="text-[11px] text-slate-400 mt-3 text-center">
-          {answeredCount} of {questions.length} answered
+          {answeredCount} of {requirements.length} answered
         </p>
       )}
 
-      {/* Result */}
-      {confidence && (
+      {/* Verdict */}
+      {showVerdict && verdict.tier && (
         <div
           className={cn(
             "rounded-lg border",
             isExpanded ? "mt-5 px-5 py-4" : "mt-4 px-4 py-3",
-            CONFIDENCE_STYLE[confidence].bg
+            TIER_STYLE[verdict.tier].bg
           )}
         >
-          <div className="flex items-center justify-between mb-2">
-            <span
-              className={cn(
-                "font-bold",
-                isExpanded ? "text-[13px]" : "text-[12px]",
-                CONFIDENCE_STYLE[confidence].text
-              )}
+          {/* Disclaimer ABOVE the verdict (SS-006 §4 / SS-008), at a readable size. */}
+          <p className="text-sm text-slate-500 leading-snug mb-2">
+            Informal self-assessment — not a guarantee of eligibility, and not legal or tax
+            advice. The administering agency makes the final determination.{" "}
+            <a
+              href="/methodology#how-we-verify"
+              className="underline underline-offset-2 hover:text-slate-700"
             >
-              {confidence} confidence — {CONFIDENCE_STYLE[confidence].label}
-            </span>
-            <span
-              className={cn(
-                "font-bold tabular-nums",
-                isExpanded ? "text-[14px]" : "text-[12px]",
-                CONFIDENCE_STYLE[confidence].text
-              )}
-            >
-              {score}%
-            </span>
-          </div>
-          <div className="h-1.5 bg-white/60 rounded-full overflow-hidden mb-3">
-            <div
-              className={cn(
-                "h-full rounded-full transition-all duration-500",
-                CONFIDENCE_STYLE[confidence].bar
-              )}
-              style={{ width: `${score}%` }}
-              role="progressbar"
-              aria-valuenow={score ?? 0}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-label={`Eligibility score: ${score}%`}
-            />
-          </div>
-          {confidence === "HIGH" && (
-            <p className={cn(isExpanded ? "text-[12.5px]" : "text-[11px]", "text-emerald-700 leading-snug")}>
-              You appear to meet the key requirements. Review the full program details and apply directly through the agency using the &ldquo;Go to official source&rdquo; button.
+              Methodology
+            </a>
+          </p>
+
+          <p
+            className={cn(
+              "font-bold",
+              isExpanded ? "text-[14px]" : "text-[13px]",
+              TIER_STYLE[verdict.tier].text
+            )}
+          >
+            {TIER_STYLE[verdict.tier].heading}
+          </p>
+
+          {/* Per-requirement reasons — every verdict explains itself. */}
+          <ul
+            className={cn(
+              "mt-2 space-y-1",
+              isExpanded ? "text-[12.5px]" : "text-[11px]",
+              TIER_STYLE[verdict.tier].text
+            )}
+          >
+            {verdict.reasons.map((reason) => (
+              <li key={reason} className="flex gap-1.5 leading-snug">
+                <span aria-hidden>•</span>
+                <span>{reason}</span>
+              </li>
+            ))}
+          </ul>
+
+          {verdict.tier === "LOW" && (
+            <p className={cn(isExpanded ? "text-[12.5px]" : "text-[11px]", "mt-2 text-red-700 leading-snug")}>
+              Programs change; recheck when your circumstances do. Some requirements (like income
+              limits or geography) can&apos;t be worked around, but others may be addressable.
             </p>
           )}
-          {confidence === "MEDIUM" && (
-            <p className={cn(isExpanded ? "text-[12.5px]" : "text-[11px]", "text-amber-700 leading-snug")}>
-              You likely meet most requirements. The ones you marked &ldquo;No&rdquo; or &ldquo;Not sure&rdquo; are your eligibility risks — verify those directly with the agency before applying.
+          {verdict.tier === "MEDIUM" && (
+            <p className={cn(isExpanded ? "text-[12.5px]" : "text-[11px]", "mt-2 text-amber-700 leading-snug")}>
+              Verify the unconfirmed items directly with the agency before investing time in an
+              application — they decide, not this checker.
             </p>
           )}
-          {confidence === "LOW" && (
-            <p className={cn(isExpanded ? "text-[12.5px]" : "text-[11px]", "text-red-700 leading-snug")}>
-              You may not meet enough requirements as-is. Review the full program details — some requirements (like income limits or geography) can&apos;t be worked around, but others may be addressable.
+          {verdict.tier === "HIGH" && (
+            <p className={cn(isExpanded ? "text-[12.5px]" : "text-[11px]", "mt-2 text-emerald-700 leading-snug")}>
+              Based on your answers you meet every listed requirement. Review the full program
+              details and apply directly through the agency using the &ldquo;Go to official
+              source&rdquo; button.
             </p>
           )}
+
           {showLink && (
             <a
               href={`/incentives/${incentive.slug}`}
@@ -263,15 +293,6 @@ export function EligibilityChecker({
               View full requirements <ArrowRight size={11} aria-hidden />
             </a>
           )}
-          <p
-            className={cn(
-              "leading-snug italic",
-              isExpanded ? "mt-3 text-[10.5px]" : "mt-2 text-[9px]",
-              "text-slate-400"
-            )}
-          >
-            This is an informal self-assessment only — not a guarantee of eligibility. Final determinations are made by the administering agency. Always verify requirements directly with the program before applying.
-          </p>
         </div>
       )}
     </div>
