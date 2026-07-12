@@ -25,18 +25,22 @@ fix drift before doing anything else. Update at every session close — no excep
 - **PR #63 MERGED 2026-07-11** (`c0fa942` on main): doctrine + memory system + runbooks +
   agents + `boot-probe` CI job (closed GAP-P1…P7, GAP-T1/B1). Owner approved full
   commit-and-deploy authority this date.
-- **Current branch (restarted from main):** Theme C — eligibility rules engine (SS-006).
-  `lib/eligibility.ts` + 40 vitest fixtures (CI-gated) + `EligibilityChecker.tsx` rewritten to
-  verdicts; ratio/percentage rendering removed. All-MUST conservative default from
-  `keyRequirements` (DECISIONS.md). Details: `docs/scope/experiments/SS-006-eligibility.md`.
+- **PR #64 MERGED + PROD-VERIFIED 2026-07-11** (`e9f3fe6`, health probe confirmed commit live):
+  SS-006 eligibility rules engine — ratio retired, 40 vitest fixtures CI-gated.
+- **Current branch (restarted from main):** Theme B increments 2–3 — `scrapers/batch_gate.py`
+  (shape alarms GAP-D2 + tripwires GAP-D4), FOUNDATION enum parity (GAP-D6 instance), and the
+  **LESSONS #16 regression fix**: the PR #51 fail→ok scheduler fix had regressed via a merge
+  because it was never test-pinned; now refactored (`_run_scraper_list`) with 3 pytest pins.
+  124/124 Python tests green.
 
 ## Next steps (from ROADMAP "order of operations")
 
-1. ✅ Boot-and-probe CI job (GAP-T1) — merged 2026-07-11.
-2. ✅ Theme C engine core — this branch. Follow-ups are human-gated (SME tiering, golden
-   program suite, legal copy review) — see Theme C + blocked-on-owner.
-3. **Theme B — data contracts for all sources** (GAP-D1/D2): stamp the Grants.gov
-   fixture+contract pattern across the other ~25 sources; add shape-change alarms. **Next up.**
+1. ✅ Boot-and-probe CI (merged) · ✅ Theme C engine core (merged, prod-verified) ·
+   ✅ Theme B alarms/tripwires (this branch).
+2. **Theme B-1 — golden fixture + contract test per source** (GAP-D1): stamp the Grants.gov
+   pattern across the other ~25 sources; needs live payload capture per source. **Next up.**
+3. **Theme B-4 — cross-language parity test** (GAP-D6): Pydantic ↔ Prisma ↔ TS. One known
+   drift instance (FOUNDATION) already found and fixed.
 4. Theme F Playwright harness with console-error gate; then Theme A alarm surfaces (freshness
    banner, change narratives, TrustRibbon mount).
 

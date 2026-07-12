@@ -40,6 +40,7 @@ from dotenv import load_dotenv
 
 load_dotenv(Path(__file__).parent.parent / ".env")
 
+from .batch_gate import apply_tripwires, batch_alarms
 from .carb_scraper import CARBScraper
 from .caltrans_core_scraper import CalTransCOREScraper
 from .ct_green_bank_scraper import CTGreenBankScraper
@@ -98,14 +99,41 @@ def _unwrap_error(e: Exception) -> str:
     return f"{type(e).__name__}: {e}"
 
 
-def _run_scrapers(mock: bool) -> tuple[list, dict]:
+def _run_scraper_list(scrapers: list[tuple[str, object]]) -> tuple[list, dict]:
     """
-    Run all scrapers and return (enriched results, per-source counts).
-    Per-source counts include success / fail / row counts so silent failures
-    are visible in the dry-run report and the workflow stdout.
+    Run a list of (name, scraper) pairs and return (enriched results,
+    per-source counts). Extracted from _run_scrapers so the fail-isolation
+    behavior is testable with fakes (LESSONS #5/#16: the fail→ok overwrite
+    bug shipped TWICE because the first fix was never pinned by a test).
+
+    Invariants (pinned by tests/test_scheduler_run.py):
+      * A failing scraper is recorded as {"status": "fail"} and STAYS failed.
+      * One scraper's failure never prevents the remaining scrapers running.
     """
     all_incentives = []
     counts: dict[str, dict] = {}
+    for name, scraper in scrapers:
+        try:
+            results = scraper.scrape()
+            enriched = [enrich(r) for r in results]
+            all_incentives.extend(enriched)
+            entry: dict = {"status": "ok", "rows": len(results), "error": None}
+            # Surface scraper-specific diagnostics if the scraper exposes them
+            if hasattr(scraper, "_diagnostics"):
+                entry["diagnostics"] = scraper._diagnostics  # type: ignore[attr-defined]
+            counts[name] = entry
+            logger.info(f"{name} scraped", found=len(results))
+            print(f"  {name:<14} ✓  {len(results)} row(s)")
+        except Exception as e:
+            unwrapped = _unwrap_error(e)
+            counts[name] = {"status": "fail", "rows": 0, "error": unwrapped}
+            logger.error(f"{name} scraper failed", error=unwrapped)
+            print(f"  {name:<14} ✗  FAILED: {unwrapped}")
+    return all_incentives, counts
+
+
+def _run_scrapers(mock: bool) -> tuple[list, dict]:
+    """Run all registered scrapers (see _run_scraper_list for the contract)."""
     scrapers = [
         ("WAZIP",         WazipScraper(mock=mock)),
         ("CalTrans CORE", CalTransCOREScraper(mock=mock)),
@@ -131,31 +159,7 @@ def _run_scrapers(mock: bool) -> tuple[list, dict]:
         ("Minnesota CIP",  MinnesotaCIPScraper(mock=mock)),
         ("Arizona",        ArizonaEnergyScraper(mock=mock)),
     ]
-    for name, scraper in scrapers:
-        try:
-            results = scraper.scrape()
-            enriched = [enrich(r) for r in results]
-            all_incentives.extend(enriched)
-            entry: dict = {"status": "ok", "rows": len(results), "error": None}
-            # Surface scraper-specific diagnostics if the scraper exposes them
-            if hasattr(scraper, "_diagnostics"):
-                entry["diagnostics"] = scraper._diagnostics  # type: ignore[attr-defined]
-            counts[name] = entry
-            logger.info(f"{name} scraped", found=len(results))
-            print(f"  {name:<14} ✓  {len(results)} row(s)")
-        except Exception as e:
-            unwrapped = _unwrap_error(e)
-            counts[name] = {"status": "fail", "rows": 0, "error": unwrapped}
-            logger.error(f"{name} scraper failed", error=unwrapped)
-            print(f"  {name:<14} ✗  FAILED: {unwrapped}")
-            counts[name] = {"status": "ok", "rows": len(results), "error": None}
-            logger.info(f"{name} scraped", found=len(results))
-            print(f"  {name:<14} ✓  {len(results)} row(s)")
-        except Exception as e:
-            counts[name] = {"status": "fail", "rows": 0, "error": str(e)}
-            logger.error(f"{name} scraper failed", error=str(e))
-            print(f"  {name:<14} ✗  FAILED: {e}")
-    return all_incentives, counts
+    return _run_scraper_list(scrapers)
 
 
 def _quality_gate_check(inc) -> tuple[bool, list[str]]:
@@ -181,6 +185,8 @@ def _write_dry_run_report(
     incentives: list,
     counts: dict,
     report_path: str = "/tmp/scrape-report.json",
+    quarantined: list | None = None,
+    alarms: list | None = None,
 ) -> None:
     """Serialize scraped records to a JSON artifact for human review (DRY_RUN mode).
 
@@ -217,7 +223,10 @@ def _write_dry_run_report(
             "totalScraped": len(incentives),
             "qualityGatePass": pass_count,
             "qualityGateFail": len(incentives) - pass_count,
+            "tripwireQuarantined": len(quarantined or []),
+            "shapeAlarms": alarms or [],
         },
+        "quarantined": quarantined or [],
         "rows": rows,
     }
     Path(report_path).write_text(json.dumps(report, indent=2, default=str))
@@ -248,17 +257,47 @@ def discover_new_programs(mock: bool = MOCK_MODE, dry_run: bool = DRY_RUN) -> di
 
     incentives, per_source_counts = _run_scrapers(mock)
 
+    # Theme B (GAP-D2/D4): row tripwires + batch shape alarms run BEFORE any
+    # write path, in both dry-run and live modes.
+    incentives, quarantined = apply_tripwires(incentives)
+    gate_failures = sum(1 for inc in incentives if not _quality_gate_check(inc)[0])
+    abort_writes, alarms = batch_alarms(per_source_counts, len(incentives), gate_failures)
+    for alarm in alarms:
+        logger.error("Batch shape alarm", alarm=alarm)
+        print(f"  ⚠  SHAPE ALARM: {alarm}")
+    if quarantined:
+        logger.warning("Rows quarantined by tripwires", count=len(quarantined))
+        print(f"  ⚠  {len(quarantined)} row(s) quarantined by tripwires")
+
     if dry_run:
-        _write_dry_run_report(incentives, per_source_counts)
+        _write_dry_run_report(incentives, per_source_counts, quarantined=quarantined, alarms=alarms)
         stats = {"inserted": 0, "skipped": 0, "rejected": 0, "errors": 0, "dry_run": True}
-    else:
-        stats = insert_new_only(incentives) if incentives else {"inserted": 0, "skipped": 0, "rejected": 0, "errors": 0}
+    elif abort_writes:
+        # Most of the batch failed the quality gate — the parse is broken and
+        # even passing rows are suspect. Write nothing; fail loudly.
+        logger.error("Batch aborted — no rows written", alarms=alarms)
+        stats = {"inserted": 0, "skipped": 0, "rejected": len(incentives), "errors": 0}
         try:
             record_scrape_run(
                 source="all",
                 stats={**stats, "scraped": len(incentives)},
                 started_at=started_at,
-                status="FAIL" if stats.get("errors", 0) > 0 else "SUCCESS",
+                status="FAIL",
+                notes="; ".join(alarms)[:500],
+            )
+        except Exception as e:
+            logger.warning("Could not record ScrapeRun", error=str(e))
+    else:
+        stats = insert_new_only(incentives) if incentives else {"inserted": 0, "skipped": 0, "rejected": 0, "errors": 0}
+        failed_sources = [n for n, c in per_source_counts.items() if c.get("status") == "fail"]
+        run_failed = stats.get("errors", 0) > 0 or bool(alarms) or bool(failed_sources)
+        try:
+            record_scrape_run(
+                source="all",
+                stats={**stats, "scraped": len(incentives)},
+                started_at=started_at,
+                status="FAIL" if run_failed else "SUCCESS",
+                notes="; ".join(alarms + [f"source_failed:{n}" for n in failed_sources])[:500] or None,
             )
         except Exception as e:
             logger.warning("Could not record ScrapeRun", error=str(e))

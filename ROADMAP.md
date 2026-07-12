@@ -35,12 +35,12 @@ proven. It must become the *stamp* applied to every source.
 Next increments:
 1. **Golden fixture + required-fields contract test per source** (GAP-D1). Batch by API-based
    sources first (highest volume), HTML scrapers second. *Accept:* every source in
-   `runner.py SCRAPERS` has a fixture dir + contract test; CI runs them all.
-2. **Shape-change alarm** (GAP-D2): live run hard-fails on 0 parsed rows or >50% required-field
-   nulls per source. *Accept:* a seeded bad fixture proves the run fails loud.
-3. **Ingest tripwires** (GAP-D4): past-deadline-but-ACTIVE, fundingAmount outliers, dead
-   sourceUrl ⇒ row quarantined, run annotated. *Accept:* tripwire unit tests + quarantine count
-   in scrape report.
+   `runner.py SCRAPERS` has a fixture dir + contract test; CI runs them all. **← next up**
+2. ✅ **Shape-change alarm** (GAP-D2, shipped 2026-07-11): `scrapers/batch_gate.py` —
+   ok-with-zero-rows alarms per source (ScrapeRun FAIL), >50% batch rejection aborts all
+   writes. Also fixed the regressed LESSONS #5 fail→ok overwrite, this time with pytest pins.
+3. ✅ **Ingest tripwires** (GAP-D4, shipped 2026-07-11): funding ≤0 or >$50B and non-https
+   URLs quarantined with reasons in the report; past-deadline-ACTIVE normalized to CLOSED.
 4. **Cross-language contract test** (GAP-D6): one parity test asserting
    `ScrapedIncentive` (Pydantic) fields ↔ Prisma schema ↔ `lib/types.ts` stay in sync.
    *Accept:* removing a field from any one of the three fails CI.

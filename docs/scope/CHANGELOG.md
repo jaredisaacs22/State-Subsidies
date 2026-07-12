@@ -2,6 +2,19 @@
 
 Major revisions only. Per-commit history lives in `git log docs/scope/**`.
 
+## 1.5.2 — 2026-07-11 (CEO) — scraper shape alarms + tripwires; LESSONS #5 regression fixed
+
+- **`scrapers/batch_gate.py`** (GAP-D2/D4): per-source zero-rows shape alarm (ScrapeRun FAIL),
+  >50% batch quality-gate failure aborts all writes, funding/URL tripwires quarantine rows with
+  reasons, past-deadline-ACTIVE normalized to CLOSED at ingest. Wired into
+  `scheduler.discover_new_programs` for both dry-run and live paths.
+- **LESSONS #16:** the PR #51 fail→ok scheduler fix had silently regressed via a merge (failed
+  sources re-stamped "ok" with stale row counts; first-scraper failure killed the run). Root
+  cause: the fix was never test-pinned. Refactored to `_run_scraper_list` + 3 pytest pins.
+- **`models.py` FOUNDATION parity** — Python enum had drifted behind Prisma since PR #60
+  (a live GAP-D6 instance, now also pinned).
+- Python suite: 124 passing (18 new).
+
 ## 1.5.1 — 2026-07-11 (CEO) — SS-006 eligibility rules engine ships (ratio model retired)
 
 - **`lib/eligibility.ts`** — deterministic MUST/SHOULD/PLUS `scoreEligibility` per SS-006 §8:
