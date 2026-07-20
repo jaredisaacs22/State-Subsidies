@@ -82,13 +82,17 @@ itself in H1/personas/empty states per SS-007.
 
 ## Theme F — Frontend verification harness (new — GAP-F1)
 
-**Status: 🟡 boot-probe shipped 2026-07-11 · browser suite still 🔴**
+**Status: 🟡 boot-probe + console gate shipped · tour harness and layout budget remain**
 Next increments, in order:
 1. ✅ **Boot-and-probe CI job** (GAP-T1/B1, shipped 2026-07-11): `ci.yml` `boot-probe` job —
    migrates a scratch Postgres, builds, boots `next start`, asserts health + dbReachable,
    proves the instrumentation self-seed fires (pins LESSONS #11), relational list/detail
    probe, and 200s on `/`, a detail page, and `/methodology`.
-2. Playwright suite with **absolute console-error gate** (zero tolerated errors from test #1).
+2. ✅ **Playwright console-error gate** (shipped 2026-07-12): `tests/e2e/console-gate.spec.ts`
+   rides the boot-probe server — zero tolerated console/page errors on 5 surfaces + deep-link
+   relational check + designed-404 contract + no-raw-"null" text contract. First run caught
+   the sitewide favicon 404 (fixed: `app/icon.svg`) and Vercel-script 404s when self-hosted
+   (fixed: injectors now gated on `process.env.VERCEL`).
 3. UX contracts: empty-state text, deep links, banned-jargon grep, disclaimer presence,
    layout budget (GAP-F7/F8).
 4. **First-time-user tour harness** (GAP-F6): scripted persona walkthroughs with screenshots

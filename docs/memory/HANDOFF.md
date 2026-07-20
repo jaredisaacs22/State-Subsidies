@@ -1,6 +1,6 @@
 # HANDOFF — Current State of StateSubsidies.com
 
-**Last updated:** 2026-07-11 · **By:** doctrine-integration session (branch
+**Last updated:** 2026-07-12 · **By:** doctrine-integration session (branch
 `claude/ultrathink-scope-analysis-ahfvyt`)
 **Rule:** this file describes reality. Verify against `git log` + the live site at session open;
 fix drift before doing anything else. Update at every session close — no exceptions.
@@ -25,24 +25,25 @@ fix drift before doing anything else. Update at every session close — no excep
 - **PR #63 MERGED 2026-07-11** (`c0fa942` on main): doctrine + memory system + runbooks +
   agents + `boot-probe` CI job (closed GAP-P1…P7, GAP-T1/B1). Owner approved full
   commit-and-deploy authority this date.
-- **PR #64 MERGED + PROD-VERIFIED 2026-07-11** (`e9f3fe6`, health probe confirmed commit live):
-  SS-006 eligibility rules engine — ratio retired, 40 vitest fixtures CI-gated.
-- **Current branch (restarted from main):** Theme B increments 2–3 — `scrapers/batch_gate.py`
-  (shape alarms GAP-D2 + tripwires GAP-D4), FOUNDATION enum parity (GAP-D6 instance), and the
-  **LESSONS #16 regression fix**: the PR #51 fail→ok scheduler fix had regressed via a merge
-  because it was never test-pinned; now refactored (`_run_scraper_list`) with 3 pytest pins.
-  124/124 Python tests green.
+- **Merged + prod-verified:** #63 doctrine backbone (`c0fa942`) · #64 SS-006 eligibility engine
+  (`e9f3fe6`) · #65 batch gate + LESSONS #16 fix (`f66c134`, health probe confirmed live).
+- **Current branch (restarted from main):** Theme F-2 — Playwright console-error gate riding
+  the boot-probe CI job (zero tolerated errors, 5 surfaces + deep-link relational + 404
+  contract). First run caught + fixed: sitewide favicon 404 (`app/icon.svg` added) and
+  `/_vercel/*` script 404s when self-hosted (injectors now gated on `process.env.VERCEL`).
+  Local: 6 passed / 1 skipped (deep-link runs for real in CI's seeded DB), tsc + vitest green.
 
 ## Next steps (from ROADMAP "order of operations")
 
-1. ✅ Boot-and-probe CI (merged) · ✅ Theme C engine core (merged, prod-verified) ·
-   ✅ Theme B alarms/tripwires (this branch).
+1. ✅ Boot-probe CI · ✅ Theme C engine core · ✅ Theme B alarms/tripwires ·
+   ✅ Theme F-2 console gate (this branch).
 2. **Theme B-1 — golden fixture + contract test per source** (GAP-D1): stamp the Grants.gov
-   pattern across the other ~25 sources; needs live payload capture per source. **Next up.**
+   pattern across the other ~25 sources; needs live payload capture per source. **Next up**
+   (deferred once for cost — see DECISIONS 2026-07-12).
 3. **Theme B-4 — cross-language parity test** (GAP-D6): Pydantic ↔ Prisma ↔ TS. One known
    drift instance (FOUNDATION) already found and fixed.
-4. Theme F Playwright harness with console-error gate; then Theme A alarm surfaces (freshness
-   banner, change narratives, TrustRibbon mount).
+4. Theme A visible trust surfaces: freshness banner (GAP-F4), change narratives (GAP-F5),
+   TrustRibbon mount (GAP-F3). Then Theme F-3/F-4 (tour harness, layout budget).
 
 ## Known open defects
 

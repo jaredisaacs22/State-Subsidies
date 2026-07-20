@@ -81,8 +81,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </header>
 
         <Suspense fallback={null}><Analytics /></Suspense>
-        <VercelAnalytics />
-        <SpeedInsights />
+        {/* Vercel-injected scripts only exist when Vercel serves the app —
+            rendering them self-hosted (CI boot-probe, local `next start`)
+            guarantees /_vercel/* 404s and fails the console-error gate. */}
+        {process.env.VERCEL ? (
+          <>
+            <VercelAnalytics />
+            <SpeedInsights />
+          </>
+        ) : null}
         <main>{children}</main>
 
         <footer className="mt-24 border-t border-slate-200 bg-white">
