@@ -45,7 +45,7 @@ incidents. The gaps below are what separates this baseline from the A/A+ target 
 
 | ID | Pri | Gap | Doctrine |
 |---|---|---|---|
-| GAP-F1 | **P0** | **Zero browser tests.** No Playwright, no console-error gate, no deep-link checks, no empty-state assertions. The entire experienced-UX layer is unverified on every merge. | §4.2–4.4 |
+| GAP-F1 | ~~P0~~ | **CORE CLOSED 2026-07-12** — Playwright console-error gate (zero tolerated errors) + deep-link relational check + designed-404 + no-raw-null contracts, riding the boot-probe CI job. Remaining: tour harness (F6), layout budget (F8). | §4.2–4.4 |
 | GAP-F2 | ~~P0~~ | **CORE CLOSED 2026-07-11** — ratio math replaced by the deterministic rules engine (`lib/eligibility.ts`, 40 CI-pinned fixtures); no percentage renders anywhere. Open remainder (SME tiering, golden suite, legal copy review) tracked as Theme C follow-ups. | §0.1 |
 | GAP-F3 | P1 | **TrustRibbon built but never mounted** — lives only at `/preview/trust-ribbon`. SS-001's visible half is undelivered; the trust surface the scope leads with isn't on the page. | §6.2 |
 | GAP-F4 | P1 | **No site-level freshness banner** ("data as of…", oldest-source age). FreshnessBadge exists per-card; the alarm-grade surface is missing. | §1.3 |

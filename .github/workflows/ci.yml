@@ -167,6 +167,8 @@ jobs:
         run: npm run precompute
       - name: Build
         run: npx next build
+      - name: Install Playwright chromium (Theme F-2 console gate)
+        run: npx playwright install --with-deps chromium
       - name: Boot and probe
         run: |
           set -euo pipefail
@@ -216,4 +218,10 @@ jobs:
             echo "GET $P -> 200"
           done
 
-          echo "PASS: artifact boots, sees its DB, self-seeds, and serves real pages"
+          # 6. Theme F-2 — browser console-error gate + UX contracts against
+          #    the same booted, seeded server (doctrine §4.2: zero tolerated
+          #    console errors; the deep-link relational test runs for real
+          #    here because the self-seed populated the DB above).
+          BASE_URL=http://localhost:3000 npx playwright test
+
+          echo "PASS: artifact boots, sees its DB, self-seeds, serves real pages, zero console errors"

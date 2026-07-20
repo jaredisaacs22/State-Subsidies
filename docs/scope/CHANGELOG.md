@@ -2,6 +2,19 @@
 
 Major revisions only. Per-commit history lives in `git log docs/scope/**`.
 
+## 1.5.3 — 2026-07-12 (CEO) — Playwright console-error gate; favicon; Vercel-script gating
+
+- **Theme F-2 shipped:** `tests/e2e/console-gate.spec.ts` + `playwright.config.ts`, riding the
+  boot-probe CI job's booted, seeded server. Zero tolerated console/page errors on `/`,
+  `/methodology`, `/nonprofits`, `/map`, `/saved`; deep-link detail page must agree with the
+  API (relational); designed-404 contract; no raw "null"/"undefined" in visible text.
+- **First-run catches (both fixed):** sitewide `/favicon.ico` 404 in every visitor's console —
+  the site had no favicon (added `app/icon.svg`, brand navy + red accent); Vercel
+  Analytics/SpeedInsights scripts 404 on any self-hosted boot (now rendered only when
+  `process.env.VERCEL` is set — production unchanged).
+- `vitest.config.ts` scopes unit tests to `lib/**` so the runners don't collide.
+- LESSONS #12 fully pinned — **zero open scars in the ledger** as of this entry.
+
 ## 1.5.2 — 2026-07-11 (CEO) — scraper shape alarms + tripwires; LESSONS #5 regression fixed
 
 - **`scrapers/batch_gate.py`** (GAP-D2/D4): per-source zero-rows shape alarm (ScrapeRun FAIL),
